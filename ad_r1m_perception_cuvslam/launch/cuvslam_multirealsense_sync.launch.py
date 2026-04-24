@@ -74,28 +74,17 @@ def generate_launch_description():
         )
         return stereo_capture
 
-    # TODO: add parameters for visual slam into YAML
+    visual_slam_params = rs_config.get('visual_slam', {})
+    visual_slam_params.update({
+        'num_cameras': num_cameras,
+        'min_num_images': num_cameras,
+        'camera_optical_frames': optical_frames
+    })
     visual_slam_node = ComposableNode(
         name='visual_slam_node',
         package='isaac_ros_visual_slam',
         plugin='nvidia::isaac_ros::visual_slam::VisualSlamNode',
-        parameters=[{
-            'enable_image_denoising': False,
-            'rectified_images': True,
-            'enable_imu_fusion': False,  # if only one camera is used, this can be set to true
-            'image_jitter_threshold_ms': 300.00,
-            'base_frame': 'base_link',
-            'enable_slam_visualization': False,
-            'enable_landmarks_view': False,
-            'enable_observations_view': False,
-            'enable_ground_constraint_in_odometry': False,
-            'enable_ground_constraint_in_slam': False,
-            'enable_localization_n_mapping': True,
-            'enable_debug_mode': False,
-            'num_cameras': num_cameras,
-            'min_num_images': num_cameras,
-            'camera_optical_frames': optical_frames
-        }],
+        parameters=[visual_slam_params],
         remappings=remapping_list_cuVSLAM,
     )
 
@@ -108,7 +97,6 @@ def generate_launch_description():
         output='screen',
     )
 
-    # TODO: include all realsense parameters in the config file
     realsense_image_capture = LoadComposableNodes(
         target_container='visual_slam_launch_container',
         composable_node_descriptions=([
@@ -117,17 +105,17 @@ def generate_launch_description():
         ]),
     )
 
-    # TODO: get sync params from yaml config file
+    camera_sync_params = rs_config.get('camera_sync', {})
+    camera_sync_params.update({
+        'topics2subscribe': topics2subscribe,
+        'topics2publish': topics2publish,
+    })
     camera_sync_node = ComposableNode(
         name='realsense_image_sync',
         namespace='camera_sync',
         package='ad_r1m_perception_cuvslam',
         plugin='camera_sync::MultiApproxSync',
-        parameters=[{'topics2subscribe': topics2subscribe,
-                     'topics2publish': topics2publish,
-                     'inter_message_slop': 0.001,  # in sec
-                     'inner_message_slop': 0.001,  # in sec
-                     }]
+        parameters=[camera_sync_params]
     )
     camera_sync_node_vslam_container = LoadComposableNodes(
         target_container='visual_slam_launch_container',
