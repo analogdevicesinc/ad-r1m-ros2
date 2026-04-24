@@ -58,6 +58,10 @@ class CRSFNode(Node):
         self.declare_parameter('max_rot', 1.0)
         self.declare_parameter('battery_poll_period', 1)
         self.declare_parameter('battery_sdo_service', 'drive_left/sdo_read')
+        self.declare_parameter('battery_cell_min_voltage', 3.0)
+        self.declare_parameter('battery_cell_max_voltage', 4.2)
+        self.declare_parameter('battery_cell_count', 3)
+        self.declare_parameter('battery_capacity_mah', 6000)
         self.declare_parameter(
             'kill_sequence', ['drive_left/halt', 'drive_right/halt'])
         self.declare_parameter(
@@ -72,6 +76,12 @@ class CRSFNode(Node):
             'battery_poll_period').value
         self.battery_sdo_service = self.get_parameter(
             'battery_sdo_service').value
+        self.battery_cell_min_voltage = self.get_parameter(
+            'battery_cell_min_voltage').value
+        self.battery_cell_max_voltage = self.get_parameter(
+            'battery_cell_max_voltage').value
+        self.battery_cell_count = self.get_parameter('battery_cell_count').value
+        self.battery_capacity_mah = self.get_parameter('battery_capacity_mah').value
         self.kill_sequence = self.get_parameter('kill_sequence').value
         self.init_sequence = self.get_parameter('init_sequence').value
 
@@ -114,7 +124,11 @@ class CRSFNode(Node):
                 self.get_logger().info(f'Waiting for service {cli.srv_name}')
 
         # CRSF setup
-        self.serial = Serial(self.serial_device, 420000, timeout=0.01)
+        try:
+            self.serial = Serial(self.serial_device, 420000, timeout=0.01)
+        except Exception as e:
+            self.get_logger().fatal(f'Failed to open serial device {self.serial_device}: {e}')
+            raise SystemExit(1)
 
         self.channels = []
         self.channels_decoded = []
@@ -171,21 +185,17 @@ class CRSFNode(Node):
             self.get_logger().error("Couldn't get battery voltage")
             return
 
-        # TODO configure min/max overall voltage, capacity
-        min_voltage = 3
-        max_voltage = 4.2
-        num_batteries = 3
         v = res.data * 0.1
-        v_1s = v * 0.1 / num_batteries
-        rem = (v_1s - min_voltage) / (max_voltage - min_voltage) * 100
-        if rem < 0:
-            rem = 0
+        v_per_cell = v * 0.1 / self.battery_cell_count
+        voltage_range = self.battery_cell_max_voltage - self.battery_cell_min_voltage
+        rem = (v_per_cell - self.battery_cell_min_voltage) / voltage_range * 100
+        rem = max(0, min(100, rem))
         self.get_logger().info(f'battery {v:.1f} V')
 
         battery_frame = crsf_build_frame(PacketsTypes.BATTERY_SENSOR, {
             'voltage': int(v * 10 + 0.5),
             'current': 0,
-            'capacity': 6000,
+            'capacity': self.battery_capacity_mah,
             'remaining': int(rem)
         })
 
