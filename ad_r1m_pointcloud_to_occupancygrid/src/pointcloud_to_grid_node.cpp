@@ -29,161 +29,118 @@
 #include <string>
 #include <vector>
 
-auto height_grid = std::make_shared<nav_msgs::msg::OccupancyGrid>();
-auto intensity_grid = std::make_shared<nav_msgs::msg::OccupancyGrid>();
-auto height_gridmap = std::make_shared<grid_map_msgs::msg::GridMap>();
-auto intensity_gridmap = std::make_shared<grid_map_msgs::msg::GridMap>();
 class PointCloudToGrid : public rclcpp::Node {
   rcl_interfaces::msg::SetParametersResult
   parametersCallback(const std::vector<rclcpp::Parameter> &parameters) {
     rcl_interfaces::msg::SetParametersResult result;
     result.successful = true;
     result.reason = "success";
+
     for (const auto &param : parameters) {
+      const auto &name = param.get_name();
       RCLCPP_INFO_STREAM(this->get_logger(),
-                         "Param update: " << param.get_name().c_str() << ": "
-                                          << param.value_to_string().c_str());
-      if (param.get_name() == "mapi_topic_name") {
+                         "Param update: " << name << ": "
+                                          << param.value_to_string());
+
+      if (name == "mapi_topic_name") {
         grid_map.mapi_topic_name = param.as_string();
         pub_igrid = this->create_publisher<nav_msgs::msg::OccupancyGrid>(
             grid_map.mapi_topic_name, 10);
-      }
-      if (param.get_name() == "maph_topic_name") {
+      } else if (name == "maph_topic_name") {
         grid_map.maph_topic_name = param.as_string();
         pub_hgrid = this->create_publisher<nav_msgs::msg::OccupancyGrid>(
             grid_map.maph_topic_name, 10);
-      }
-      if (param.get_name() == "mapi_gridmap_topic_name") {
+      } else if (name == "mapi_gridmap_topic_name") {
         grid_map.mapi_gridmap_topic_name = param.as_string();
         pub_igridmap = this->create_publisher<grid_map_msgs::msg::GridMap>(
             grid_map.mapi_gridmap_topic_name, 10);
-      }
-      if (param.get_name() == "maph_gridmap_topic_name") {
+      } else if (name == "maph_gridmap_topic_name") {
         grid_map.maph_gridmap_topic_name = param.as_string();
         pub_hgridmap = this->create_publisher<grid_map_msgs::msg::GridMap>(
             grid_map.maph_gridmap_topic_name, 10);
-      }
-      if (param.get_name() == "cloud_in_topic") {
+      } else if (name == "cloud_in_topic") {
         cloud_in_topic = param.as_string();
-        // Configure QoS for sensor data - use BEST_EFFORT reliability to match
-        // typical sensor publishers
         auto sensor_qos =
             rclcpp::QoS(10).reliability(RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT);
         sub_pc2_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
             cloud_in_topic, sensor_qos,
             std::bind(&PointCloudToGrid::occupancy_grid_callback, this,
                       std::placeholders::_1));
-      }
-      if (param.get_name() == "cell_size") {
+      } else if (name == "cell_size") {
         grid_map.cell_size = param.as_double();
-      }
-      if (param.get_name() == "position_x") {
+      } else if (name == "position_x") {
         grid_map.position_x = param.as_double();
-      }
-      if (param.get_name() == "position_y") {
+      } else if (name == "position_y") {
         grid_map.position_y = param.as_double();
-      }
-      if (param.get_name() == "length_x") {
+      } else if (name == "length_x") {
         grid_map.length_x = param.as_double();
-      }
-      if (param.get_name() == "length_y") {
+      } else if (name == "length_y") {
         grid_map.length_y = param.as_double();
-      }
-      if (param.get_name() == "intensity_factor") {
+      } else if (name == "intensity_factor") {
         grid_map.intensity_factor = param.as_double();
-      }
-      if (param.get_name() == "height_factor") {
+      } else if (name == "height_factor") {
         grid_map.height_factor = param.as_double();
-      }
-      if (param.get_name() == "verbose1") {
+      } else if (name == "verbose1") {
         verbose1 = param.as_bool();
-      }
-      if (param.get_name() == "verbose2") {
+      } else if (name == "verbose2") {
         verbose2 = param.as_bool();
-      }
-      if (param.get_name() == "z_min") {
+      } else if (name == "z_min") {
         grid_map.filter.z_min = param.as_double();
-      }
-      if (param.get_name() == "z_max") {
+      } else if (name == "z_max") {
         grid_map.filter.z_max = param.as_double();
-      }
-      if (param.get_name() == "ror_enable") {
+      } else if (name == "ror_enable") {
         grid_map.filter.ror_enable = param.as_bool();
-      }
-      if (param.get_name() == "ror_radius") {
+      } else if (name == "ror_radius") {
         grid_map.filter.ror_radius = param.as_double();
-      }
-      if (param.get_name() == "ror_min_neighbors_in_radius") {
+      } else if (name == "ror_min_neighbors_in_radius") {
         grid_map.filter.ror_min_neighbors_in_radius =
             static_cast<unsigned int>(param.as_int());
-      }
-      if (param.get_name() == "sor_enable") {
+      } else if (name == "sor_enable") {
         grid_map.filter.sor_enable = param.as_bool();
-      }
-      if (param.get_name() == "sor_mean") {
+      } else if (name == "sor_mean") {
         grid_map.filter.sor_mean = static_cast<unsigned int>(param.as_int());
-      }
-      if (param.get_name() == "sor_stddev_mul_thresh") {
+      } else if (name == "sor_stddev_mul_thresh") {
         grid_map.filter.sor_stddev_mul_thresh = param.as_double();
-      }
-      if (param.get_name() == "pass_enable") {
+      } else if (name == "pass_enable") {
         grid_map.filter.pass_enable = param.as_bool();
-      }
-      if (param.get_name() == "pass_z_min") {
+      } else if (name == "pass_z_min") {
         grid_map.filter.pass_z_min = param.as_double();
-      }
-      if (param.get_name() == "pass_z_max") {
+      } else if (name == "pass_z_max") {
         grid_map.filter.pass_z_max = param.as_double();
-      }
-      if (param.get_name() == "voxel_enable") {
+      } else if (name == "voxel_enable") {
         grid_map.filter.voxel_enable = param.as_bool();
-      }
-      if (param.get_name() == "voxel_lx") {
+      } else if (name == "voxel_lx") {
         grid_map.filter.voxel_lx = param.as_double();
-      }
-      if (param.get_name() == "voxel_ly") {
+      } else if (name == "voxel_ly") {
         grid_map.filter.voxel_ly = param.as_double();
-      }
-      if (param.get_name() == "voxel_lz") {
+      } else if (name == "voxel_lz") {
         grid_map.filter.voxel_lz = param.as_double();
-      }
-      if (param.get_name() == "cluster_enable") {
+      } else if (name == "cluster_enable") {
         grid_map.filter.cluster_enable = param.as_bool();
-      }
-      if (param.get_name() == "cluster_tolerance") {
+      } else if (name == "cluster_tolerance") {
         grid_map.filter.cluster_tolerance = param.as_double();
-      }
-      if (param.get_name() == "cluster_min_size") {
+      } else if (name == "cluster_min_size") {
         grid_map.filter.cluster_min_size =
             static_cast<unsigned int>(param.as_int());
-      }
-      if (param.get_name() == "cluster_max_size") {
+      } else if (name == "cluster_max_size") {
         grid_map.filter.cluster_max_size =
             static_cast<unsigned int>(param.as_int());
-      }
-      if (param.get_name() == "gaussian_enable") {
+      } else if (name == "gaussian_enable") {
         grid_map.filter.gaussian_enable = param.as_bool();
-      }
-      if (param.get_name() == "gaussian_mean") {
+      } else if (name == "gaussian_mean") {
         grid_map.filter.gaussian_mean = param.as_double();
-      }
-      if (param.get_name() == "gaussian_stddev") {
+      } else if (name == "gaussian_stddev") {
         grid_map.filter.gaussian_stddev = param.as_double();
-      }
-      // Normal mean averaging of maps
-      if (param.get_name() == "normal_averaging_enable") {
+      } else if (name == "normal_averaging_enable") {
         grid_map.filter.normal_averaging_enable = param.as_bool();
-      }
-      // Moving average parameters
-      if (param.get_name() == "moving_average_enable") {
+      } else if (name == "moving_average_enable") {
         grid_map.filter.moving_average_enable = param.as_bool();
-      }
-      if (param.get_name() == "ma_alpha") {
+      } else if (name == "ma_alpha") {
         grid_map.filter.ma_alpha = param.as_double();
       }
-
-      grid_map.paramRefresh();
     }
+
+    grid_map.paramRefresh();
     return result;
   }
 
@@ -468,7 +425,7 @@ private:
     extract.setInputCloud(input_cloud);
 
     for (const auto &indices : cluster_indices) {
-      if (indices.indices.size() < 20)
+      if (indices.indices.size() < grid_map.filter.cluster_min_size)
         continue;
 
       pcl::PointIndices::Ptr cluster_ptr(new pcl::PointIndices(indices));
@@ -581,53 +538,50 @@ private:
     }
     // Filtering the point cloud prior to 2D grid map construction
     out_cloud = filter_cloud(out_cloud);
-    // Startig to build occupancy grid
-    for (pcl::PointXYZRGB p : out_cloud->points) {
-
+    // Starting to build occupancy grid
+    constexpr float kOriginDeadzone = 0.01f;
+    for (const auto &p : out_cloud->points) {
       if (std::isnan(p.x) || std::isnan(p.y) || std::isnan(p.z)) {
         continue;
       }
-      // Z-axis filtering (ignore floating or ground/underground points)
       if (p.z < grid_map.filter.z_min || p.z > grid_map.filter.z_max) {
         continue;
       }
-
-      if (p.x > 0.01 || p.x < -0.01) {
-        if (p.x > grid_map.bottomright_x && p.x < grid_map.topleft_x) {
-          if (p.y > grid_map.bottomright_y && p.y < grid_map.topleft_y) {
-            PointXY cell = grid_map.getIndex(p.x, p.y);
-
-            if (cell.x < grid_map.cell_num_x && cell.y < grid_map.cell_num_y) {
-
-              // Converting RGB value to intensity
-              uint32_t rgb_uint;
-              std::memcpy(&rgb_uint, &p.rgb, sizeof(uint32_t));
-              uint8_t r = (rgb_uint >> 16) & 0x0000ff;
-              uint8_t g = (rgb_uint >> 8) & 0x0000ff;
-              uint8_t b = (rgb_uint) & 0x0000ff;
-              float intensity = (r + g + b) / 3.0f; // 0-255 intensity values
-
-              gaussian_z_probability =
-                  grid_map.filter.gaussian_enable
-                      ? gaussian_mapping(p.z, grid_map.filter.gaussian_mean,
-                                         grid_map.filter.gaussian_stddev)
-                      : 1.0f;
-
-              ipoints[cell.y * grid_map.cell_num_x + cell.x] +=
-                  intensity * grid_map.intensity_factor *
-                  gaussian_z_probability;
-              hpoints[cell.y * grid_map.cell_num_x + cell.x] =
-                  p.z * grid_map.height_factor;
-            } else {
-              RCLCPP_WARN_STREAM(this->get_logger(),
-                                 "Cell out of range: "
-                                     << cell.x << " - " << grid_map.cell_num_x
-                                     << " ||| " << cell.y << " - "
-                                     << grid_map.cell_num_y);
-            }
-          }
-        }
+      if (std::abs(p.x) <= kOriginDeadzone) {
+        continue;
       }
+      if (p.x <= grid_map.bottomright_x || p.x >= grid_map.topleft_x ||
+          p.y <= grid_map.bottomright_y || p.y >= grid_map.topleft_y) {
+        continue;
+      }
+
+      PointXY cell = grid_map.getIndex(p.x, p.y);
+      if (cell.x >= grid_map.cell_num_x || cell.y >= grid_map.cell_num_y) {
+        RCLCPP_WARN_STREAM(this->get_logger(),
+                           "Cell out of range: "
+                               << cell.x << " - " << grid_map.cell_num_x
+                               << " ||| " << cell.y << " - "
+                               << grid_map.cell_num_y);
+        continue;
+      }
+
+      // Converting RGB value to intensity
+      uint32_t rgb_uint;
+      std::memcpy(&rgb_uint, &p.rgb, sizeof(uint32_t));
+      uint8_t r = (rgb_uint >> 16) & 0x0000ff;
+      uint8_t g = (rgb_uint >> 8) & 0x0000ff;
+      uint8_t b = (rgb_uint) & 0x0000ff;
+      float intensity = (r + g + b) / 3.0f;
+
+      gaussian_z_probability =
+          grid_map.filter.gaussian_enable
+              ? gaussian_mapping(p.z, grid_map.filter.gaussian_mean,
+                                 grid_map.filter.gaussian_stddev)
+              : 1.0f;
+
+      size_t idx = cell.y * grid_map.cell_num_x + cell.x;
+      ipoints[idx] += intensity * grid_map.intensity_factor * gaussian_z_probability;
+      hpoints[idx] = p.z * grid_map.height_factor;
     }
 
     // Averaging grid maps if either of averaging methods is enabled
@@ -721,6 +675,16 @@ private:
   bool verbose1 = true, verbose2 = false;
   GridMap grid_map;
   size_t count_;
+
+  // Grid message storage
+  std::shared_ptr<nav_msgs::msg::OccupancyGrid> height_grid =
+      std::make_shared<nav_msgs::msg::OccupancyGrid>();
+  std::shared_ptr<nav_msgs::msg::OccupancyGrid> intensity_grid =
+      std::make_shared<nav_msgs::msg::OccupancyGrid>();
+  std::shared_ptr<grid_map_msgs::msg::GridMap> height_gridmap =
+      std::make_shared<grid_map_msgs::msg::GridMap>();
+  std::shared_ptr<grid_map_msgs::msg::GridMap> intensity_gridmap =
+      std::make_shared<grid_map_msgs::msg::GridMap>();
 };
 int main(int argc, char **argv) {
   rclcpp::init(argc, argv);
