@@ -88,7 +88,7 @@ def load_config(params_file=None):
         if params_file:
             config_path = params_file
         else:
-            pkg_dir = get_package_share_directory('ad_r1m_real')
+            pkg_dir = get_package_share_directory('ad_r1m_bringup')
             config_path = os.path.join(pkg_dir, 'config', 'crsf.yaml')
 
         with open(config_path, 'r') as f:
