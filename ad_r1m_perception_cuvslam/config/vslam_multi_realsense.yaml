@@ -42,6 +42,11 @@ visual_slam:
   localizer_vertical_step: 0.25
   localizer_angular_step: 0.1745
 
+#camera sync parameters
+camera_sync:
+  inter_message_slop: 0.001  # max time delta between images on different topics [sec]
+  inner_message_slop: 0.001  # max time delta between images on same topic [sec]
+
 #common Realsense cameras parameters
 common_params:
   enable_infra1: True
