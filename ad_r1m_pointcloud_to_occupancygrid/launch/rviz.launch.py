@@ -5,7 +5,7 @@ from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
-    pkg_name = 'pointcloud_to_grid'
+    pkg_name = 'ad_r1m_pointcloud_to_occupancygrid'
     pkg_dir = FindPackageShare(pkg_name)
 
     return LaunchDescription([
