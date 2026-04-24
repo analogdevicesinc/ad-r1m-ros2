@@ -65,7 +65,6 @@ public:
   float length_x;
   float length_y;
   std::string cloud_in_topic;
-  std::string frame_out;
   std::string mapi_topic_name;
   std::string maph_topic_name;
   std::string mapi_gridmap_topic_name;
@@ -81,8 +80,6 @@ public:
   Filter filter;
 
   void initGrid(std::shared_ptr<nav_msgs::msg::OccupancyGrid> grid) {
-    // grid->header.seq = 1;
-    grid->header.frame_id = GridMap::frame_out; // TODO
     grid->info.origin.position.z = 0;
     grid->info.origin.orientation.w = 0;
     grid->info.origin.orientation.x = 0;
@@ -98,7 +95,6 @@ public:
 
   void initGridMap(std::shared_ptr<grid_map_msgs::msg::GridMap> grid_map_msg,
                    const std::string &layer_name) {
-    grid_map_msg->header.frame_id = GridMap::frame_out;
     grid_map_msg->info.resolution = cell_size;
     grid_map_msg->info.length_x = length_x;
     grid_map_msg->info.length_y = length_y;
