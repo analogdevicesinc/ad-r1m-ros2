@@ -84,48 +84,58 @@ nodes:
     scale_pos_from_dev: 1.917475982666016e-06
     scale_vel_from_dev: 4.712388975e-06
 
-#  bms:
-#   node_id: 2
-#   dcf: "adrd5161.eds"
-#   driver: "ros2_canopen::ProxyDriver"
-#   package: "canopen_proxy_driver"
-#   heartbeat_producer: 1000
-#   polling: false
-#   boot: false
-#   mandatory: false # BMS is still in testing, won't always run
-
-#   sdo: [] # SDO executed during config
-#     # - { index: 0x1017, sub_index: 0, value: 500 } # Heartbeat every 500ms
-#   tpdo:
-#     1:
-#       enabled: true
-#       cob_id: "auto"
-#       transmission: 50 # 50 SYNC * 50Hz = 1 Hz
-#       mapping:
-#         - {index: 0x6001, sub_index: 0} # charger status (1byte)
-#         - {index: 0x6080, sub_index: 0} # charger state of charge (1byte)
-#         - {index: 0x6010, sub_index: 0} # temperature (2byte)
-#         - {index: 0x6060, sub_index: 0} # battery voltage (4byte)
-#     2:
-#       enabled: false
-#       mapping: []
-#     3:
-#       enabled: false
-#       mapping: []
-#     4:
-#       enabled: false
-#       mapping: []
-#   rpdo:
-#     1:
-#       enabled: false
-#       mapping: []
-#     2:
-#       enabled: false
-#       mapping: []
-#     3:
-#       enabled: false
-#       mapping: []
-#     4:
-#       enabled: false
-#       mapping: []
+  bms:
+    node_id: 2
+    dcf: "adrd5161.eds"
+    driver: "ros2_canopen::ProxyDriver"
+    package: "canopen_proxy_driver"
+    heartbeat_producer: 1000
+    polling: false
+    boot: false
+    mandatory: false # BMS is optional, won't block startup if absent
+    sdo: []
+    tpdo:
+      1:
+        enabled: true
+        cob_id: "auto"
+        transmission: 50 # 50 SYNC * 20Hz = 2.5s period
+        mapping:
+          - {index: 0x6001, sub_index: 0} # charger status (1 byte)
+          - {index: 0x6080, sub_index: 0} # charger state of charge (1 byte)
+          - {index: 0x6010, sub_index: 0} # temperature (2 bytes)
+          - {index: 0x6060, sub_index: 0} # battery voltage (4 bytes)
+      2:
+        enabled: true
+        cob_id: "auto"
+        transmission: 50
+        mapping:
+          - {index: 0x6000, sub_index: 0} # battery status (1 byte)
+          - {index: 0x6081, sub_index: 0} # battery state of charge (1 byte)
+          - {index: 0x6052, sub_index: 0} # Ah returned during last charge (2 bytes)
+          - {index: 0x2071, sub_index: 0} # current (4 bytes)
+      3:
+        enabled: true
+        cob_id: "auto"
+        transmission: 50
+        mapping:
+          - {index: 0x2060, sub_index: 1} # cell 1 voltage (2 bytes)
+          - {index: 0x2060, sub_index: 2} # cell 2 voltage (2 bytes)
+          - {index: 0x2060, sub_index: 3} # cell 3 voltage (2 bytes)
+          - {index: 0x2060, sub_index: 4} # cell 4 voltage (2 bytes)
+      4:
+        enabled: false
+        mapping: []
+    rpdo:
+      1:
+        enabled: false
+        mapping: []
+      2:
+        enabled: false
+        mapping: []
+      3:
+        enabled: false
+        mapping: []
+      4:
+        enabled: false
+        mapping: []
 
