@@ -98,7 +98,7 @@ class PointCloudToGrid : public rclcpp::Node {
       } else if (name == "sor_enable") {
         grid_map.filter.sor_enable = param.as_bool();
       } else if (name == "sor_mean") {
-        grid_map.filter.sor_mean = static_cast<unsigned int>(param.as_int());
+        grid_map.filter.sor_mean = static_cast<float>(param.as_double());
       } else if (name == "sor_stddev_mul_thresh") {
         grid_map.filter.sor_stddev_mul_thresh = param.as_double();
       } else if (name == "pass_enable") {
@@ -174,8 +174,8 @@ public:
     this->declare_parameter<int>("ror_min_neighbors_in_radius", 5);
     // Statistical outlier removal
     this->declare_parameter<bool>("sor_enable", true);
-    this->declare_parameter<int>("sor_mean", 30);
-    this->declare_parameter<float>("sor_stddev_mul_thresh", 0.5f);
+    this->declare_parameter<double>("sor_mean", 30.0);
+    this->declare_parameter<double>("sor_stddev_mul_thresh", 0.5);
     // Pass through filter (z-band filter): same meaning
     // as z_min and z_max but soome redundancy never hurt
     // nobody
