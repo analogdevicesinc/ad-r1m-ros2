@@ -78,9 +78,7 @@ def load_config(params_file=None):
         ],
         'init_sequence': [
             'drive_left/init',
-            'drive_right/init',
-            'drive_left/velocity_mode',
-            'drive_right/velocity_mode'
+            'drive_right/init'
         ]
     }
 
@@ -192,14 +190,25 @@ def main():
     x = th = status = 0.0
     state = 'init'
 
-    def call_services(services):
+    def call_services(services, max_retries=3, retry_delay=1.0):
         """Call motor services sequentially and wait for completion"""
         futures = []
         for i, cli in enumerate(services):
-            node.get_logger().info(f'Calling service {cli.srv_name}')
-            future = cli.call_async(Trigger.Request())
-            # Wait for this service to complete before calling the next
-            rclpy.spin_until_future_complete(node, future, timeout_sec=5.0)
+            for attempt in range(max_retries):
+                node.get_logger().info(f'Calling service {cli.srv_name}' + (f' (retry {attempt})' if attempt else ''))
+                future = cli.call_async(Trigger.Request())
+                # Wait for this service to complete before calling the next
+                rclpy.spin_until_future_complete(node, future, timeout_sec=5.0)
+
+                result = future.result()
+                if result and result.success:
+                    break  # Success, move on
+                msg = result.message if result else 'timeout'
+                node.get_logger().warning(f'Service {cli.srv_name} failed: "{msg}", retrying in {retry_delay}s...')
+                time.sleep(retry_delay)
+            else:
+                node.get_logger().error(f'Service {cli.srv_name} failed after {max_retries} attempts')
+
             futures.append(future)
 
             # Add longer delay after init services to let motors fully
