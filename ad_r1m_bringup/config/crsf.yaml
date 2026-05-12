@@ -1,19 +1,18 @@
-/**:
-  teleop_keyboard:
-    ros__parameters:
-      max_vel: 0.5
-      max_rot: 1.0
-      stamped: false
-      frame_id: ''
+teleop_keyboard:
+  ros__parameters:
+    max_vel: 0.5
+    max_rot: 1.0
+    stamped: false
+    frame_id: ''
 
-  crsf_node:
-    ros__parameters:
-      poll_rate: 20
-      min_joy_pos: 0.1
-      max_vel: 0.5
-      max_rot: 1.0
-      battery_poll_period: 1
-      battery_sdo_service: 'drive_left/sdo_read'
-      kill_sequence: [''] # ['drive_left/halt', 'drive_right/halt']
-      init_sequence: [''] # ['drive_left/init', 'drive_right/init', 'drive_left/velocity_mode', 'drive_right/velocity_mode']
+crsf_node:
+  ros__parameters:
+    poll_rate: 20
+    min_joy_pos: 0.01
+    max_vel: 0.5
+    max_rot: 1.0
+    battery_poll_period: 1
+    battery_sdo_service: 'drive_left/sdo_read'
+    kill_sequence: ['drive_left/halt', 'drive_right/halt']
+    init_sequence: ['drive_left/init', 'drive_right/init']
 
