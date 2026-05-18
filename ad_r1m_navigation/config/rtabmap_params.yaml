@@ -1,0 +1,118 @@
+# RTAB-Map parameters for AD-R1M robot
+# Tuned for: ToF camera (ADTF3175D) + IMU (ADIS16470) + differential drive
+#
+# Reference: https://github.com/introlab/rtabmap/wiki/RTAB-Map%27s-Parameters
+
+rtabmap:
+  ros__parameters:
+    # Frame configuration
+    frame_id: base_link
+    odom_frame_id: odom
+    map_frame_id: map
+
+    # Subscription settings
+    subscribe_depth: true
+    subscribe_rgb: true
+    subscribe_scan: false
+    subscribe_scan_cloud: false
+    approx_sync: true
+    queue_size: 10
+
+    # ============================================
+    # Registration Strategy
+    # ============================================
+    # 0=Visual, 1=ICP, 2=Visual+ICP
+    Reg/Strategy: "0"
+
+    # Constrain to 2D plane (for differential drive)
+    Reg/Force3DoF: "true"
+
+    # ============================================
+    # Visual Features (for ToF IR image)
+    # ============================================
+    # Feature detector: 0=SURF, 1=SIFT, 2=ORB, 3=FAST, 6=ORB-OCTREE, 8=GFTT
+    Vis/FeatureType: "6"
+
+    # Max features to extract (reduce for RPi)
+    Vis/MaxFeatures: "200"
+
+    # Min inliers for valid transformation
+    Vis/MinInliers: "15"
+
+    # Correspondence type: 0=Features Matching, 1=Optical Flow
+    Vis/CorType: "0"
+
+    # ============================================
+    # Grid/Occupancy Map
+    # ============================================
+    Grid/RayTracing: "true"
+    Grid/3D: "false"
+    Grid/RangeMax: "5.0"
+    Grid/RangeMin: "0.3"
+    Grid/CellSize: "0.05"
+    Grid/NormalsSegmentation: "false"
+    Grid/MaxGroundHeight: "0.05"
+    Grid/MaxObstacleHeight: "0.5"
+    Grid/MinClusterSize: "10"
+
+    # ============================================
+    # Loop Closure
+    # ============================================
+    # Detection rate (Hz), reduce for RPi
+    Rtabmap/DetectionRate: "1.0"
+
+    # Loop closure hypothesis threshold
+    Rtabmap/LoopThr: "0.11"
+
+    # Min visual words for loop closure
+    Rtabmap/LoopRatio: "0.0"
+
+    # ============================================
+    # Memory Management (tune for RPi)
+    # ============================================
+    # Image decimation before processing
+    Mem/ImagePreDecimation: "2"
+    Mem/ImagePostDecimation: "2"
+
+    # Reduce stored images
+    Mem/ImageCompressionFormat: ".jpg"
+
+    # Working memory management
+    Mem/STMSize: "10"
+
+    # ============================================
+    # Optimizer
+    # ============================================
+    # Disable gravity constraints (2D mode)
+    Optimizer/GravitySigma: "0"
+
+    # GTSAM optimizer
+    Optimizer/Strategy: "1"
+    Optimizer/Iterations: "10"
+
+    # ============================================
+    # RGBD settings
+    # ============================================
+    RGBD/ProximityBySpace: "true"
+    RGBD/ProximityMaxGraphDepth: "0"
+    RGBD/ProximityPathMaxNeighbors: "10"
+    RGBD/AngularUpdate: "0.1"
+    RGBD/LinearUpdate: "0.1"
+    RGBD/OptimizeFromGraphEnd: "false"
+    RGBD/CreateOccupancyGrid: "true"
+
+# Obstacle detection node parameters
+obstacles_detection:
+  ros__parameters:
+    Grid/MaxGroundHeight: "0.05"
+    Grid/MaxObstacleHeight: "0.5"
+    Grid/NormalsSegmentation: "false"
+    Grid/MinClusterSize: "10"
+
+# Point cloud generation from depth
+point_cloud_xyz:
+  ros__parameters:
+    decimation: 4
+    max_depth: 5.0
+    min_depth: 0.3
+    voxel_size: 0.05
