@@ -25,7 +25,10 @@ install(
 )
  
 # Install Python scripts
-install(PROGRAMS 
+install(PROGRAMS
+  scripts/image_encoding_republisher.py
+  scripts/image_flip_vertical.py
+  scripts/image_preprocess.py
   DESTINATION lib/${PROJECT_NAME}
 )
 ament_package()

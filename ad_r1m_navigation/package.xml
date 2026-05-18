@@ -24,6 +24,10 @@
   <exec_depend>rtabmap_util</exec_depend>
   <exec_depend>rtabmap_sync</exec_depend>
 
+  <!-- Python dependencies for image republisher -->
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+
   <!-- Navigation Dependencies -->
   <exec_depend>nav2_map_server</exec_depend>
   <exec_depend>nav2_amcl</exec_depend>

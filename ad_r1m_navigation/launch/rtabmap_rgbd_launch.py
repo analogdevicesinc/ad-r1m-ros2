@@ -74,7 +74,9 @@ def launch_setup(context, *args, **kwargs):
         'subscribe_rgb': True,
         'subscribe_odom_info': False,
         'approx_sync': True,
-        'queue_size': 10,
+        'approx_sync_max_interval': 0.1,  # 100ms tolerance for sync
+        'topic_queue_size': 30,           # Larger queue for preprocessing delay
+        'sync_queue_size': 30,
 
         # Use external odometry (EKF-fused wheel + IMU)
         'odom_sensor_sync': False,
@@ -118,6 +120,54 @@ def launch_setup(context, *args, **kwargs):
     ]
 
     nodes = []
+
+    # ========================================
+    # Image preprocessing for upside-down camera
+    # Using combined preprocess node for lower latency
+    # ========================================
+
+    # Processed topic names
+    depth_topic_processed = '/cam1/depth_image_processed' if namespace_str == '' else f'/{namespace_str}/cam1/depth_image_processed'
+    rgb_topic_processed = '/cam1/ab_image_processed' if namespace_str == '' else f'/{namespace_str}/cam1/ab_image_processed'
+
+    # Preprocess depth image: flip vertically
+    nodes.append(Node(
+        package='ad_r1m_navigation',
+        executable='image_preprocess.py',
+        name='depth_preprocess',
+        namespace=namespace,
+        output='screen',
+        parameters=[{
+            'input_topic': depth_topic,
+            'output_topic': depth_topic_processed,
+            'flip_vertical': True,
+            'target_encoding': '',  # Keep 16UC1 for depth
+        }],
+    ))
+
+    # Preprocess ab_image: flip vertically + fix encoding (16UC1 -> mono16)
+    nodes.append(Node(
+        package='ad_r1m_navigation',
+        executable='image_preprocess.py',
+        name='ab_preprocess',
+        namespace=namespace,
+        output='screen',
+        parameters=[{
+            'input_topic': rgb_topic,
+            'output_topic': rgb_topic_processed,
+            'flip_vertical': True,
+            'target_encoding': 'mono16',  # Fix encoding for RTAB-Map
+        }],
+    ))
+
+    # Update remappings with processed topics
+    remappings = [
+        ('rgb/image', rgb_topic_processed),
+        ('rgb/camera_info', camera_info_topic),
+        ('depth/image', depth_topic_processed),
+        ('odom', odom_topic),
+        ('imu', imu_topic),
+    ]
 
     # SLAM Mode
     nodes.append(Node(
@@ -163,8 +213,8 @@ def launch_setup(context, *args, **kwargs):
     ))
 
     # Obstacle detection for Nav2 local costmap
-    # Uses existing point cloud from ToF camera directly (no conversion needed)
-    # The ToF already publishes /cam1/point_cloud
+    # Use ToF SDK point cloud directly (already correctly oriented)
+    # Swap outputs because TF height classification is inverted for this camera mounting
     nodes.append(Node(
         package='rtabmap_util',
         executable='obstacles_detection',
@@ -173,16 +223,18 @@ def launch_setup(context, *args, **kwargs):
         output='screen',
         parameters=[{
             'use_sim_time': use_sim_time,
-            'frame_id': frame_id,
+            'frame_id': frame_id,  # base_link
+            'wait_for_transform': 0.2,
             'Grid/MaxGroundHeight': str(max_ground_height),
             'Grid/MaxObstacleHeight': '0.5',
             'Grid/NormalsSegmentation': 'false',
             'Grid/MinClusterSize': '10',
         }],
         remappings=[
-            ('cloud', cloud_topic),  # Use existing /cam1/point_cloud
-            ('obstacles', 'camera/obstacles'),
-            ('ground', 'camera/ground'),
+            ('cloud', cloud_topic),  # /cam1/point_cloud (correct orientation)
+            # Swap outputs to fix inverted height classification
+            ('obstacles', 'camera/ground'),
+            ('ground', 'camera/obstacles'),
         ],
     ))
 
