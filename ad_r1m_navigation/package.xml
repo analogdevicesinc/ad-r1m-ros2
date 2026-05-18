@@ -17,6 +17,13 @@
   <!-- Localization Dependencies -->
   <exec_depend>slam_toolbox</exec_depend>
 
+  <!-- RTAB-Map Dependencies -->
+  <exec_depend>rtabmap_ros</exec_depend>
+  <exec_depend>rtabmap_slam</exec_depend>
+  <exec_depend>rtabmap_viz</exec_depend>
+  <exec_depend>rtabmap_util</exec_depend>
+  <exec_depend>rtabmap_sync</exec_depend>
+
   <!-- Navigation Dependencies -->
   <exec_depend>nav2_map_server</exec_depend>
   <exec_depend>nav2_amcl</exec_depend>
