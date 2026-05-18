@@ -26,22 +26,7 @@ def generate_launch_description():
     can_iface = LaunchConfiguration('can_iface')
     robot_xacro = LaunchConfiguration('robot_xacro')
 
-    robot_description = Command([
-        'xacro ', robot_xacro,
-        ' can_iface:=', can_iface,
-        ' robot_namespace:=', namespace,
-    ])
-
-    rsp = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        output='screen',
-        parameters=[
-            {'robot_description': robot_description},
-        ]
-    )
-
-    # Start ros2_control stack
+    # Start ros2_control stack (includes RSP)
     drive_control = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             PathJoinSubstitution([FindPackageShare('ad_r1m_control'),
@@ -49,7 +34,9 @@ def generate_launch_description():
                                   ])
         ),
         launch_arguments={
-            'namespace': namespace
+            'namespace': namespace,
+            'can_iface': can_iface,
+            'robot_xacro': robot_xacro,
         }.items()
     )
 
@@ -87,7 +74,6 @@ def generate_launch_description():
         decl_can_iface,
         decl_robot_xacro,
 
-        rsp,
         drive_control,
         bringup_imu,
         bringup_sensor_fusion,

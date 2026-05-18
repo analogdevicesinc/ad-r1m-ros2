@@ -2,7 +2,7 @@ import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
-from launch.substitutions import PathJoinSubstitution, LaunchConfiguration
+from launch.substitutions import PathJoinSubstitution, LaunchConfiguration, Command
 from launch_ros.substitutions import FindPackageShare
 
 
@@ -10,7 +10,33 @@ def generate_launch_description():
     rosdistro = os.environ['ROS_DISTRO']
     ad_r1m_control = FindPackageShare('ad_r1m_control')
 
+    decl_namespace = DeclareLaunchArgument(
+        'namespace',
+        default_value='',
+        description='Robot namespace for multi-robot systems (e.g., robot1, robot2)',
+    )
+    decl_can_iface = DeclareLaunchArgument('can_iface', default_value='can0')
+    decl_robot_xacro = DeclareLaunchArgument('robot_xacro', default_value=
+        PathJoinSubstitution([FindPackageShare('ad_r1m_bringup'),
+                             'urdf', 'ad_r1m_canopen.urdf.xacro']))
     decl_extra_control_params_file = DeclareLaunchArgument('extra_control_params_file', default_value='')
+
+    namespace = LaunchConfiguration('namespace')
+    can_iface = LaunchConfiguration('can_iface')
+    robot_xacro = LaunchConfiguration('robot_xacro')
+
+    robot_description = Command([
+        'xacro ', robot_xacro,
+        ' can_iface:=', can_iface,
+        ' robot_namespace:=', namespace,
+    ])
+
+    rsp = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        output='screen',
+        parameters=[{'robot_description': robot_description}]
+    )
 
 
     # humble-and-earlier use cmd_vel_unstamped, jazzy-and-later use cmd_vel
@@ -64,7 +90,11 @@ def generate_launch_description():
         ))
 
     return LaunchDescription([
+        decl_namespace,
+        decl_can_iface,
+        decl_robot_xacro,
         decl_extra_control_params_file,
+        rsp,
         twist_mux_node,
         controller_manager_node,
         *spawners

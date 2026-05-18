@@ -146,7 +146,7 @@ services:
   # Always-on containers:
   motors:
     image: working
-    command: sh -c 'ros2 launch ad_r1m_bringup drive.launch.py can_iface:=slcan0 $${ROBOT_NAMESPACE:+namespace:=}$${ROBOT_NAMESPACE} & ros2 launch ad_r1m_control sensor_fusion.launch.py $${ROBOT_NAMESPACE:+namespace:=}$${ROBOT_NAMESPACE} & wait'
+    command: sh -c 'ros2 launch ad_r1m_control drive_control.launch.py can_iface:=slcan0 $${ROBOT_NAMESPACE:+namespace:=}$${ROBOT_NAMESPACE} & ros2 launch ad_r1m_control sensor_fusion.launch.py $${ROBOT_NAMESPACE:+namespace:=}$${ROBOT_NAMESPACE} & wait'
     environment: [RMW_IMPLEMENTATION, ROS_DISCOVERY_SERVER, ROBOT_NAMESPACE]
     network_mode: host
     ipc: host
