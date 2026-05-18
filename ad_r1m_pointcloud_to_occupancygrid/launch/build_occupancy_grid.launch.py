@@ -11,7 +11,7 @@ def generate_launch_description():
             description='a pointcloud topic to process',
             default_value='nonground'),
         Node(
-            package='pointcloud_to_grid',
+            package='ad_r1m_pointcloud_to_occupancygrid',
             executable='pointcloud_to_grid_node',
             output='screen',
             parameters=[
