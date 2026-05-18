@@ -1,0 +1,207 @@
+services:
+  # RMW_IMPLEMENTATION variants:
+  rmw_zenoh_router:
+    profiles: [rmw_zenoh]
+    image: working
+    command: ros2 run rmw_zenoh_cpp rmw_zenohd
+    network_mode: host
+    ipc: host
+    pid: host
+
+  rmw_fastdds_ds:
+    profiles: [rmw_fastdds]
+    image: working
+    command: fastdds discovery --server-id 0
+    network_mode: host
+    ipc: host
+    pid: host
+
+  # TELEOP variants:
+  teleop_radio:
+    profiles: [teleop_radio]
+    image: working
+    command: sh -c 'ros2 launch ad_r1m_bringup crsf.launch.py $${ROBOT_NAMESPACE:+namespace:=}$${ROBOT_NAMESPACE}'
+    environment: [RMW_IMPLEMENTATION, ROS_DISCOVERY_SERVER, ROBOT_NAMESPACE]
+    network_mode: host
+    ipc: host
+    pid: host
+    devices: [/dev/ttyCRSF]
+    healthcheck:
+      test: ["CMD-SHELL", "true"]
+      interval: 3s
+      timeout: 3s
+      start_period: 5s
+      disable: true
+
+  teleop_autonomous:
+    profiles: [teleop_autonomous]
+    image: working
+    command: sh -c 'ros2 run ad_r1m_bringup teleop_keyboard.py --params_file /teleop_keyboard_params.yaml $${ROBOT_NAMESPACE:+--ros-args -r __ns:=/}$${ROBOT_NAMESPACE}'
+    environment: [RMW_IMPLEMENTATION, ROS_DISCOVERY_SERVER, ROBOT_NAMESPACE]
+    network_mode: host
+    ipc: host
+    pid: host
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./teleop_keyboard_params.yaml:/teleop_keyboard_params.yaml:ro
+      - ../ad_r1m_bringup/scripts/crsf/teleop_keyboard.py:/ros2_ws/install/ad_r1m_bringup/lib/ad_r1m_bringup/teleop_keyboard.py:ro
+    depends_on:
+      rmw_zenoh_router:
+        condition: service_started
+        required: false
+    healthcheck:
+      test: ["CMD-SHELL", "true"]
+      interval: 3s
+      timeout: 3s
+      start_period: 5s
+      disable: true
+
+  # MAPPING
+  mapping:
+    profiles: [mapping]
+    image: working
+    command: sh -c 'ros2 launch ad_r1m_navigation online_async_launch.py params_file:=/ros_data/mapping_params.yaml $${ROBOT_NAMESPACE:+namespace:=}$${ROBOT_NAMESPACE}'
+    environment: [RMW_IMPLEMENTATION, ROS_DISCOVERY_SERVER, ROBOT_NAMESPACE]
+    network_mode: host
+    ipc: host
+    pid: host
+    volumes:
+      - /home/analog/ros_data:/ros_data
+    depends_on:
+      rmw_zenoh_router:
+        condition: service_started
+        required: false
+    healthcheck:
+      test: ["CMD-SHELL", "true"]
+      interval: 3s
+      timeout: 3s
+      start_period: 5s
+      disable: true
+
+  # LOCALIZATION variants:
+  loc_amcl:
+    profiles: [localization_amcl]
+    image: working
+    command: sh -c 'ros2 launch ad_r1m_navigation localization_launch.py map:=/ros_data/maps/ftc2025_half.yaml params_file:=/ros_data/navigation_params.yaml $${ROBOT_NAMESPACE:+namespace:=}$${ROBOT_NAMESPACE}'
+    environment: [RMW_IMPLEMENTATION, ROS_DISCOVERY_SERVER, ROBOT_NAMESPACE]
+    network_mode: host
+    ipc: host
+    pid: host
+    volumes:
+      - /home/analog/ros_data:/ros_data
+    healthcheck:
+      test: ["CMD-SHELL", "true"]
+      interval: 3s
+      timeout: 3s
+      start_period: 5s
+      disable: true
+
+  map_server:
+    profiles: [map_server]
+    image: working
+    command: sh -c 'ros2 launch ad_r1m_navigation map_server_launch.py map:=/ros_data/maps/empty300.yaml $${ROBOT_NAMESPACE:+namespace:=}$${ROBOT_NAMESPACE}'
+    environment: [RMW_IMPLEMENTATION, ROS_DISCOVERY_SERVER, ROBOT_NAMESPACE]
+    network_mode: host
+    ipc: host
+    pid: host
+    volumes:
+      - /home/analog/ros_data:/ros_data
+    depends_on:
+      rmw_zenoh_router:
+        condition: service_started
+        required: false
+    healthcheck:
+      test: ["CMD-SHELL", "true"]
+      interval: 3s
+      timeout: 3s
+      start_period: 5s
+      disable: true
+
+  loc_blind:
+    profiles: [localization_blind]
+    image: working
+    command: sh -c 'ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --yaw 0 --pitch 0 --roll 0 --frame-id map --child-frame-id $${ROBOT_NAMESPACE}$${ROBOT_NAMESPACE:+/}odom'
+    environment: [RMW_IMPLEMENTATION, ROS_DISCOVERY_SERVER, ROBOT_NAMESPACE]
+    network_mode: host
+    ipc: host
+    pid: host
+    depends_on:
+      rmw_zenoh_router:
+        condition: service_started
+        required: false
+
+  # NAVIGATION variants:
+  nav2:
+    profiles: [navigation_nav2]
+    image: working
+    command: sh -c 'ros2 launch ad_r1m_navigation navigation_launch.py params_file:=/ros_data/navigation_params.yaml $${ROBOT_NAMESPACE:+namespace:=}$${ROBOT_NAMESPACE}'
+    environment: [RMW_IMPLEMENTATION, ROS_DISCOVERY_SERVER, ROBOT_NAMESPACE]
+    network_mode: host
+    ipc: host
+    pid: host
+    volumes:
+      - /home/analog/ros_data:/ros_data
+
+  # Always-on containers:
+  motors:
+    image: working
+    command: sh -c 'ros2 launch ad_r1m_bringup drive.launch.py can_iface:=slcan0 $${ROBOT_NAMESPACE:+namespace:=}$${ROBOT_NAMESPACE} & ros2 launch ad_r1m_control sensor_fusion.launch.py $${ROBOT_NAMESPACE:+namespace:=}$${ROBOT_NAMESPACE} & wait'
+    environment: [RMW_IMPLEMENTATION, ROS_DISCOVERY_SERVER, ROBOT_NAMESPACE]
+    network_mode: host
+    ipc: host
+    pid: host
+    cap_add: [NET_ADMIN, SYS_PTRACE]
+    security_opt:
+      - seccomp:unconfined
+    healthcheck:
+      test: ["CMD-SHELL", "true"]
+      interval: 3s
+      timeout: 3s
+      start_period: 5s
+      disable: true
+
+  imu:
+    image: working
+    command: sh -c 'ros2 launch ad_r1m_bringup imu.launch.py $${ROBOT_NAMESPACE:+namespace:=}$${ROBOT_NAMESPACE}'
+    environment: [RMW_IMPLEMENTATION, ROS_DISCOVERY_SERVER, ROBOT_NAMESPACE]
+    network_mode: host
+    ipc: host
+    pid: host
+    privileged: true # for sysfs
+    healthcheck:
+      test: ["CMD-SHELL", "true"]
+      interval: 3s
+      timeout: 3s
+      start_period: 5s
+      disable: true
+
+  tof:
+    image: working
+    command: sh -c 'ros2 launch ad_r1m_perception_aditof depthimage_to_laserscan.launch.py param_file:=/ros_data/depth_to_laser_params.yaml $${ROBOT_NAMESPACE:+namespace:=}$${ROBOT_NAMESPACE}'
+    environment: [RMW_IMPLEMENTATION, ROS_DISCOVERY_SERVER, ROBOT_NAMESPACE]
+    network_mode: host
+    ipc: host
+    pid: host
+    volumes:
+      - /home/analog/ros_data:/ros_data
+
+  tof_republish:
+    image: working
+    command: sh -c 'ros2 run topic_tools relay /cam1/depth_image cam1/depth_image --ros-args $${ROBOT_NAMESPACE:+-r __ns:=/}$${ROBOT_NAMESPACE}'
+    environment: [RMW_IMPLEMENTATION, ROS_DISCOVERY_SERVER, ROBOT_NAMESPACE]
+    network_mode: host
+    ipc: host
+    pid: host
+    volumes:
+      - /home/analog/ros_data:/ros_data
+    depends_on:
+      rmw_zenoh_router:
+        condition: service_started
+        required: false
+    healthcheck:
+      test: ["CMD-SHELL", "true"]
+      interval: 3s
+      timeout: 3s
+      start_period: 5s
+      disable: true
