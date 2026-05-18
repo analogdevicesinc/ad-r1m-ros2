@@ -28,7 +28,7 @@ public:
   unsigned int ror_min_neighbors_in_radius;
   // Statistical outlier removal
   bool sor_enable;
-  float sor_mean;
+  int sor_mean;
   float sor_stddev_mul_thresh;
   // Pass through filter (z-band filter): same meaning as z_min and z_max but
   // soome redundancy never hurt nobody
