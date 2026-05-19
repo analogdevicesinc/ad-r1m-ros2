@@ -1,7 +1,9 @@
+import os
 import yaml
 
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import ComposableNodeContainer, LoadComposableNodes, Node
@@ -9,36 +11,24 @@ from launch_ros.descriptions import ComposableNode
 from launch_xml.launch_description_sources import XMLLaunchDescriptionSource
 
 
-def generate_launch_description():
-    use_rosbag_arg = DeclareLaunchArgument(
-        'use_rosbag',
-        default_value='False',
-        description='Whether to execute rosbag'
-    )
-    use_rosbag = LaunchConfiguration('use_rosbag')
+def launch_setup(context, *args, **kwargs):
+    pkg_share = get_package_share_directory('ad_r1m_perception_cuvslam')
 
-    config_directory = FindPackageShare('ad_r1m_perception_cuvslam')
+    rs_config_path = LaunchConfiguration('config_path').perform(context)
+    with open(rs_config_path, 'r') as rs_config_file:
+        rs_config = yaml.safe_load(rs_config_file)
 
     foxglove_xml_config = PathJoinSubstitution([
-        config_directory, 'config', 'foxglove_bridge_launch.xml'
+        FindPackageShare('ad_r1m_perception_cuvslam'), 'config', 'foxglove_bridge_launch.xml'
     ])
     foxglove_bridge_launch = IncludeLaunchDescription(
         XMLLaunchDescriptionSource([foxglove_xml_config])
     )
 
     # for multiple cameras use realsense_calibration.urdf.xacro
-    urdf_file = PathJoinSubstitution([
-        config_directory, 'urdf', 'single_realsense_calibration.urdf.xacro'
-    ])
+    urdf_file = os.path.join(pkg_share, 'urdf', 'single_realsense_calibration.urdf.xacro')
     with open(urdf_file, 'r') as f:
         robot_description = f.read()
-
-    # for multiple cameras use vslam_multi_realsense.yaml
-    rs_config_path = PathJoinSubstitution([
-        config_directory, 'config', 'vslam_single_realsense.yaml'
-    ])
-    with open(rs_config_path, 'r') as rs_config_file:
-        rs_config = yaml.safe_load(rs_config_file)
 
     remapping_list, optical_frames = [], []
     # two physical cameras for each realsense device
@@ -104,10 +94,31 @@ def generate_launch_description():
         parameters=[{'robot_description': robot_description}]
     )
 
-    return LaunchDescription([
-        use_rosbag_arg,
+    return [
         # foxglove_bridge_launch,
         state_publisher,
         realsense_image_capture,
         visual_slam_launch_container
+    ]
+
+
+def generate_launch_description():
+    pkg_share = get_package_share_directory('ad_r1m_perception_cuvslam')
+
+    config_path_arg = DeclareLaunchArgument(
+        'config_path',
+        default_value=os.path.join(pkg_share, 'config', 'vslam_single_realsense.yaml'),
+        description='Path to the YAML configuration file'
+    )
+
+    use_rosbag_arg = DeclareLaunchArgument(
+        'use_rosbag',
+        default_value='False',
+        description='Whether to execute rosbag'
+    )
+
+    return LaunchDescription([
+        config_path_arg,
+        use_rosbag_arg,
+        OpaqueFunction(function=launch_setup),
     ])
