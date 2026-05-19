@@ -1,0 +1,30 @@
+### Use this folder as a ROS 2 workspace ###
+
+[workspace]
+channels = ["robostack-humble", "conda-forge"]
+name = "ad_r1m_examples"
+platforms = ["linux-64"]
+version = "0.1.0"
+preview = ["pixi-build"]
+
+[tasks]
+
+[dependencies]
+ros-humble-ros2cli-common-extensions = "*"
+ros-humble-ad-r1m-examples = { path = "." }
+
+### Build this folder as a ROS 2 package ###
+
+[package.build.backend]
+channels = [
+  "https://prefix.dev/pixi-build-backends",
+  "https://prefix.dev/conda-forge",
+]
+name = "pixi-build-ros"
+version = "*"
+
+[package.build.config]
+extra-input-globs = [
+  "scripts/**/*.py"
+]
+

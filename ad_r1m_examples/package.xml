@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>ad_r1m_examples</name>
+  <version>0.1.0</version>
+  <description>Example apps that build on top of the AD-R1M stack</description>
+  <maintainer email="SDP_Enablement@analog.com">Analog Devices, Inc.</maintainer>
+  <license>Apache-2.0</license>
+
+  <author email="laurentiu.popa@analog.com">Laurentiu Popa</author>
+  <author email="ioan.dragomir@analog.com">Ioan Dragomir</author>
+
+  <!-- Build Tools -->
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
+
+  <depend>rclpy</depend>
+
+  <!-- Navigation Dependencies -->
+  <exec_depend>nav2_simple_commander</exec_depend>
+
+  <exec_depend>example_interfaces</exec_depend>
+
+  <!-- Testing Dependencies -->
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

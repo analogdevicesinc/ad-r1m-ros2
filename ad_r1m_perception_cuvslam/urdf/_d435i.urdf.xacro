@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<robot name="sensor_d435i" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Includes -->
+  <xacro:include filename="$(find ad_r1m_perception_cuvslam)/urdf/_d435.urdf.xacro"/>
+  <xacro:include filename="$(find ad_r1m_perception_cuvslam)/urdf/_d435i_imu_modules.urdf.xacro"/>
+  <xacro:include filename="$(find ad_r1m_perception_cuvslam)/urdf/_d435i_imu.gazebo.xacro"/>
+
+  <xacro:macro name="sensor_d435i" params="parent *origin name:=camera use_nominal_extrinsics:=true">
+
+    <!-- D435 camera (with RGB, depth, IR sensors) -->
+    <xacro:sensor_d435 parent="${parent}" name="${name}">
+      <xacro:insert_block name="origin"/>
+    </xacro:sensor_d435>
+
+    <!-- IMU frames -->
+    <xacro:d435i_imu_modules name="${name}" use_nominal_extrinsics="${use_nominal_extrinsics}"/>
+
+    <!-- IMU Gazebo plugin -->
+    <xacro:gazebo_d435i_imu 
+      camera_name="${name}" 
+      reference_link="${name}_link" 
+      accel_frame="${name}_accel_optical_frame" 
+      gyro_frame="${name}_gyro_optical_frame"/>
+  </xacro:macro>
+</robot>

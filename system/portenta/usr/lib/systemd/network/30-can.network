@@ -1,0 +1,11 @@
+[Match]
+Name=can0
+
+[Link]
+RequiredForOnline=carrier
+
+[CAN]
+BitRate=500000
+FDMode=False
+RestartSec=10s
+

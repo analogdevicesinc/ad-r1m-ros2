@@ -1,0 +1,92 @@
+# Reusable workflow for building one docker tag
+# TODO: multiplatform on multiple runners and aggregate
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        description: 'Image variant name, e.g. "robot", "sim"'
+        required: true
+        type: string
+      platforms:
+        description: 'JSON array of target platforms, e.g. ''["linux/arm64", "linux/amd64"]'''
+        required: true
+        type: string
+      ros_distro:
+        description: 'ROS 2 distro, e.g. "humble", "jazzy", "rolling"'
+        required: true
+        type: string
+        default: humble
+      build_packages:
+        required: true
+        type: string
+      target:
+        description: 'Which multi-stage target to build, e.g. "runner", "builder"'
+        required: true
+        type: string
+        default: builder
+      from_image:
+        description: 'Base docker image'
+        required: false
+        type: string
+      push:
+        description: 'Whether to push a successful build to the registry'
+        required: true
+        type: boolean
+        default: false
+      tags:
+        description: 'Docker image tags'
+        required: false
+        type: string
+    secrets:
+      CLOUDSMITH_USER:
+        required: true
+      GH_TOKEN:
+        required: false
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  docker-build:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: ${{ fromJSON(inputs.platforms) }}
+    runs-on: ${{ startsWith(matrix.platform, 'linux/arm') && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
+    name: ${{ inputs.name }} ${{ matrix.platform }} ${{ inputs.ros_distro }}
+
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@4d04d5d9486b7bd6fa91e7baf45bbb4f8b9deedd # v4.0.0
+
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Generate Cloudsmith OIDC Token
+        uses: cloudsmith-io/cloudsmith-cli-action@76c8ff51a34bea1036d9b7708f10a929624a1910 #v2.0.1
+        with:
+          oidc-namespace: adi
+          oidc-service-slug: ${{ secrets.CLOUDSMITH_USER }}
+
+      - name: Docker login Cloudsmith
+        uses: docker/login-action@v3
+        with:
+          registry: docker.cloudsmith.io/adi/adrd-common
+          username: ${{ secrets.CLOUDSMITH_USER }}
+          password: ${{ env.CLOUDSMITH_API_KEY }}
+
+      - name: Build and push
+        uses: docker/build-push-action@d08e5c354a6adb9ed34480a06d141179aa583294 # v7.0.0
+        with:
+          push: ${{ inputs.push }}
+          context: .
+          file: docker/Dockerfile
+          build-args: |
+            ROS_DISTRO=${{ inputs.ros_distro }}
+            BUILD_PACKAGES=${{ inputs.build_packages }}
+            ${{ inputs.from_image && format('FROM_IMAGE={0}', inputs.from_image) }}
+          target: ${{ inputs.target }}
+          tags: ${{ inputs.tags }}
+          secrets: |
+            GH_TOKEN=${{ secrets.GH_TOKEN }}

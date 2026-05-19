@@ -1,0 +1,14 @@
+[Match]
+Type=ether
+
+[Link]
+RequiredForOnline=no
+
+[Network]
+DHCP=ipv4
+LinkLocalAddressing=ipv4
+IPv6AcceptRA=no
+
+[DHCPv4]
+MaxAttempts=3
+

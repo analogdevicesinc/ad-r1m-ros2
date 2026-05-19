@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- A Gazebo macro for simulating the D435i IMU -->
+  <xacro:macro name="gazebo_d435i_imu" params="camera_name reference_link accel_frame gyro_frame">
+    
+    <gazebo reference="${accel_frame}">
+      <sensor name="${camera_name}_imu" type="imu">
+        <always_on>1</always_on>
+        <update_rate>200</update_rate>
+        <visualize>0</visualize>
+
+        <plugin name="camera" filename="libgazebo_ros_imu_sensor.so">
+          <ros>
+            <namespace>/camera</namespace>
+            <remapping>imu:=imu/data_raw</remapping>
+          </ros>
+          <!-- publish IMU data in accel frame (could use gyro too) -->
+          <frame_name>${gyro_frame}</frame_name>
+          <initial_orientation_as_reference>false</initial_orientation_as_reference>
+
+        </plugin>
+      </sensor>
+    </gazebo>
+
+  </xacro:macro>
+</robot>

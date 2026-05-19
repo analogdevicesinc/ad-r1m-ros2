@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<robot name="ad_r1m" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:arg name="robot_namespace" default="" />
+    <xacro:arg name="can_iface" default="can0" />
+
+    <!-- Build prefix based on namespace --> 
+    <xacro:property name="robot_namespace" value="$(arg robot_namespace)" />
+    <xacro:property name="prefix" value="" />
+    <xacro:if value="${robot_namespace.lstrip('/') != ''}">
+        <xacro:property name="prefix" value="${robot_namespace.lstrip('/')}/" />
+    </xacro:if>
+
+    <!-- Instantiate base robot model -->
+    <xacro:include filename="$(find ad_r1m_description)/urdf/ad_r1m_base.urdf.xacro" />
+    <xacro:ad_r1m_base prefix="${prefix}" />
+
+    <!-- Bind ros2_control with ros2_canopen hardware binds to previously defined joints (e.g. "${prefix}drive_left") -->
+    <ros2_control name="${prefix}control" type="system">
+        <hardware>
+            <plugin>canopen_ros2_control/RobotSystem</plugin>
+            <param name="bus_config">$(find ad_r1m_bringup)/config/canopen/bus.yml</param>
+            <param name="master_config">$(find ad_r1m_bringup)/config/canopen/master.dcf</param>
+            <param name="can_interface_name">$(arg can_iface)</param>
+            <param name="master_bin"></param>
+        </hardware>
+
+        <joint name="left_wheel_joint"> <!-- must correspond to joint defined in ad_r1m_description URDF -->
+            <command_interface name="velocity">
+                <param name="min">-18</param>
+                <param name="max">18</param>
+            </command_interface>
+            <param name="device_name">drive_left</param> <!-- Must match canopen bus.yml node name -->
+            <param name="node_id">22</param>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+
+        <joint name="right_wheel_joint">
+            <command_interface name="velocity">
+                <param name="min">-18</param>
+                <param name="max">18</param>
+            </command_interface>
+            <param name="device_name">drive_right</param>
+            <param name="node_id">20</param>
+            <state_interface name="position"/>
+            <state_interface name="velocity"/>
+        </joint>
+    </ros2_control>
+</robot>

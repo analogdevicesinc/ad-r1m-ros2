@@ -1,0 +1,131 @@
+options:
+  dcf_path: "@BUS_CONFIG_PATH@"
+
+master:
+  node_id: 1
+  driver: "ros2_canopen::MasterDriver"
+  package: "canopen_master_driver"
+  baudrate: 500000
+  sync_period: 50000 # 50k us = 50ms = 20Hz
+
+defaults:
+  dcf: "adrd3161.eds"
+  driver: "ros2_canopen::Cia402Driver"
+  package: "canopen_402_driver"
+  boot_timeout_ms: 1000
+  position_mode: 8 # csp
+  velocity_mode: 9 # csv
+  effort_mode: 10 # cst
+  sdo:
+    - { index: 0x202e, sub_index: 0, value: 2000 } # OPENLOOP_CURRENT = 2000mA
+    - { index: 0x2013, sub_index: 0, value: 3 } # CSA_FILTER_ADC_I0_TO_ADC_I2 = T_1_35_MICROSEC
+    - { index: 0x2014, sub_index: 0, value: 3 } # CSA_FILTER_ADC_I3           = T_1_35_MICROSEC
+  tpdo:
+    1:
+      enabled: true
+      cob_id: "auto"
+      transmission: 0xff
+      mapping:
+        - {index: 0x6041, sub_index: 0} # status word
+        - {index: 0x6061, sub_index: 0} # mode of operation display
+    2:
+      enabled: true
+      cob_id: "auto"
+      transmission: 0x01
+      mapping:
+        - {index: 0x6064, sub_index: 0} # position actual value
+        - {index: 0x606C, sub_index: 0} # velocity actual value
+    3:
+      enabled: true
+      cob_id: "auto"
+      transmission: 0x01
+      mapping:
+        - {index: 0x6077, sub_index: 0} # torque actual value
+  rpdo:
+    1:
+      enabled: true
+      cob_id: "auto"
+      transmission: 0xff
+      inhibit_time: 100
+      mapping:
+      - {index: 0x6040, sub_index: 0} # controlword
+      - {index: 0x6060, sub_index: 0} # mode of operation
+    2:
+      enabled: true
+      cob_id: "auto"
+      transmission: 0xff
+      mapping:
+      - {index: 0x607A, sub_index: 0} # target position
+    3:
+      enabled: true
+      cob_id: "auto"
+      transmission: 0xff
+      mapping:
+      - {index: 0x60FF, sub_index: 0} # target velocity
+    4:
+      enabled: true
+      cob_id: "auto"
+      transmission: 0xff
+      mapping:
+      - {index: 0x6071, sub_index: 0} # target torque
+
+nodes:
+  drive_left:
+    node_id: 0x16
+    scale_pos_to_dev: -521519.0
+    scale_vel_to_dev: -221207.0
+    scale_pos_from_dev: -1.917475982666016e-06
+    scale_vel_from_dev: -4.712388975e-06
+
+  drive_right:
+    node_id: 0x14
+    scale_pos_to_dev: 521519.0
+    scale_vel_to_dev: 221207.0
+    scale_pos_from_dev: 1.917475982666016e-06
+    scale_vel_from_dev: 4.712388975e-06
+
+#  bms:
+#   node_id: 2
+#   dcf: "adrd5161.eds"
+#   driver: "ros2_canopen::ProxyDriver"
+#   package: "canopen_proxy_driver"
+#   heartbeat_producer: 1000
+#   polling: false
+#   boot: false
+#   mandatory: false # BMS is still in testing, won't always run
+
+#   sdo: [] # SDO executed during config
+#     # - { index: 0x1017, sub_index: 0, value: 500 } # Heartbeat every 500ms
+#   tpdo:
+#     1:
+#       enabled: true
+#       cob_id: "auto"
+#       transmission: 50 # 50 SYNC * 50Hz = 1 Hz
+#       mapping:
+#         - {index: 0x6001, sub_index: 0} # charger status (1byte)
+#         - {index: 0x6080, sub_index: 0} # charger state of charge (1byte)
+#         - {index: 0x6010, sub_index: 0} # temperature (2byte)
+#         - {index: 0x6060, sub_index: 0} # battery voltage (4byte)
+#     2:
+#       enabled: false
+#       mapping: []
+#     3:
+#       enabled: false
+#       mapping: []
+#     4:
+#       enabled: false
+#       mapping: []
+#   rpdo:
+#     1:
+#       enabled: false
+#       mapping: []
+#     2:
+#       enabled: false
+#       mapping: []
+#     3:
+#       enabled: false
+#       mapping: []
+#     4:
+#       enabled: false
+#       mapping: []
+

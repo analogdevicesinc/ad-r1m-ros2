@@ -1,0 +1,73 @@
+%YAML 1.2
+
+---
+#cuVSLAM parameters
+visual_slam:
+  enable_ground_constraint_in_odometry: False
+  enable_ground_constraint_in_slam: False
+  enable_localization_n_mapping: True #False to use only vslam odometry in robot_localization
+  enable_image_denoising: False
+  rectified_images: True
+  enable_imu_fusion: False
+  gyro_noise_density: 0.00015593952556059264 #D455
+  gyro_random_walk: 7.371377089394156e-06 #D455
+  accel_noise_density: 0.00246907522075608 #D455
+  accel_random_walk: 0.0004886176561242167 #D455
+  calibration_frequency: 200.0
+  image_jitter_threshold_ms: 80.00 #Acceptable time delta between consec synced images
+  imu_jitter_threshold_ms: 10.0
+  sync_matching_threshold_ms: 5.0 #max delta between image timestamp to still consider them synced
+  base_frame: 'base_link' #'camera_link' #'base_link' #'realsense_d435i_bottom_screw_frame' #for simulation mode #'camera_link' # for real camera
+  imu_frame: 'base_link'
+  camera_optical_frames:
+    - 'camera_infra1_optical_frame'
+    - 'camera_infra2_optical_frame'
+  publish_map_to_odom_tf: True
+  publish_odom_to_base_tf: False
+  enable_slam_visualization: True
+  enable_landmarks_view: True
+  enable_observations_view: True
+  save_map_folder_path: ''
+  load_map_folder_path: '' #'./src/adrd_demo_ros2/ad_r1m_perception_cuvslam/map'
+  image_buffer_size: 20
+  imu_buffer_size: 50
+  path_max_size: 100
+  enable_debug_mode: False
+  debug_dump_path: "/tmp/cuvslam"
+  enable_request_hint: False
+  localize_on_startup: False #True #if provided a load_map_folder_path value
+  localizer_horizontal_radius: 1.5
+  localizer_vertical_radius: 0.5
+  localizer_horizontal_step: 0.5
+  localizer_vertical_step: 0.25
+  localizer_angular_step: 0.1745
+
+#common Realsense cameras parameters
+common_params:
+  enable_infra1: True
+  enable_infra2: True
+  enable_color: False
+  enable_depth: False
+  enable_rgbd: False
+  enable_gyro: False
+  enable_accel: False
+  pointcloud.enable: False
+  publish_tf: True
+  enable_sync: True
+  initial_reset: True
+  rgb_camera.color_profile: '640,360,30'
+  depth_module.infra_profile: '640,360,30'
+  depth_module.enable_auto_exposure: True
+  depth_module.emitter_enabled: 0
+
+#specific camera parematers
+cameras:
+  - camera_name: camera1
+    serial_no: '234222300435' #D455 camera
+    usb_port_id: ''
+    depth_module.inter_cam_sync_mode: 1 #check what this parameter is about
+
+  - camera_name: camera2
+    serial_no: '243322074768' #D435i camera
+    usb_port_id: ''
+    depth_module.inter_cam_sync_mode: 2 #check what this parameter is about

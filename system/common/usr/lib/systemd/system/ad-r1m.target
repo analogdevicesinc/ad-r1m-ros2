@@ -1,0 +1,12 @@
+# ad-r1m.target
+#
+# This unit ties together all AD-R1M services:
+# Each component to be initialized gets a unit PartOf, Before, WantedBy this target.
+# The ad-r1m-bringup.service is PartOf, After, and Requires this target.
+#
+# Restarting this target restarts both hardware init and app services.
+# Restarting any of the hardware services causes a restart of the app service.
+# Restarting the app service doesn't affect the hardware init services.
+
+[Unit]
+Description=AD-R1M Hardware initialization

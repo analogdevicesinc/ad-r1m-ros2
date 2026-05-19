@@ -1,0 +1,5 @@
+initial-upload-closes-no-bugs
+
+# Status LED legitimately installs itself as a dependency to basic.target so it
+# gets started up as early as possible.
+systemd-service-file-refers-to-unusual-wantedby-target

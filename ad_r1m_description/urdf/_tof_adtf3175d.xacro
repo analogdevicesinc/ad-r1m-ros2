@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+<xacro:macro name="tof_adtf3175d" params="prefix parent *origin">
+
+    <joint name="cam1_adtf31xx_joint" type="fixed">
+        <parent link="${parent}"/>
+        <child link="${prefix}cam1_adtf31xx"/>
+        <xacro:insert_block name="origin" />
+    </joint>
+
+    <link name="${prefix}cam1_adtf31xx">
+        <inertial>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <mass value="0.125"/>
+            <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001" />
+        </inertial>
+
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.02 0.065 0.07"/>
+            </geometry>
+        </collision>
+
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.02 0.065 0.07"/>
+            </geometry>
+            <material name="black"/>
+        </visual>
+    </link>
+
+
+    <joint name="cam1_adtf31xx_optical_joint" type="fixed">
+        <parent link="${prefix}cam1_adtf31xx"/>
+        <child link="${prefix}cam1_adtf31xx_optical"/>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 ${pi/2}"/>
+    </joint>
+
+    <link name="${prefix}cam1_adtf31xx_optical"></link>
+
+    <joint name="cam1_scan_joint" type="fixed">
+	    <parent link="${prefix}cam1_adtf31xx"/>
+	    <child link="${prefix}cam1_scan"/>
+		<origin xyz="0 0 0" rpy="${pi} 0 0" />
+	</joint>
+	<link name="${prefix}cam1_scan"></link>
+
+
+    <gazebo reference="${prefix}cam1_adtf31xx">
+        <material>Gazebo/Black</material>
+
+        <sensor name="${prefix}cam1" type="camera">
+            <pose> 0 0 0 0 0 0 </pose>
+            <visualize>true</visualize>
+            <update_rate>10</update_rate>
+            <camera>
+                <horizontal_fov>2</horizontal_fov>
+                <image>
+                    <format>BGR8</format>
+                    <width>512</width>
+                    <height>512</height>
+                </image>
+                <clip>
+                    <near>0.4</near>
+                    <far>5.0</far>
+                </clip>
+            </camera>
+            <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+                <frame_name>${prefix}cam1_adtf31xx_optical</frame_name>
+            </plugin>
+        </sensor>
+    </gazebo>
+
+</xacro:macro>
+</robot>

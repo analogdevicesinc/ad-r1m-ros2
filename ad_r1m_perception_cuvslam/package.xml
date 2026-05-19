@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>ad_r1m_perception_cuvslam</name>
+  <version>0.1.0</version>
+  <description>AD-R1M perception using Nvidia cuVSLAM</description>
+  <maintainer email="SDP_Enablement@analog.com">Analog Devices, Inc.</maintainer>
+  <license>Apache-2.0</license>
+
+  <author email="tudor.alinei-poiana@analog.com">TudorAlinei</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>rclpy</depend>
+  <depend>rclcpp_components</depend>
+  <depend>sensor_msgs</depend>
+
+  <depend>ad_r1m_pointcloud_to_occupancygrid</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

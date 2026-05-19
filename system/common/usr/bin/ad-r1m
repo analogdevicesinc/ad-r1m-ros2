@@ -1,0 +1,66 @@
+#!/usr/bin/env bash
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright (c) 2026 Analog Devices, Inc. 
+
+# This script is just a dispatcher. Command scripts are installed in
+# `/usr/lib/ad-r1m/cli/COMMAND` and present in the ad_r1m repo in
+# `system/{variant}/lib/ad-r1m/cli/COMMAND`.
+
+function show_help() {
+cat <<EOF
+Usage:  ad-r1m [-h | --help] [--version] <command> [<args>]
+
+AD-R1M system management CLI.
+
+Commands:
+EOF
+
+  # Generate a table to pass to `column -t` with command names and summaries
+  COMMANDS_HELP_TABLE=""
+  for command in $(ls /usr/lib/ad-r1m/cli/); do
+    # Get entire command help string
+    COMMAND_HELP=$("/usr/lib/ad-r1m/cli/$command" --help)
+    # Parse the command summary line (first line after the first empty line)
+    COMMAND_SUMMARY=$(<<<"$COMMAND_HELP" sed -n '/^$/{n;p;q;}')
+    # Append new row to table
+    COMMANDS_HELP_TABLE="${COMMANDS_HELP_TABLE}
+^$command^$COMMAND_SUMMARY"
+  done
+
+  # Output command list
+  column -t -s '^' <<<"$COMMANDS_HELP_TABLE"
+  
+cat <<EOF
+
+To get help for one of the commands, run \`ad-r1m <command> --help\`.
+
+Options:
+  -h, --help       Show this help message.
+      --version    Show version.
+EOF
+}
+
+case ${1:--h} in
+  (-h|--help)
+    show_help
+    ;;
+  
+  (--version)
+    cat "/usr/lib/ad-r1m/VERSION"
+    ;;
+  
+  (*)
+    command=$1
+    shift
+
+    [ -x "/usr/lib/ad-r1m/cli/$command" ] || {
+      echo "Command $command does not exist"
+      exit 1
+    }
+
+    "/usr/lib/ad-r1m/cli/$command" $@
+    ;;
+esac
+

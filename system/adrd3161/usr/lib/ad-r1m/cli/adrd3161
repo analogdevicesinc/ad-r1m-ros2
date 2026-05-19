@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright (c) 2026 Analog Devices, Inc. 
+
+function show_help() {
+cat <<EOF
+Usage:  ad-r1m adrd3161 [-h | --help]
+
+ADRD3161-01Z utilities.
+
+Options:
+  -h, --help       Show this help message.
+EOF
+}
+
+case $1 in
+  -h|--help)
+    show_help
+    exit
+    ;;
+
+  *)
+    ;;
+esac
+  

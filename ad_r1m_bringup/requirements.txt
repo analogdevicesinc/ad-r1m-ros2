@@ -1,0 +1,4 @@
+crsf-parser==0.3.0
+pyserial==3.5
+gpio==1.0.0
+smbus3==0.5.4

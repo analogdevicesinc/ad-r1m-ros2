@@ -1,0 +1,11 @@
+# Configure can0 to 500kbaud, whether it's slcan, gs_usb or some other adapter
+
+[Match]
+Name=can0
+
+[CAN]
+BitRate=500000
+
+[Link]
+RequiredForOnline=no
+ActivationPolicy=up

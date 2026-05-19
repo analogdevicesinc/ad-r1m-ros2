@@ -1,0 +1,87 @@
+on:
+  pull_request: # test
+  push:
+    branches:
+      - main    # nightly
+    tags:
+      - '*.*.*' # release
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set_vars.outputs.matrix }}
+      ver_major: ${{ steps.set_vars.outputs.ver_major }}
+      ver_minor: ${{ steps.set_vars.outputs.ver_minor }}
+      ver_patch: ${{ steps.set_vars.outputs.ver_patch }}
+      date: ${{ steps.set_vars.outputs.date }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - id: set_vars
+        run: |
+          echo "matrix=$(python3 -c 'import yaml, json; print(json.dumps(yaml.safe_load(open("docker/dockers.yml"))))')" >> "$GITHUB_OUTPUT"
+          echo "ver_major=$(cut -d. -f1 <VERSION)" >> "$GITHUB_OUTPUT"
+          echo "ver_minor=$(cut -d. -f2 <VERSION)" >> "$GITHUB_OUTPUT"
+          echo "ver_patch=$(cut -d. -f3 <VERSION)" >> "$GITHUB_OUTPUT"
+          echo "date=$(date -u +'%Y%m%d')" >> "$GITHUB_OUTPUT"
+
+  docker-test:
+    needs: setup
+    if: github.event_name == 'pull_request'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
+    uses: ./.github/workflows/docker_build_multiplatform.yml
+    secrets: inherit
+    with:
+      name: ${{ matrix.name }}
+      platforms: ${{ matrix.platforms }}
+      ros_distro: ${{ matrix.ros_distro }}
+      build_packages: ${{ matrix.build_packages }}
+      target: builder
+      push: false
+
+  docker-nightly:
+    needs: setup
+    if: github.event_name == 'push' && github.ref_type == 'branch'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
+    uses: ./.github/workflows/docker_build_multiplatform.yml
+    secrets: inherit
+    with:
+      name: ${{ matrix.name }}
+      platforms: ${{ matrix.platforms }}
+      ros_distro: ${{ matrix.ros_distro }}
+      build_packages: ${{ matrix.build_packages }}
+      target: dev
+      push: true
+      tags: |
+        docker.cloudsmith.io/adi/adrd-common/ad-r1m:${{ matrix.name }}-${{ matrix.ros_distro }}-nightly
+        docker.cloudsmith.io/adi/adrd-common/ad-r1m:${{ matrix.name }}-${{ matrix.ros_distro }}-${{ needs.setup.outputs.ver_major }}-nightly
+        docker.cloudsmith.io/adi/adrd-common/ad-r1m:${{ matrix.name }}-${{ matrix.ros_distro }}-${{ needs.setup.outputs.ver_major }}.${{ needs.setup.outputs.ver_minor }}-nightly
+
+  docker-release:
+    needs: setup
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
+    uses: ./.github/workflows/docker_build_multiplatform.yml
+    secrets: inherit
+    with:
+      name: ${{ matrix.name }}
+      platforms: ${{ matrix.platforms }}
+      ros_distro: ${{ matrix.ros_distro }}
+      build_packages: ${{ matrix.build_packages }}
+      target: runner
+      push: true
+      tags: |
+        docker.cloudsmith.io/adi/adrd-common/ad-r1m:${{ matrix.name }}-${{ matrix.ros_distro }}
+        docker.cloudsmith.io/adi/adrd-common/ad-r1m:${{ matrix.name }}-${{ matrix.ros_distro }}-${{ needs.setup.outputs.ver_major }}
+        docker.cloudsmith.io/adi/adrd-common/ad-r1m:${{ matrix.name }}-${{ matrix.ros_distro }}-${{ needs.setup.outputs.ver_major }}.${{ needs.setup.outputs.ver_minor }}

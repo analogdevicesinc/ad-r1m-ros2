@@ -1,0 +1,11 @@
+repositories:
+  depthimage_to_laserscan:
+    type: git
+    url: https://github.com/laurent-19/depthimage_to_laserscan.git
+    version: "nav-offset-distort"
+
+  adi_imu:
+    type: git
+    url: https://github.com/analogdevicesinc/imu_ros2.git
+    version: ca711b738e777b7ee1d104e8c7c9c5fc4dd4eb46
+

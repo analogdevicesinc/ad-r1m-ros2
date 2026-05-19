@@ -1,0 +1,13 @@
+[Unit]
+Description=Announce software status on GPIO 22 LED
+Before=basic.target
+After=local-fs.target sysinit.target
+DefaultDependencies=no
+
+[Service]
+Type=simple
+ExecStart=/usr/lib/ad-r1m/status-led/status-led-watchdog.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=basic.target

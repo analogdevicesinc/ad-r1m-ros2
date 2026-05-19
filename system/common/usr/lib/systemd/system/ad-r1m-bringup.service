@@ -1,0 +1,11 @@
+[Unit]
+Description=AD-R1M ROS 2 bringup
+Requires=docker.service ad-r1m.target
+After=ad-r1m.target
+PartOf=ad-r1m.target
+
+[Service]
+ExecStart=ad-r1m start
+
+[Install]
+WantedBy=multi-user.target

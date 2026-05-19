@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright (c) 2026 Analog Devices, Inc. 
+
+function show_help() {
+cat <<EOF
+Usage:  ad-r1m start [-h | --help] [<folder>]
+
+Start ROS 2 application.
+
+Assumes hardware is initialized (see ad-r1m.target).
+
+If not specified, the configuration folder defaults to the current working directory.
+Environment (ad-r1m.env) and docker compose (compose.yaml) files are first checked in
+the configuration folder, with fallbacks to the default configuration for each.
+
+Environment variables are used for configuration. Order of precedence (first wins):
+
+1. Variables defined in compose.yaml environment field
+2. Variables exported by shell
+3. Variables defined in ad-r1m.env
+
+Environment variables to control behaviour:
+
+  ROS_DISTRO
+      ROS 2 distribution
+      Options: humble (default), jazzy
+
+  RMW_IMPLEMENTATION
+      RMW implementation
+      Options: rmw_zenoh_cpp (default), rmw_fastrtps_cpp, rmw_cyclonedds_cpp
+
+  DOCKER_IMAGE
+      Docker image to use for ROS 2 containers
+      Default: docker.cloudsmith.io/adi/adrd-common/ad-r1m:robot-\$ROS_DISTRO
+  
+  COMPOSE_PROFILES
+      Docker compose profiles to enable. Comma-separated list.
+  
+  COMPOSE_PROJECT_NAME
+      Default: ad-r1m
+
+  ROBOT_NAMESPACE
+      Default: /
+
+
+Options:
+  -h, --help       Show this help message.
+EOF
+}
+
+case $1 in
+  -h|--help)
+    show_help
+    exit
+    ;;
+
+  *)
+    ;;
+esac
+
+if [ -z "$COMPOSE_FILE" ]; then
+  if [ -e "$PWD/compose.yaml" ]; then
+    COMPOSE_FILE="$PWD/compose.yaml"
+    echo "Using compose file: $COMPOSE_FILE"
+  else
+    COMPOSE_FILE="/usr/share/ad-r1m/default-config/compose.yaml"
+    echo "Using default compose file: $COMPOSE_FILE"
+  fi
+fi
+
+if [ -z "$ENV_FILE" ]; then
+  if [ -e "$PWD/ad-r1m.env" ]; then
+    ENV_FILE="$PWD/ad-r1m.env"
+    echo "Using env file: $ENV_FILE"
+  else
+    ENV_FILE="/usr/share/ad-r1m/default-config/ad-r1m.env"
+    echo "Using default env file: $ENV_FILE"
+  fi
+fi
+
+export ROS_DISTRO="${ROS_DISTRO:-humble}"
+export RMW_IMPLEMENTATION="${RMW_IMPLEMENTATION:-rmw_zenoh_cpp}"
+export DOCKER_IMAGE="${DOCKER_IMAGE:-docker.cloudsmith.io/adi/adrd-common/ad-r1m:robot-$ROS_DISTRO}"
+export COMPOSE_PROFILES=${RMW_IMPLEMENTATION},${COMPOSE_PROFILES}
+export COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-ad-r1m}"
+export ROBOT_NAMESPACE=${ROBOT_NAMESPACE-/}
+
+echo "ROS_DISTRO=$ROS_DISTRO"
+echo "RMW_IMPLEMENTATION=$RMW_IMPLEMENTATION"
+echo "DOCKER_IMAGE=$DOCKER_IMAGE"
+echo "COMPOSE_PROFILES=$COMPOSE_PROFILES"
+echo "COMPOSE_PROJECT_NAME=$COMPOSE_PROJECT_NAME"
+echo "ROBOT_NAMESPACE=$ROBOT_NAMESPACE"
+
+docker compose -f "$COMPOSE_FILE" --env-file "$ENV_FILE" up

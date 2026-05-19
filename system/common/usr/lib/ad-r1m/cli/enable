@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+# Copyright (c) 2026 Analog Devices, Inc.
+
+function show_help() {
+cat <<EOF
+Usage:  ad-r1m enable [-h | --help] [<folder>]
+
+Select a configuration folder to be auto-started at boot.
+
+Options:
+  -h, --help       Show this help message.
+EOF
+}
+
+FOLDER=.
+case $1 in
+  -h|--help)
+    show_help
+    exit
+    ;;
+
+  *)
+    FOLDER="$1"
+    ;;
+esac
+
+FOLDER=$(realpath -m "$FOLDER")
+
+if [ ! -d $FOLDER ]; then
+    echo "$FOLDER is not a directory"
+    exit 1
+fi
+
+systemctl edit --stdin ad-r1m-bringup.service <<EOF
+[Service]
+WorkingDirectory=$FOLDER
+EOF

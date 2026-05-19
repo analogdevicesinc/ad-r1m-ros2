@@ -1,0 +1,87 @@
+commit 584270d6a97de259bae84ec6ed7b9f86df2dbc17
+Author: Ioan Dragomir <ioan.dragomir@analog.com>
+Date:   Wed Aug 13 16:38:25 2025 +0300
+
+    Workarounds for portenta
+    
+    Apply on top of 1ad9385d980b0f5b8a9281c8b3951a829b8e5114
+    
+    Signed-off-by: Ioan Dragomir <ioan.dragomir@analog.com>
+
+diff --git a/sdk/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp b/sdk/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp
+index 44fbc372..9de76c94 100644
+--- a/sdk/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp
++++ b/sdk/src/cameras/itof-camera/soc/imx/sensor_enumerator_imx.cpp
+@@ -82,10 +82,10 @@ aditof::Status findDevicePathsAtVideo(const std::string &video,
+     string str(buf);
+     free(buf);
+ 
+-    size_t pos = str.find("mxc_isi.0.capture");
++    size_t pos = str.find("csi capture");
+     if (pos != string::npos) {
+-        dev_path = str.substr(pos + strlen("mxc_isi.0.capture") + 2,
+-                              strlen("/dev/mediaX"));
++        dev_path = str.substr(pos + strlen("csi capture") + 2,
++                              strlen("/dev/videoX"));
+     } else {
+         return Status::GENERIC_ERROR;
+     }
+diff --git a/sdk/src/cameras/itof-camera/soc/imx/target_definitions.h b/sdk/src/cameras/itof-camera/soc/imx/target_definitions.h
+index 1def7f67..923eb457 100644
+--- a/sdk/src/cameras/itof-camera/soc/imx/target_definitions.h
++++ b/sdk/src/cameras/itof-camera/soc/imx/target_definitions.h
+@@ -32,6 +32,6 @@
+ #ifndef TARGET_DEFINITIONS_H
+ #define TARGET_DEFINITIONS_H
+ 
+-static const char *CAPTURE_DEVICE_NAME = "mxc-isi-cap";
++static const char *CAPTURE_DEVICE_NAME = "imx-capture";
+ 
+ #endif // TARGET_DEFINITIONS_H
+diff --git a/sdk/src/connections/target/adsd3500_sensor.cpp b/sdk/src/connections/target/adsd3500_sensor.cpp
+index 0c8b35dc..5b68fc71 100644
+--- a/sdk/src/connections/target/adsd3500_sensor.cpp
++++ b/sdk/src/connections/target/adsd3500_sensor.cpp
+@@ -820,18 +820,18 @@ aditof::Status Adsd3500Sensor::setControl(const std::string &control,
+             status = Status::GENERIC_ERROR;
+         }
+ #else // NXP
+-        struct v4l2_streamparm fpsControl;
+-        memset(&fpsControl, 0, sizeof(struct v4l2_streamparm));
+-
+-        fpsControl.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
+-        fpsControl.parm.capture.timeperframe.numerator = 1;
+-        fpsControl.parm.capture.timeperframe.denominator = fps;
+-
+-        if (xioctl(dev->fd, VIDIOC_S_PARM, &fpsControl) == -1) {
+-            LOG(WARNING) << "Failed to set control: " << control << " "
+-                         << "errno: " << errno << " error: " << strerror(errno);
+-            status = Status::GENERIC_ERROR;
+-        }
++//        struct v4l2_streamparm fpsControl;
++//        memset(&fpsControl, 0, sizeof(struct v4l2_streamparm));
++//
++//        fpsControl.type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
++//        fpsControl.parm.capture.timeperframe.numerator = 1;
++//        fpsControl.parm.capture.timeperframe.denominator = fps;
++//
++//        if (xioctl(dev->fd, VIDIOC_S_PARM, &fpsControl) == -1) {
++//            LOG(WARNING) << "Failed to set control: " << control << " "
++//                         << "errno: " << errno << " error: " << strerror(errno);
++//            status = Status::GENERIC_ERROR;
++//        }
+ #endif
+ 
+         m_sensorFps = fps;
+@@ -1348,9 +1348,9 @@ aditof::Status Adsd3500Sensor::adsd3500_reset() {
+     status = adsd3500_register_interrupt_callback(cb);
+     bool interruptsAvailable = (status == Status::OK);
+ 
+-    system("echo 0 > /sys/class/gpio/gpio122/value");
++    system("gpioset 8 3=0");
+     usleep(1000000);
+-    system("echo 1 > /sys/class/gpio/gpio122/value");
++    system("gpioset 8 3=1");
+ 
+     if (interruptsAvailable) {
+         LOG(INFO) << "Waiting for ADSD3500 to reset.";
