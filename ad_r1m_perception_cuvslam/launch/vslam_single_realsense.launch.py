@@ -1,30 +1,18 @@
+import os
 import yaml
 
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.substitutions import PathJoinSubstitution
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer, Node
 from launch_ros.descriptions import ComposableNode
-from launch_ros.substitutions import FindPackageShare
 
 
-def generate_launch_description():
-
-    config_directory = FindPackageShare('ad_r1m_perception_cuvslam')
-
-    rs_config_path = PathJoinSubstitution(
-        [config_directory, 'config', 'cuvslam_single_realsense.yaml'])
-
+def launch_setup(context, *args, **kwargs):
+    rs_config_path = LaunchConfiguration('config_path').perform(context)
     with open(rs_config_path, 'r') as config_file:
         config = yaml.safe_load(config_file)
-
-    # cuVSLAM remapping list
-    # cuVSLAM_remapping = [
-    #     ('visual_slam/image_0', 'camera/infra1/image_rect_raw'),
-    #     ('visual_slam/camera_info_0', 'camera/infra1/camera_info'),
-    #     ('visual_slam/image_1', 'camera/infra2/image_rect_raw'),
-    #     ('visual_slam/camera_info_1', 'camera/infra2/camera_info'),
-    #     ('visual_slam/imu', 'camera/imu'),
-    # ]
 
     # cuVSLAM remapping list for sim mode
     cuVSLAM_remapping = [
@@ -33,10 +21,8 @@ def generate_launch_description():
         ('visual_slam/image_1', '/camera/infra2/image_raw'),
         ('visual_slam/camera_info_1', '/camera/infra2/camera_info'),
         ('visual_slam/imu', '/camera/imu'),
-        # ('/camera/realsense_d435i_imu_plugin/out'),
     ]
 
-    # Launch file which brings up visual slam node configured for RealSense.
     realsense_camera_node = Node(
         name='camera',
         namespace='camera',
@@ -63,6 +49,20 @@ def generate_launch_description():
         output='screen',
     )
 
-    return LaunchDescription([visual_slam_launch_container])
-    # return LaunchDescription([visual_slam_launch_container, realsense_camera_node])
-    # return LaunchDescription([realsense_camera_node])
+    return [visual_slam_launch_container]
+    # return [visual_slam_launch_container, realsense_camera_node]
+
+
+def generate_launch_description():
+    pkg_share = get_package_share_directory('ad_r1m_perception_cuvslam')
+
+    config_path_arg = DeclareLaunchArgument(
+        'config_path',
+        default_value=os.path.join(pkg_share, 'config', 'cuvslam_single_realsense.yaml'),
+        description='Path to the YAML configuration file'
+    )
+
+    return LaunchDescription([
+        config_path_arg,
+        OpaqueFunction(function=launch_setup),
+    ])
