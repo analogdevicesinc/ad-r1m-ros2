@@ -1,0 +1,16 @@
+{
+    "name": "AD-R1M ROS 2 development",
+
+    "build": {
+        "dockerfile": "../docker/Dockerfile",
+        "context": "..",
+        "args": {
+            "ROS_DISTRO": "humble",
+            "BUILD_PACKAGES": "ad_r1m ad_r1m_robot ad_r1m_sim"
+        },
+        "target": "devcontainer"
+    },
+
+    "workspaceMount": "source=${localWorkspaceFolder},target=/ros2_ws/src/ad_r1m_ros2/,type=bind,consistency=cached",
+    "workspaceFolder": "/ros2_ws",
+}

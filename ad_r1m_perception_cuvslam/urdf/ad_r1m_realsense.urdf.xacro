@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="ad_r1m_realsense">
+    <xacro:arg name="robot_namespace" default="" />
+    <xacro:property name="chassis_length" value="0.585"/>
+
+
+    <!-- Build prefix based on namespace --> 
+    <xacro:property name="robot_namespace" value="$(arg robot_namespace)" />
+    <xacro:property name="prefix" value="${ robot_namespace + '/' if robot_namespace else '' }" />
+
+    <!-- Instantiate sim robot model (includes ad_r1m_base + gazebo_ros2_control) -->
+    <xacro:include filename="$(find ad_r1m_gazebo)/urdf/ad_r1m_sim.urdf.xacro" />
+
+    <!-- Add realsense camera -->
+    <xacro:include filename="$(find ad_r1m_perception_cuvslam)/urdf/_d435i.urdf.xacro"/>
+    <xacro:sensor_d435i parent="${prefix}chassis" name="camera">
+        <origin xyz="${chassis_length / 2} 0 0" rpy="0 0 0"/>
+    </xacro:sensor_d435i>
+</robot>

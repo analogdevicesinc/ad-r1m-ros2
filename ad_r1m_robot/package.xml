@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>ad_r1m_robot</name>
+ <version>0.1.0</version>
+  <description>Metapackage for AD-R1M real robot</description>
+  <maintainer email="SDP_Enablement@analog.com">Analog Devices, Inc.</maintainer>
+  <license>Apache-2.0</license>
+
+  <author email="laurentiu.popa@analog.com">Laurentiu Popa</author>
+  <author email="ioan.dragomir@analog.com">Ioan Dragomir</author>
+
+  <depend>ad_r1m_bringup</depend>
+  <depend>ad_r1m_perception_aditof</depend>
+  <depend>ad_r1m_navigation</depend>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

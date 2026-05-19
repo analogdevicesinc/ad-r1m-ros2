@@ -1,0 +1,14 @@
+[Unit]
+Description=AD-R1M CRSF receiver initialization
+PartOf=ad-r1m.target
+Before=ad-r1m.target
+Requires=dev-ttyCRSF.device
+After=dev-ttyCRSF.device
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/lib/ad-r1m/crsf.sh
+
+[Install]
+WantedBy=ad-r1m.target

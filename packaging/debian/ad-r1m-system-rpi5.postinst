@@ -1,0 +1,31 @@
+#!/bin/bash -e
+
+#DEBHELPER#
+
+if [ "$1" = "configure" ]; then
+    # Add dtoverlays and disable UART0 serial.
+    # Modifications to boot partition assume this is being run as root.
+    # TODO: this should be optional, but selectable via debconf (default yes)
+
+    # Detect the boot partition mountpoint (disambiguate between /boot and /boot/firmware, mainly)
+    # 1. List all mountpoints (mount)
+    # 2. Detect all lines matching /boot (first grep)
+    # 3. Sort to get the lowest partition number (e.g. prefer /dev/mmcblk0p1 to /dev/mmcblk0p2)
+    # 4. Get just the /boot* word (second grep)
+
+    BOOTPART=$(mount | grep -E '/boot\S*' | sort | grep -oE '/boot\S*')
+    echo "Auto-detected boot partition at ${BOOTPART}"
+
+    # Modify config.txt, honoring package-specific delimiters
+    SECTION_BEGIN='# BEGIN ad-r1m-system-rpi5'
+    SECTION_END='# END ad-r1m-system-rpi5'
+
+    # Delete section, if it already exists
+    sed -i "/${SECTION_BEGIN}/,/${SECTION_END}/ D" "$BOOTPART"/config.txt
+
+    # Append new section
+    cat /usr/share/ad-r1m/boot/config.txt.snippet >> "$BOOTPART"/config.txt
+
+    # Modify cmdline.txt, to remove all console=serial0... because the AD-R1M uses UART0 for slcan
+    sed -i 's/console=serial0\S*\s*//gi' "$BOOTPART"/cmdline.txt
+fi

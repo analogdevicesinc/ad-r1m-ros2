@@ -1,0 +1,76 @@
+%YAML 1.2
+
+---
+
+#cuVSLAM parameters
+visual_slam:
+  enable_image_denoising: False
+  rectified_images: True
+  enable_imu_fusion: False  # if only one camera is used, this can be set to true
+  gyro_noise_density: 0.00015593952556059264 #D455
+  gyro_random_walk: 7.371377089394156e-06 #D455
+  accel_noise_density: 0.00246907522075608 #D455
+  accel_random_walk: 0.0004886176561242167 #D455
+  image_jitter_threshold_ms: 50.00
+  sync_matching_threshold_ms: 20.0
+  base_frame: 'ad_r1m_0/base_link'
+  enable_slam_visualization: False
+  enable_landmarks_view: False
+  enable_observations_view: False
+  enable_ground_constraint_in_odometry: True
+  enable_ground_constraint_in_slam: True
+  enable_localization_n_mapping: True
+  enable_debug_mode: False
+  imu_frame: 'camera_imu_optical_frame'
+  odom_frame: 'ad_r1m_0/odom'
+  enable_slam_visualization: True #when using only one camera
+  save_map_folder_path: ''
+  load_map_folder_path: '' #'./src/adrd_demo_ros2/ad_r1m_perception_cuvslam/map'
+  image_buffer_size: 20
+  imu_buffer_size: 50
+  path_max_size: 100
+  enable_debug_mode: False
+  debug_dump_path: "/tmp/cuvslam"
+  enable_request_hint: False
+  localize_on_startup: False #True #if provided a load_map_folder_path value
+  localizer_horizontal_radius: 1.5
+  localizer_vertical_radius: 0.5
+  localizer_horizontal_step: 0.5
+  localizer_vertical_step: 0.25
+  localizer_angular_step: 0.1745
+  publish_map_to_odom_tf: True
+  publish_odom_to_base_tf: False #When using EKF
+
+common_params:
+  enable_infra1: True
+  enable_infra2: True
+  enable_color: False
+  enable_depth: False
+  enable_rgbd: False
+  enable_gyro: True
+  enable_accel: True
+  pointcloud.enable: False
+  publish_tf: True
+  enable_sync: True #gathers closest frames of different sensors, infra red, color and depth, to be sent with the same timetag
+  initial_reset: True
+  #linear_accel_cov: 
+  #angular velocity_cov:
+  #hold_back_imu_for_frames: True #imu data and frames are published in a burst (no imu data between frames)
+  gyro_fps: 200
+  accel_fps: 200
+  unite_imu_method: 2 #0 = no imu, 1 = gyro + last accel msg, 2 = gyro + accel interpolated to gyro timestamp
+  rgb_camera.color_profile: '1280,720,30'
+  depth_module.infra_profile: '1280,720,30'
+  depth_module.enable_auto_exposure: True
+  depth_module.emitter_enabled: 0
+
+cameras:
+  - camera_name: camera1
+    serial_no: '243322074768' #'234222300435' #D455 camera #'243322074768' #D435i 
+    usb_port_id: ''
+    depth_module.inter_cam_sync_mode: 1 #check what this parameter is about
+
+  # - camera_name: camera2
+  #   serial_no: '243322074768' #D435i camera
+  #   usb_port_id: ''
+  #   depth_module.inter_cam_sync_mode: 2 #check what this parameter is about

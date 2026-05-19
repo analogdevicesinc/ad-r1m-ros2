@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="ad_r1m_common">
+    <xacro:property name="chassis_length" value="0.585"/>
+
+	<xacro:arg name="sim_mode" default="true"/> <!-- true if running in simulation -->
+	<xacro:arg name="can_iface" default="can1"/>
+
+	<xacro:include filename="$(find ad_r1m_common)/urdf/ardagv_ros2_control.urdf.xacro"/>
+	<xacro:include filename="$(find ad_r1m_common)/urdf/ardagv_model.urdf.xacro"/>
+
+	<xacro:include filename="$(find ad_r1m_common)/urdf/lidar.xacro" />
+	<xacro:include filename="$(find ad_r1m_common)/urdf/imu.xacro" />
+	<xacro:include filename="$(find ad_r1m_common)/urdf/camera.xacro" />
+	<!-- <xacro:include filename="depth_camera.xacro" /> -->
+
+    <xacro:include filename="$(find ad_r1m_perception_cuvslam)/urdf/_d435i.urdf.xacro"/>
+    <xacro:sensor_d435i parent="chassis" name="camera">
+        <origin xyz="${chassis_length / 2} 0 0" rpy="0 0 0"/>
+    </xacro:sensor_d435i>
+</robot>

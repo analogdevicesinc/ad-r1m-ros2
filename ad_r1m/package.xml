@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>ad_r1m</name>
+  <version>1.0.0</version>
+  <description>Documentation for the AD-R1M Open Mobile Robot Platform</description>
+  <maintainer email="laurentiu.popa@analog.com">Laurentiu Popa</maintainer>
+  <maintainer email="ioan.dragomir@analog.com">Ioan Dragomir</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+    <rosdoc2>rosdoc2.yaml</rosdoc2>
+  </export>
+</package>

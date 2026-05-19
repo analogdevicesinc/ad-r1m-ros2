@@ -1,0 +1,12 @@
+[Unit]
+Description=AD-R1M IMU configuration
+PartOf=ad-r1m.target
+Before=ad-r1m.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=iio_attr -u local: -d adis16470 sampling_frequency 100
+
+[Install]
+WantedBy=ad-r1m.target

@@ -1,0 +1,22 @@
+<?xml version="1.0">
+
+<robot name="4_realsenses">
+  <link name="base_link"/>
+
+  <joint name="camera1" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera1_link"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="camera1_link"/>
+
+  <joint name="camera2" type="fixed">
+    <parent link="base_link"/>
+    <child link="camera2_link"/>
+    <origin xyz="-0.14 0.06 0.0" rpy="0 0 -1.5707"/>
+  </joint>
+
+  <link name="camera2_link"/>
+
+</robot>

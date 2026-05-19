@@ -1,0 +1,2 @@
+ACTION=="add", SUBSYSTEM=="tty", KERNEL=="ttyAMA0", SYMLINK+="ttyCAN", TAG+="systemd", ENV{SYSTEMD_ALIAS}="/dev/ttyCAN"
+ACTION=="add", SUBSYSTEM=="tty", KERNEL=="ttyAMA4", SYMLINK+="ttyCRSF", TAG+="systemd", ENV{SYSTEMD_ALIAS}="/dev/ttyCRSF"

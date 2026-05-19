@@ -1,0 +1,16 @@
+#!/bin/bash -e
+
+#DEBHELPER#
+
+if [ "$1" = remove ]; then
+    # Clean up boot partition modifications. See postinst for more details of what is being set up.
+    BOOTPART=$(mount | grep -E '/boot\S*' | sort | grep -oE '/boot\S*')
+    echo "Auto-detected boot partition at ${BOOTPART}"
+
+    # Delete delimited section
+    SECTION_BEGIN='# BEGIN ad-r1m-system-rpi5'
+    SECTION_END='# END ad-r1m-system-rpi5'
+    sed -i "/${SECTION_BEGIN}/,/${SECTION_END}/ D" "$BOOTPART"/config.txt
+
+    # cmdline.txt will remain clobbered
+fi

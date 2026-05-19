@@ -1,0 +1,31 @@
+commit 3269bdacfd66ec5b5d1ac5bf6eeaf3d7e4cb4365
+Author: Ioan Dragomir <ioan.dragomir@analog.com>
+Date:   Wed Aug 13 22:02:40 2025 +0300
+
+    Only get local camera
+    
+    Signed-off-by: Ioan Dragomir <ioan.dragomir@analog.com>
+
+diff --git a/src/input_sensor_adtf31xx.cpp b/src/input_sensor_adtf31xx.cpp
+index bf6a78a..8d1b13b 100644
+--- a/src/input_sensor_adtf31xx.cpp
++++ b/src/input_sensor_adtf31xx.cpp
+@@ -37,12 +37,12 @@ void InputSensorADTF31XX::openSensor(
+   aditof::System system;
+   std::vector<std::shared_ptr<aditof::Camera>> cameras;
+ 
+-  if (!input_sensor_ip.empty()) {
+-    std::string ip = "ip:" + input_sensor_ip;
+-    system.getCameraList(cameras, ip);
+-  } else {
++  //if (!input_sensor_ip.empty()) {
++  //  std::string ip = "ip:" + input_sensor_ip;
++  //  system.getCameraList(cameras, ip);
++  //} else {
+     system.getCameraList(cameras);
+-  }
++  //}
+ 
+   if (cameras.empty()) {
+     RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "No cameras found");
+

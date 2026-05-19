@@ -1,0 +1,55 @@
+services:
+  zenoh_router:
+    profiles: [rmw_zenoh_cpp]
+    image: $DOCKER_IMAGE
+    command: ros2 run rmw_zenoh_cpp rmw_zenohd
+    network_mode: host
+    ipc: host
+    pid: host
+    environment:
+      - RMW_IMPLEMENTATION
+
+  robot:
+    image: $DOCKER_IMAGE
+    command: ros2 launch ad_r1m_bringup bringup.launch.py namespace:="${ROBOT_NAMESPACE:-/}" can_iface:=can0
+    network_mode: host
+    ipc: host
+    pid: host
+    cap_add: [NET_ADMIN, SYS_PTRACE, SYS_ADMIN]
+    security_opt:
+      - seccomp:unconfined
+    privileged: true
+    volumes:
+      - /dev/ttyCRSF:/dev/ttyCRSF
+      - /sys/kernel/debug/:/sys/kernel/debug/
+      - ./ros_data:/ros_data
+      - ./ros_data/log:/root/.ros/log
+      - ./calib.yaml:/calib.yaml:ro
+      - ./ros_parameters.yaml:/ros_parameters.yaml:ro
+    environment:
+      - RMW_IMPLEMENTATION
+    depends_on:
+      zenoh_router:
+        condition: "service_started"
+        required: false
+
+  teleop_crsf:
+    image: $DOCKER_IMAGE
+    command: |
+      ros2 launch ad_r1m_bringup teleop_crsf.launch.py namespace:="${ROBOT_NAMESPACE:-/}" params_file:="/teleop_parameters.yaml"
+    network_mode: host
+    ipc: host
+    pid: host
+    privileged: true
+    volumes:
+      - /dev/ttyCRSF:/dev/ttyCRSF
+      - ./ros_data:/ros_data
+      - ./ros_data/log:/root/.ros/log
+      - ./ros_parameters.yaml:/ros_parameters.yaml:ro
+      - ./teleop_parameters.yaml:/teleop_parameters.yaml:ro
+    environment:
+      - RMW_IMPLEMENTATION
+    depends_on:
+      zenoh_router:
+        condition: "service_started"
+        required: false

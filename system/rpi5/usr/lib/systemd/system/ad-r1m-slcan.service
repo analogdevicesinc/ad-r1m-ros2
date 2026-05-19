@@ -1,0 +1,15 @@
+[Unit]
+Description=AD-R1M slcan adapter initialization
+PartOf=ad-r1m.target
+Before=ad-r1m.target
+Requires=dev-ttyCAN.device
+After=dev-ttyCAN.device
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/lib/ad-r1m/slcan.sh
+ExecStop=killall slcand
+
+[Install]
+WantedBy=ad-r1m.target

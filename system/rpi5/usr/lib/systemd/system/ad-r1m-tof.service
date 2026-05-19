@@ -1,0 +1,15 @@
+[Unit]
+Description=AD-R1M ToF camera reset
+PartOf=ad-r1m.target
+
+# This one is After, not Before, because we need to restart the ToF camera close
+# to when the ROS 2 stack starts up
+After=ad-r1m.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/lib/ad-r1m/tof.sh
+
+[Install]
+WantedBy=ad-r1m-bringup.service

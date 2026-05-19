@@ -1,0 +1,41 @@
+/**:
+  controller_manager:
+    ros__parameters:
+      update_rate: 50  # Hz
+
+      joint_state_broadcaster:
+        type: joint_state_broadcaster/JointStateBroadcaster
+
+      # When launching just_motors.launch.py, choose between 'controller:=diff_drive_controller' (default) and 'controller:=forward_velocity_controller', or another controller you may add here.
+      diff_drive_controller:
+        type: diff_drive_controller/DiffDriveController
+
+      forward_velocity_controller:
+        type: forward_command_controller/ForwardCommandController
+
+  forward_velocity_controller:
+    ros__parameters:
+      joints:
+        - left_wheel_joint
+        - right_wheel_joint
+      interface_name: velocity
+
+  diff_drive_controller:
+    ros__parameters:
+      #publish_rate: 50.0
+
+      base_frame_id: base_link
+      left_wheel_names: ["left_wheel_joint"]
+      right_wheel_names: ["right_wheel_joint"]
+      interface_name: velocity
+
+      # Update with your robot's measurements
+      wheel_separation: 0.29
+      wheel_radius: 0.05
+
+      position_feedback: true
+
+      enable_odom_tf: false # set to false when using EKF odom tf / true when using odom tf from diff controller
+
+      use_stamped_vel: false
+

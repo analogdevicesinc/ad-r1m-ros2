@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Params left_ir_offset/right_ir_offset kept for flexibility, but no longer required -->
+  <xacro:macro name="gazebo_d435"
+               params="camera_name reference_link topics_ns
+                       depth_optical_frame color_optical_frame
+                       depth_frame color_frame
+                       infrared1_optical_frame infrared2_optical_frame
+                       infrared1_frame infrared2_frame
+                       left_ir_offset:=0 right_ir_offset:=0 use_mesh:=true">
+
+    <!-- Physics/contacts on the main body link only -->
+    <gazebo reference="${reference_link}">
+      <self_collide>0</self_collide>
+      <enable_wind>0</enable_wind>
+      <kinematic>0</kinematic>
+      <gravity>1</gravity>
+      <mu2>1</mu2>
+      <fdir1>0 0 0</fdir1>
+      <kp>1e+13</kp>
+      <kd>1</kd>
+    </gazebo>
+
+    <!-- Color camera attached to its OPTICAL frame -->
+    <gazebo reference="${color_frame}">
+      <sensor name="color" type="camera">
+        <camera name="color">
+          <horizontal_fov>1.2112585008840648</horizontal_fov> <!-- 69.4 deg -->
+          <image><width>640</width><height>360</height><format>RGB_INT8</format></image>
+          <clip><near>0.1</near><far>100</far></clip>
+          <noise><type>gaussian</type><mean>0.0</mean><stddev>0.007</stddev></noise>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <visualize>1</visualize>
+
+        <!-- ROS bridge -->
+        <plugin name="${camera_name}_color_ros" filename="libgazebo_ros_camera.so">
+          <ros>
+            <namespace>/camera</namespace>
+            <remapping>image_raw:=color/image_raw</remapping>
+            <remapping>camera_info:=color/camera_info</remapping>
+          </ros>
+          <!-- Tell plugin which TF frame this camera belongs to -->
+          <frame_name>${color_optical_frame}</frame_name>
+        </plugin>
+      </sensor>
+    </gazebo>
+
+    <!-- Infrared LEFT attached to its OPTICAL frame -->
+    <gazebo reference="${infrared1_frame}">
+      <sensor name="infra1" type="camera">
+        <camera name="infra1">
+          <horizontal_fov>1.4870205226991688</horizontal_fov> <!-- 85.2 deg -->
+          <image><width>640</width><height>360</height><format>L_INT8</format></image>
+          <clip><near>0.1</near><far>100</far></clip>
+          <noise><type>gaussian</type><mean>0.0</mean><stddev>0.01</stddev></noise>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>90</update_rate>
+        <visualize>0</visualize>
+
+        <plugin name="${camera_name}_infra1_ros" filename="libgazebo_ros_camera.so">
+          <ros>
+            <namespace>/camera</namespace>
+            <remapping>image_raw:=infra1/image_raw</remapping>
+            <remapping>camera_info:=infra1/camera_info</remapping>
+          </ros>
+          <!-- Tell plugin which TF frame this camera belongs to -->
+          <frame_name>${infrared1_optical_frame}</frame_name>
+        </plugin>
+      </sensor>
+    </gazebo>
+
+    <!-- Infrared RIGHT attached to its OPTICAL frame -->
+    <gazebo reference="${infrared2_frame}">
+      <sensor name="infra2" type="camera">
+        <camera name="infra2">
+          <horizontal_fov>1.4870205226991688</horizontal_fov>
+          <image><width>640</width><height>360</height><format>L_INT8</format></image>
+          <clip><near>0.1</near><far>100</far></clip>
+          <noise><type>gaussian</type><mean>0.0</mean><stddev>0.01</stddev></noise>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>90</update_rate>
+        <visualize>0</visualize>
+
+        <plugin name="${camera_name}_infra2_ros" filename="libgazebo_ros_camera.so">
+          <ros>
+            <namespace>/camera</namespace>
+            <remapping>image_raw:=infra2/image_raw</remapping>
+            <remapping>camera_info:=infra2/camera_info</remapping>
+          </ros>
+          <!-- Tell plugin which TF frame this camera belongs to -->
+          <frame_name>${infrared1_optical_frame}</frame_name>
+        </plugin>
+      </sensor>
+    </gazebo>
+
+    <!-- Depth camera attached to its OPTICAL frame -->
+    <gazebo reference="${depth_frame}">
+      <sensor name="depth" type="depth">
+        <camera name="depth">
+          <horizontal_fov>1.4870205226991688</horizontal_fov>
+          <image><width>640</width><height>360</height></image>
+          <clip><near>0.1</near><far>100</far></clip>
+          <noise><type>gaussian</type><mean>0.0</mean><stddev>0.001</stddev></noise>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>30</update_rate>
+        <visualize>0</visualize>
+
+        <plugin name="${camera_name}_depth_ros" filename="libgazebo_ros_camera.so">
+          <ros>
+            <namespace>/camera</namespace>
+            <remapping>image_raw:=depth/image_raw</remapping>
+            <remapping>camera_info:=depth/camera_info</remapping>
+          </ros>
+          <!-- Tell plugin which TF frame this camera belongs to -->
+          <frame_name>${depth_optical_frame}</frame_name>
+        </plugin>
+      </sensor>
+    </gazebo>
+
+
+  </xacro:macro>
+</robot>

@@ -1,0 +1,4 @@
+VERSION /usr/lib/ad-r1m/
+system/common/* /
+system/rpi5/* /
+system/adrd3161/* /

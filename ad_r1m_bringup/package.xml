@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>ad_r1m_bringup</name>
+  <version>0.1.0</version>
+  <description>AD-R1M real robot bringup</description>
+  <maintainer email="SDP_Enablement@analog.com">Analog Devices, Inc.</maintainer>
+  <license>Apache-2.0</license>
+
+  <author email="laurentiu.popa@analog.com">Laurentiu Popa</author>
+  <author email="ioan.dragomir@analog.com">Ioan Dragomir</author>
+
+  <exec_depend>ad_r1m_description</exec_depend>
+  <exec_depend>ad_r1m_control</exec_depend>
+
+  <exec_depend>adi_imu</exec_depend>
+  <exec_depend>adi_tmcl</exec_depend>
+
+  <!-- CANOpen Dependencies -->
+  <build_depend>lely_core_libraries</build_depend>
+  <exec_depend>canopen_ros2_control</exec_depend>
+  <exec_depend>canopen_interfaces</exec_depend>
+  <exec_depend>canopen_402_driver</exec_depend>
+  <exec_depend>canopen_master_driver</exec_depend>
+  <exec_depend>canopen_ros2_controllers</exec_depend>
+
+  <!-- Python runtime dependencies -->
+  <exec_depend>python3-crsf-parser</exec_depend>
+  <exec_depend>python3-gpio</exec_depend>
+  <exec_depend>python3-serial</exec_depend>
+  
+  <!-- Testing Dependencies -->
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

@@ -1,0 +1,30 @@
+# docker/Dockerfile.visualslam
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
+
+# Ensure no interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt update --allow-releaseinfo-change && apt install -y \	
+	ros-humble-isaac-ros-visual-slam \
+	ros-humble-isaac-ros-examples \
+	ros-humble-isaac-ros-realsense \
+	ros-humble-isaac-ros-multicamera-vo \
+	ros-humble-ackermann-msgs \
+        ros-humble-grid-map
+
+RUN apt-get update --allow-releaseinfo-change && \
+    apt-get install -y ros-humble-rmw-zenoh-cpp \
+    libnss-mdns \
+    avahi-utils
+
+COPY entrypoint_additions /usr/local/bin/scripts/entrypoint_additions
+RUN chmod +x /usr/local/bin/scripts/entrypoint_additions/*.sh
+
+	
+
+#RUN apt-get update --allow-releaseinfo-change && \
+#    apt-get install libpcl-dev
+
+
+

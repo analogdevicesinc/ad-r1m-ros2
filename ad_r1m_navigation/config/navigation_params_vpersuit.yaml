@@ -1,0 +1,255 @@
+#-----------------------------------------------------------------------------
+# AMCL parameters for localization
+#-----------------------------------------------------------------------------
+amcl:
+  ros__parameters:
+    use_sim_time: False
+    alpha1: 0.05 # rad/s -> rad/s, covariance from rotation to rotation
+    alpha2: 0.05 # rad/s -> m/s, covariance from translation to rotation
+    alpha3: 0.05 # m/s -> rad/s, covariance from rotation to translation
+    alpha4: 0.05 # m/s -> m/s, covariance from translation to translation
+    # alpha5 irrelevant for diff drive
+    base_frame_id: base_link
+    beam_skip_distance: 0.05 # reduced from 0.5
+    beam_skip_error_threshold: 0.9
+    beam_skip_threshold: 0.3
+    do_beamskip: false
+    global_frame_id: map
+    lambda_short: 0.1
+    laser_likelihood_max_dist: 0.01 # 10cm bubble around obstacles
+    laser_max_range: 5.0
+    laser_min_range: 0.3
+    laser_model_type: "likelihood_field"
+    max_beams: 300       # no of beams/rays used in the particle filter scan
+    max_particles: 2000  # max number of particles for localization
+    min_particles: 1000  # min number of particles for localization
+    odom_frame_id: odom
+    pf_err: 0.02
+    pf_z: 0.99
+    dist_threshold: 0.3
+    recovery_alpha_fast: 0.1 
+    recovery_alpha_slow: 0.0001
+    resample_interval: 2
+    robot_model_type: "nav2_amcl::DifferentialMotionModel"
+    save_pose_rate: 0.5
+    sigma_hit: 0.02  # 2cm stddev on distances
+    tf_broadcast: true
+    transform_tolerance: 1.0
+    update_min_a: 0.05  # 5deg per update
+    update_min_d: 0.01  # 1cm per update
+    z_hit: 0.5
+    z_max: 0.05
+    z_rand: 0.5
+    z_short: 0.05
+    scan_topic: scan
+
+    set_initial_pose: True
+    initial_pose:
+      x: 0.0
+      y: 0.0
+      z: 0.0
+      #yaw: 0.0
+      yaw: -1.5708    
+
+#-----------------------------------------------------------------------------
+# Map server parameters
+#-----------------------------------------------------------------------------
+map_server:
+  ros__parameters:
+    use_sim_time: False
+    yaml_filename: "/ros_data/maps/map.yaml"
+
+
+#-----------------------------------------------------------------------------
+# Costmap parameters: local and global
+#-----------------------------------------------------------------------------
+local_costmap:
+  local_costmap:
+    ros__parameters:
+      # Will be rewritten:
+      global_frame: odom
+      robot_base_frame: base_link
+
+      update_frequency: 5.0
+      publish_frequency: 2.0
+      use_sim_time: False
+      rolling_window: true
+      width: 3
+      height: 3
+      origin_x: -1.5
+      origin_y: -1.5
+      resolution: 0.05
+      robot_radius: 0.31
+      footprint: "[ [0.30, -0.15], [-0.30, -0.15], [-0.30, 0.15], [0.30, 0.15] ]"
+      plugins: ["voxel_layer", "inflation_layer"]
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        cost_scaling_factor: 20.0
+        inflation_radius: 0.8
+      voxel_layer:
+        plugin: "nav2_costmap_2d::VoxelLayer"
+        enabled: True
+        publish_voxel_map: True
+        origin_z: 0.0
+        z_resolution: 0.05
+        z_voxels: 16
+        max_obstacle_height: 2.0
+        mark_threshold: 0
+        observation_sources: scan
+        scan:
+          topic: /ad_r1m_13/scan
+          max_obstacle_height: 2.0
+          clearing: True
+          marking: True
+          data_type: "LaserScan"
+          raytrace_max_range: 3.0
+          raytrace_min_range: 0.0
+          obstacle_max_range: 2.5
+          obstacle_min_range: 0.0
+      static_layer:
+        plugin: "nav2_costmap_2d::StaticLayer"
+        map_subscribe_transient_local: True
+        map_topic: map
+      always_send_full_costmap: True
+
+global_costmap:
+  global_costmap:
+    ros__parameters:
+      robot_base_frame: base_link # Will be rewritten: ns/base_link
+      width: 5
+      height: 5
+      origin_x: -2.5
+      origin_y: -2.5
+      update_frequency: 1.0
+      publish_frequency: 1.0
+      global_frame: map
+      use_sim_time: False
+      footprint: "[ [0.30, -0.15], [-0.30, -0.15], [-0.30, 0.15], [0.30, 0.15] ]"
+      resolution: 0.05
+      track_unknown_space: true
+      plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: True
+        observation_sources: scan
+        scan:
+          topic: /ad_r1m_13/scan
+          max_obstacle_height: 2.0
+          clearing: True
+          marking: True
+          data_type: "LaserScan"
+          raytrace_max_range: 3.0
+          raytrace_min_range: 0.3
+          obstacle_max_range: 2.5
+          obstacle_min_range: 0.3
+      static_layer:
+        plugin: "nav2_costmap_2d::StaticLayer"
+        map_subscribe_transient_local: True
+        map_topic: map
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        cost_scaling_factor: 3.0
+        inflation_radius: 0.2
+      always_send_full_costmap: True
+
+#-----------------------------------------------------------------------------
+# Planner and controller parameters
+# https://docs.nav2.org/setup_guides/algorithm/select_algorithm.html
+# Use default Navfn grid based path planning
+#-----------------------------------------------------------------------------
+planner_server:
+  ros__parameters:
+    planner_plugins: ['GridBased']
+    GridBased:
+      plugin: 'nav2_navfn_planner/NavfnPlanner'
+    expected_planner_frequency: 10.0
+
+controller_server:
+  ros__parameters:
+    controller_frequency: 20.0
+    min_x_velocity_threshold: 0.0001
+    min_y_velocity_threshold: 0.1
+    min_theta_velocity_threshold: 0.0001
+    failure_tolerance: 0.3 # seconds for controller plugin to fail before throwing
+
+    odom_topic: "odometry/filtered" # Use filtered odometry from EKF
+    enable_stamped_cmd_vel: false
+
+    controller_plugins: ["FollowPath"]
+    progress_checker_plugin: "progress_checker"
+    goal_checker_plugins: ["general_goal_checker"]
+
+    # Use vector pursuit controller for smoother path execution
+    # Replaces default DWB controller
+    FollowPath:
+      plugin: "vector_pursuit_controller::VectorPursuitController"
+      k: 10.0 # higher k = faster translation, lower k = faster rotation
+      desired_linear_vel: 0.5 # TARGET VELOCITY
+      min_linear_velocity: 0.1
+      min_turning_radius: 0.0
+      max_lateral_accel: 1.0
+      max_linear_accel: 1.0
+
+      use_rotate_to_heading: true
+      rotate_to_heading_angular_vel: 1.0
+      rotate_to_heading_min_angle: 0.1 # ~5.7 degrees
+      max_angular_accel: 1.0
+        
+      allow_reversing: false # Prevent moving backwards when goal is behind
+
+    progress_checker:
+      # Replaces default progress checker nav2_controller::SimpleProgressChecker
+      plugin: "nav2_controller::PoseProgressChecker" 
+
+      # Worst case slowest motion before claiming no progress (we're stuck)
+      required_movement_radius: 0.1
+      required_movement_angle: 0.1  # ~5.7 degrees (addition to SimpleProgressChecker)
+      movement_time_allowance: 3.0
+
+    general_goal_checker:
+      plugin: "nav2_controller::SimpleGoalChecker"
+      stateful: True
+
+      # Get within this much of target to claim success
+      xy_goal_tolerance: 0.10 # 10 cm
+      yaw_goal_tolerance: 0.15 # ~8.6 degrees
+
+#-----------------------------------------------------------------------------
+# Behavior server parameters
+#-----------------------------------------------------------------------------
+behavior_server:
+  ros__parameters:
+    global_frame: odom
+    robot_base_frame: base_link
+    
+    costmap_topic: local_costmap/costmap_raw
+    footprint_topic: local_costmap/published_footprint
+    cycle_frequency: 10.0
+    behavior_plugins: ["spin", "backup", "drive_on_heading", "assisted_teleop", "wait"]
+    spin:
+      plugin: "nav2_behaviors/Spin"
+    backup:
+      plugin: "nav2_behaviors/BackUp"
+      distance: 0.1
+    drive_on_heading:
+      plugin: "nav2_behaviors/DriveOnHeading"
+    wait:
+      plugin: "nav2_behaviors/Wait"
+    assisted_teleop:
+      plugin: "nav2_behaviors/AssistedTeleop"
+    transform_tolerance: 0.2
+    use_sim_time: False
+    simulate_ahead_time: 2.0
+    max_rotational_vel: 1.0
+    min_rotational_vel: 0.3
+    rotational_acc_lim: 1.0
+
+#-----------------------------------------------------------------------------
+# BT Navigator parameters
+#-----------------------------------------------------------------------------
+bt_navigator:
+  ros__parameters:
+    navigators: ['navigate_to_pose']
+      # bt_loop_duration: 100 # 100ms = 10Hz
+    robot_base_frame: base_link
+    odom_topic: odometry/filtered

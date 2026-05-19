@@ -1,0 +1,18 @@
+python3-crsf-parser:
+  ubuntu:
+    '*':
+      pip:
+        packages: [crsf-parser]
+
+python3-gpio:
+  ubuntu:
+    '*':
+      pip:
+        packages: [gpio]
+
+python3-smbus3:
+  ubuntu:
+    '*':
+      pip:
+        packages: [smbus3]
+

@@ -1,0 +1,141 @@
+on:
+  pull_request: # just lint
+    paths:
+      - .github/workflows/debian*
+      - packaging/debian/**
+      - system/**
+      - VERSION
+  push:
+    paths:
+      - .github/workflows/debian*
+      - packaging/debian/**
+      - system/**
+      - VERSION
+    branches:
+      - main    # nightly release
+    tags:
+      - "*.*.*" # main release
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  debian-build:
+    name: 'Debian package build'
+    runs-on: ubuntu-latest
+    container: 'debian:trixie'
+
+    steps:
+    - name: Set up dependencies
+      run: |
+        apt-get update
+        apt-get install -y build-essential devscripts debhelper lintian
+
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+    - run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "41898282+github-actions@users.noreply.github.com"
+
+    - if: github.event_name == 'pull_request'
+      name: Prepare run (PR)
+      shell: bash
+      run: |
+        export VERSION_SUFFIX="~git$(date -u +'%Y%m%d.%H%M').${GITHUB_SHA:0:7}-1"
+        export DEBFULLNAME="$(git config user.name)"
+        export DEBEMAIL="$(git config user.email)"
+        
+        echo "VERSION_SUFFIX=$VERSION_SUFFIX" >> "$GITHUB_ENV"
+        echo "DEBFULLNAME=$DEBFULLNAME" >> "$GITHUB_ENV"
+        echo "DEBEMAIL=$DEBEMAIL" >> "$GITHUB_ENV"
+        echo "BUILD_TYPE=pr" >> "$GITHUB_ENV"
+
+        # Add changelog entry
+        cd packaging/
+        dch -b --newversion "$(cat ../VERSION)$VERSION_SUFFIX" \
+          "Lint CI build from commit $GITHUB_SHA"
+
+    - if: github.event_name == 'push' && !startsWith(github.ref, 'refs/tags/')
+      name: Set variables (Nightly)
+      shell: bash
+      run: |
+        export VERSION_SUFFIX="~git$(date -u +'%Y%m%d.%H%M').${GITHUB_SHA:0:7}-1"
+        export DEBFULLNAME="$(git config user.name)"
+        export DEBEMAIL="$(git config user.email)"
+
+        echo "VERSION_SUFFIX=$VERSION_SUFFIX" >> "$GITHUB_ENV"
+        echo "DEBFULLNAME=$DEBFULLNAME" >> "$GITHUB_ENV"
+        echo "DEBEMAIL=$DEBEMAIL" >> "$GITHUB_ENV"
+        echo "BUILD_TYPE=nightly" >> "$GITHUB_ENV"
+        echo "CLOUDSMITH_COMPONENT=nightly" >> "$GITHUB_ENV"
+
+        # Add changelog entry
+        cd packaging/
+        dch -b --newversion "$(cat ../VERSION)$VERSION_SUFFIX" \
+          "Nightly CI build from commit $GITHUB_SHA"
+
+    - if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+      name: Set variables (Release)
+      shell: bash
+      run: |
+        echo "BUILD_TYPE=release" >> "$GITHUB_ENV"
+        echo "VERSION_SUFFIX=-1" >> "$GITHUB_ENV"
+        echo "CLOUDSMITH_COMPONENT=main" >> "$GITHUB_ENV"
+
+        # No extra changelog entry! Maintainer should have ran dch and committed
+        # the result before tagging!
+
+    - name: Build debian packages
+      shell: bash
+      run: packaging/build_debian.sh
+      
+    - name: Lintian
+      working-directory: packaging/build
+      run: |
+        for pkg in $(ls *.deb *.dsc); do
+          echo "$pkg"
+          lintian "$pkg" | sed \
+            -e 's/^W: /::warning::/g' \
+            -e 's/^E: /::error::/g' \
+            -e 's/^I: /::info::/g'
+        done
+
+    - if: env.BUILD_TYPE == 'nightly' || env.BUILD_TYPE == 'release'
+      name: Upload artifacts
+      uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+      with:
+        name: debian-packages
+        path: |
+          packaging/build/*.deb
+          packaging/build/*.dsc
+          packaging/build/*.orig.tar.gz
+          packaging/build/*.debian.tar.xz
+
+    - if: env.BUILD_TYPE == 'nightly' || env.BUILD_TYPE == 'release'
+      name: Generate Cloudsmith OIDC Token
+      uses: cloudsmith-io/cloudsmith-cli-action@18665afcce9f859312b61989671af9af7402e4fb # v2.0.2
+      with:
+        oidc-namespace: adi
+        oidc-service-slug: ${{ secrets.CLOUDSMITH_USER }}
+    
+    - if: env.BUILD_TYPE == 'nightly' || env.BUILD_TYPE == 'release'
+      name: Upload Debian packages to Cloudsmith
+      working-directory: packaging/build
+      shell: sh
+      run: |
+        echo "Push source packages"
+        for dsc in *.dsc; do
+          echo "Uploading source package $dsc"
+          cloudsmith push deb adi/adrd-common/debian/trixie "$dsc" \
+            --sources-file=$(dcmd --orig "$dsc") \
+            --changes-file=$(dcmd --debtar "$dsc") \
+            --component="${{ env.CLOUDSMITH_COMPONENT }}"
+        done
+      
+        echo "Push binary packages"
+        for deb in *.deb; do
+          echo "Uploading binary package $deb"
+          cloudsmith push deb adi/adrd-common/debian/trixie "$deb" \
+            --component="${{ env.CLOUDSMITH_COMPONENT }}"
+        done

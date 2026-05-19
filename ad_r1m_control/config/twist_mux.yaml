@@ -1,0 +1,20 @@
+/**/twist_mux:
+  ros__parameters:
+    topics:
+      joy:
+        topic: cmd_vel_joy
+        timeout: 0.1
+        priority: 50
+      nav:
+        topic: cmd_vel
+        timeout: 0.1
+        priority: 30
+      keyboard:
+        topic: cmd_vel_keyboard
+        timeout: 0.5
+        priority: 40
+    locks:
+      killswitch:
+        topic: killswitch
+        timeout: 0.0
+        priority: 255
