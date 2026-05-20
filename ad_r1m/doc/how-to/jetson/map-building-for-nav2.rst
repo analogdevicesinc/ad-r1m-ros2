@@ -53,7 +53,6 @@ become clearer, and short-lived or unstable points are suppressed.
     :align: center
     :width: 800px
 
-More information about the **ad_r1m_pointcloud_to_occupancygrid** can be found at:
+More information about the **ad_r1m_pointcloud_to_occupancygrid** package can be found at:
 
-.. todo::
-    ADD LINK TO **ad_r1m_pointcloud_to_occupancygrid** PACKAGE DOCUMENTATION
+- `ad_r1m_pointcloud_to_occupancygrid on GitHub <https://github.com/analogdevicesinc/ad-r1m-ros2/tree/main/ad_r1m_pointcloud_to_occupacygrid>`__

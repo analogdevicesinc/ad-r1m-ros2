@@ -49,25 +49,25 @@ SLAM
 ^^^^
 
 .. image:: figures/do_mapping.gif
-  :width: 30rem
+  :width: 600px
 
 Navigation
 ^^^^^^^^^^
 
 .. image:: figures/navigate.gif
-  :width: 30rem
+  :width: 600px
 
 Multi-robot fleet
 ^^^^^^^^^^^^^^^^^
 
 .. image:: figures/amr_multi_robot.gif
-  :width: 30rem
+  :width: 600px
 
 Nvidia cuVSLAM
 ^^^^^^^^^^^^^^
 
 .. image:: figures/ad_r1m_and_cuvslam_demo.gif
-  :width: 30rem
+  :width: 600px
 
 GMSL Camera integration and image processing
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -76,13 +76,13 @@ Floor segmentation
 ''''''''''''''''''
 
 .. image:: figures/segmentation_result.gif
-  :width: 30rem
+  :width: 600px
 
 Object Detection
 ''''''''''''''''
 
 .. image:: figures/detection_result.gif
-  :width: 30rem
+  :width: 600px
 
 Features
 --------

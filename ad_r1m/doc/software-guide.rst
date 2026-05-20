@@ -23,19 +23,9 @@ Software Downloads
 AD-R1M Software Package
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-.. list-table::
-   :header-rows: 1
-   :widths: 40 20 40
+The AD-R1M ROS 2 packages are available on GitHub:
 
-   * - Package
-     - Version
-     - Download Link
-   * - ADI Kuiper2 SD Card Image
-     - TBD
-     - `Download <https://www.analog.com/kuiper>`__
-   * - AD-R1M ROS 2 Package (public)
-     - TBD
-     - TBD - ``analogdevicesinc/ad-r1m-ros2``
+- `ad-r1m-ros2 <https://github.com/analogdevicesinc/ad-r1m-ros2>`__
 
 Prerequisites
 ~~~~~~~~~~~~~
@@ -62,26 +52,7 @@ Installation
 SD Card Setup
 ~~~~~~~~~~~~~
 
-1. Download the ADI Kuiper2 image from the link above
-2. Extract the image file:
-
-   .. code-block:: bash
-
-      unxz ad-r1m-kuiper2-v1.0.0.img.xz
-
-3. Flash the image to a microSD card (minimum 32GB):
-
-   .. code-block:: bash
-
-      sudo dd if=ad-r1m-kuiper2-v1.0.0.img of=/dev/sdX bs=4M status=progress
-      sync
-
-   .. warning::
-
-      Replace ``/dev/sdX`` with your actual SD card device. Use ``lsblk`` to identify.
-
-4. Insert the SD card into the Raspberry Pi 5
-5. Power on the robot following the :doc:`hardware-guide` power-on procedure
+For instructions on setting up the SD card and installing the AD-R1M system software, see :doc:`how-to/build-from-scratch/setup-rpi`.
 
 .. _first-boot-configuration:
 
@@ -452,10 +423,9 @@ For troubleshooting common issues, see :doc:`how-to/troubleshooting`.
 Detailed Guides
 ---------------
 
-.. toctree::
-   :titlesonly:
+.. seealso::
 
-   tutorial/ros2-getting-started
-   tutorial/ros2-examples
-   explanation/ros2-architecture
+   - :doc:`tutorial/ros2-getting-started` - Getting started with ROS 2 on the AD-R1M
+   - :doc:`tutorial/ros2-examples` - ROS 2 example applications
+   - :doc:`explanation/ros2-architecture` - ROS 2 software architecture
 

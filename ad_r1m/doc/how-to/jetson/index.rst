@@ -30,7 +30,6 @@ Follow the setup guides in order:
 
 .. toctree::
    :titlesonly:
-   :numbered:
 
    agx-orin-setup
    setup-req-pkg-agx-orin
