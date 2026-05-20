@@ -5,9 +5,6 @@ Up to this point, the NVIDIA Docker container has been configured with all requi
 
 The following steps should be run on the AGX Orin platform. Open a new terminal and run the following commands:
 
-.. todo::
-    Remember to add the github link bellow
-
 .. code-block:: bash
     
     cd $ISAAC_ROS_WS

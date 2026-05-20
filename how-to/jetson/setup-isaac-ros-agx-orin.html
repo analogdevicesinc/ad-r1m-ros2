@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="Check the locale settings:" name="description" />
 
-    <title>3. 3) Setup Isaac ROS on AGX Orin &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
+    <title>3) Setup Isaac ROS on AGX Orin &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8e8a900e" />
     <link rel="stylesheet" type="text/css" href="../../_static/app.min.css?v=ac863bf0" />
     <script async="async" src="../../_static/app.umd.js?v=09b0c6bc"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="4. 4) Setup Isaac ROS Visual SLAM" href="setup-isaac-ros-vslam.html" />
-    <link rel="prev" title="2. 2) Setup required packages on AGX Orin" href="setup-req-pkg-agx-orin.html" />
+    <link rel="next" title="4) Setup Isaac ROS Visual SLAM" href="setup-isaac-ros-vslam.html" />
+    <link rel="prev" title="2) Setup required packages on AGX Orin" href="setup-req-pkg-agx-orin.html" />
    
   
   
@@ -91,18 +91,18 @@
         </div>
         <nav>
           <ul>
-<li><a class="reference internal" href="#">3. 3) Setup Isaac ROS on AGX Orin</a><ul>
-<li><a class="reference internal" href="#set-locale">3.1. 3.1) Set locale</a></li>
-<li><a class="reference internal" href="#add-the-universe-repository">3.2. 3.2) Add the <strong>universe</strong> repository</a></li>
-<li><a class="reference internal" href="#setup-ros2-source">3.3. 3.3) Setup ROS2 source</a></li>
-<li><a class="reference internal" href="#install-ros2-packages">3.4. 3.4) Install ROS2 packages</a></li>
-<li><a class="reference internal" href="#check-apt-sources-list">3.5. 3.5) Check apt sources list</a></li>
-<li><a class="reference internal" href="#configure-nvidia-container-toolkit">3.6. 3.6) Configure <strong>nvidia-container-toolkit</strong></a></li>
-<li><a class="reference internal" href="#install-large-file-storage-for-git">3.7. 3.7) Install Large File Storage for <strong>git</strong></a></li>
-<li><a class="reference internal" href="#create-a-isaac-ros-workspace">3.8. 3.8) Create a Isaac ROS workspace</a></li>
-<li><a class="reference internal" href="#setup-the-isaac-ros-workspace">3.9. 3.9) Setup the Isaac ROS workspace</a></li>
-<li><a class="reference internal" href="#build-the-isaac-ros-workspace">3.10. 3.10) Build the Isaac ROS workspace</a></li>
-<li><a class="reference internal" href="#cleanup">3.11. 3.11) Cleanup</a></li>
+<li><a class="reference internal" href="#">3) Setup Isaac ROS on AGX Orin</a><ul>
+<li><a class="reference internal" href="#set-locale">3.1) Set locale</a></li>
+<li><a class="reference internal" href="#add-the-universe-repository">3.2) Add the <strong>universe</strong> repository</a></li>
+<li><a class="reference internal" href="#setup-ros2-source">3.3) Setup ROS2 source</a></li>
+<li><a class="reference internal" href="#install-ros2-packages">3.4) Install ROS2 packages</a></li>
+<li><a class="reference internal" href="#check-apt-sources-list">3.5) Check apt sources list</a></li>
+<li><a class="reference internal" href="#configure-nvidia-container-toolkit">3.6) Configure <strong>nvidia-container-toolkit</strong></a></li>
+<li><a class="reference internal" href="#install-large-file-storage-for-git">3.7) Install Large File Storage for <strong>git</strong></a></li>
+<li><a class="reference internal" href="#create-a-isaac-ros-workspace">3.8) Create a Isaac ROS workspace</a></li>
+<li><a class="reference internal" href="#setup-the-isaac-ros-workspace">3.9) Setup the Isaac ROS workspace</a></li>
+<li><a class="reference internal" href="#build-the-isaac-ros-workspace">3.10) Build the Isaac ROS workspace</a></li>
+<li><a class="reference internal" href="#cleanup">3.11) Cleanup</a></li>
 </ul>
 </li>
 </ul>
@@ -131,6 +131,8 @@ Content on this topic
   <ul class="current">
 <li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-1" id="toctree-collapse-1"/><div class="collapse"><a class="reference internal" href="../../tutorial/index.html">Tutorials</a><label for="toctree-collapse-1"><div class="icon"></div></label></div><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/getting-started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/system-setup.html">System setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../software-guide.html">Software guide</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/manage-configurations.html">Manage runtime configurations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/ros2-writing-your-own-nodes.html">Write your own ROS 2 nodes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/ros2-examples.html">AD-R1M ROS2 Examples</a></li>
@@ -144,16 +146,16 @@ Content on this topic
 </ul>
 </li>
 <li class="toctree-l2 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2" checked=""/><div class="collapse"><a class="reference internal" href="index.html">Set up Nvidia Jetson AGX Orin</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="agx-orin-setup.html">1. 1) Linux installation on Jetson AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="setup-req-pkg-agx-orin.html">2. 2) Setup required packages on AGX Orin</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">3. 3) Setup Isaac ROS on AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="setup-isaac-ros-vslam.html">4. 4) Setup Isaac ROS Visual SLAM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="vslam-setup-and-usage.html">5. 5) VSLAM and RealSense setup and usage on AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-jetson-orin-hardware-setup.html">6. 6) AD-R1M and Jetson AGX Orin: hardware setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-cuvslam-setup.html">7. 7) AD-R1M and cuVSLAM setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-and-nvidia-cuvslam.html">8. 8) Launching AD-R1M and NVIDIA cuVSLAM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="map-building-for-nav2.html">9. 9) Map building for NAV2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-realsense-gazebo.html">10. 10) AD-R1M Gazebo simulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="agx-orin-setup.html">1) Linux installation on Jetson AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup-req-pkg-agx-orin.html">2) Setup required packages on AGX Orin</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">3) Setup Isaac ROS on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup-isaac-ros-vslam.html">4) Setup Isaac ROS Visual SLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vslam-setup-and-usage.html">5) VSLAM and RealSense setup and usage on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and Jetson AGX Orin: hardware setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-cuvslam-setup.html">7) AD-R1M and cuVSLAM setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA cuVSLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="map-building-for-nav2.html">9) Map building for NAV2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-realsense-gazebo.html">10) AD-R1M Gazebo simulation</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../use-cases.html">AD-R1M use-cases</a></li>
@@ -185,9 +187,9 @@ Content on this topic
           <div class="body" role="main">
             
   <section id="setup-isaac-ros-on-agx-orin">
-<h1><span class="section-number">3. </span>3) Setup Isaac ROS on AGX Orin<a class="headerlink" href="#setup-isaac-ros-on-agx-orin" title="Link to this heading"></a></h1>
+<h1>3) Setup Isaac ROS on AGX Orin<a class="headerlink" href="#setup-isaac-ros-on-agx-orin" title="Link to this heading"></a></h1>
 <section id="set-locale">
-<h2><span class="section-number">3.1. </span>3.1) Set locale<a class="headerlink" href="#set-locale" title="Link to this heading"></a></h2>
+<h2>3.1) Set locale<a class="headerlink" href="#set-locale" title="Link to this heading"></a></h2>
 <p>Check the locale settings:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>locale
 </pre></div>
@@ -202,13 +204,13 @@ sudo<span class="w"> </span>update-locale<span class="w"> </span><span class="nv
 </div>
 </section>
 <section id="add-the-universe-repository">
-<h2><span class="section-number">3.2. </span>3.2) Add the <strong>universe</strong> repository<a class="headerlink" href="#add-the-universe-repository" title="Link to this heading"></a></h2>
+<h2>3.2) Add the <strong>universe</strong> repository<a class="headerlink" href="#add-the-universe-repository" title="Link to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>add-apt-repository<span class="w"> </span>universe
 </pre></div>
 </div>
 </section>
 <section id="setup-ros2-source">
-<h2><span class="section-number">3.3. </span>3.3) Setup ROS2 source<a class="headerlink" href="#setup-ros2-source" title="Link to this heading"></a></h2>
+<h2>3.3) Setup ROS2 source<a class="headerlink" href="#setup-ros2-source" title="Link to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>wget<span class="w"> </span>-qO<span class="w"> </span>-<span class="w"> </span>https://isaac.download.nvidia.com/isaac-ros/repos.key<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>apt-key<span class="w"> </span>add<span class="w"> </span>-
 grep<span class="w"> </span>-qxF<span class="w"> </span><span class="s2">&quot;deb https://isaac.download.nvidia.com/isaac-ros/release-3 </span><span class="k">$(</span>lsb_release<span class="w"> </span>-cs<span class="k">)</span><span class="s2"> release-3.0&quot;</span><span class="w"> </span>/etc/apt/sources.list<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="se">\</span>
 <span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;deb https://isaac.download.nvidia.com/isaac-ros/release-3 </span><span class="k">$(</span>lsb_release<span class="w"> </span>-cs<span class="k">)</span><span class="s2"> release-3.0&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>-a<span class="w"> </span>/etc/apt/sources.list
@@ -219,7 +221,7 @@ sudo<span class="w"> </span>curl<span class="w"> </span>-sSL<span class="w"> </s
 </div>
 </section>
 <section id="install-ros2-packages">
-<h2><span class="section-number">3.4. </span>3.4) Install ROS2 packages<a class="headerlink" href="#install-ros2-packages" title="Link to this heading"></a></h2>
+<h2>3.4) Install ROS2 packages<a class="headerlink" href="#install-ros2-packages" title="Link to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>update
 sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-humble-desktop-full
 sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-dev-tools
@@ -238,7 +240,7 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 </div>
 </section>
 <section id="check-apt-sources-list">
-<h2><span class="section-number">3.5. </span>3.5) Check apt sources list<a class="headerlink" href="#check-apt-sources-list" title="Link to this heading"></a></h2>
+<h2>3.5) Check apt sources list<a class="headerlink" href="#check-apt-sources-list" title="Link to this heading"></a></h2>
 <p>If the steps given in these sections are run multiple times, it may happen to have at the end of  /etc/apt/sources.list  the next two lines</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>deb<span class="w"> </span>https://isaac.download.nvidia.com/isaac-ros/release-3<span class="w"> </span>jammy<span class="w"> </span>universe<span class="w"> </span>release-3.0
 deb<span class="w"> </span>https://isaac.download.nvidia.com/isaac-ros/release-3<span class="w"> </span>jammy<span class="w"> </span>release-3.0
@@ -250,7 +252,7 @@ deb<span class="w"> </span>https://isaac.download.nvidia.com/isaac-ros/release-3
 </div>
 </section>
 <section id="configure-nvidia-container-toolkit">
-<h2><span class="section-number">3.6. </span>3.6) Configure <strong>nvidia-container-toolkit</strong><a class="headerlink" href="#configure-nvidia-container-toolkit" title="Link to this heading"></a></h2>
+<h2>3.6) Configure <strong>nvidia-container-toolkit</strong><a class="headerlink" href="#configure-nvidia-container-toolkit" title="Link to this heading"></a></h2>
 <p>Verify that nvidia-container-toolkit has been installed:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>nvidia-container-toolkit<span class="w"> </span>-version
 </pre></div>
@@ -276,14 +278,14 @@ sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class=
 </div>
 </section>
 <section id="install-large-file-storage-for-git">
-<h2><span class="section-number">3.7. </span>3.7) Install Large File Storage for <strong>git</strong><a class="headerlink" href="#install-large-file-storage-for-git" title="Link to this heading"></a></h2>
+<h2>3.7) Install Large File Storage for <strong>git</strong><a class="headerlink" href="#install-large-file-storage-for-git" title="Link to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>git-lfs
 git<span class="w"> </span>lfs<span class="w"> </span>install<span class="w"> </span>--skip-repo
 </pre></div>
 </div>
 </section>
 <section id="create-a-isaac-ros-workspace">
-<h2><span class="section-number">3.8. </span>3.8) Create a Isaac ROS workspace<a class="headerlink" href="#create-a-isaac-ros-workspace" title="Link to this heading"></a></h2>
+<h2>3.8) Create a Isaac ROS workspace<a class="headerlink" href="#create-a-isaac-ros-workspace" title="Link to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>-p<span class="w">  </span>~/workspaces/isaac_ros-dev/src
 <span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;export ISAAC_ROS_WS=</span><span class="si">${</span><span class="nv">HOME</span><span class="si">}</span><span class="s2">/workspaces/isaac_ros-dev/&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
 <span class="nb">source</span><span class="w"> </span>~/.bashrc
@@ -291,7 +293,7 @@ git<span class="w"> </span>lfs<span class="w"> </span>install<span class="w"> </
 </div>
 </section>
 <section id="setup-the-isaac-ros-workspace">
-<h2><span class="section-number">3.9. </span>3.9) Setup the Isaac ROS workspace<a class="headerlink" href="#setup-the-isaac-ros-workspace" title="Link to this heading"></a></h2>
+<h2>3.9) Setup the Isaac ROS workspace<a class="headerlink" href="#setup-the-isaac-ros-workspace" title="Link to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span><span class="nv">$ISAAC_ROS_WS</span>
 git<span class="w"> </span>clone<span class="w"> </span>https://github.com/isaac-sim/IsaacSim-ros_workspaces.git
 </pre></div>
@@ -372,7 +374,7 @@ Summary:<span class="w"> </span><span class="m">10</span><span class="w"> </span
 </div>
 </section>
 <section id="build-the-isaac-ros-workspace">
-<h2><span class="section-number">3.10. </span>3.10) Build the Isaac ROS workspace<a class="headerlink" href="#build-the-isaac-ros-workspace" title="Link to this heading"></a></h2>
+<h2>3.10) Build the Isaac ROS workspace<a class="headerlink" href="#build-the-isaac-ros-workspace" title="Link to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>/opt/ros/humble/setup.bash
 <span class="nb">cd</span><span class="w"> </span><span class="nv">$ISAAC_ROS_WS</span>
 <span class="nb">cd</span><span class="w"> </span>IsaacSim-ros_workspaces/humble_ws
@@ -381,7 +383,7 @@ colcon<span class="w"> </span>build
 </div>
 </section>
 <section id="cleanup">
-<h2><span class="section-number">3.11. </span>3.11) Cleanup<a class="headerlink" href="#cleanup" title="Link to this heading"></a></h2>
+<h2>3.11) Cleanup<a class="headerlink" href="#cleanup" title="Link to this heading"></a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>It is recommended to use <strong>colcon clean</strong> command to clean workspace/packages. Manually deleting generated ROS folders - such as builds, installs, and logs - may break dependencies!</p>
@@ -397,8 +399,8 @@ colcon<span class="w"> </span>clean<span class="w"> </span>packages
           </div>
               <div class="related">
                 &nbsp;
-    <a href="setup-req-pkg-agx-orin.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev"><span class="section-number">2. </span>2) Setup required packages on AGX Orin</a>
-    <a href="setup-isaac-ros-vslam.html" title="Next document (Alt+Shift+RightArrow)" class="next"><span class="section-number">4. </span>4) Setup Isaac ROS Visual SLAM</a>
+    <a href="setup-req-pkg-agx-orin.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev">2) Setup required packages on AGX Orin</a>
+    <a href="setup-isaac-ros-vslam.html" title="Next document (Alt+Shift+RightArrow)" class="next">4) Setup Isaac ROS Visual SLAM</a>
               </div>
           
         </div>

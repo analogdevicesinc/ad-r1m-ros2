@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="This step is required only if camera is of RealSense type. It should not be run for other types of cameras." name="description" />
 
-    <title>4. 4) Setup Isaac ROS Visual SLAM &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
+    <title>4) Setup Isaac ROS Visual SLAM &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8e8a900e" />
     <link rel="stylesheet" type="text/css" href="../../_static/app.min.css?v=ac863bf0" />
     <script async="async" src="../../_static/app.umd.js?v=09b0c6bc"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="5. 5) VSLAM and RealSense setup and usage on AGX Orin" href="vslam-setup-and-usage.html" />
-    <link rel="prev" title="3. 3) Setup Isaac ROS on AGX Orin" href="setup-isaac-ros-agx-orin.html" />
+    <link rel="next" title="5) VSLAM and RealSense setup and usage on AGX Orin" href="vslam-setup-and-usage.html" />
+    <link rel="prev" title="3) Setup Isaac ROS on AGX Orin" href="setup-isaac-ros-agx-orin.html" />
    
   
   
@@ -91,10 +91,10 @@
         </div>
         <nav>
           <ul>
-<li><a class="reference internal" href="#">4. 4) Setup Isaac ROS Visual SLAM</a><ul>
-<li><a class="reference internal" href="#clone-isaac-ros-common">4.1. 4.1) Clone <strong>isaac_ros_common</strong></a></li>
-<li><a class="reference internal" href="#download-quickstart-data-from-ngc-nvidia-gpu-cloud">4.2. 4.2) Download quickstart data from NGC (Nvidia GPU Cloud)</a></li>
-<li><a class="reference internal" href="#build-isaac-ros-visual-slam">4.3. 4.3) Build <strong>isaac_ros_visual_slam</strong></a></li>
+<li><a class="reference internal" href="#">4) Setup Isaac ROS Visual SLAM</a><ul>
+<li><a class="reference internal" href="#clone-isaac-ros-common">4.1) Clone <strong>isaac_ros_common</strong></a></li>
+<li><a class="reference internal" href="#download-quickstart-data-from-ngc-nvidia-gpu-cloud">4.2) Download quickstart data from NGC (Nvidia GPU Cloud)</a></li>
+<li><a class="reference internal" href="#build-isaac-ros-visual-slam">4.3) Build <strong>isaac_ros_visual_slam</strong></a></li>
 </ul>
 </li>
 </ul>
@@ -123,6 +123,8 @@ Content on this topic
   <ul class="current">
 <li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-1" id="toctree-collapse-1"/><div class="collapse"><a class="reference internal" href="../../tutorial/index.html">Tutorials</a><label for="toctree-collapse-1"><div class="icon"></div></label></div><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/getting-started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/system-setup.html">System setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../software-guide.html">Software guide</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/manage-configurations.html">Manage runtime configurations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/ros2-writing-your-own-nodes.html">Write your own ROS 2 nodes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/ros2-examples.html">AD-R1M ROS2 Examples</a></li>
@@ -136,16 +138,16 @@ Content on this topic
 </ul>
 </li>
 <li class="toctree-l2 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2" checked=""/><div class="collapse"><a class="reference internal" href="index.html">Set up Nvidia Jetson AGX Orin</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="agx-orin-setup.html">1. 1) Linux installation on Jetson AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="setup-req-pkg-agx-orin.html">2. 2) Setup required packages on AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="setup-isaac-ros-agx-orin.html">3. 3) Setup Isaac ROS on AGX Orin</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">4. 4) Setup Isaac ROS Visual SLAM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="vslam-setup-and-usage.html">5. 5) VSLAM and RealSense setup and usage on AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-jetson-orin-hardware-setup.html">6. 6) AD-R1M and Jetson AGX Orin: hardware setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-cuvslam-setup.html">7. 7) AD-R1M and cuVSLAM setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-and-nvidia-cuvslam.html">8. 8) Launching AD-R1M and NVIDIA cuVSLAM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="map-building-for-nav2.html">9. 9) Map building for NAV2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-realsense-gazebo.html">10. 10) AD-R1M Gazebo simulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="agx-orin-setup.html">1) Linux installation on Jetson AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup-req-pkg-agx-orin.html">2) Setup required packages on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup-isaac-ros-agx-orin.html">3) Setup Isaac ROS on AGX Orin</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">4) Setup Isaac ROS Visual SLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vslam-setup-and-usage.html">5) VSLAM and RealSense setup and usage on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and Jetson AGX Orin: hardware setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-cuvslam-setup.html">7) AD-R1M and cuVSLAM setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA cuVSLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="map-building-for-nav2.html">9) Map building for NAV2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-realsense-gazebo.html">10) AD-R1M Gazebo simulation</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../use-cases.html">AD-R1M use-cases</a></li>
@@ -177,9 +179,9 @@ Content on this topic
           <div class="body" role="main">
             
   <section id="setup-isaac-ros-visual-slam">
-<h1><span class="section-number">4. </span>4) Setup Isaac ROS Visual SLAM<a class="headerlink" href="#setup-isaac-ros-visual-slam" title="Link to this heading"></a></h1>
+<h1>4) Setup Isaac ROS Visual SLAM<a class="headerlink" href="#setup-isaac-ros-visual-slam" title="Link to this heading"></a></h1>
 <section id="clone-isaac-ros-common">
-<h2><span class="section-number">4.1. </span>4.1) Clone <strong>isaac_ros_common</strong><a class="headerlink" href="#clone-isaac-ros-common" title="Link to this heading"></a></h2>
+<h2>4.1) Clone <strong>isaac_ros_common</strong><a class="headerlink" href="#clone-isaac-ros-common" title="Link to this heading"></a></h2>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>This step is required only if camera is of RealSense type.
@@ -197,7 +199,7 @@ touch<span class="w"> </span>.isaac_ros_common-config
 </div>
 </section>
 <section id="download-quickstart-data-from-ngc-nvidia-gpu-cloud">
-<h2><span class="section-number">4.2. </span>4.2) Download quickstart data from NGC (Nvidia GPU Cloud)<a class="headerlink" href="#download-quickstart-data-from-ngc-nvidia-gpu-cloud" title="Link to this heading"></a></h2>
+<h2>4.2) Download quickstart data from NGC (Nvidia GPU Cloud)<a class="headerlink" href="#download-quickstart-data-from-ngc-nvidia-gpu-cloud" title="Link to this heading"></a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>curl<span class="w"> </span>jq<span class="w"> </span>tar
 </pre></div>
 </div>
@@ -237,7 +239,7 @@ touch<span class="w"> </span>.isaac_ros_common-config
 </div>
 </section>
 <section id="build-isaac-ros-visual-slam">
-<h2><span class="section-number">4.3. </span>4.3) Build <strong>isaac_ros_visual_slam</strong><a class="headerlink" href="#build-isaac-ros-visual-slam" title="Link to this heading"></a></h2>
+<h2>4.3) Build <strong>isaac_ros_visual_slam</strong><a class="headerlink" href="#build-isaac-ros-visual-slam" title="Link to this heading"></a></h2>
 <p><strong>Check the CDI (Container Device Interface)</strong></p>
 <p>List the content of CDI:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>nvidia-ctk<span class="w"> </span>cdi<span class="w"> </span>list
@@ -318,8 +320,8 @@ colcon<span class="w"> </span>build
           </div>
               <div class="related">
                 &nbsp;
-    <a href="setup-isaac-ros-agx-orin.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev"><span class="section-number">3. </span>3) Setup Isaac ROS on AGX Orin</a>
-    <a href="vslam-setup-and-usage.html" title="Next document (Alt+Shift+RightArrow)" class="next"><span class="section-number">5. </span>5) VSLAM and RealSense setup and usage on AGX Orin</a>
+    <a href="setup-isaac-ros-agx-orin.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev">3) Setup Isaac ROS on AGX Orin</a>
+    <a href="vslam-setup-and-usage.html" title="Next document (Alt+Shift+RightArrow)" class="next">5) VSLAM and RealSense setup and usage on AGX Orin</a>
               </div>
           
         </div>

@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="Connect the camera to any USB-A connector on the AGX Orin (USB-A 3.2 are recommended)." name="description" />
 
-    <title>5. 5) VSLAM and RealSense setup and usage on AGX Orin &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
+    <title>5) VSLAM and RealSense setup and usage on AGX Orin &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8e8a900e" />
     <link rel="stylesheet" type="text/css" href="../../_static/app.min.css?v=ac863bf0" />
     <script async="async" src="../../_static/app.umd.js?v=09b0c6bc"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="6. 6) AD-R1M and Jetson AGX Orin: hardware setup" href="ad-r1m-jetson-orin-hardware-setup.html" />
-    <link rel="prev" title="4. 4) Setup Isaac ROS Visual SLAM" href="setup-isaac-ros-vslam.html" />
+    <link rel="next" title="6) AD-R1M and Jetson AGX Orin: hardware setup" href="ad-r1m-jetson-orin-hardware-setup.html" />
+    <link rel="prev" title="4) Setup Isaac ROS Visual SLAM" href="setup-isaac-ros-vslam.html" />
    
   
   
@@ -91,8 +91,8 @@
         </div>
         <nav>
           <ul>
-<li><a class="reference internal" href="#">5. 5) VSLAM and RealSense setup and usage on AGX Orin</a><ul>
-<li><a class="reference internal" href="#intel-realsense-cameras">5.1. 5.1) Intel RealSense cameras</a></li>
+<li><a class="reference internal" href="#">5) VSLAM and RealSense setup and usage on AGX Orin</a><ul>
+<li><a class="reference internal" href="#intel-realsense-cameras">5.1) Intel RealSense cameras</a></li>
 </ul>
 </li>
 </ul>
@@ -121,6 +121,8 @@ Content on this topic
   <ul class="current">
 <li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-1" id="toctree-collapse-1"/><div class="collapse"><a class="reference internal" href="../../tutorial/index.html">Tutorials</a><label for="toctree-collapse-1"><div class="icon"></div></label></div><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/getting-started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/system-setup.html">System setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../software-guide.html">Software guide</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/manage-configurations.html">Manage runtime configurations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/ros2-writing-your-own-nodes.html">Write your own ROS 2 nodes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../tutorial/ros2-examples.html">AD-R1M ROS2 Examples</a></li>
@@ -134,16 +136,16 @@ Content on this topic
 </ul>
 </li>
 <li class="toctree-l2 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2" checked=""/><div class="collapse"><a class="reference internal" href="index.html">Set up Nvidia Jetson AGX Orin</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="agx-orin-setup.html">1. 1) Linux installation on Jetson AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="setup-req-pkg-agx-orin.html">2. 2) Setup required packages on AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="setup-isaac-ros-agx-orin.html">3. 3) Setup Isaac ROS on AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="setup-isaac-ros-vslam.html">4. 4) Setup Isaac ROS Visual SLAM</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">5. 5) VSLAM and RealSense setup and usage on AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-jetson-orin-hardware-setup.html">6. 6) AD-R1M and Jetson AGX Orin: hardware setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-cuvslam-setup.html">7. 7) AD-R1M and cuVSLAM setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-and-nvidia-cuvslam.html">8. 8) Launching AD-R1M and NVIDIA cuVSLAM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="map-building-for-nav2.html">9. 9) Map building for NAV2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-realsense-gazebo.html">10. 10) AD-R1M Gazebo simulation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="agx-orin-setup.html">1) Linux installation on Jetson AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup-req-pkg-agx-orin.html">2) Setup required packages on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup-isaac-ros-agx-orin.html">3) Setup Isaac ROS on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup-isaac-ros-vslam.html">4) Setup Isaac ROS Visual SLAM</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">5) VSLAM and RealSense setup and usage on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and Jetson AGX Orin: hardware setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-cuvslam-setup.html">7) AD-R1M and cuVSLAM setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA cuVSLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="map-building-for-nav2.html">9) Map building for NAV2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-realsense-gazebo.html">10) AD-R1M Gazebo simulation</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../use-cases.html">AD-R1M use-cases</a></li>
@@ -175,10 +177,10 @@ Content on this topic
           <div class="body" role="main">
             
   <section id="vslam-and-realsense-setup-and-usage-on-agx-orin">
-<h1><span class="section-number">5. </span>5) VSLAM and RealSense setup and usage on AGX Orin<a class="headerlink" href="#vslam-and-realsense-setup-and-usage-on-agx-orin" title="Link to this heading"></a></h1>
+<h1>5) VSLAM and RealSense setup and usage on AGX Orin<a class="headerlink" href="#vslam-and-realsense-setup-and-usage-on-agx-orin" title="Link to this heading"></a></h1>
 <p>Connect the camera to any USB-A connector on the AGX Orin (USB-A 3.2 are recommended).</p>
 <section id="intel-realsense-cameras">
-<h2><span class="section-number">5.1. </span>5.1) Intel RealSense cameras<a class="headerlink" href="#intel-realsense-cameras" title="Link to this heading"></a></h2>
+<h2>5.1) Intel RealSense cameras<a class="headerlink" href="#intel-realsense-cameras" title="Link to this heading"></a></h2>
 <p><strong>Check how the camera is detected</strong></p>
 <p>List only the USB devices with VID <strong>0x8086</strong> (Intel).</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>lsusb<span class="w"> </span>-d<span class="w"> </span><span class="m">8086</span>:
@@ -363,8 +365,8 @@ rviz2<span class="w"> </span>-d<span class="w"> </span><span class="k">$(</span>
           </div>
               <div class="related">
                 &nbsp;
-    <a href="setup-isaac-ros-vslam.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev"><span class="section-number">4. </span>4) Setup Isaac ROS Visual SLAM</a>
-    <a href="ad-r1m-jetson-orin-hardware-setup.html" title="Next document (Alt+Shift+RightArrow)" class="next"><span class="section-number">6. </span>6) AD-R1M and Jetson AGX Orin: hardware setup</a>
+    <a href="setup-isaac-ros-vslam.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev">4) Setup Isaac ROS Visual SLAM</a>
+    <a href="ad-r1m-jetson-orin-hardware-setup.html" title="Next document (Alt+Shift+RightArrow)" class="next">6) AD-R1M and Jetson AGX Orin: hardware setup</a>
               </div>
           
         </div>
