@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="The AD-R1M Open Mobile Robot Platform Reference Design is a modular, extensible, and fully open-source framework developed to accelerate the design, prototyping, and deployment of autonomous mobile robots." name="description" />
+
+    <title>AD-R1M Robot Platform &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="_static/app.min.css?v=ac863bf0" />
+    <script async="async" src="_static/app.umd.js?v=09b0c6bc"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tutorials" href="tutorial/index.html" />
+   
+  
+  
+  <meta name="repository" content="ad-r1m-ros2">
+  <meta name="version" content="1/merge">
+  
+    <meta name="page_source_suffix" content=".rst">
+  
+  
+  
+
+
+<style>
+  body {
+    
+  }
+
+  body.dark {
+    
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body:not(.light) {
+      
+    }
+  }
+</style>
+  </head>
+  
+    <body>
+  
+  <input type="checkbox" id="input-show-toc">
+  <input type="checkbox" id="input-show-localtoc">
+  <input type="checkbox" id="input-show-repotoc">
+
+  
+  <div class="search-area">
+    <form action="" method="get">
+      <input type="text" name="q" aria-labelledby="search-documentation" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" role="search" placeholder="Search"/>
+      <button class="icon"></button>
+    </form>
+  </div>
+  
+
+  <header>
+    <div id="left">
+      <label id="show-sidebar" class="icon" for="input-show-toc" title="Show/hide index"></label>
+    </div>
+    <div id="right">
+      <span>
+        <a id="logo-org" href="https://analog.com" aria-label="Analog Devices Inc. landing page"></a>
+        <div class="vertical-divider"></div>
+        
+        <label id="show-repotoc" for="input-show-repotoc" title="Show/hide docs">Docs</label>
+        
+        <a id="logo" href="#">
+          <div>AD-R1M Robot Platform</div>
+        </a>
+      </span>
+      <span class="reverse">
+        <label id="show-localtoc" class="icon" for="input-show-localtoc" title="Show/hide contents"></label>
+      </span>
+    </div>
+  </header>
+
+
+  <div class="repotoc-tree overlay">
+    <root/>
+
+  </div>
+    <div class="localtoc">
+      <div class="tocwrapper">
+        <div class="header localtoc-header">
+          <a id="scroll-up" href="#top-anchor" title="Back to top"></a>
+        </div>
+        <nav>
+          <ul>
+<li><a class="reference internal" href="#">AD-R1M Robot Platform</a><ul>
+<li><a class="reference internal" href="#in-this-documentation">In this documentation</a></li>
+<li><a class="reference internal" href="#applications-showcase">Applications showcase</a><ul>
+<li><a class="reference internal" href="#slam">SLAM</a></li>
+<li><a class="reference internal" href="#navigation">Navigation</a></li>
+<li><a class="reference internal" href="#multi-robot-fleet">Multi-robot fleet</a></li>
+<li><a class="reference internal" href="#nvidia-cuvslam">Nvidia cuVSLAM</a></li>
+<li><a class="reference internal" href="#gmsl-camera-integration-and-image-processing">GMSL Camera integration and image processing</a><ul>
+<li><a class="reference internal" href="#floor-segmentation">Floor segmentation</a></li>
+<li><a class="reference internal" href="#object-detection">Object Detection</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#features">Features</a></li>
+<li><a class="reference internal" href="#components">Components</a></li>
+<li><a class="reference internal" href="#applications">Applications</a></li>
+<li><a class="reference internal" href="#system-architecture">System Architecture</a></li>
+<li><a class="reference internal" href="#repository">Repository</a></li>
+<li><a class="reference internal" href="#help-and-support">Help and Support</a></li>
+</ul>
+</li>
+</ul>
+
+        </nav>
+      </div>
+    </div>
+
+  
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+    <a id="no-logo" href="#">
+      AD-R1M Robot Platform
+    </a><input id="input-switch-toc" type="checkbox">
+<label id="show-repotoc" for="input-switch-toc">
+All content
+</label>
+<label id="show-toc" for="input-switch-toc">
+Content on this topic
+</label>
+<div class="repotoc-tree">
+  <root/>
+
+</div>
+<div class="toc-tree">
+  <ul>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-1" id="toctree-collapse-1"/><div class="collapse"><a class="reference internal" href="tutorial/index.html">Tutorials</a><label for="toctree-collapse-1"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/getting-started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/system-setup.html">System setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-guide.html">Software guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/manage-configurations.html">Manage runtime configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/ros2-writing-your-own-nodes.html">Write your own ROS 2 nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/ros2-examples.html">AD-R1M ROS2 Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/ros2-getting-started.html">AD-R1M ROS 2 Getting Started</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2" id="toctree-collapse-2"/><div class="collapse"><a class="reference internal" href="how-to/index.html">How-to guides</a><label for="toctree-collapse-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-1" id="toctree-collapse-2-1"/><div class="collapse"><a class="reference internal" href="how-to/build-from-scratch/index.html">Build an AD-R1M from scratch</a><label for="toctree-collapse-2-1"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="how-to/build-from-scratch/assemble-hardware.html">1. Assemble the hardware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/build-from-scratch/setup-rpi.html">2. Set up the internal computer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2"/><div class="collapse"><a class="reference internal" href="how-to/jetson/index.html">Set up Nvidia Jetson AGX Orin</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/agx-orin-setup.html">1) Linux installation on Jetson AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/setup-req-pkg-agx-orin.html">2) Setup required packages on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/setup-isaac-ros-agx-orin.html">3) Setup Isaac ROS on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/setup-isaac-ros-vslam.html">4) Setup Isaac ROS Visual SLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/vslam-setup-and-usage.html">5) VSLAM and RealSense setup and usage on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and Jetson AGX Orin: hardware setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/ad-r1m-cuvslam-setup.html">7) AD-R1M and cuVSLAM setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA cuVSLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/map-building-for-nav2.html">9) Map building for NAV2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/ad-r1m-realsense-gazebo.html">10) AD-R1M Gazebo simulation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="how-to/use-cases.html">AD-R1M use-cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="how-to/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-3" id="toctree-collapse-3"/><div class="collapse"><a class="reference internal" href="reference/index.html">Reference</a><label for="toctree-collapse-3"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/specs.html">AD-R1M Specifications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-4" id="toctree-collapse-4"/><div class="collapse"><a class="reference internal" href="explanation/index.html">Explanation</a><label for="toctree-collapse-4"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="explanation/ros2-architecture.html">AD-R1M ROS2 Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="explanation/software-system-architecture.html">AD-R1M software system architecture</a></li>
+</ul>
+</li>
+</ul>
+
+
+</div>
+        </div>
+      </div>
+
+  <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper" id="top-anchor">
+          <div class="body-header">
+  <nav class="breadcrumb empty"><ol></ol></nav>
+</div>
+          <div class="body" role="main">
+            
+  <section id="ad-r1m-robot-platform">
+<h1>AD-R1M Robot Platform<a class="headerlink" href="#ad-r1m-robot-platform" title="Link to this heading"></a></h1>
+<figure class="align-right" id="id1">
+<img alt="AD-R1M Robot Platform" src="_images/ad-r1m.png" />
+<figcaption>
+<p><span class="caption-text">AD-R1M Open Mobile Robot Platform</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The AD-R1M Open Mobile Robot Platform Reference Design is a modular, extensible, and fully open-source framework developed to accelerate the design, prototyping, and deployment of autonomous mobile robots.</p>
+<p>This reference design integrates key hardware and software components, including motor control, sensor fusion, localization, navigation, and communication, into a cohesive platform that supports rapid development and experimentation.</p>
+<p>Whether you’re building a research prototype, an educational robot, or a commercial-grade autonomous system, this platform provides the flexibility and scalability needed to meet diverse application requirements. It is designed to be compatible with popular development tools, middleware (such as ROS 2), and embedded systems, making it ideal for both academic and industrial use.</p>
+<section id="in-this-documentation">
+<h2>In this documentation<a class="headerlink" href="#in-this-documentation" title="Link to this heading"></a></h2>
+<div class="grid grid-repeat" style="grid-template-columns: repeat(auto-fit, minmax(29.0em, 1fr));"><div class="card link"><p class="header">Tutorials</p>
+<p><strong>Get started</strong> with hands-on introductions for the AD-R1M</p>
+<span class="link-overlay"><a class="icon link reference internal" href="tutorial/index.html#tutorials"><span class="std std-ref">Read more</span></a></span></div><div class="card link"><p class="header">How-to guides</p>
+<p><strong>Step-by-step guides</strong> covering key operations and common tasks</p>
+<span class="link-overlay"><a class="icon link reference internal" href="how-to/index.html#how-to-guides"><span class="std std-ref">Read more</span></a></span></div><div class="card link"><p class="header">Explanation</p>
+<p><strong>Discussion and clarification</strong> of key topics</p>
+<span class="link-overlay"><a class="icon link reference internal" href="explanation/index.html#explanation"><span class="std std-ref">Read more</span></a></span></div><div class="card link"><p class="header">Reference</p>
+<p><strong>Technical information</strong>: specifications, APIs, architecture</p>
+<span class="link-overlay"><a class="icon link reference internal" href="reference/index.html#reference"><span class="std std-ref">Read more</span></a></span></div></div></section>
+<section id="applications-showcase">
+<h2>Applications showcase<a class="headerlink" href="#applications-showcase" title="Link to this heading"></a></h2>
+<section id="slam">
+<h3>SLAM<a class="headerlink" href="#slam" title="Link to this heading"></a></h3>
+<a class="reference internal image-reference" href="_images/do_mapping.gif"><img alt="_images/do_mapping.gif" src="_images/do_mapping.gif" style="width: 600px;" />
+</a>
+</section>
+<section id="navigation">
+<h3>Navigation<a class="headerlink" href="#navigation" title="Link to this heading"></a></h3>
+<a class="reference internal image-reference" href="_images/navigate.gif"><img alt="_images/navigate.gif" src="_images/navigate.gif" style="width: 600px;" />
+</a>
+</section>
+<section id="multi-robot-fleet">
+<h3>Multi-robot fleet<a class="headerlink" href="#multi-robot-fleet" title="Link to this heading"></a></h3>
+<a class="reference internal image-reference" href="_images/amr_multi_robot.gif"><img alt="_images/amr_multi_robot.gif" src="_images/amr_multi_robot.gif" style="width: 600px;" />
+</a>
+</section>
+<section id="nvidia-cuvslam">
+<h3>Nvidia cuVSLAM<a class="headerlink" href="#nvidia-cuvslam" title="Link to this heading"></a></h3>
+<a class="reference internal image-reference" href="_images/ad_r1m_and_cuvslam_demo.gif"><img alt="_images/ad_r1m_and_cuvslam_demo.gif" src="_images/ad_r1m_and_cuvslam_demo.gif" style="width: 600px;" />
+</a>
+</section>
+<section id="gmsl-camera-integration-and-image-processing">
+<h3>GMSL Camera integration and image processing<a class="headerlink" href="#gmsl-camera-integration-and-image-processing" title="Link to this heading"></a></h3>
+<section id="floor-segmentation">
+<h4>Floor segmentation<a class="headerlink" href="#floor-segmentation" title="Link to this heading"></a></h4>
+<a class="reference internal image-reference" href="_images/segmentation_result.gif"><img alt="_images/segmentation_result.gif" src="_images/segmentation_result.gif" style="width: 600px;" />
+</a>
+</section>
+<section id="object-detection">
+<h4>Object Detection<a class="headerlink" href="#object-detection" title="Link to this heading"></a></h4>
+<a class="reference internal image-reference" href="_images/detection_result.gif"><img alt="_images/detection_result.gif" src="_images/detection_result.gif" style="width: 600px;" />
+</a>
+</section>
+</section>
+</section>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Open-source hardware and software design</p></li>
+<li><p>Support for ROS 2 Humble, Jazzy</p></li>
+<li><p>Differential drive mobile base with encoder feedback</p></li>
+<li><p>Support for NVIDIA Jetson AGX Orin for GPU-accelerated workloads</p></li>
+<li><p>Gazebo simulation environment included</p></li>
+</ul>
+</section>
+<section id="components">
+<h2>Components<a class="headerlink" href="#components" title="Link to this heading"></a></h2>
+<div class="flex centered"><div class="card"><p class="header">Wide Dynamic Range, six axis IMU</p>
+<p><a class="icon adi reference external" href="https://www.analog.com/ADIS16470" target="_blank">ADIS16470</a></p>
+</div><div class="card"><p class="header">Front-facing ToF camera</p>
+<p><a class="icon adi reference external" href="https://www.analog.com/EVAL-ADTF3175D-NXZ" target="_blank">EVAL-ADTF3175D-NXZ</a></p>
+</div><div class="card"><p class="header">FOC motor drives</p>
+<p><a class="icon adi reference external" href="https://www.analog.com/ADRD3161-01Z" target="_blank">ADRD3161-01Z</a></p>
+</div><div class="card"><p class="header">Robotics carrier for Raspberry Pi</p>
+<p><a class="icon adi reference external" href="https://www.analog.com/ADRD4161-01Z" target="_blank">ADRD4161-01Z</a></p>
+</div><div class="card"><p class="header">3S Li-ion battery pack and BMS</p>
+<p><a class="icon adi reference external" href="https://www.analog.com/ADRD5161-01Z" target="_blank">ADRD5161-01Z</a></p>
+</div></div></section>
+<section id="applications">
+<h2>Applications<a class="headerlink" href="#applications" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Mobile robotics research and development</p></li>
+<li><p>Autonomous navigation and SLAM algorithm development</p></li>
+<li><p>Warehouse and logistics automation prototyping</p></li>
+<li><p>Educational robotics platforms</p></li>
+<li><p>Multi-robot setup management research</p></li>
+</ul>
+</section>
+<section id="system-architecture">
+<h2>System Architecture<a class="headerlink" href="#system-architecture" title="Link to this heading"></a></h2>
+<p>The AD-R1M platform consists of the following major subsystems:</p>
+<ul class="simple">
+<li><p><strong>Processing Unit</strong>: Raspberry Pi 5 (base) or NVIDIA Jetson AGX Orin (advanced)</p></li>
+<li><p><strong>Motion Control</strong>: Dual ADRD3161 motor driver boards with CAN interface</p></li>
+<li><p><strong>Power Management</strong>: ADRD5161 BMS board (3S or 12S battery variants)</p></li>
+<li><p><strong>Sensors</strong>: ADIS16470 IMU, ADTF3175D ToF camera, optional Intel RealSense</p></li>
+<li><p><strong>Connectivity</strong>: CAN bus, USB, Ethernet, Wi-Fi, CRSF radio</p></li>
+</ul>
+</section>
+<section id="repository">
+<h2>Repository<a class="headerlink" href="#repository" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>GitHub: <a class="icon link reference external" href="https://github.com/analogdevicesinc/ad-r1m-ros2" target="_blank">ad-r1m-ros2</a></p></li>
+<li><p>ROS2 Packages: See the <a class="icon link reference external" href="https://github.com/analogdevicesinc/ad-r1m-ros2#readme" target="_blank">package list</a></p></li>
+</ul>
+</section>
+<section id="help-and-support">
+<h2>Help and Support<a class="headerlink" href="#help-and-support" title="Link to this heading"></a></h2>
+<p>For questions and technical support, please visit the <a class="icon link reference external" href="https://ez.analog.com/" target="_blank">EngineerZone</a> community forum.</p>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+
+          </div>
+              <div class="related">
+                &nbsp;
+    <div></div>
+    <a href="tutorial/index.html" title="Next document (Alt+Shift+RightArrow)" class="next">Tutorials</a>
+              </div>
+          
+        </div>
+      </div>
+  </div>
+
+  <label id="cancel-area-show-toc" for="input-show-toc"></label>
+  <label id="cancel-area-show-localtoc" for="input-show-localtoc"></label>
+    <footer>
+      &#169;2026, Analog Devices, Inc.
+      
+      |
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+      &amp; <a href="https://github.com/analogdevicesinc/doctools">Doctools</a>
+      
+    </footer>
+  </body>
+</html>
