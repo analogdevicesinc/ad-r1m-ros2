@@ -24,8 +24,6 @@ services:
       - /sys/kernel/debug/:/sys/kernel/debug/
       - ./ros_data:/ros_data
       - ./ros_data/log:/root/.ros/log
-      - ./calib.yaml:/calib.yaml:ro
-      - ./ros_parameters.yaml:/ros_parameters.yaml:ro
     environment:
       - RMW_IMPLEMENTATION
     depends_on:
@@ -36,7 +34,7 @@ services:
   teleop_crsf:
     image: $DOCKER_IMAGE
     command: |
-      ros2 launch ad_r1m_bringup teleop_crsf.launch.py namespace:="${ROBOT_NAMESPACE:-/}" params_file:="/teleop_parameters.yaml"
+      ros2 launch ad_r1m_bringup teleop_crsf.launch.py namespace:="${ROBOT_NAMESPACE:-/}" params_file:="/ros_data/teleop_parameters.yaml"
     network_mode: host
     ipc: host
     pid: host
@@ -45,8 +43,6 @@ services:
       - /dev/ttyCRSF:/dev/ttyCRSF
       - ./ros_data:/ros_data
       - ./ros_data/log:/root/.ros/log
-      - ./ros_parameters.yaml:/ros_parameters.yaml:ro
-      - ./teleop_parameters.yaml:/teleop_parameters.yaml:ro
     environment:
       - RMW_IMPLEMENTATION
     depends_on:
