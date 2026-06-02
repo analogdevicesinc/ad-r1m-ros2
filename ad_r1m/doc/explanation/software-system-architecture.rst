@@ -27,7 +27,6 @@ Of these, some are consistent between robot variants, while others are variant-s
 
 * **common** - Files common to *all* AD-R1M variants
 * **rpi5** - Support for variants using a Raspberry Pi 5 + ADRD4161
-* **portenta** - Support for the Arduino Portenta X8 variant
 * **adrd3161** - Support for variants using the ADRD3161 motor drive
 * etc.
 

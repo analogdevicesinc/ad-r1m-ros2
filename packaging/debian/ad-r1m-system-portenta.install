@@ -1,4 +1,0 @@
-VERSION /usr/lib/ad-r1m/
-system/common/* /
-system/portenta/* /
-system/adrd3161/* /
