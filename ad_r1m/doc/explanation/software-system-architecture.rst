@@ -89,12 +89,11 @@ Automatic robot software startup is defined by the systemd unit ``ad-r1m.target`
 ROS 2 reconfiguration
 ^^^^^^^^^^^^^^^^^^^^^
 
-The ``ad-r1m start`` command looks in the current directory (or the directory specified as the first argument) for the following configuration files:
+Runtime configurations are managed as docker compose folders, which by default contain:
 
 * ``ad-r1m.env`` -- Environment variables
 * ``compose.yaml`` -- Docker compose file describing which containers to start up
-
-The default ``compose.yaml`` uses the ``./ros_data`` directory (relative to the compose file) for persisting logs, configs, maps, etc. between runs. It is mounted to ``/ros_data/`` inside the containers.
+* ``ros_data/`` -- Directory with data to pass to containers and persist across runs: logs, configs, maps, etc. It is mounted to ``/ros_data/`` inside the containers.
 
 The default configuration is present in ``/usr/share/ad-r1m/default-config`` and shouldn't be modified by users. To create an alternate configuration, use the ``ad-r1m mkconfig`` command and edit as you please:
 
@@ -109,12 +108,12 @@ The default configuration is present in ``/usr/share/ad-r1m/default-config`` and
     $ edit compose.yaml
     ...
 
-To start the robot software using that configuration, enter your configuration folder and run ``ad-r1m start``:
+To start the robot software using that configuration, enter your configuration folder and run Docker compose commands, e.g.:
 
 .. shell::
 
     $ cd my-config
-    $ ad-r1m start
+    $ docker compose --env-file ad-r1m.env up
 
 To automatically start an alternative configuration at boot-time, use ``ad-r1m enable <folder>``:
 

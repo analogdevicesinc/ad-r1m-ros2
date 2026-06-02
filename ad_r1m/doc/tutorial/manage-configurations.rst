@@ -92,12 +92,12 @@ With these, we:
 Start a runtime configuration
 -----------------------------
 
-With everything set up, use the ``ad-r1m start`` command to start this configuration. Enter the configuration folder and run ``ad-r1m start``:
+With everything set up, use ``docker compose up`` to start this configuration. Enter the configuration folder and run:
 
 .. shell::
 
    $ cd keyboard-teleop-config
-   $ ad-r1m start
+   $ docker compose --env-file ad-r1m.env up
 
 For this example, because the keyboard teleop node requires interaction in the terminal, we will also need to attach to it. This will generally not be needed. To attach to it and start controlling the robot, run:
 
