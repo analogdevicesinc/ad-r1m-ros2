@@ -1,1 +1,0 @@
-ACTION=="add", SUBSYSTEM=="tty", KERNEL=="ttymxc3", SYMLINK+="ttyCRSF", TAG+="systemd", ENV{SYSTEMD_ALIAS}="/dev/ttyCRSF"

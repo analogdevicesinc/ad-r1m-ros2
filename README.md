@@ -45,8 +45,6 @@ These are Debian packages, making system bootstrapping a matter of running somet
 | Hardware variant | Components | Packaging method | CI |
 |------------------|------------|------------------|----|
 | AD-R1M (default) | <ul><li>Raspberry Pi 5 running ADI Kuiper Linux</li><li>ADRD4161-01Z carrier</li><li>ADRD3161-01Z motor drives</li><li>ADRD5161-01Z BMS</li></ul> | Debian package: `ad-r1m-system-rpi5` | TODO |
-| AD-R1M Ventuno Q | <ul><li>Arduino Ventuno Q</li><li>ADRD3161-01Z motor drives</li><li>ADRD5161-01Z BMS</li></ul> | Debian package? Arduino Lab Brick? | TODO |
-| AD-R1M Portenta  | <ul><li>Arduino Portenta X8 running ADI Kuiper Linux</li><li>Portenta Mid Carrier</li><li>ADRD2161-01Z (unreleased) shield</li><li>ADRD3161-01Z motor drives</li><li>ADRD5161-01Z BMS</li></ul> | Debian package: `ad-r1m-system-portenta` | TODO |
 
 This does not include packages for the supported coprocessing platforms, such as the Nvidia Jetson platforms, because they currently don't run robot control directly, but rather only act on the behaviour / processing level.
 
