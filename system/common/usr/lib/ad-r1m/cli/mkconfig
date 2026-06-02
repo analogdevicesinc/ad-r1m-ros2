@@ -31,3 +31,8 @@ echo "FOLDER=$FOLDER"
 
 mkdir -p "$FOLDER"
 cp -ri /usr/share/ad-r1m/default-config/* "$FOLDER"
+
+# Replace symlink to /var/log with an actual folder
+rm "$FOLDER"/ros_data/log
+mkdir "$FOLDER"/ros_data/log
+
