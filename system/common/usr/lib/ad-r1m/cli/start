@@ -88,6 +88,15 @@ export COMPOSE_PROFILES=${RMW_IMPLEMENTATION},${COMPOSE_PROFILES}
 export COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-ad-r1m}"
 export ROBOT_NAMESPACE=${ROBOT_NAMESPACE-/}
 
+echo '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+echo '"ad-r1m start" is deprecated, please switch to using:'
+echo ''
+echo 'docker compose --env-file ad-r1m.env start'
+echo ''
+echo 'Using docker compose gives you more control by exposing'
+echo 'many more operations for managing containers, as well'
+echo 'as removing our somewhat unnecessary layer of abstraction'
+
 echo "ROS_DISTRO=$ROS_DISTRO"
 echo "RMW_IMPLEMENTATION=$RMW_IMPLEMENTATION"
 echo "DOCKER_IMAGE=$DOCKER_IMAGE"

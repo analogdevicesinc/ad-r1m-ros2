@@ -5,7 +5,8 @@ After=ad-r1m.target
 PartOf=ad-r1m.target
 
 [Service]
-ExecStart=ad-r1m start
+WorkingDirectory=/usr/share/ad-r1m/default-config
+ExecStart=docker compose --env-file ad-r1m.env up
 
 [Install]
 WantedBy=multi-user.target
