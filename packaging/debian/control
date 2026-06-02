@@ -19,30 +19,11 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
  bc,
  libiio0,
  sshpass
-Conflicts: ad-r1m-system-portenta
 Description: AD-R1M system setup for default hardware variant
  Set up host system to support the AD-R1M software stack for the default
  hardware variant:
  .
    * Raspberry Pi 5 with ADRD4161 carrier
-   * ADRD3161
-   * ADRD5161
-
-Package: ad-r1m-system-portenta
-Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends},
- gpiod,
- docker-ce (>= 23.0) | docker.io (>= 23.0),
- docker-compose,
- can-utils,
- bc,
- libiio0
-Conflicts: ad-r1m-system-rpi5
-Description: AD-R1M system setup for portenta hardware variant
- Set up host system to support the AD-R1M software stack for the Portenta
- hardware variant:
- .
-   * Arduino Portenta X8 with Mid carrier and ADRD2161-01Z shield
    * ADRD3161
    * ADRD5161
 
