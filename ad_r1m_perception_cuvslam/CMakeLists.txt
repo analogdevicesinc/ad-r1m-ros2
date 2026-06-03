@@ -28,8 +28,8 @@ install(TARGETS realsense_image_sync_component
 )
 
 install(DIRECTORY
-	launch config urdf meshes worlds
-	DESTINATION share/${PROJECT_NAME}/
+  launch config urdf meshes worlds
+  DESTINATION share/${PROJECT_NAME}/
 )
 
 if(BUILD_TESTING)

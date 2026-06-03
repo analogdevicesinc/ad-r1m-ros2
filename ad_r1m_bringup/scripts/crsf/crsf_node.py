@@ -1,4 +1,18 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
+# Copyright (c) 2026 Analog Devices, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import rclpy
 from rclpy.node import Node
 from crsf_parser import CRSFParser
@@ -9,7 +23,6 @@ from canopen_interfaces.srv import CORead  # SDO read service
 from geometry_msgs.msg import TwistStamped, Twist
 from std_srvs.srv import Trigger
 from serial import Serial
-import math
 
 
 class CRSFNode(Node):
@@ -108,7 +121,8 @@ class CRSFNode(Node):
         self.service_call_queue = []
 
         # Wait for services to become available
-        for cli in ([self.cli] if self.cli else []) + self.stop_services + self.start_services:
+        for cli in ([self.cli] if self.cli else []) + \
+                self.stop_services + self.start_services:
             self.get_logger().info(f'Waiting for service {cli.srv_name}')
             while not cli.wait_for_service(timeout_sec=5.0):
                 self.get_logger().info(f'Waiting for service {cli.srv_name}')
@@ -146,7 +160,7 @@ class CRSFNode(Node):
 
     def queue_up_service_calls(self, cli_req_pairs):
         self.get_logger().info(
-            f'Queueing service call sequence {[c.srv_name for c,r in cli_req_pairs]}')
+            f'Queueing service call sequence {[c.srv_name for c, r in cli_req_pairs]}')
         if not self.service_call_queue:
             self.service_call_queue.extend(cli_req_pairs)
             self.service_queue_process(None)

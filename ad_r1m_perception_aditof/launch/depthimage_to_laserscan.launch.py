@@ -22,6 +22,7 @@ from launch.substitutions import LaunchConfiguration, PythonExpression, PathJoin
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node, PushRosNamespace
 
+
 def generate_launch_description():
     # Declare launch arguments
     namespace_arg = DeclareLaunchArgument(

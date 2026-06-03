@@ -21,9 +21,9 @@ install(
   DIRECTORY launch
   DESTINATION share/${PROJECT_NAME}
 )
- 
+
 # Install Python scripts
-install(PROGRAMS 
+install(PROGRAMS
   scripts/commander/demo_run.py
   scripts/commander/elevator_server.py
   # scripts/commander/waypoint_follower.py

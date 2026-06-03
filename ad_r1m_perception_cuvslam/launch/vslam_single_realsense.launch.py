@@ -1,3 +1,18 @@
+#!/usr/bin/env python3
+# Copyright (c) 2026 Analog Devices, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import os
 import yaml
 
@@ -23,7 +38,7 @@ def launch_setup(context, *args, **kwargs):
         ('visual_slam/imu', '/camera/imu'),
     ]
 
-    realsense_camera_node = Node(
+    _realsense_camera_node = Node(
         name='camera',
         namespace='camera',
         package='realsense2_camera',
@@ -58,7 +73,8 @@ def generate_launch_description():
 
     config_path_arg = DeclareLaunchArgument(
         'config_path',
-        default_value=os.path.join(pkg_share, 'config', 'cuvslam_single_realsense.yaml'),
+        default_value=os.path.join(
+            pkg_share, 'config', 'cuvslam_single_realsense.yaml'),
         description='Path to the YAML configuration file'
     )
 

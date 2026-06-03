@@ -1,4 +1,18 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
+# Copyright (c) 2026 Analog Devices, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 from geometry_msgs.msg import PoseStamped
 from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
 from example_interfaces.srv import SetBool
@@ -41,14 +55,11 @@ class ElevatorClientAsync(Node):
 def run_navigator(navigator: BasicNavigator, route: list,
                   elevator_client: ElevatorClientAsync):
     """
-    Navigate through a list of waypoints and interact with a ROS2 service after each goal.
+    Navigate through waypoints and interact with elevator service after each goal.
 
-    Args:
-    ----
-        navigator (BasicNavigator): The Nav2 navigation client.
-        route (list): List of waypoints [x, y, w, z].
-        elevator_client (ElevatorClientAsync): ROS2 service client for 'elevator_to_robot'.
-
+    :param navigator: The Nav2 navigation client.
+    :param route: List of waypoints [x, y, w, z].
+    :param elevator_client: ROS2 service client for 'elevator_to_robot'.
     """
     for i, pose in enumerate(route, 1):
         print(f'Navigating to waypoint {i}/{len(route)}: {pose}')

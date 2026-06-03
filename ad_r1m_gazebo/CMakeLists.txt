@@ -22,9 +22,9 @@ install(
   DIRECTORY config launch urdf worlds
   DESTINATION share/${PROJECT_NAME}
 )
- 
+
 # Install Python scripts
-install(PROGRAMS 
+install(PROGRAMS
   DESTINATION lib/${PROJECT_NAME}
 )
 ament_package()

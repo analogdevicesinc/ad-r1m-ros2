@@ -1,11 +1,23 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Analog Devices, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
 from geometry_msgs.msg import PoseStamped
 from dataclasses import dataclass
 import rclpy
 from rclpy.node import Node
-import time
 import math
 
 """
@@ -39,15 +51,14 @@ come too close to the edge.
 
 @dataclass
 class Waypoint:
-    """ Helper class for specifying 2D poses with just x, y, heading. """
+    """Helper class for specifying 2D poses with just x, y, heading."""
 
     x: float
     y: float
     heading: float  # Degrees
 
     def as_pose(self):
-        """ Convert Waypoint to ROS 2 PoseStamped object, to be sent to nav2 """
-
+        """Convert Waypoint to ROS 2 PoseStamped object, to be sent to nav2."""
         # Compute quaternion for heading
         rad = math.radians(self.heading)
         quat_z = math.sin(rad / 2)
@@ -80,17 +91,19 @@ def main():
     # Wait for nav2 to be up and running
     nav.waitUntilNav2Active()
 
-    # autopep8: off
     # ____________________ CHANGE THIS ____________________
+    # fmt: off
+    # autopep8: off
     waypoints = [
-        Waypoint(x = -0.9 , y = -0.5 , heading = 90.0 ),
-        Waypoint(x = -0.9 , y = +0.5 , heading = 0.0 ),
-        Waypoint(x =  0.0 , y = -0.5 , heading = 300.0 ),
-        Waypoint(x = +0.9 , y = +0.5 , heading = 270.0 ),
-        Waypoint(x = +0.9 , y = -0.2 , heading = 180.0  ),
+        Waypoint(x = -0.9 , y = -0.5 , heading = 90.0 ),  # noqa
+        Waypoint(x = -0.9 , y = +0.5 , heading = 0.0 ),  # noqa
+        Waypoint(x =  0.0 , y = -0.5 , heading = 300.0 ),  # noqa
+        Waypoint(x = +0.9 , y = +0.5 , heading = 270.0 ),  # noqa
+        Waypoint(x = +0.9 , y = -0.2 , heading = 180.0  ),  # noqa
     ]
-    # ^^^^^^^^^^^^^^^^^^^^ CHANGE THIS ^^^^^^^^^^^^^^^^^^^^
     # autopep8: on
+    # fmt: on
+    # ^^^^^^^^^^^^^^^^^^^^ CHANGE THIS ^^^^^^^^^^^^^^^^^^^^
 
     for index, waypoint in enumerate(waypoints):
         print(f'Going to waypoint {index}: {waypoint}')
@@ -103,7 +116,7 @@ def main():
 
         # Loop until command is executed
         while not nav.isTaskComplete():
-            feedback = nav.getFeedback()
+            nav.getFeedback()
             rclpy.spin_once(node, timeout_sec=0.1)
 
         # Check result

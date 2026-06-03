@@ -22,17 +22,17 @@ find_package(tf2_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(tf2_geometry_msgs REQUIRED)
 find_package(pcl_ros REQUIRED)
-find_package(pcl_conversions REQUIRED) 
+find_package(pcl_conversions REQUIRED)
 
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
-set(INCLUDE_DIRS 
-  include 
-  ${ament_cmake_INCLUDE_DIRS} 
+set(INCLUDE_DIRS
+  include
+  ${ament_cmake_INCLUDE_DIRS}
   ${rclcpp_INCLUDE_DIRS}
-  ${pcl_ros_INCLUDE_DIRS} 
+  ${pcl_ros_INCLUDE_DIRS}
   ${pcl_conversions_INCLUDE_DIRS}
   ${std_msgs_INCLUDE_DIRS}
   ${sensor_msgs_INCLUDE_DIRS}
@@ -53,21 +53,21 @@ set(ament_dependencies
   tf2
   tf2_msgs
   tf2_ros
-  tf2_geometry_msgs  
+  tf2_geometry_msgs
   PCL
 )
 
 add_executable(pointcloud_to_grid_node src/pointcloud_to_grid_node.cpp)
 target_link_libraries(pointcloud_to_grid_node ${PCL_LIBRARIES})
-ament_target_dependencies(pointcloud_to_grid_node  ${ament_dependencies} )
+ament_target_dependencies(pointcloud_to_grid_node ${ament_dependencies})
 target_compile_features(pointcloud_to_grid_node PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
 
-install(DIRECTORY 
+install(DIRECTORY
   launch
   doc
   DESTINATION share/${PROJECT_NAME})
 
-install(TARGETS 
+install(TARGETS
   pointcloud_to_grid_node
   DESTINATION lib/${PROJECT_NAME})
 

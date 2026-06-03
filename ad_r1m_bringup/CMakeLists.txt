@@ -20,9 +20,9 @@ install(
   DESTINATION share/${PROJECT_NAME}
   PATTERN "bus.yml" EXCLUDE
 )
- 
+
 # Install Python scripts
-install(PROGRAMS 
+install(PROGRAMS
   scripts/crsf/crsf_node.py
   scripts/crsf/teleop_keyboard.py
   scripts/adrd_bms/adrd_bms_node.py

@@ -1,5 +1,22 @@
+#!/usr/bin/env python3
+# Copyright (c) 2026 Analog Devices, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, GroupAction, SetEnvironmentVariable, OpaqueFunction
+from launch.actions import (
+    DeclareLaunchArgument, GroupAction, SetEnvironmentVariable, OpaqueFunction
+)
 from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration, PythonExpression, PathJoinSubstitution
 from launch_ros.actions import LoadComposableNodes, Node
@@ -40,12 +57,14 @@ def launch_setup(context, *args, **kwargs):
     }
 
     if namespace_str != '':
+        # fmt: off
         # autopep8: off
         param_substitutions['robot_base_frame'] = f'{namespace_str}/base_link'
-        param_substitutions['local_costmap.local_costmap.ros__parameters.global_frame'] = f'{namespace_str}/odom'
-        param_substitutions['behavior_server.ros__parameters.global_frame'] = f'{namespace_str}/odom'
-        param_substitutions['global_costmap.global_costmap.ros__parameters.static_layer.map_topic'] = f'/{namespace_str}/map'
+        param_substitutions['local_costmap.local_costmap.ros__parameters.global_frame'] = f'{namespace_str}/odom'  # noqa: E501
+        param_substitutions['behavior_server.ros__parameters.global_frame'] = f'{namespace_str}/odom'  # noqa: E501
+        param_substitutions['global_costmap.global_costmap.ros__parameters.static_layer.map_topic'] = f'/{namespace_str}/map'  # noqa: E501
         # autopep8: on
+        # fmt: on
     else:
         remappings.append(('map', '/map'))
 

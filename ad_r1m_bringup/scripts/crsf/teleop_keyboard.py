@@ -1,4 +1,17 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 Analog Devices, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 import sys
 import threading
@@ -62,10 +75,10 @@ def vels(speed, turn):
 
 
 def load_config(params_file=None):
-    """Load parameters from YAML file, return defaults if not found.
+    """
+    Load parameters from YAML file, return defaults if not found.
 
-    Args:
-        params_file: Path to custom YAML file. If None, uses default crsf.yaml
+    :param params_file: Path to custom YAML file. If None, uses default crsf.yaml.
     """
     defaults = {
         'max_vel': 0.5,
@@ -93,8 +106,10 @@ def load_config(params_file=None):
 
         with open(config_path, 'r') as f:
             config = yaml.safe_load(f)
-            kb_params = config.get('teleop_keyboard', {}).get('ros__parameters', {})
-            crsf_params = config.get('crsf_node', {}).get('ros__parameters', {})
+            kb_params = config.get('teleop_keyboard', {}).get(
+                'ros__parameters', {})
+            crsf_params = config.get('crsf_node', {}).get(
+                'ros__parameters', {})
 
             return {
                 'max_vel': kb_params.get('max_vel', defaults['max_vel']),
@@ -193,7 +208,7 @@ def main():
     state = 'init'
 
     def call_services(services):
-        """Call motor services sequentially and wait for completion"""
+        """Call motor services sequentially and wait for completion."""
         futures = []
         for i, cli in enumerate(services):
             node.get_logger().info(f'Calling service {cli.srv_name}')
@@ -214,7 +229,7 @@ def main():
         return futures
 
     def update_twist():
-        """Update and publish twist message"""
+        """Update and publish twist message."""
         if config['stamped']:
             twist_msg.header.stamp = node.get_clock().now().to_msg()
         twist.linear.x = x * speed
@@ -293,7 +308,8 @@ def main():
                 if key in moveBindings:
                     x, th = moveBindings[key]
                 elif key in speedBindings:
-                    speed = min(speed * speedBindings[key][0], config['max_vel'])
+                    speed = min(
+                        speed * speedBindings[key][0], config['max_vel'])
                     turn = min(turn * speedBindings[key][1], config['max_rot'])
                     print(vels(speed, turn))
                     if status == 14:

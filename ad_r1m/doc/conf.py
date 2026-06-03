@@ -1,4 +1,4 @@
-# Copyright 2025 Analog Devices, Inc.
+# Copyright (c) 2025-2026 Analog Devices, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 # ------------------------------------------------------------------------------
 # Configuration file for the Sphinx documentation builder.
 #
@@ -96,46 +97,46 @@ exclude_patterns = ['**/_build', '**/Thumbs.db', '**/.DS_Store',
 
 # -- Options for rosdoc2 -----------------------------------------------------
 
-## These settings are specific to rosdoc2, and if Sphinx is run without rosdoc2
-## they will be safely ignored.
-## None are required by default, so the lines below show the default values,
-## therefore you will need to uncomment the lines and change their value
-## if you want change the behavior of rosdoc2.
+# These settings are specific to rosdoc2, and if Sphinx is run without rosdoc2
+# they will be safely ignored.
+# None are required by default, so the lines below show the default values,
+# therefore you will need to uncomment the lines and change their value
+# if you want change the behavior of rosdoc2.
 rosdoc2_settings = {
-    ## This setting, if True, will ensure breathe is part of the 'extensions',
-    ## and will set all of the breathe configurations, if not set, and override
-    ## settings as needed if they are set by this configuration.
+    # This setting, if True, will ensure breathe is part of the 'extensions',
+    # and will set all of the breathe configurations, if not set, and override
+    # settings as needed if they are set by this configuration.
     # 'enable_breathe': True,
 
-    ## This setting, if True, will ensure exhale is part of the 'extensions',
-    ## and will set all of the exhale configurations, if not set, and override
-    ## settings as needed if they are set by this configuration.
+    # This setting, if True, will ensure exhale is part of the 'extensions',
+    # and will set all of the exhale configurations, if not set, and override
+    # settings as needed if they are set by this configuration.
     # 'enable_exhale': True,
 
-    ## This setting, if provided, allows option specification for breathe
-    ## directives through exhale. If not set, exhale defaults will be used.
-    ## If an empty dictionary is provided, breathe defaults will be used.
+    # This setting, if provided, allows option specification for breathe
+    # directives through exhale. If not set, exhale defaults will be used.
+    # If an empty dictionary is provided, breathe defaults will be used.
     # 'exhale_specs_mapping': {},
 
-    ## This setting, if True, will ensure autodoc is part of the 'extensions'.
+    # This setting, if True, will ensure autodoc is part of the 'extensions'.
     # 'enable_autodoc': True,
 
-    ## This setting, if True, will ensure intersphinx is part of the 'extensions'.
+    # This setting, if True, will ensure intersphinx is part of the 'extensions'.
     # 'enable_intersphinx': True,
 
-    ## This setting, if True, will have the 'html_theme' overridden to provide
-    ## a consistent style across all of the ROS documentation.
+    # This setting, if True, will have the 'html_theme' overridden to provide
+    # a consistent style across all of the ROS documentation.
     # IMPORTANT: this allows rosdoc2 to use the ADI theme
     'override_theme': False,
 
-    ## This setting, if True, will automatically extend the intersphinx mapping
-    ## using inventory files found in the cross-reference directory.
-    ## If false, the `found_intersphinx_mappings` variable will be in the global
-    ## scope when run with rosdoc2, and could be conditionally used in your own
-    ## Sphinx conf.py file.
+    # This setting, if True, will automatically extend the intersphinx mapping
+    # using inventory files found in the cross-reference directory.
+    # If false, the `found_intersphinx_mappings` variable will be in the global
+    # scope when run with rosdoc2, and could be conditionally used in your own
+    # Sphinx conf.py file.
     'automatically_extend_intersphinx_mapping': True,
 
-    ## Support markdown
+    # Support markdown
     'support_markdown': True,
 
     # Allow additional extensions. If true, at runtime rosdoc2 will check to see if
@@ -162,7 +163,8 @@ todo_emit_warnings = True
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-# rosdoc2 will override the theme, but you may set one here for running Sphinx without the rosdoc2 tool.
+# rosdoc2 will override the theme, but you may set one here for running
+# Sphinx without the rosdoc2 tool.
 html_theme = 'harmonic'
 # html_logo = ''
 # html_favicon = ''

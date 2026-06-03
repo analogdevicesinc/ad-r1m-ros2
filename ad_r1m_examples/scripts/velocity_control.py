@@ -1,11 +1,23 @@
 #!/usr/bin/env python3
-# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Analog Devices, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 """
-Barebones app that sends a sequence of cmd_vel messages to an AD-R1M robot with set durations.
-Showcases ROS 2 boilerplate, manipulating a message and using a publisher to send it to the robot, timers and rclpy executor spinning.
+Barebones app that sends a sequence of cmd_vel messages to an AD-R1M robot.
 
-Copyright (c) 2026 Analog Devices, Inc.
+Showcases ROS 2 boilerplate, manipulating a message and using a publisher
+to send it to the robot, timers and rclpy executor spinning.
 """
 
 import rclpy
@@ -44,10 +56,7 @@ def main():
         :param float angular: Angular velocity in rad/s. Positive = turn left.
         :param float duration: In how much time from now to stop, in seconds.
         """
-
-        # Need to nonlocal variables we're modifying
         nonlocal deadline
-        nonlocal cmd_vel_msg
 
         node.get_logger().debug(
             f'Setting velocity to {linear} m/s forward, '
@@ -57,13 +66,8 @@ def main():
         deadline = node.get_clock().now() + rclpy.duration.Duration(seconds=duration)
 
     def timer_tick():
-        """
-        Function called on a timer; handles retransmitting velocity and handling deadlines (stop).
-        """
-
-        # Need to nonlocal variables we're modifying
+        """Retransmit velocity and handle deadlines."""
         nonlocal deadline
-        nonlocal cmd_vel_msg
 
         # Don't repeatedly transmit velocity once stopped
         if deadline.nanoseconds == 0:
@@ -98,7 +102,7 @@ def main():
         (0, 0, 1, ""),
         (0,         -math.pi/4, 6,             "Turn right pi/4 rad/s * 6 s = 270 degrees"),
         (0, 0, 1, ""),
-    ] * 2 # Repeat list twice, to trace a square
+    ] * 2  # Repeat list twice, to trace a square
     # autopep8: on
 
     for linear, angular, duration, message in example_commands:

@@ -23,9 +23,9 @@ install(
   DIRECTORY config launch maps
   DESTINATION share/${PROJECT_NAME}
 )
- 
+
 # Install Python scripts
-install(PROGRAMS 
+install(PROGRAMS
   DESTINATION lib/${PROJECT_NAME}
 )
 ament_package()
