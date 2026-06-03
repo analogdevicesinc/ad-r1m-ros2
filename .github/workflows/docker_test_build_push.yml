@@ -79,6 +79,13 @@ jobs:
         with:
           paths: /tmp/test-results/**/test_results/**/*.xml
 
+      - name: Check for test failures
+        run: |
+          if find /tmp/test-results -name '*.xml' -exec grep -l '<failure\|<error' {} \; 2>/dev/null | grep -q .; then
+            echo "::error::Tests failed - see test summary above"
+            exit 1
+          fi
+
       - name: Build final image
         id: build
         if: inputs.push && steps.login.outcome == 'success'

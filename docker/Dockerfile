@@ -189,9 +189,8 @@ ARG BUILD_PACKAGES
 
 RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
     . install/setup.sh && \
-    colcon test \
-      --packages-up-to ${BUILD_PACKAGES} \
-      --return-code-on-test-failure
+    colcon test --packages-up-to ${BUILD_PACKAGES}; \
+    colcon test-result --verbose || true
 
 
 ####################################################################################################
