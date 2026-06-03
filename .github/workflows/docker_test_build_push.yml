@@ -1,0 +1,170 @@
+on:
+  workflow_call:
+    inputs:
+      name: { type: string, required: true }
+      platforms: { type: string, required: true }  # JSON array, e.g. '["linux/amd64","linux/arm64"]'
+      ros_distro: { type: string, required: true }
+      build_packages: { type: string, required: true }
+      target: { type: string, required: true }
+      push: { type: boolean, required: true }
+      tag_suffixes: { type: string, required: false }
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  REGISTRY: docker.cloudsmith.io/adi/adrd-common
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: ${{ fromJSON(inputs.platforms) }}
+    runs-on: ${{ startsWith(matrix.platform, 'linux/arm') && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
+    name: ${{ inputs.name }} ${{ matrix.platform }} ${{ inputs.ros_distro }}
+    steps:
+      - uses: docker/setup-buildx-action@v3
+      - uses: actions/checkout@v4
+
+      - name: Cloudsmith OIDC
+        id: oidc
+        continue-on-error: true
+        uses: cloudsmith-io/cloudsmith-cli-action@v2
+        with:
+          oidc-namespace: adi
+          oidc-service-slug: ${{ secrets.CLOUDSMITH_SERVICE_SLUG }}
+
+      - name: Docker login
+        id: login
+        continue-on-error: true
+        if: steps.oidc.outcome == 'success'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.CLOUDSMITH_SERVICE_SLUG }}
+          password: ${{ secrets.CLOUDSMITH_API_KEY }}
+
+      - name: Build and test
+        id: test
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          platforms: ${{ matrix.platform }}
+          target: tester
+          build-args: |
+            ROS_DISTRO=${{ inputs.ros_distro }}
+            BUILD_PACKAGES=${{ inputs.build_packages }}
+          load: true
+
+      - name: Extract test results
+        run: |
+          container=$(docker create ${{ steps.test.outputs.imageid }})
+          mkdir -p /tmp/test-results
+          docker cp $container:/ros2_ws/build/. /tmp/test-results/ || true
+          docker rm $container
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ inputs.name }}-${{ inputs.ros_distro }}-${{ strategy.job-index }}
+          path: /tmp/test-results/**/test_results/**/*.xml
+          if-no-files-found: warn
+
+      - name: Test summary
+        if: always()
+        uses: test-summary/action@v2
+        with:
+          paths: /tmp/test-results/**/test_results/**/*.xml
+
+      - name: Build final image
+        id: build
+        if: inputs.push && steps.login.outcome == 'success'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          platforms: ${{ matrix.platform }}
+          target: ${{ inputs.target }}
+          build-args: |
+            ROS_DISTRO=${{ inputs.ros_distro }}
+            BUILD_PACKAGES=${{ inputs.build_packages }}
+          outputs: type=image,name=${{ env.REGISTRY }}/${{ inputs.name }},push-by-digest=true,name-canonical=true,push=true
+
+      - name: Export digest
+        if: inputs.push && steps.login.outcome == 'success'
+        run: |
+          mkdir -p /tmp/digests
+          digest="${{ steps.build.outputs.digest }}"
+          touch "/tmp/digests/${digest#sha256:}"
+
+      - name: Upload digest
+        if: inputs.push && steps.login.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: digests-${{ inputs.name }}-${{ inputs.ros_distro }}-${{ strategy.job-index }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Warn if push skipped
+        if: inputs.push && steps.login.outcome != 'success'
+        run: echo "::warning::Registry auth failed. Image built but not pushed."
+
+  merge:
+    needs: build
+    if: inputs.push && inputs.tag_suffixes != ''
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download digests
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/digests
+          pattern: digests-${{ inputs.name }}-${{ inputs.ros_distro }}-*
+          merge-multiple: true
+
+      - name: Check for digests
+        id: check
+        run: |
+          if [ -z "$(ls -A /tmp/digests 2>/dev/null)" ]; then
+            echo "::warning::No digests found. Skipping manifest creation."
+            echo "has_digests=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_digests=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Cloudsmith OIDC
+        if: steps.check.outputs.has_digests == 'true'
+        uses: cloudsmith-io/cloudsmith-cli-action@v2
+        with:
+          oidc-namespace: adi
+          oidc-service-slug: ${{ secrets.CLOUDSMITH_SERVICE_SLUG }}
+
+      - name: Docker login
+        if: steps.check.outputs.has_digests == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.CLOUDSMITH_SERVICE_SLUG }}
+          password: ${{ secrets.CLOUDSMITH_API_KEY }}
+
+      - uses: docker/setup-buildx-action@v3
+        if: steps.check.outputs.has_digests == 'true'
+
+      - name: Create manifest and push tags
+        if: steps.check.outputs.has_digests == 'true'
+        run: |
+          # Collect all platform digests
+          digests=""
+          for f in /tmp/digests/*; do
+            digests="$digests ${{ env.REGISTRY }}/${{ inputs.name }}@sha256:$(basename $f)"
+          done
+
+          # imagetools create both creates AND pushes the manifest to the registry
+          for suffix in ${{ inputs.tag_suffixes }}; do
+            tag="${{ env.REGISTRY }}/${{ inputs.name }}:${{ inputs.ros_distro }}${suffix}"
+            echo "Creating and pushing manifest: $tag"
+            docker buildx imagetools create -t "$tag" $digests
+          done
