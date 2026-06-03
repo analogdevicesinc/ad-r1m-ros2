@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Remote Control Issues" name="description" />
+
+    <title>AD-R1M Troubleshooting &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=ac863bf0" />
+    <script async="async" src="../_static/app.umd.js?v=09b0c6bc"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Reference" href="../reference/index.html" />
+    <link rel="prev" title="AD-R1M Use Case Examples" href="use-cases.html" />
+   
+  
+  
+  <meta name="repository" content="ad-r1m-ros2">
+  <meta name="version" content="3/merge">
+  
+    <meta name="page_source_suffix" content=".rst">
+  
+  
+  
+
+
+<style>
+  body {
+    
+  }
+
+  body.dark {
+    
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body:not(.light) {
+      
+    }
+  }
+</style>
+  </head>
+  
+    <body>
+  
+  <input type="checkbox" id="input-show-toc">
+  <input type="checkbox" id="input-show-localtoc">
+  <input type="checkbox" id="input-show-repotoc">
+
+  
+  <div class="search-area">
+    <form action="" method="get">
+      <input type="text" name="q" aria-labelledby="search-documentation" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" role="search" placeholder="Search"/>
+      <button class="icon"></button>
+    </form>
+  </div>
+  
+
+  <header>
+    <div id="left">
+      <label id="show-sidebar" class="icon" for="input-show-toc" title="Show/hide index"></label>
+    </div>
+    <div id="right">
+      <span>
+        <a id="logo-org" href="https://analog.com" aria-label="Analog Devices Inc. landing page"></a>
+        <div class="vertical-divider"></div>
+        
+        <label id="show-repotoc" for="input-show-repotoc" title="Show/hide docs">Docs</label>
+        
+        <a id="logo" href="../index.html">
+          <div>AD-R1M Robot Platform</div>
+        </a>
+      </span>
+      <span class="reverse">
+        <label id="show-localtoc" class="icon" for="input-show-localtoc" title="Show/hide contents"></label>
+      </span>
+    </div>
+  </header>
+
+
+  <div class="repotoc-tree overlay">
+    <root/>
+
+  </div>
+    <div class="localtoc">
+      <div class="tocwrapper">
+        <div class="header localtoc-header">
+          <a id="scroll-up" href="#top-anchor" title="Back to top"></a>
+        </div>
+        <nav>
+          <ul>
+<li><a class="reference internal" href="#">AD-R1M Troubleshooting</a><ul>
+<li><a class="reference internal" href="#remote-control-issues">Remote Control Issues</a><ul>
+<li><a class="reference internal" href="#radio-connection-problems">Radio Connection Problems</a></li>
+<li><a class="reference internal" href="#telemetry-status-interpretation">Telemetry Status Interpretation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#can-interface-issues">CAN Interface Issues</a><ul>
+<li><a class="reference internal" href="#common-can-error-messages">Common CAN Error Messages</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#imu-issues">IMU Issues</a><ul>
+<li><a class="reference internal" href="#imu-not-publishing">IMU Not Publishing</a></li>
+<li><a class="reference internal" href="#common-imu-issues">Common IMU Issues</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tof-camera-issues">ToF Camera Issues</a><ul>
+<li><a class="reference internal" href="#camera-not-working">Camera Not Working</a></li>
+<li><a class="reference internal" href="#common-camera-issues">Common Camera Issues</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#docker-container-issues">Docker Container Issues</a><ul>
+<li><a class="reference internal" href="#container-not-starting">Container Not Starting</a></li>
+<li><a class="reference internal" href="#common-docker-issues">Common Docker Issues</a></li>
+<li><a class="reference internal" href="#restart-services">Restart Services</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#navigation-issues">Navigation Issues</a><ul>
+<li><a class="reference internal" href="#navigation-not-working">Navigation Not Working</a></li>
+<li><a class="reference internal" href="#common-navigation-problems">Common Navigation Problems</a></li>
+<li><a class="reference internal" href="#localization-issues">Localization Issues</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#transform-tf-issues">Transform (TF) Issues</a><ul>
+<li><a class="reference internal" href="#check-tf-tree">Check TF Tree</a></li>
+<li><a class="reference internal" href="#common-tf-errors">Common TF Errors</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#network-and-communication-issues">Network and Communication Issues</a><ul>
+<li><a class="reference internal" href="#rviz-can-t-connect-to-robot">RViz Can’t Connect to Robot</a></li>
+<li><a class="reference internal" href="#topics-not-visible">Topics Not Visible</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#power-and-battery-issues">Power and Battery Issues</a></li>
+<li><a class="reference internal" href="#system-recovery">System Recovery</a><ul>
+<li><a class="reference internal" href="#full-system-reset">Full System Reset</a></li>
+<li><a class="reference internal" href="#reflashing-the-sd-card">Reflashing the SD Card</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#getting-help">Getting Help</a></li>
+</ul>
+</li>
+</ul>
+
+        </nav>
+      </div>
+    </div>
+
+  
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+    <a id="no-logo" href="../index.html">
+      AD-R1M Robot Platform
+    </a><input id="input-switch-toc" type="checkbox">
+<label id="show-repotoc" for="input-switch-toc">
+All content
+</label>
+<label id="show-toc" for="input-switch-toc">
+Content on this topic
+</label>
+<div class="repotoc-tree">
+  <root/>
+
+</div>
+<div class="toc-tree">
+  <ul class="current">
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-1" id="toctree-collapse-1"/><div class="collapse"><a class="reference internal" href="../tutorial/index.html">Tutorials</a><label for="toctree-collapse-1"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/getting-started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/system-setup.html">System setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../software-guide.html">Software guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/manage-configurations.html">Manage runtime configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/ros2-writing-your-own-nodes.html">Write your own ROS 2 nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/ros2-examples.html">AD-R1M ROS2 Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/ros2-getting-started.html">AD-R1M ROS 2 Getting Started</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2" id="toctree-collapse-2" checked=""/><div class="collapse"><a class="reference internal" href="index.html">How-to guides</a><label for="toctree-collapse-2"><div class="icon"></div></label></div><ul class="current">
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-1" id="toctree-collapse-2-1"/><div class="collapse"><a class="reference internal" href="build-from-scratch/index.html">Build an AD-R1M from scratch</a><label for="toctree-collapse-2-1"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="build-from-scratch/assemble-hardware.html">1. Assemble the hardware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="build-from-scratch/setup-rpi.html">2. Set up the internal computer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2"/><div class="collapse"><a class="reference internal" href="jetson/index.html">Set up Nvidia Jetson AGX Orin</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="jetson/agx-orin-setup.html">1) Linux installation on Jetson AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/setup-req-pkg-agx-orin.html">2) Setup required packages on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/setup-isaac-ros-agx-orin.html">3) Setup Isaac ROS on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/setup-isaac-ros-vslam.html">4) Setup Isaac ROS Visual SLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/vslam-setup-and-usage.html">5) VSLAM and RealSense setup and usage on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and Jetson AGX Orin: hardware setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/ad-r1m-cuvslam-setup.html">7) AD-R1M and cuVSLAM setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA cuVSLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/map-building-for-nav2.html">9) Map building for NAV2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/ad-r1m-realsense-gazebo.html">10) AD-R1M Gazebo simulation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="use-cases.html">AD-R1M use-cases</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-3" id="toctree-collapse-3"/><div class="collapse"><a class="reference internal" href="../reference/index.html">Reference</a><label for="toctree-collapse-3"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/specs.html">AD-R1M Specifications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-4" id="toctree-collapse-4"/><div class="collapse"><a class="reference internal" href="../explanation/index.html">Explanation</a><label for="toctree-collapse-4"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/ros2-architecture.html">AD-R1M ROS2 Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/software-system-architecture.html">AD-R1M software system architecture</a></li>
+</ul>
+</li>
+</ul>
+
+
+</div>
+        </div>
+      </div>
+
+  <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper" id="top-anchor">
+          <div class="body-header">
+  <nav class="breadcrumb"><ol><li><a href="index.html">How-to guides</a></li></ol></nav>
+</div>
+          <div class="body" role="main">
+            
+  <section id="ad-r1m-troubleshooting">
+<h1>AD-R1M Troubleshooting<a class="headerlink" href="#ad-r1m-troubleshooting" title="Link to this heading"></a></h1>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#remote-control-issues" id="id1">Remote Control Issues</a></p>
+<ul>
+<li><p><a class="reference internal" href="#radio-connection-problems" id="id2">Radio Connection Problems</a></p></li>
+<li><p><a class="reference internal" href="#telemetry-status-interpretation" id="id3">Telemetry Status Interpretation</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#can-interface-issues" id="id4">CAN Interface Issues</a></p>
+<ul>
+<li><p><a class="reference internal" href="#common-can-error-messages" id="id5">Common CAN Error Messages</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#imu-issues" id="id6">IMU Issues</a></p>
+<ul>
+<li><p><a class="reference internal" href="#imu-not-publishing" id="id7">IMU Not Publishing</a></p></li>
+<li><p><a class="reference internal" href="#common-imu-issues" id="id8">Common IMU Issues</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#tof-camera-issues" id="id9">ToF Camera Issues</a></p>
+<ul>
+<li><p><a class="reference internal" href="#camera-not-working" id="id10">Camera Not Working</a></p></li>
+<li><p><a class="reference internal" href="#common-camera-issues" id="id11">Common Camera Issues</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#docker-container-issues" id="id12">Docker Container Issues</a></p>
+<ul>
+<li><p><a class="reference internal" href="#container-not-starting" id="id13">Container Not Starting</a></p></li>
+<li><p><a class="reference internal" href="#common-docker-issues" id="id14">Common Docker Issues</a></p></li>
+<li><p><a class="reference internal" href="#restart-services" id="id15">Restart Services</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#navigation-issues" id="id16">Navigation Issues</a></p>
+<ul>
+<li><p><a class="reference internal" href="#navigation-not-working" id="id17">Navigation Not Working</a></p></li>
+<li><p><a class="reference internal" href="#common-navigation-problems" id="id18">Common Navigation Problems</a></p></li>
+<li><p><a class="reference internal" href="#localization-issues" id="id19">Localization Issues</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#transform-tf-issues" id="id20">Transform (TF) Issues</a></p>
+<ul>
+<li><p><a class="reference internal" href="#check-tf-tree" id="id21">Check TF Tree</a></p></li>
+<li><p><a class="reference internal" href="#common-tf-errors" id="id22">Common TF Errors</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#network-and-communication-issues" id="id23">Network and Communication Issues</a></p>
+<ul>
+<li><p><a class="reference internal" href="#rviz-can-t-connect-to-robot" id="id24">RViz Can’t Connect to Robot</a></p></li>
+<li><p><a class="reference internal" href="#topics-not-visible" id="id25">Topics Not Visible</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#power-and-battery-issues" id="id26">Power and Battery Issues</a></p></li>
+<li><p><a class="reference internal" href="#system-recovery" id="id27">System Recovery</a></p>
+<ul>
+<li><p><a class="reference internal" href="#full-system-reset" id="id28">Full System Reset</a></p></li>
+<li><p><a class="reference internal" href="#reflashing-the-sd-card" id="id29">Reflashing the SD Card</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#getting-help" id="id30">Getting Help</a></p></li>
+</ul>
+</nav>
+<p>This page provides solutions to common issues encountered when operating the AD-R1M robot.</p>
+<section id="remote-control-issues">
+<span id="rc-troubleshooting"></span><h2><a class="toc-backref" href="#id1" role="doc-backlink">Remote Control Issues</a><a class="headerlink" href="#remote-control-issues" title="Link to this heading"></a></h2>
+<section id="radio-connection-problems">
+<h3><a class="toc-backref" href="#id2" role="doc-backlink">Radio Connection Problems</a><a class="headerlink" href="#radio-connection-problems" title="Link to this heading"></a></h3>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 70.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Problem</p></th>
+<th class="head"><p>Solution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>No bars on RC screen</p></td>
+<td><p>Check robot is powered on and <code class="docutils literal notranslate"><span class="pre">bringup_radio.sh</span></code> is running</p></td>
+</tr>
+<tr class="row-odd"><td><p>“NO DATA” on telemetry</p></td>
+<td><p>Verify CRSF transceiver power (GPIO 24), check <code class="docutils literal notranslate"><span class="pre">/dev/ttyCRSF</span></code> device</p></td>
+</tr>
+<tr class="row-even"><td><p>RxBt blinking</p></td>
+<td><p>Wait for ROS2 stack to fully initialize (~30 seconds)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Robot doesn’t move when armed</p></td>
+<td><p>Check killswitch position, verify motor service is running: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">logs</span> <span class="pre">motors</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="telemetry-status-interpretation">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Telemetry Status Interpretation</a><a class="headerlink" href="#telemetry-status-interpretation" title="Link to this heading"></a></h3>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+<col style="width: 40.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Status</p></th>
+<th class="head"><p>RxBt Display</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Radio not connected</p></td>
+<td><p>“NO DATA” message</p></td>
+<td><p>No communication with robot</p></td>
+</tr>
+<tr class="row-odd"><td><p>Connected, no ROS 2 data yet</p></td>
+<td><p>RxBt blank or blinking</p></td>
+<td><p>Connection established but ROS2 stack not publishing</p></td>
+</tr>
+<tr class="row-even"><td><p>Fully functional</p></td>
+<td><p>RxBt shows robot system voltage</p></td>
+<td><p>Full telemetry operational (e.g., “12.3V”)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Ensure RxBt (robot battery voltage) does not drop below <strong>9V</strong> during operation.</p>
+</div>
+</section>
+</section>
+<section id="can-interface-issues">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">CAN Interface Issues</a><a class="headerlink" href="#can-interface-issues" title="Link to this heading"></a></h2>
+<p>If motor control fails, check the CAN interface:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ip<span class="w"> </span>link<span class="w"> </span>show<span class="w"> </span>slcan0
+candump<span class="w"> </span>slcan0
+</pre></div>
+</div>
+<p>Reset CAN interface (handled by bringup script):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>~/recan.sh
+</pre></div>
+</div>
+<section id="common-can-error-messages">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Common CAN Error Messages</a><a class="headerlink" href="#common-can-error-messages" title="Link to this heading"></a></h3>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Error</p></th>
+<th class="head"><p>Solution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">slcan0:</span> <span class="pre">link</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">ready</span></code></p></td>
+<td><p>Run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">~/recan.sh</span></code> to reinitialize CAN interface</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">CAN</span> <span class="pre">devices</span> <span class="pre">found</span></code></p></td>
+<td><p>Check USB-CAN adapter connection, verify <code class="docutils literal notranslate"><span class="pre">slcand</span></code> service is running</p></td>
+</tr>
+<tr class="row-even"><td><p>CANopen initialization timeout</p></td>
+<td><p>Restart the motors service: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">restart</span> <span class="pre">motors</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="imu-issues">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">IMU Issues</a><a class="headerlink" href="#imu-issues" title="Link to this heading"></a></h2>
+<section id="imu-not-publishing">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">IMU Not Publishing</a><a class="headerlink" href="#imu-not-publishing" title="Link to this heading"></a></h3>
+<p>Verify IIO device is accessible:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iio_info<span class="w"> </span>-u<span class="w"> </span>ip:localhost<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>adis16470
+</pre></div>
+</div>
+<p>Check sampling frequency:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>iio_attr<span class="w"> </span>-u<span class="w"> </span>ip:localhost<span class="w"> </span>-d<span class="w"> </span>adis16470<span class="w"> </span>sampling_frequency
+</pre></div>
+</div>
+</section>
+<section id="common-imu-issues">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Common IMU Issues</a><a class="headerlink" href="#common-imu-issues" title="Link to this heading"></a></h3>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Problem</p></th>
+<th class="head"><p>Solution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>No <code class="docutils literal notranslate"><span class="pre">adis16470</span></code> device found</p></td>
+<td><p>Check SPI connection, verify kernel module is loaded: <code class="docutils literal notranslate"><span class="pre">lsmod</span> <span class="pre">|</span> <span class="pre">grep</span> <span class="pre">adis</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>IMU data frozen</p></td>
+<td><p>Restart iiod service: <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">iiod</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>High noise in IMU readings</p></td>
+<td><p>Check mounting, ensure IMU is securely attached to chassis</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="tof-camera-issues">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">ToF Camera Issues</a><a class="headerlink" href="#tof-camera-issues" title="Link to this heading"></a></h2>
+<section id="camera-not-working">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Camera Not Working</a><a class="headerlink" href="#camera-not-working" title="Link to this heading"></a></h3>
+<p>Ensure media configuration script has run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>media-config.service
+</pre></div>
+</div>
+<p>Check depth image topic:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>adrd_demo_ros2-tof-1<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;source /ros2_ws/install/setup.bash &amp;&amp; ros2 topic hz /cam1/depth_image&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="common-camera-issues">
+<h3><a class="toc-backref" href="#id11" role="doc-backlink">Common Camera Issues</a><a class="headerlink" href="#common-camera-issues" title="Link to this heading"></a></h3>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Problem</p></th>
+<th class="head"><p>Solution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>No depth image published</p></td>
+<td><p>Run <code class="docutils literal notranslate"><span class="pre">~/Workspace/media_config_16D_16AB_8C.sh</span></code> and restart tof container</p></td>
+</tr>
+<tr class="row-odd"><td><p>Camera shows all zeros</p></td>
+<td><p>Check USB connection, verify camera is powered</p></td>
+</tr>
+<tr class="row-even"><td><p>Low frame rate</p></td>
+<td><p>Check CPU usage, reduce resolution if needed</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">/cam1/scan</span></code> empty</p></td>
+<td><p>Verify <code class="docutils literal notranslate"><span class="pre">depthimage_to_laserscan</span></code> node is running</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="docker-container-issues">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Docker Container Issues</a><a class="headerlink" href="#docker-container-issues" title="Link to this heading"></a></h2>
+<section id="container-not-starting">
+<h3><a class="toc-backref" href="#id13" role="doc-backlink">Container Not Starting</a><a class="headerlink" href="#container-not-starting" title="Link to this heading"></a></h3>
+<p>Check container logs:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>motors
+</pre></div>
+</div>
+<p>Verify profiles are enabled:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="nv">$COMPOSE_PROFILES</span>
+</pre></div>
+</div>
+</section>
+<section id="common-docker-issues">
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">Common Docker Issues</a><a class="headerlink" href="#common-docker-issues" title="Link to this heading"></a></h3>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Problem</p></th>
+<th class="head"><p>Solution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Container exits immediately</p></td>
+<td><p>Check logs for error messages, verify device permissions</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Permission</span> <span class="pre">denied</span></code> errors</p></td>
+<td><p>Ensure proper Docker flags (<code class="docutils literal notranslate"><span class="pre">--privileged</span></code>, <code class="docutils literal notranslate"><span class="pre">--cap-add</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>Network issues between containers</p></td>
+<td><p>Verify <code class="docutils literal notranslate"><span class="pre">--network=host</span></code> is set</p></td>
+</tr>
+<tr class="row-odd"><td><p>Container can’t access devices</p></td>
+<td><p>Check <code class="docutils literal notranslate"><span class="pre">--device</span></code> flags, verify device exists on host</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="restart-services">
+<h3><a class="toc-backref" href="#id15" role="doc-backlink">Restart Services</a><a class="headerlink" href="#restart-services" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Restart specific service</span>
+docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>motors
+
+<span class="c1"># Restart all services</span>
+docker<span class="w"> </span>compose<span class="w"> </span>down<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+
+<span class="c1"># Full system restart</span>
+sudo<span class="w"> </span>reboot
+</pre></div>
+</div>
+</section>
+</section>
+<section id="navigation-issues">
+<h2><a class="toc-backref" href="#id16" role="doc-backlink">Navigation Issues</a><a class="headerlink" href="#navigation-issues" title="Link to this heading"></a></h2>
+<section id="navigation-not-working">
+<h3><a class="toc-backref" href="#id17" role="doc-backlink">Navigation Not Working</a><a class="headerlink" href="#navigation-not-working" title="Link to this heading"></a></h3>
+<p>Verify map is loaded:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>--once<span class="w"> </span>/<span class="si">${</span><span class="nv">ROBOT_NAMESPACE</span><span class="si">}</span>/map
+</pre></div>
+</div>
+<p>Check AMCL pose estimate:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/<span class="si">${</span><span class="nv">ROBOT_NAMESPACE</span><span class="si">}</span>/amcl_pose
+</pre></div>
+</div>
+<p>Ensure costmaps are being published:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>topic<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>costmap
+</pre></div>
+</div>
+</section>
+<section id="common-navigation-problems">
+<h3><a class="toc-backref" href="#id18" role="doc-backlink">Common Navigation Problems</a><a class="headerlink" href="#common-navigation-problems" title="Link to this heading"></a></h3>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Problem</p></th>
+<th class="head"><p>Solution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Robot doesn’t move to goal</p></td>
+<td><p>Check <code class="docutils literal notranslate"><span class="pre">/cmd_vel_nav</span></code> is being published, verify twist_mux priority</p></td>
+</tr>
+<tr class="row-odd"><td><p>Path planning fails</p></td>
+<td><p>Ensure goal is in free space on the costmap</p></td>
+</tr>
+<tr class="row-even"><td><p>Robot oscillates near goal</p></td>
+<td><p>Tune DWB controller <code class="docutils literal notranslate"><span class="pre">xy_goal_tolerance</span></code> and <code class="docutils literal notranslate"><span class="pre">yaw_goal_tolerance</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>AMCL not converging</p></td>
+<td><p>Set initial pose in RViz, drive robot to help particle filter converge</p></td>
+</tr>
+<tr class="row-even"><td><p>Costmap shows incorrect obstacles</p></td>
+<td><p>Check LaserScan data, verify TF transforms are correct</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="localization-issues">
+<h3><a class="toc-backref" href="#id19" role="doc-backlink">Localization Issues</a><a class="headerlink" href="#localization-issues" title="Link to this heading"></a></h3>
+<p>If AMCL localization is poor:</p>
+<ol class="arabic simple">
+<li><p><strong>Set a good initial pose</strong> using RViz’s “2D Pose Estimate” tool</p></li>
+<li><p><strong>Drive the robot</strong> to help particles converge</p></li>
+<li><p><strong>Check the map</strong> matches the current environment</p></li>
+<li><p><strong>Verify LaserScan</strong> data is being received correctly</p></li>
+</ol>
+</section>
+</section>
+<section id="transform-tf-issues">
+<h2><a class="toc-backref" href="#id20" role="doc-backlink">Transform (TF) Issues</a><a class="headerlink" href="#transform-tf-issues" title="Link to this heading"></a></h2>
+<section id="check-tf-tree">
+<h3><a class="toc-backref" href="#id21" role="doc-backlink">Check TF Tree</a><a class="headerlink" href="#check-tf-tree" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>tf2_tools<span class="w"> </span>view_frames
+</pre></div>
+</div>
+<p>This generates a PDF showing the complete transform tree.</p>
+</section>
+<section id="common-tf-errors">
+<h3><a class="toc-backref" href="#id22" role="doc-backlink">Common TF Errors</a><a class="headerlink" href="#common-tf-errors" title="Link to this heading"></a></h3>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Error</p></th>
+<th class="head"><p>Solution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Could</span> <span class="pre">not</span> <span class="pre">transform...</span></code></p></td>
+<td><p>Check if the publishing node is running</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Lookup</span> <span class="pre">would</span> <span class="pre">require</span> <span class="pre">extrapolation</span> <span class="pre">into</span> <span class="pre">the</span> <span class="pre">past</span></code></p></td>
+<td><p>Time synchronization issue, check NTP or use <code class="docutils literal notranslate"><span class="pre">use_sim_time</span></code> parameter</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">map</span></code> frame not found</p></td>
+<td><p>Start localization or mapping node</p></td>
+</tr>
+<tr class="row-odd"><td><p>Duplicate TF publishers</p></td>
+<td><p>Ensure only one node publishes each transform</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="network-and-communication-issues">
+<h2><a class="toc-backref" href="#id23" role="doc-backlink">Network and Communication Issues</a><a class="headerlink" href="#network-and-communication-issues" title="Link to this heading"></a></h2>
+<section id="rviz-can-t-connect-to-robot">
+<h3><a class="toc-backref" href="#id24" role="doc-backlink">RViz Can’t Connect to Robot</a><a class="headerlink" href="#rviz-can-t-connect-to-robot" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p><strong>Check network connectivity</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ping<span class="w"> </span>ad-r1m-0.local
+</pre></div>
+</div>
+</li>
+<li><p><strong>Verify Zenoh router is running</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>rmw_zenoh_router
+</pre></div>
+</div>
+</li>
+<li><p><strong>Check RMW implementation</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="nv">$RMW_IMPLEMENTATION</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="topics-not-visible">
+<h3><a class="toc-backref" href="#id25" role="doc-backlink">Topics Not Visible</a><a class="headerlink" href="#topics-not-visible" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># List all topics</span>
+ros2<span class="w"> </span>topic<span class="w"> </span>list
+
+<span class="c1"># Check if node is publishing</span>
+ros2<span class="w"> </span>topic<span class="w"> </span>info<span class="w"> </span>/topic_name
+
+<span class="c1"># Check topic frequency</span>
+ros2<span class="w"> </span>topic<span class="w"> </span>hz<span class="w"> </span>/topic_name
+</pre></div>
+</div>
+</section>
+</section>
+<section id="power-and-battery-issues">
+<h2><a class="toc-backref" href="#id26" role="doc-backlink">Power and Battery Issues</a><a class="headerlink" href="#power-and-battery-issues" title="Link to this heading"></a></h2>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Problem</p></th>
+<th class="head"><p>Solution</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Robot won’t power on</p></td>
+<td><p>Press silver button to enable battery, then press green button to start</p></td>
+</tr>
+<tr class="row-odd"><td><p>Robot shuts down unexpectedly</p></td>
+<td><p>Battery voltage too low (below 9V), charge immediately</p></td>
+</tr>
+<tr class="row-even"><td><p>LED not blinking</p></td>
+<td><p>Check battery connection, verify BMS is functioning</p></td>
+</tr>
+<tr class="row-odd"><td><p>Motors not responding after power-on</p></td>
+<td><p>Wait for full boot sequence (~45s), check bringup script status</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="system-recovery">
+<h2><a class="toc-backref" href="#id27" role="doc-backlink">System Recovery</a><a class="headerlink" href="#system-recovery" title="Link to this heading"></a></h2>
+<section id="full-system-reset">
+<h3><a class="toc-backref" href="#id28" role="doc-backlink">Full System Reset</a><a class="headerlink" href="#full-system-reset" title="Link to this heading"></a></h3>
+<p>If the robot is unresponsive:</p>
+<ol class="arabic">
+<li><p><strong>SSH into the robot</strong> (if possible):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh<span class="w"> </span>analog@ad-r1m.local
+sudo<span class="w"> </span>reboot
+</pre></div>
+</div>
+</li>
+<li><p><strong>If SSH fails</strong>, power cycle the robot:</p>
+<ul class="simple">
+<li><p>Press silver button to cut battery power</p></li>
+<li><p>Wait 10 seconds</p></li>
+<li><p>Press silver button again to enable battery</p></li>
+<li><p>Press green button to restart</p></li>
+</ul>
+</li>
+</ol>
+</section>
+<section id="reflashing-the-sd-card">
+<h3><a class="toc-backref" href="#id29" role="doc-backlink">Reflashing the SD Card</a><a class="headerlink" href="#reflashing-the-sd-card" title="Link to this heading"></a></h3>
+<p>If the system is corrupted:</p>
+<ol class="arabic simple">
+<li><p>Download the latest AD-R1M image</p></li>
+<li><p>Flash to SD card using Raspberry Pi Imager or <code class="docutils literal notranslate"><span class="pre">dd</span></code></p></li>
+<li><p>Boot the robot with the new SD card</p></li>
+<li><p>Reconfigure WiFi and hostname as needed</p></li>
+</ol>
+</section>
+</section>
+<section id="getting-help">
+<h2><a class="toc-backref" href="#id30" role="doc-backlink">Getting Help</a><a class="headerlink" href="#getting-help" title="Link to this heading"></a></h2>
+<p>If you cannot resolve an issue:</p>
+<ol class="arabic">
+<li><p><strong>Collect logs</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>&gt;<span class="w"> </span>robot_logs.txt
+</pre></div>
+</div>
+</li>
+<li><p><strong>Capture system state</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>topic<span class="w"> </span>list<span class="w"> </span>&gt;<span class="w"> </span>topics.txt
+ros2<span class="w"> </span>node<span class="w"> </span>list<span class="w"> </span>&gt;<span class="w"> </span>nodes.txt
+</pre></div>
+</div>
+</li>
+<li><p><strong>Post on Engineer Zone</strong>: Visit the <a class="icon link reference external" href="https://ez.analog.com/" target="_blank">ADI Engineer Zone</a> with your logs and a description of the issue</p></li>
+</ol>
+</section>
+</section>
+
+
+          </div>
+              <div class="related">
+                &nbsp;
+    <a href="use-cases.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev">AD-R1M Use Case Examples</a>
+    <a href="../reference/index.html" title="Next document (Alt+Shift+RightArrow)" class="next">Reference</a>
+              </div>
+          
+        </div>
+      </div>
+  </div>
+
+  <label id="cancel-area-show-toc" for="input-show-toc"></label>
+  <label id="cancel-area-show-localtoc" for="input-show-localtoc"></label>
+    <footer>
+      &#169;2026, Analog Devices, Inc.
+      
+      |
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+      &amp; <a href="https://github.com/analogdevicesinc/doctools">Doctools</a>
+      
+    </footer>
+  </body>
+</html>
