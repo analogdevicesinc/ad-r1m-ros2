@@ -107,10 +107,7 @@ RUN --mount=type=cache,target=/etc/apt/apt.conf.d,from=depcacher,source=/etc/apt
     --mount=type=cache,target=/var/lib/apt/lists,from=depcacher,source=/var/lib/apt/lists,readonly \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
     < /tmp/build_apt.txt xargs apt-get install -y \
-        ccache \
-        can-utils \
-        gdb \
-        vim
+        ccache
 
 ENV DEBIAN_FRONTEND=
 
@@ -133,7 +130,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN --mount=type=cache,target=/etc/apt/apt.conf.d,from=depcacher,source=/etc/apt/apt.conf.d,readonly \
     --mount=type=cache,target=/var/lib/apt/lists,from=depcacher,source=/var/lib/apt/lists,readonly \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    < /tmp/exec_apt.txt xargs apt-get install -y
+    < /tmp/exec_apt.txt xargs apt-get install -y \
+        can-utils \
+        gdb \
+        vim
 
 ENV DEBIAN_FRONTEND=
 
@@ -178,6 +178,23 @@ RUN --mount=type=cache,target=/ccache/ ccache -s
 
 
 ####################################################################################################
+# tester stage:
+#   Runs colcon test on built packages. Used by CI to validate PRs.
+#
+#   Internal: users shouldn't use this as a target; used by CI workflows only.
+
+FROM builder AS tester
+ARG ROS_DISTRO
+ARG BUILD_PACKAGES
+
+RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
+    . install/setup.sh && \
+    colcon test \
+      --packages-up-to ${BUILD_PACKAGES} \
+      --return-code-on-test-failure
+
+
+####################################################################################################
 # dev stage:
 #   User-facing runtime container with both built packages as well as dev tools. Large, but useful
 #   when you need to jump in and edit, rebuild, debug, etc.
@@ -192,7 +209,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN --mount=type=cache,target=/etc/apt/apt.conf.d,from=depcacher,source=/etc/apt/apt.conf.d,readonly \
     --mount=type=cache,target=/var/lib/apt/lists,from=depcacher,source=/var/lib/apt/lists,readonly \
     --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    < /tmp/exec_apt.txt xargs apt-get install -y
+    < /tmp/exec_apt.txt xargs apt-get install -y \
+        can-utils \
+        gdb \
+        vim
 
 ENV DEBIAN_FRONTEND=
 
