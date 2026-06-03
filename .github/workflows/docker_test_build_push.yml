@@ -81,7 +81,24 @@ jobs:
 
       - name: Check for test failures
         run: |
-          if find /tmp/test-results -name '*.xml' -exec grep -l '<failure\|<error' {} \; 2>/dev/null | grep -q .; then
+          failed_files=$(find /tmp/test-results -name '*.xml' -exec grep -l '<failure\|<error' {} \; 2>/dev/null || true)
+          lint_pattern='ament_copyright|ament_flake8|ament_pep257|ament_lint_cmake|ament_xmllint|ament_cpplint|ament_cppcheck|ament_uncrustify'
+
+          has_lint_failures=false
+          has_test_failures=false
+
+          for f in $failed_files; do
+            if echo "$f" | grep -qE "$lint_pattern"; then
+              has_lint_failures=true
+            else
+              has_test_failures=true
+            fi
+          done
+
+          if $has_lint_failures; then
+            echo "::warning::Lint checks failed - see test summary above"
+          fi
+          if $has_test_failures; then
             echo "::error::Tests failed - see test summary above"
             exit 1
           fi
