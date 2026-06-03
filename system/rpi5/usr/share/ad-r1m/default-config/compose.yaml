@@ -31,6 +31,22 @@ services:
         condition: "service_started"
         required: false
 
+  tof:
+    image: $DOCKER_IMAGE
+    command: ros2 launch ad_r1m_perception_aditof depthimage_to_laserscan.launch.py
+    network_mode: host
+    ipc: host
+    pid: host
+    volumes:
+      - ./ros_data:/ros_data
+      - ./ros_data/log:/root/.ros/log
+    environment:
+      - RMW_IMPLEMENTATION
+    depends_on:
+      zenoh_router:
+        condition: "service_started"
+        required: false
+
   teleop_crsf:
     image: $DOCKER_IMAGE
     command: |
@@ -49,3 +65,77 @@ services:
       zenoh_router:
         condition: "service_started"
         required: false
+
+  # One-off actions, run with `docker compose run ...`
+  shell:
+    profiles: [oneoff]
+    image: $DOCKER_IMAGE
+    network_mode: host
+    ipc: host
+    pid: host
+    privileged: true
+    volumes:
+      - ./ros_data:/ros_data
+      - ./ros_data/log:/root/.ros/log
+    environment:
+      - RMW_IMPLEMENTATION
+
+  save_map:
+    profiles: [oneoff]
+    image: $DOCKER_IMAGE
+    command: bash -c "ros2 run nav2_map_server map_saver_cli -f /ros_data/map_$(date -Is -u)" --fmt png
+    network_mode: host
+    ipc: host
+    pid: host
+    privileged: true
+    volumes:
+      - ./ros_data:/ros_data
+      - ./ros_data/log:/root/.ros/log
+    environment:
+      - RMW_IMPLEMENTATION
+
+  
+  # Navigation profile. Select with `docker compose --profile nav ...`
+  localization:
+    profiles: [nav]
+    image: $DOCKER_IMAGE
+    command: ros2 launch ad_r1m_navigation localization_launch.py map:=/ros_data/map.yaml
+    network_mode: host
+    ipc: host
+    pid: host
+    privileged: true
+    volumes:
+      - ./ros_data:/ros_data
+      - ./ros_data/log:/root/.ros/log
+    environment:
+      - RMW_IMPLEMENTATION
+
+  nav:
+    profiles: [nav]
+    image: $DOCKER_IMAGE
+    command: ros2 launch ad_r1m_navigation navigation_launch.py
+    network_mode: host
+    ipc: host
+    pid: host
+    privileged: true
+    volumes:
+      - ./ros_data:/ros_data
+      - ./ros_data/log:/root/.ros/log
+    environment:
+      - RMW_IMPLEMENTATION
+
+  # Mapping profile. Select with `docker compose --profile slam ...`
+  slam:
+    profiles: [slam]
+    image: $DOCKER_IMAGE
+    command: ros2 launch ad_r1m_navigation online_async_launch.py
+    network_mode: host
+    ipc: host
+    pid: host
+    privileged: true
+    volumes:
+      - ./ros_data:/ros_data
+      - ./ros_data/log:/root/.ros/log
+    environment:
+      - RMW_IMPLEMENTATION
+
