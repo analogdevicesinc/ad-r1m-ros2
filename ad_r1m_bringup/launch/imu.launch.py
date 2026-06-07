@@ -15,7 +15,7 @@ def generate_launch_description():
         'frame_id',
         description='The TF frame ID for the IMU sensor (e.g., source_x/imu).',
         default_value=PythonExpression([
-            "'", LaunchConfiguration('namespace'), "/imu'",
+            "'", LaunchConfiguration('namespace'), "/imu'.lstrip('/')",
             " if '", LaunchConfiguration('namespace'), "' else 'imu'"
         ])
     )
