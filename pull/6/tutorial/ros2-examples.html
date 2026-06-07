@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Mapping with SLAM Toolbox" name="description" />
+
+    <title>AD-R1M ROS2 Examples &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=ac863bf0" />
+    <script async="async" src="../_static/app.umd.js?v=09b0c6bc"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="AD-R1M ROS 2 Getting Started" href="ros2-getting-started.html" />
+    <link rel="prev" title="Writing Your Own ROS 2 Nodes for AD-R1M" href="ros2-writing-your-own-nodes.html" />
+   
+  
+  
+  <meta name="repository" content="ad-r1m-ros2">
+  <meta name="version" content="6/merge">
+  
+    <meta name="page_source_suffix" content=".rst">
+  
+  
+  
+
+
+<style>
+  body {
+    
+  }
+
+  body.dark {
+    
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body:not(.light) {
+      
+    }
+  }
+</style>
+  </head>
+  
+    <body>
+  
+  <input type="checkbox" id="input-show-toc">
+  <input type="checkbox" id="input-show-localtoc">
+  <input type="checkbox" id="input-show-repotoc">
+
+  
+  <div class="search-area">
+    <form action="" method="get">
+      <input type="text" name="q" aria-labelledby="search-documentation" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" role="search" placeholder="Search"/>
+      <button class="icon"></button>
+    </form>
+  </div>
+  
+
+  <header>
+    <div id="left">
+      <label id="show-sidebar" class="icon" for="input-show-toc" title="Show/hide index"></label>
+    </div>
+    <div id="right">
+      <span>
+        <a id="logo-org" href="https://analog.com" aria-label="Analog Devices Inc. landing page"></a>
+        <div class="vertical-divider"></div>
+        
+        <label id="show-repotoc" for="input-show-repotoc" title="Show/hide docs">Docs</label>
+        
+        <a id="logo" href="../index.html">
+          <div>AD-R1M Robot Platform</div>
+        </a>
+      </span>
+      <span class="reverse">
+        <label id="show-localtoc" class="icon" for="input-show-localtoc" title="Show/hide contents"></label>
+      </span>
+    </div>
+  </header>
+
+
+  <div class="repotoc-tree overlay">
+    <root/>
+
+  </div>
+    <div class="localtoc">
+      <div class="tocwrapper">
+        <div class="header localtoc-header">
+          <a id="scroll-up" href="#top-anchor" title="Back to top"></a>
+        </div>
+        <nav>
+          <ul>
+<li><a class="reference internal" href="#">AD-R1M ROS2 Examples</a><ul>
+<li><a class="reference internal" href="#mapping-with-slam-toolbox">Mapping with SLAM Toolbox</a><ul>
+<li><a class="reference internal" href="#starting-the-mapping-session">Starting the Mapping Session</a></li>
+<li><a class="reference internal" href="#mapping-process">Mapping Process</a></li>
+<li><a class="reference internal" href="#saving-the-map">Saving the Map</a></li>
+<li><a class="reference internal" href="#slam-configuration">SLAM Configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#localization-with-amcl">Localization with AMCL</a><ul>
+<li><a class="reference internal" href="#starting-localization">Starting Localization</a></li>
+<li><a class="reference internal" href="#setting-initial-pose">Setting Initial Pose</a></li>
+<li><a class="reference internal" href="#amcl-topics">AMCL Topics</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#autonomous-navigation-with-nav2">Autonomous Navigation with Nav2</a><ul>
+<li><a class="reference internal" href="#starting-navigation">Starting Navigation</a></li>
+<li><a class="reference internal" href="#sending-navigation-goals">Sending Navigation Goals</a></li>
+<li><a class="reference internal" href="#navigation-topics">Navigation Topics</a></li>
+<li><a class="reference internal" href="#nav2-configuration">Nav2 Configuration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ros-2-topics-reference">ROS 2 Topics Reference</a></li>
+<li><a class="reference internal" href="#waypoint-following">Waypoint Following</a><ul>
+<li><a class="reference internal" href="#python-waypoint-example">Python Waypoint Example</a></li>
+<li><a class="reference internal" href="#command-line-waypoint-navigation">Command Line Waypoint Navigation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nav2-custom-actions">Nav2 Custom Actions</a><ul>
+<li><a class="reference internal" href="#custom-action-plugin-structure">Custom Action Plugin Structure</a></li>
+<li><a class="reference internal" href="#lift-control-integration">Lift Control Integration</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#multi-robot-setup">Multi-Robot Setup</a><ul>
+<li><a class="reference internal" href="#launching-multiple-robots">Launching Multiple Robots</a></li>
+<li><a class="reference internal" href="#rviz-for-multiple-robots">RViz for Multiple Robots</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </nav>
+      </div>
+    </div>
+
+  
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+    <a id="no-logo" href="../index.html">
+      AD-R1M Robot Platform
+    </a><input id="input-switch-toc" type="checkbox">
+<label id="show-repotoc" for="input-switch-toc">
+All content
+</label>
+<label id="show-toc" for="input-switch-toc">
+Content on this topic
+</label>
+<div class="repotoc-tree">
+  <root/>
+
+</div>
+<div class="toc-tree">
+  <ul class="current">
+<li class="toctree-l1 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-1" id="toctree-collapse-1" checked=""/><div class="collapse"><a class="reference internal" href="index.html">Tutorials</a><label for="toctree-collapse-1"><div class="icon"></div></label></div><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system-setup.html">System setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../software-guide.html">Software guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage-configurations.html">Manage runtime configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ros2-writing-your-own-nodes.html">Write your own ROS 2 nodes</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">AD-R1M ROS2 Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ros2-getting-started.html">AD-R1M ROS 2 Getting Started</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2" id="toctree-collapse-2"/><div class="collapse"><a class="reference internal" href="../how-to/index.html">How-to guides</a><label for="toctree-collapse-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-1" id="toctree-collapse-2-1"/><div class="collapse"><a class="reference internal" href="../how-to/build-from-scratch/index.html">Build an AD-R1M from scratch</a><label for="toctree-collapse-2-1"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/build-from-scratch/assemble-hardware.html">1. Assemble the hardware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/build-from-scratch/setup-rpi.html">2. Set up the internal computer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2"/><div class="collapse"><a class="reference internal" href="../how-to/jetson/index.html">Set up Nvidia Jetson AGX Orin</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/agx-orin-setup.html">1) Linux installation on Jetson AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/setup-req-pkg-agx-orin.html">2) Setup required packages on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/setup-isaac-ros-agx-orin.html">3) Setup Isaac ROS on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/setup-isaac-ros-vslam.html">4) Setup Isaac ROS Visual SLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/vslam-setup-and-usage.html">5) VSLAM and RealSense setup and usage on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and Jetson AGX Orin: hardware setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-cuvslam-setup.html">7) AD-R1M and cuVSLAM setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA cuVSLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/map-building-for-nav2.html">9) Map building for NAV2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-realsense-gazebo.html">10) AD-R1M Gazebo simulation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/use-cases.html">AD-R1M use-cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-3" id="toctree-collapse-3"/><div class="collapse"><a class="reference internal" href="../reference/index.html">Reference</a><label for="toctree-collapse-3"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/specs.html">AD-R1M Specifications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-4" id="toctree-collapse-4"/><div class="collapse"><a class="reference internal" href="../explanation/index.html">Explanation</a><label for="toctree-collapse-4"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/ros2-architecture.html">AD-R1M ROS2 Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/software-system-architecture.html">AD-R1M software system architecture</a></li>
+</ul>
+</li>
+</ul>
+
+
+</div>
+        </div>
+      </div>
+
+  <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper" id="top-anchor">
+          <div class="body-header">
+  <nav class="breadcrumb"><ol><li><a href="index.html">Tutorials</a></li></ol></nav>
+</div>
+          <div class="body" role="main">
+            
+  <section id="ad-r1m-ros2-examples">
+<h1>AD-R1M ROS2 Examples<a class="headerlink" href="#ad-r1m-ros2-examples" title="Link to this heading"></a></h1>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#mapping-with-slam-toolbox" id="id6">Mapping with SLAM Toolbox</a></p>
+<ul>
+<li><p><a class="reference internal" href="#starting-the-mapping-session" id="id7">Starting the Mapping Session</a></p></li>
+<li><p><a class="reference internal" href="#mapping-process" id="id8">Mapping Process</a></p></li>
+<li><p><a class="reference internal" href="#saving-the-map" id="id9">Saving the Map</a></p></li>
+<li><p><a class="reference internal" href="#slam-configuration" id="id10">SLAM Configuration</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#localization-with-amcl" id="id11">Localization with AMCL</a></p>
+<ul>
+<li><p><a class="reference internal" href="#starting-localization" id="id12">Starting Localization</a></p></li>
+<li><p><a class="reference internal" href="#setting-initial-pose" id="id13">Setting Initial Pose</a></p></li>
+<li><p><a class="reference internal" href="#amcl-topics" id="id14">AMCL Topics</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#autonomous-navigation-with-nav2" id="id15">Autonomous Navigation with Nav2</a></p>
+<ul>
+<li><p><a class="reference internal" href="#starting-navigation" id="id16">Starting Navigation</a></p></li>
+<li><p><a class="reference internal" href="#sending-navigation-goals" id="id17">Sending Navigation Goals</a></p></li>
+<li><p><a class="reference internal" href="#navigation-topics" id="id18">Navigation Topics</a></p></li>
+<li><p><a class="reference internal" href="#nav2-configuration" id="id19">Nav2 Configuration</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#ros-2-topics-reference" id="id20">ROS 2 Topics Reference</a></p></li>
+<li><p><a class="reference internal" href="#waypoint-following" id="id21">Waypoint Following</a></p>
+<ul>
+<li><p><a class="reference internal" href="#python-waypoint-example" id="id22">Python Waypoint Example</a></p></li>
+<li><p><a class="reference internal" href="#command-line-waypoint-navigation" id="id23">Command Line Waypoint Navigation</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#nav2-custom-actions" id="id24">Nav2 Custom Actions</a></p>
+<ul>
+<li><p><a class="reference internal" href="#custom-action-plugin-structure" id="id25">Custom Action Plugin Structure</a></p></li>
+<li><p><a class="reference internal" href="#lift-control-integration" id="id26">Lift Control Integration</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#multi-robot-setup" id="id27">Multi-Robot Setup</a></p>
+<ul>
+<li><p><a class="reference internal" href="#launching-multiple-robots" id="id28">Launching Multiple Robots</a></p></li>
+<li><p><a class="reference internal" href="#rviz-for-multiple-robots" id="id29">RViz for Multiple Robots</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>This page provides practical examples for using the AD-R1M robot with ROS2, including mapping, localization, and autonomous navigation.</p>
+<section id="mapping-with-slam-toolbox">
+<span id="mapping-with-slam"></span><h2><a class="toc-backref" href="#id6" role="doc-backlink">Mapping with SLAM Toolbox</a><a class="headerlink" href="#mapping-with-slam-toolbox" title="Link to this heading"></a></h2>
+<p>Create a map of your environment using SLAM Toolbox for real-time mapping.</p>
+<section id="starting-the-mapping-session">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Starting the Mapping Session</a><a class="headerlink" href="#starting-the-mapping-session" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># On the robot (via SSH)</span>
+~/bringup_mapping.sh
+</pre></div>
+</div>
+<p><strong>Active Docker Compose Services</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">motors</span></code>, <code class="docutils literal notranslate"><span class="pre">imu</span></code>, <code class="docutils literal notranslate"><span class="pre">tof</span></code>, <code class="docutils literal notranslate"><span class="pre">tof_republish</span></code> (core sensors/actuators)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mapping</span></code> (SLAM Toolbox)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">teleop_radio</span></code> (radio control for driving)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rmw_zenoh_router</span></code> (middleware)</p></li>
+</ul>
+</section>
+<section id="mapping-process">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Mapping Process</a><a class="headerlink" href="#mapping-process" title="Link to this heading"></a></h3>
+<ol class="arabic">
+<li><p><strong>Start RViz</strong> on your host computer (see <a class="reference internal" href="ros2-getting-started.html"><span class="doc">AD-R1M ROS 2 Getting Started</span></a>):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>platform/common/scripts
+./start_rviz.sh<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="nb">false</span>
+</pre></div>
+</div>
+</li>
+<li><p><strong>Change the Fixed Frame</strong> in RViz to <code class="docutils literal notranslate"><span class="pre">map</span></code></p></li>
+<li><p><strong>Arm the robot</strong> using the killswitch on the RC handset (switch SA to “ARMED”)</p></li>
+<li><p><strong>Drive the robot around</strong> using the right stick on the remote control</p></li>
+</ol>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="../_images/do_mapping.png"><img alt="Mapping in RViz" src="../_images/do_mapping.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">RViz mapping view - change Fixed Frame to “map”</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/do_mapping.gif"><img alt="../_images/do_mapping.gif" src="../_images/do_mapping.gif" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Robot mapping demonstration</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>Map Legend:</strong></p>
+<ul class="simple">
+<li><p><strong>White areas</strong> = Free space (safe to navigate)</p></li>
+<li><p><strong>Black areas</strong> = Obstacles (walls, objects)</p></li>
+<li><p><strong>Gray areas</strong> = Unexplored/unknown</p></li>
+</ul>
+</section>
+<section id="saving-the-map">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Saving the Map</a><a class="headerlink" href="#saving-the-map" title="Link to this heading"></a></h3>
+<p>After mapping is complete, save the map:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the convenience script</span>
+~/save_map.sh
+
+<span class="c1"># Or manually</span>
+ros2<span class="w"> </span>run<span class="w"> </span>nav2_map_server<span class="w"> </span>map_saver_cli<span class="w"> </span>-f<span class="w"> </span>/ros_data/maps/map
+</pre></div>
+</div>
+<p>This creates two files in <code class="docutils literal notranslate"><span class="pre">/home/analog/ros_data/maps/</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">map.pgm</span></code> - Grayscale image (white=free, black=occupied, gray=unknown)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">map.yaml</span></code> - Map metadata (resolution, origin, thresholds)</p></li>
+</ul>
+</section>
+<section id="slam-configuration">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">SLAM Configuration</a><a class="headerlink" href="#slam-configuration" title="Link to this heading"></a></h3>
+<p>SLAM Toolbox parameters: <code class="docutils literal notranslate"><span class="pre">/ros_data/mapping_params.yaml</span></code></p>
+<p>Key parameters:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">slam_toolbox</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span><span class="w">            </span><span class="c1"># Map resolution (meters/pixel)</span>
+<span class="w">    </span><span class="nt">max_laser_range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span><span class="w">        </span><span class="c1"># Maximum laser range to use</span>
+<span class="w">    </span><span class="nt">minimum_travel_distance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span><span class="w">  </span><span class="c1"># Min distance before adding scan</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="localization-with-amcl">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Localization with AMCL</a><a class="headerlink" href="#localization-with-amcl" title="Link to this heading"></a></h2>
+<p>Once you have a map, use AMCL (Adaptive Monte Carlo Localization) to localize the robot.</p>
+<section id="starting-localization">
+<h3><a class="toc-backref" href="#id12" role="doc-backlink">Starting Localization</a><a class="headerlink" href="#starting-localization" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start with AMCL localization and Nav2</span>
+~/bringup_amcl.sh
+
+<span class="c1"># Or with explicit environment variables</span>
+<span class="nv">LOCALIZATION</span><span class="o">=</span>amcl<span class="w"> </span><span class="nv">NAVIGATION</span><span class="o">=</span>nav2<span class="w"> </span><span class="nv">TELEOP</span><span class="o">=</span>radio<span class="w"> </span>~/bringup.sh
+</pre></div>
+</div>
+</section>
+<section id="setting-initial-pose">
+<h3><a class="toc-backref" href="#id13" role="doc-backlink">Setting Initial Pose</a><a class="headerlink" href="#setting-initial-pose" title="Link to this heading"></a></h3>
+<p>In RViz:</p>
+<ol class="arabic simple">
+<li><p>Click <strong>2D Pose Estimate</strong> in the toolbar</p></li>
+<li><p>Click on the map where the robot is located</p></li>
+<li><p>Drag to set the orientation (direction robot is facing)</p></li>
+</ol>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/locate.gif"><img alt="../_images/locate.gif" src="../_images/locate.gif" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Setting initial pose for AMCL localization</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The robot’s estimated position (red arrow) and uncertainty (purple ellipse) will be displayed.</p>
+<p><strong>Tips for good localization:</strong></p>
+<ul class="simple">
+<li><p>Set the initial pose as accurately as possible</p></li>
+<li><p>Drive the robot around to help particles converge</p></li>
+<li><p>Ensure the saved map matches the current environment</p></li>
+</ul>
+</section>
+<section id="amcl-topics">
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">AMCL Topics</a><a class="headerlink" href="#amcl-topics" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Publishes: <code class="docutils literal notranslate"><span class="pre">/amcl_pose</span></code> (geometry_msgs/PoseWithCovarianceStamped)</p></li>
+<li><p>Publishes: TF transform (<code class="docutils literal notranslate"><span class="pre">map</span></code> → <code class="docutils literal notranslate"><span class="pre">odom</span></code>)</p></li>
+<li><p>Subscribes: <code class="docutils literal notranslate"><span class="pre">/cam1/scan</span></code> (laser scan)</p></li>
+<li><p>Subscribes: <code class="docutils literal notranslate"><span class="pre">/odom</span></code> (odometry)</p></li>
+</ul>
+</section>
+</section>
+<section id="autonomous-navigation-with-nav2">
+<span id="autonomous-navigation"></span><h2><a class="toc-backref" href="#id15" role="doc-backlink">Autonomous Navigation with Nav2</a><a class="headerlink" href="#autonomous-navigation-with-nav2" title="Link to this heading"></a></h2>
+<p>Use the Nav2 navigation stack for autonomous point-to-point navigation.</p>
+<section id="starting-navigation">
+<h3><a class="toc-backref" href="#id16" role="doc-backlink">Starting Navigation</a><a class="headerlink" href="#starting-navigation" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start full navigation stack</span>
+~/bringup_amcl.sh
+</pre></div>
+</div>
+<p><strong>Note</strong>: <code class="docutils literal notranslate"><span class="pre">bringup_amcl.sh</span></code> enables both AMCL localization and Nav2 navigation.</p>
+</section>
+<section id="sending-navigation-goals">
+<h3><a class="toc-backref" href="#id17" role="doc-backlink">Sending Navigation Goals</a><a class="headerlink" href="#sending-navigation-goals" title="Link to this heading"></a></h3>
+<p>In RViz:</p>
+<ol class="arabic simple">
+<li><p>Click <strong>2D Nav Goal</strong> in the toolbar</p></li>
+<li><p>Click on the desired destination on the map</p></li>
+<li><p>Drag to set the goal orientation</p></li>
+<li><p>The robot will plan a path and navigate autonomously</p></li>
+</ol>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/nav_view.png"><img alt="Navigation View" src="../_images/nav_view.png" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">RViz navigation view showing global path and costmaps</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="../_images/navigate.gif"><img alt="../_images/navigate.gif" src="../_images/navigate.gif" style="width: 800px;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Robot autonomous navigation demonstration</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p><strong>Navigation displays:</strong></p>
+<ul class="simple">
+<li><p><strong>Green line</strong> - Global path plan</p></li>
+<li><p><strong>Colored regions</strong> - Costmap (inflation around obstacles)</p></li>
+<li><p><strong>Robot footprint</strong> - Current robot position</p></li>
+</ul>
+</section>
+<section id="navigation-topics">
+<h3><a class="toc-backref" href="#id18" role="doc-backlink">Navigation Topics</a><a class="headerlink" href="#navigation-topics" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Subscribes: <code class="docutils literal notranslate"><span class="pre">/goal_pose</span></code> (geometry_msgs/PoseStamped)</p></li>
+<li><p>Publishes: <code class="docutils literal notranslate"><span class="pre">/cmd_vel_nav</span></code> (velocity commands to twist_mux)</p></li>
+<li><p>Publishes: <code class="docutils literal notranslate"><span class="pre">/plan</span></code> (global path)</p></li>
+<li><p>Publishes: <code class="docutils literal notranslate"><span class="pre">/local_costmap/costmap</span></code>, <code class="docutils literal notranslate"><span class="pre">/global_costmap/costmap</span></code></p></li>
+</ul>
+</section>
+<section id="nav2-configuration">
+<h3><a class="toc-backref" href="#id19" role="doc-backlink">Nav2 Configuration</a><a class="headerlink" href="#nav2-configuration" title="Link to this heading"></a></h3>
+<p>Navigation parameters: <code class="docutils literal notranslate"><span class="pre">/ros_data/navigation_params.yaml</span></code></p>
+<p>Key parameters:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">controller_server</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">controller_frequency</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20.0</span>
+<span class="w">    </span><span class="nt">FollowPath</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">max_vel_x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span><span class="w">          </span><span class="c1"># Maximum forward velocity</span>
+<span class="w">      </span><span class="nt">max_vel_theta</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span><span class="w">      </span><span class="c1"># Maximum angular velocity</span>
+<span class="w">      </span><span class="nt">xy_goal_tolerance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span><span class="w">  </span><span class="c1"># Position tolerance at goal</span>
+<span class="w">      </span><span class="nt">yaw_goal_tolerance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span><span class="w"> </span><span class="c1"># Orientation tolerance at goal</span>
+</pre></div>
+</div>
+<p>For detailed navigation tuning, see the <a class="icon link reference external" href="https://docs.nav2.org/" target="_blank">Nav2 documentation</a>.</p>
+</section>
+</section>
+<section id="ros-2-topics-reference">
+<h2><a class="toc-backref" href="#id20" role="doc-backlink">ROS 2 Topics Reference</a><a class="headerlink" href="#ros-2-topics-reference" title="Link to this heading"></a></h2>
+<p>Core sensor and control topics used by the AD-R1M:</p>
+<p><strong>Sensor Data</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/cam1/scan</span></code> - 2D laser scan (from ToF depth-to-laserscan)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/cam1/depth_image</span></code> - Raw depth image from ToF camera</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/imu</span></code> - IMU data (angular velocities, linear accelerations)</p></li>
+</ul>
+<p><strong>Odometry and Localization</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/diff_drive_controller/odom</span></code> - Raw odometry from wheel encoders</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/odom</span></code> - Fused odometry (encoder + IMU via EKF)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/amcl_pose</span></code> - AMCL localization pose estimate</p></li>
+</ul>
+<p><strong>Motion Control</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/cmd_vel_joy</span></code> - Velocity commands from RC handset</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/cmd_vel_nav</span></code> - Velocity commands from Nav2</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/diff_drive_controller/cmd_vel_unstamped</span></code> - Final commands to motors</p></li>
+</ul>
+<p><strong>Navigation</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/goal_pose</span></code> - Navigation goals</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/plan</span></code> - Global path</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/map</span></code> - Occupancy grid map</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># List all active topics</span>
+ros2<span class="w"> </span>topic<span class="w"> </span>list
+
+<span class="c1"># Echo a topic</span>
+ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/imu<span class="w"> </span>--once
+
+<span class="c1"># Check topic frequency</span>
+ros2<span class="w"> </span>topic<span class="w"> </span>hz<span class="w"> </span>/cam1/scan
+</pre></div>
+</div>
+<p>For detailed architecture information, see <a class="reference internal" href="../explanation/ros2-architecture.html"><span class="doc">AD-R1M ROS2 Architecture</span></a>.</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;root</span><span class="w"> </span><span class="na">main_tree_to_execute=</span><span class="s">&quot;MainTree&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;BehaviorTree</span><span class="w"> </span><span class="na">ID=</span><span class="s">&quot;MainTree&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Sequence</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;navigate_sequence&quot;</span><span class="nt">&gt;</span>
+<span class="w">      </span><span class="nt">&lt;ComputePathToPose</span><span class="w"> </span><span class="na">goal=</span><span class="s">&quot;{goal}&quot;</span><span class="w"> </span><span class="na">path=</span><span class="s">&quot;{path}&quot;</span><span class="w"> </span><span class="na">planner_id=</span><span class="s">&quot;GridBased&quot;</span><span class="nt">/&gt;</span>
+<span class="w">      </span><span class="nt">&lt;FollowPath</span><span class="w"> </span><span class="na">path=</span><span class="s">&quot;{path}&quot;</span><span class="w"> </span><span class="na">controller_id=</span><span class="s">&quot;FollowPath&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Sequence&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/BehaviorTree&gt;</span>
+<span class="nt">&lt;/root&gt;</span>
+</pre></div>
+</div>
+<p>Load custom behavior trees via the Nav2 parameters:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">bt_navigator</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">default_bt_xml_filename</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/path/to/custom_bt.xml&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="waypoint-following">
+<h2><a class="toc-backref" href="#id21" role="doc-backlink">Waypoint Following</a><a class="headerlink" href="#waypoint-following" title="Link to this heading"></a></h2>
+<p>For multi-waypoint missions, use the waypoint follower action.</p>
+<section id="python-waypoint-example">
+<h3><a class="toc-backref" href="#id22" role="doc-backlink">Python Waypoint Example</a><a class="headerlink" href="#python-waypoint-example" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">nav2_simple_commander.robot_navigator</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasicNavigator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">geometry_msgs.msg</span><span class="w"> </span><span class="kn">import</span> <span class="n">PoseStamped</span>
+
+<span class="n">navigator</span> <span class="o">=</span> <span class="n">BasicNavigator</span><span class="p">()</span>
+
+<span class="c1"># Define waypoints</span>
+<span class="n">waypoints</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="n">waypoint1</span> <span class="o">=</span> <span class="n">PoseStamped</span><span class="p">()</span>
+<span class="n">waypoint1</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s1">&#39;map&#39;</span>
+<span class="n">waypoint1</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">waypoint1</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">waypoint1</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">waypoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">waypoint1</span><span class="p">)</span>
+
+<span class="n">waypoint2</span> <span class="o">=</span> <span class="n">PoseStamped</span><span class="p">()</span>
+<span class="n">waypoint2</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s1">&#39;map&#39;</span>
+<span class="n">waypoint2</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">2.0</span>
+<span class="n">waypoint2</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">waypoint2</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">waypoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">waypoint2</span><span class="p">)</span>
+
+<span class="c1"># Start waypoint following</span>
+<span class="n">navigator</span><span class="o">.</span><span class="n">followWaypoints</span><span class="p">(</span><span class="n">waypoints</span><span class="p">)</span>
+
+<span class="k">while</span> <span class="ow">not</span> <span class="n">navigator</span><span class="o">.</span><span class="n">isTaskComplete</span><span class="p">():</span>
+    <span class="n">feedback</span> <span class="o">=</span> <span class="n">navigator</span><span class="o">.</span><span class="n">getFeedback</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Current waypoint: </span><span class="si">{</span><span class="n">feedback</span><span class="o">.</span><span class="n">current_waypoint</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">navigator</span><span class="o">.</span><span class="n">getResult</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Navigation result: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="command-line-waypoint-navigation">
+<h3><a class="toc-backref" href="#id23" role="doc-backlink">Command Line Waypoint Navigation</a><a class="headerlink" href="#command-line-waypoint-navigation" title="Link to this heading"></a></h3>
+<p>Send a single goal via command line:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>action<span class="w"> </span>send_goal<span class="w"> </span>/navigate_to_pose<span class="w"> </span>nav2_msgs/action/NavigateToPose<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s2">&quot;{pose: {header: {frame_id: &#39;map&#39;}, pose: {position: {x: 1.0, y: 0.0, z: 0.0}, orientation: {w: 1.0}}}}&quot;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="nav2-custom-actions">
+<h2><a class="toc-backref" href="#id24" role="doc-backlink">Nav2 Custom Actions</a><a class="headerlink" href="#nav2-custom-actions" title="Link to this heading"></a></h2>
+<p>Create custom Nav2 action plugins for specialized behaviors.</p>
+<section id="custom-action-plugin-structure">
+<h3><a class="toc-backref" href="#id25" role="doc-backlink">Custom Action Plugin Structure</a><a class="headerlink" href="#custom-action-plugin-structure" title="Link to this heading"></a></h3>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;nav2_behavior_tree/bt_action_node.hpp&quot;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyCustomAction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">nav2_behavior_tree</span><span class="o">::</span><span class="n">BtActionNode</span><span class="o">&lt;</span><span class="n">my_msgs</span><span class="o">::</span><span class="n">action</span><span class="o">::</span><span class="n">MyAction</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">  </span><span class="n">MyCustomAction</span><span class="p">(</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">xml_tag_name</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">action_name</span><span class="p">,</span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeConfiguration</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">conf</span><span class="p">)</span>
+<span class="w">  </span><span class="o">:</span><span class="w"> </span><span class="n">BtActionNode</span><span class="o">&lt;</span><span class="n">my_msgs</span><span class="o">::</span><span class="n">action</span><span class="o">::</span><span class="n">MyAction</span><span class="o">&gt;</span><span class="p">(</span><span class="n">xml_tag_name</span><span class="p">,</span><span class="w"> </span><span class="n">action_name</span><span class="p">,</span><span class="w"> </span><span class="n">conf</span><span class="p">)</span>
+<span class="w">  </span><span class="p">{}</span>
+
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">on_tick</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Set action goal</span>
+<span class="w">    </span><span class="n">goal_</span><span class="p">.</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getInput</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;target&quot;</span><span class="p">).</span><span class="n">value</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="w"> </span><span class="n">on_success</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">SUCCESS</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Register the plugin in your package’s CMakeLists.txt and plugin XML.</p>
+</section>
+<section id="lift-control-integration">
+<h3><a class="toc-backref" href="#id26" role="doc-backlink">Lift Control Integration</a><a class="headerlink" href="#lift-control-integration" title="Link to this heading"></a></h3>
+<p>The AD-R1M includes a lift mechanism controlled via ROS2 services:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rclpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rclpy.node</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">adrd_demo_ros2.srv</span><span class="w"> </span><span class="kn">import</span> <span class="n">LiftGPIO</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">LiftController</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;lift_controller&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_client</span><span class="p">(</span><span class="n">LiftGPIO</span><span class="p">,</span> <span class="s1">&#39;/elevator_to_robot&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">send_lift_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Commands:</span>
+<span class="sd">          0 = Hold</span>
+<span class="sd">          1 = Lift up</span>
+<span class="sd">          2 = Lift down</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">request</span> <span class="o">=</span> <span class="n">LiftGPIO</span><span class="o">.</span><span class="n">Request</span><span class="p">()</span>
+        <span class="n">request</span><span class="o">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">command</span>
+        <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">call_async</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">future</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="multi-robot-setup">
+<h2><a class="toc-backref" href="#id27" role="doc-backlink">Multi-Robot Setup</a><a class="headerlink" href="#multi-robot-setup" title="Link to this heading"></a></h2>
+<p>For multi-robot scenarios, use namespaces to separate robot topics and frames.</p>
+<section id="launching-multiple-robots">
+<h3><a class="toc-backref" href="#id28" role="doc-backlink">Launching Multiple Robots</a><a class="headerlink" href="#launching-multiple-robots" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Robot 1</span>
+<span class="nv">ROBOT_NAMESPACE</span><span class="o">=</span>ad_r1m_0<span class="w"> </span>./bringup.sh
+
+<span class="c1"># Robot 2 (on different Raspberry Pi)</span>
+<span class="nv">ROBOT_NAMESPACE</span><span class="o">=</span>ad_r1m_1<span class="w"> </span>./bringup.sh
+</pre></div>
+</div>
+</section>
+<section id="rviz-for-multiple-robots">
+<h3><a class="toc-backref" href="#id29" role="doc-backlink">RViz for Multiple Robots</a><a class="headerlink" href="#rviz-for-multiple-robots" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># View robot 0</span>
+./start_rviz.sh<span class="w"> </span><span class="m">0</span>
+
+<span class="c1"># View robot 1</span>
+./start_rviz.sh<span class="w"> </span><span class="m">1</span>
+</pre></div>
+</div>
+<p>Each robot’s topics will be prefixed with its namespace (e.g., <code class="docutils literal notranslate"><span class="pre">/ad_r1m_0/cmd_vel</span></code>, <code class="docutils literal notranslate"><span class="pre">/ad_r1m_1/cmd_vel</span></code>).</p>
+</section>
+</section>
+</section>
+
+
+          </div>
+              <div class="related">
+                &nbsp;
+    <a href="ros2-writing-your-own-nodes.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev">Writing Your Own ROS 2 Nodes for AD-R1M</a>
+    <a href="ros2-getting-started.html" title="Next document (Alt+Shift+RightArrow)" class="next">AD-R1M ROS 2 Getting Started</a>
+              </div>
+          
+        </div>
+      </div>
+  </div>
+
+  <label id="cancel-area-show-toc" for="input-show-toc"></label>
+  <label id="cancel-area-show-localtoc" for="input-show-localtoc"></label>
+    <footer>
+      &#169;2026, Analog Devices, Inc.
+      
+      |
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+      &amp; <a href="https://github.com/analogdevicesinc/doctools">Doctools</a>
+      
+    </footer>
+  </body>
+</html>
