@@ -4,7 +4,7 @@ from launch_ros.actions import Node
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.substitutions import FindPackageShare
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Command
-
+from launch.conditions import IfCondition
 
 def generate_launch_description():
     # Package share directories
@@ -21,10 +21,12 @@ def generate_launch_description():
     decl_robot_xacro = DeclareLaunchArgument('robot_xacro', default_value=
         PathJoinSubstitution([FindPackageShare('ad_r1m_bringup'),
                              'urdf', 'ad_r1m_canopen.urdf.xacro']))
+    decl_sensor_fusion = DeclareLaunchArgument('sensor_fusion', default_value="true")
 
     namespace = LaunchConfiguration('namespace')
     can_iface = LaunchConfiguration('can_iface')
     robot_xacro = LaunchConfiguration('robot_xacro')
+    sensor_fusion = LaunchConfiguration('sensor_fusion')
 
     robot_description = Command([
         'xacro ', robot_xacro,
@@ -49,7 +51,8 @@ def generate_launch_description():
                                   ])
         ),
         launch_arguments={
-            'namespace': namespace
+            'namespace': namespace,
+            'sensor_fusion': sensor_fusion,
         }.items()
     )
 
@@ -68,6 +71,7 @@ def generate_launch_description():
                 ad_r1m_control, 'launch', 'sensor_fusion.launch.py'
             ])
         ),
+        condition=IfCondition(sensor_fusion),
         launch_arguments={
             'namespace': namespace
         }.items()
@@ -86,6 +90,7 @@ def generate_launch_description():
         decl_namespace,
         decl_can_iface,
         decl_robot_xacro,
+        decl_sensor_fusion,
 
         rsp,
         drive_control,
