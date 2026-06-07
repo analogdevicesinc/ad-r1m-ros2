@@ -1,87 +1,102 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) 2026 Analog Devices Inc.
+#
+# Dispatcher workflow for docker builds, tests, and optionally pushes.
+# See docker_build_test_push.yml for the underlying logic.
+
+name: Docker build, test, push
 on:
-  pull_request: # test
+  pull_request:      # Run tests on all PRs
   push:
     branches:
-      - main    # nightly
+      - '**'         # Run tests on all branches
+      - 'main'       # Deploy nightly from the main branch
     tags:
-      - '*.*.*' # release
+      - '*.*.*'      # Deploy release from semver tags
 
 permissions:
   contents: read
   id-token: write
 
+env:
+  REGISTRY: docker.cloudsmith.io/adi/adrd-common
+
 jobs:
   setup:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     outputs:
-      matrix: ${{ steps.set_vars.outputs.matrix }}
-      ver_major: ${{ steps.set_vars.outputs.ver_major }}
-      ver_minor: ${{ steps.set_vars.outputs.ver_minor }}
-      ver_patch: ${{ steps.set_vars.outputs.ver_patch }}
-      date: ${{ steps.set_vars.outputs.date }}
+      tag_suffixes: ${{ steps.vars.outputs.tag_suffixes }}
+      docker_target: ${{ steps.vars.outputs.docker_target }}
+      docker_push: ${{ steps.vars.outputs.docker_push }}
+      full_version: ${{ steps.vars.outputs.full_version }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - id: set_vars
+      - uses: actions/checkout@v4
+      - id: vars
         run: |
-          echo "matrix=$(python3 -c 'import yaml, json; print(json.dumps(yaml.safe_load(open("docker/dockers.yml"))))')" >> "$GITHUB_OUTPUT"
-          echo "ver_major=$(cut -d. -f1 <VERSION)" >> "$GITHUB_OUTPUT"
-          echo "ver_minor=$(cut -d. -f2 <VERSION)" >> "$GITHUB_OUTPUT"
-          echo "ver_patch=$(cut -d. -f3 <VERSION)" >> "$GITHUB_OUTPUT"
-          echo "date=$(date -u +'%Y%m%d')" >> "$GITHUB_OUTPUT"
+          v_major=$(cut -d. -f1 <VERSION)
+          v_minor=$(cut -d. -f2 <VERSION)
+          v_patch=$(cut -d. -f3 <VERSION)
 
-  docker-test:
-    needs: setup
-    if: github.event_name == 'pull_request'
+          docker_target=tester
+          docker_push=false
+          suffix="-${{ github.ref_name }}"
+          suffix="${suffix//[^-_a-zA-Z0-9]/-}"
+
+          if ${{ github.ref_type == 'tag' }}; then
+            echo "Release ${v_major}.${v_minor}.${v_patch}"
+            docker_target=runner
+            docker_push=true
+            suffix=""
+          elif ${{ github.ref == 'refs/heads/main' }}; then
+            echo "Nightly pre-release ${v_major}.${v_minor}.${v_patch}"
+            docker_target=dev
+            docker_push=true
+            suffix="-nightly"
+          elif ${{ github.event_name == 'pull_request' }}; then
+            echo "Test PR #${{ github.event.pull_request.number }}"
+            docker_target=tester
+            docker_push=false
+            suffix="-pr-${{ github.event.pull_request.number }}"
+          else
+            echo "Test ref ${{ github.ref_name }}"
+          fi
+
+          {
+            echo "tag_suffixes<<EOF"
+            echo "${suffix}"
+            echo "-${v_major}${suffix}"
+            echo "-${v_major}.${v_minor}${suffix}"
+            echo "-${v_major}.${v_minor}.${v_patch}${suffix}"
+            echo "EOF"
+
+            echo "docker_target=$docker_target"
+            echo "docker_push=$docker_push"
+            echo "full_version=${v_major}.${v_minor}.${v_patch}${suffix}"
+          } >> "$GITHUB_OUTPUT"
+
+  docker_test_build_push:  
     strategy:
       fail-fast: false
-      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
-    uses: ./.github/workflows/docker_build_multiplatform.yml
+      matrix:
+        include:
+        # ioan 2026-06-06: The ad-r1m:{sim,robot}-{distro} naming is legacy which I am strongly
+        #                  considering deprecating in favor of {metapackage}:{distro}
+        #                  e.g. ad_r1m_robot:humble instead of ad-r1m:robot-humble
+        - { name: "ad-r1m", tag_prefix: "sim-humble",   build_packages: "ad_r1m_sim",   ros_distro: "humble",   platforms: '["linux/amd64"]'}
+        - { name: "ad-r1m", tag_prefix: "robot-humble", build_packages: "ad_r1m_robot", ros_distro: "humble",   platforms: '["linux/arm64"]'}
+        - { name: "ad-r1m", tag_prefix: "robot-jazzy",  build_packages: "ad_r1m_robot", ros_distro: "jazzy",    platforms: '["linux/arm64"]'}
+
+    needs: [setup]
+    name: Docker ${{ matrix.name }}
+    uses: ./.github/workflows/_docker_build_test_push.yml
     secrets: inherit
     with:
       name: ${{ matrix.name }}
-      platforms: ${{ matrix.platforms }}
-      ros_distro: ${{ matrix.ros_distro }}
       build_packages: ${{ matrix.build_packages }}
-      target: builder
-      push: false
-
-  docker-nightly:
-    needs: setup
-    if: github.event_name == 'push' && github.ref_type == 'branch'
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
-    uses: ./.github/workflows/docker_build_multiplatform.yml
-    secrets: inherit
-    with:
-      name: ${{ matrix.name }}
-      platforms: ${{ matrix.platforms }}
       ros_distro: ${{ matrix.ros_distro }}
-      build_packages: ${{ matrix.build_packages }}
-      target: dev
-      push: true
-      tags: |
-        docker.cloudsmith.io/adi/adrd-common/ad-r1m:${{ matrix.name }}-${{ matrix.ros_distro }}-nightly
-        docker.cloudsmith.io/adi/adrd-common/ad-r1m:${{ matrix.name }}-${{ matrix.ros_distro }}-${{ needs.setup.outputs.ver_major }}-nightly
-        docker.cloudsmith.io/adi/adrd-common/ad-r1m:${{ matrix.name }}-${{ matrix.ros_distro }}-${{ needs.setup.outputs.ver_major }}.${{ needs.setup.outputs.ver_minor }}-nightly
-
-  docker-release:
-    needs: setup
-    if: github.event_name == 'push' && github.ref_type == 'tag'
-    strategy:
-      fail-fast: false
-      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
-    uses: ./.github/workflows/docker_build_multiplatform.yml
-    secrets: inherit
-    with:
-      name: ${{ matrix.name }}
       platforms: ${{ matrix.platforms }}
-      ros_distro: ${{ matrix.ros_distro }}
-      build_packages: ${{ matrix.build_packages }}
-      target: runner
-      push: true
-      tags: |
-        docker.cloudsmith.io/adi/adrd-common/ad-r1m:${{ matrix.name }}-${{ matrix.ros_distro }}
-        docker.cloudsmith.io/adi/adrd-common/ad-r1m:${{ matrix.name }}-${{ matrix.ros_distro }}-${{ needs.setup.outputs.ver_major }}
-        docker.cloudsmith.io/adi/adrd-common/ad-r1m:${{ matrix.name }}-${{ matrix.ros_distro }}-${{ needs.setup.outputs.ver_major }}.${{ needs.setup.outputs.ver_minor }}
+      docker_target: ${{ needs.setup.outputs.docker_target }}
+      docker_push: ${{ needs.setup.outputs.docker_push == 'true' }} # Convert str to bool
+      tag_prefix: ${{ matrix.tag_prefix }}
+      tag_suffixes: ${{ needs.setup.outputs.tag_suffixes }}
+      full_version: ${{ needs.setup.outputs.full_version }}

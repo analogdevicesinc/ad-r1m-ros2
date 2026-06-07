@@ -1,3 +1,4 @@
+name: Debian package
 on:
   pull_request: # just lint
     paths:
