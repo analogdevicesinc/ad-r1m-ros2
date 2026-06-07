@@ -1,0 +1,189 @@
+on:
+  workflow_call:
+    inputs:
+      name: { type: string, required: true }
+      ros_distro: { type: string, required: true }
+      build_packages: { type: string, required: true }
+      platforms: { type: string, required: true }  # JSON array, e.g. '["linux/amd64","linux/arm64"]'
+      docker_target: { type: string, required: true }
+      docker_push: { type: boolean, required: true }
+      tag_prefix: { type: string, required: true }
+      tag_suffixes: { type: string, required: true }
+      full_version: { type: string, required: true }
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  REGISTRY: docker.cloudsmith.io/adi/adrd-common
+
+jobs:
+  per_platform:
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: ${{ fromJSON(inputs.platforms) }}
+
+    name: ${{ inputs.name }}:${{ inputs.tag_prefix }} ${{ matrix.platform }}
+    environment: ${{ inputs.docker_push && 'nightly' || '' }}
+    runs-on: ${{ startsWith(matrix.platform, 'linux/arm') && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
+
+    steps:
+      - uses: docker/setup-buildx-action@v3
+      - uses: actions/checkout@v4
+
+      - name: Docker annotations
+        id: annotations
+        run: |
+          {
+            echo "DOCKER_ANNOTATIONS<<EOF"
+            echo 'org.opencontainers.image.created="$(date --rfc-3339=seconds -u)"'
+            echo 'org.opencontainers.image.authors="Analog Devices, Inc."'
+            echo 'org.opencontainers.image.url="${{ github.server_url }}/${{ github.repository }}"'
+            echo 'org.opencontainers.image.documentation="https://analogdevicesinc.github.io/ad-r1m-ros2"'
+            echo 'org.opencontainers.image.source="${{ github.repositoryUrl }}"'
+            echo 'org.opencontainers.image.version="${{ inputs.full_version }}"'
+            echo 'org.opencontainers.image.revision="${{ github.sha }}"'
+            echo 'org.opencontainers.image.vendor="Analog Devices, Inc."'
+            echo 'org.opencontainers.image.licenses="Apache-2.0"'
+            echo 'org.opencontainers.image.description="AD-R1M Docker image with metapackage(s) ${{ inputs.build_packages }}"'
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Build and test
+        id: test
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          platforms: ${{ matrix.platform }}
+          target: tester
+          build-args: |
+            ROS_DISTRO=${{ inputs.ros_distro }}
+            BUILD_PACKAGES=${{ inputs.build_packages }}
+          annotations: ${{ steps.annotations.outputs.DOCKER_ANNOTATIONS }}
+          load: true
+
+      - name: Extract test results
+        run: |
+          container=$(docker create ${{ steps.test.outputs.imageid }})
+          mkdir -p /tmp/test-results
+          docker cp $container:/ros2_ws/build/. /tmp/test-results/ || true
+          docker rm $container
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ inputs.name }}-${{ inputs.tag_prefix }}-${{ strategy.job-index }}
+          path: /tmp/test-results/**/test_results/**/*.xml
+          if-no-files-found: warn
+
+      - name: Test summary
+        uses: test-summary/action@v2
+        with:
+          paths: /tmp/test-results/**/test_results/**/*.xml
+      
+      - name: Cloudsmith OIDC
+        id: oidc
+        if: inputs.docker_push
+        uses: cloudsmith-io/cloudsmith-cli-action@v2
+        with:
+          oidc-namespace: adi
+          oidc-service-slug: ${{ secrets.CLOUDSMITH_SERVICE_SLUG }}
+
+      - name: Docker login
+        id: login
+        if: inputs.docker_push && steps.oidc.outcome == 'success'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.CLOUDSMITH_SERVICE_SLUG }}
+          password: ${{ env.CLOUDSMITH_API_KEY }} # Set by cloudsmith-cli-action step
+
+      - name: Build final image (${{ inputs.docker_target }})
+        id: build
+        if: inputs.docker_push && steps.login.outcome == 'success'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/Dockerfile
+          platforms: ${{ matrix.platform }}
+          target: ${{ inputs.docker_target }}
+          build-args: |
+            ROS_DISTRO=${{ inputs.ros_distro }}
+            BUILD_PACKAGES=${{ inputs.build_packages }}
+          annotations: ${{ steps.annotations.outputs.DOCKER_ANNOTATIONS }}
+          outputs: type=image,name=${{ env.REGISTRY }}/${{ inputs.name }},push-by-digest=true,name-canonical=true,push=true
+
+      - name: Export digest
+        if: inputs.docker_push && steps.login.outcome == 'success'
+        run: |
+          mkdir -p /tmp/digests
+          digest="${{ steps.build.outputs.digest }}"
+          touch "/tmp/digests/${digest#sha256:}"
+
+      - name: Upload digest
+        if: inputs.docker_push && steps.login.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: digests-${{ inputs.name }}-${{ inputs.tag_prefix }}-${{ strategy.job-index }}
+          path: /tmp/digests/*
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Warn if push skipped
+        if: inputs.docker_push && steps.login.outcome != 'success'
+        run: echo "::warning::Registry auth failed. Image built but not pushed."
+
+  merge_push:
+    name: ${{ inputs.name }}:${{ inputs.tag_prefix }} merge and push
+    needs: [per_platform]
+    if: inputs.docker_push
+    environment: nightly
+    runs-on: ubuntu-latest
+    steps:
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Download digests
+        uses: actions/download-artifact@v4
+        with:
+          path: /tmp/digests
+          pattern: digests-${{ inputs.name }}-${{ inputs.tag_prefix }}-*
+          merge-multiple: true
+
+      - name: Check for digests
+        id: check
+        run: |
+          if [ -z "$(ls -A /tmp/digests 2>/dev/null)" ]; then
+            echo "::error::No digests found. Skipping manifest creation."
+            exit 1
+          fi
+
+      - name: Cloudsmith OIDC
+        uses: cloudsmith-io/cloudsmith-cli-action@v2
+        with:
+          oidc-namespace: adi
+          oidc-service-slug: ${{ secrets.CLOUDSMITH_SERVICE_SLUG }}
+
+      - name: Docker login
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ secrets.CLOUDSMITH_SERVICE_SLUG }}
+          password: ${{ env.CLOUDSMITH_API_KEY }} # Set by cloudsmith-cli-action
+
+      - name: Create manifest and push tags
+        run: |
+          # Collect all platform digests
+          digests=""
+          for f in /tmp/digests/*; do
+            digests="$digests ${{ env.REGISTRY }}/${{ inputs.name }}@sha256:$(basename $f)"
+          done
+
+          # imagetools create both creates AND pushes the manifest to the registry
+          for tag_suffix in ${{ inputs.tag_suffixes }}; do
+            tag="${{ env.REGISTRY }}/${{ inputs.name }}:${{ inputs.tag_prefix }}${tag_suffix}"
+            echo "Creating and pushing manifest: $tag"
+            docker buildx imagetools create -t "$tag" $digests
+          done
