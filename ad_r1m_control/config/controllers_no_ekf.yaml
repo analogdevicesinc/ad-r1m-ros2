@@ -1,0 +1,6 @@
+# This overlays controllers.yaml when EKF is disabled
+/**:
+  diff_drive_controller:
+    ros__parameters:
+      enable_odom_tf: true
+
