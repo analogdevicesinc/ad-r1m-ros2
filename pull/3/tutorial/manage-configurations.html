@@ -284,7 +284,7 @@ We will remove <code class="docutils literal notranslate"><span class="pre">tele
 </section>
 <section id="start-a-runtime-configuration">
 <h2>Start a runtime configuration<a class="headerlink" href="#start-a-runtime-configuration" title="Link to this heading"></a></h2>
-<p>With everything set up, use the <code class="docutils literal notranslate"><span class="pre">ad-r1m</span> <span class="pre">start</span></code> command to start this configuration. Enter the configuration folder and run <code class="docutils literal notranslate"><span class="pre">ad-r1m</span> <span class="pre">start</span></code>:</p>
+<p>With everything set up, use <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">up</span></code> to start this configuration. Enter the configuration folder and run:</p>
 <div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
 </pre></div>
 </div>
@@ -294,7 +294,7 @@ We will remove <code class="docutils literal notranslate"><span class="pre">tele
 <div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/keyboard-teleop-config$
 </pre></div>
 </div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ad-r1m<span class="w"> </span>start
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>up
 </pre></div>
 </div>
 <div class="clear-left"></div></div></div><p>For this example, because the keyboard teleop node requires interaction in the terminal, we will also need to attach to it. This will generally not be needed. To attach to it and start controlling the robot, run:</p>
