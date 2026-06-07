@@ -87,7 +87,7 @@ jobs:
         - { name: "ad-r1m", tag_prefix: "robot-jazzy",  build_packages: "ad_r1m_robot", ros_distro: "jazzy",    platforms: '["linux/arm64"]'}
 
     needs: [setup]
-    name: Docker ${{ matrix.name }}
+    name: Docker ${{ matrix.name }}:${{ matrix.tag_prefix }}
     uses: ./.github/workflows/_docker_build_test_push.yml
     secrets: inherit
     with:
