@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Once you have the hardware assembled, the next step is setting up the OS on the Raspberry Pi. You may choose among the following installation variants:" name="description" />
+
+    <title>2. How to set up the AD-R1M internal computer &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/app.min.css?v=ac863bf0" />
+    <script async="async" src="../../_static/app.umd.js?v=09b0c6bc"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="NVIDIA AGX Orin and cuVSLAM Integration" href="../jetson/index.html" />
+    <link rel="prev" title="1. How to assemble the AD-R1M hardware" href="assemble-hardware.html" />
+   
+  
+  
+  <meta name="repository" content="ad-r1m-ros2">
+  <meta name="version" content="5/merge">
+  
+    <meta name="page_source_suffix" content=".rst">
+  
+  
+  
+
+
+<style>
+  body {
+    
+  }
+
+  body.dark {
+    
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body:not(.light) {
+      
+    }
+  }
+</style>
+  </head>
+  
+    <body>
+  
+  <input type="checkbox" id="input-show-toc">
+  <input type="checkbox" id="input-show-localtoc">
+  <input type="checkbox" id="input-show-repotoc">
+
+  
+  <div class="search-area">
+    <form action="" method="get">
+      <input type="text" name="q" aria-labelledby="search-documentation" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" role="search" placeholder="Search"/>
+      <button class="icon"></button>
+    </form>
+  </div>
+  
+
+  <header>
+    <div id="left">
+      <label id="show-sidebar" class="icon" for="input-show-toc" title="Show/hide index"></label>
+    </div>
+    <div id="right">
+      <span>
+        <a id="logo-org" href="https://analog.com" aria-label="Analog Devices Inc. landing page"></a>
+        <div class="vertical-divider"></div>
+        
+        <label id="show-repotoc" for="input-show-repotoc" title="Show/hide docs">Docs</label>
+        
+        <a id="logo" href="../../index.html">
+          <div>AD-R1M Robot Platform</div>
+        </a>
+      </span>
+      <span class="reverse">
+        <label id="show-localtoc" class="icon" for="input-show-localtoc" title="Show/hide contents"></label>
+      </span>
+    </div>
+  </header>
+
+
+  <div class="repotoc-tree overlay">
+    <root/>
+
+  </div>
+    <div class="localtoc">
+      <div class="tocwrapper">
+        <div class="header localtoc-header">
+          <a id="scroll-up" href="#top-anchor" title="Back to top"></a>
+        </div>
+        <nav>
+          <ul>
+<li><a class="reference internal" href="#">2. How to set up the AD-R1M internal computer</a><ul>
+<li><a class="reference internal" href="#use-a-pre-made-sd-card-image">2.1. Use a pre-made SD card image</a></li>
+<li><a class="reference internal" href="#install-on-top-of-kuiper-linux">2.2. Install on top of Kuiper Linux</a><ul>
+<li><a class="reference internal" href="#install-base-kuiper-image">2.2.1. Install base Kuiper image</a></li>
+<li><a class="reference internal" href="#set-hostname">2.2.2. Set hostname</a></li>
+<li><a class="reference internal" href="#connect-to-wi-fi">2.2.3. Connect to Wi-Fi</a></li>
+<li><a class="reference internal" href="#install-system-package">2.2.4. Install system package</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#keeping-up-to-date">2.3. Keeping up to date</a></li>
+</ul>
+</li>
+</ul>
+
+        </nav>
+      </div>
+    </div>
+
+  
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+    <a id="no-logo" href="../../index.html">
+      AD-R1M Robot Platform
+    </a><input id="input-switch-toc" type="checkbox">
+<label id="show-repotoc" for="input-switch-toc">
+All content
+</label>
+<label id="show-toc" for="input-switch-toc">
+Content on this topic
+</label>
+<div class="repotoc-tree">
+  <root/>
+
+</div>
+<div class="toc-tree">
+  <ul class="current">
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-1" id="toctree-collapse-1"/><div class="collapse"><a class="reference internal" href="../../tutorial/index.html">Tutorials</a><label for="toctree-collapse-1"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/getting-started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/system-setup.html">System setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../software-guide.html">Software guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/manage-configurations.html">Manage runtime configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/ros2-writing-your-own-nodes.html">Write your own ROS 2 nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/ros2-examples.html">AD-R1M ROS2 Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/ros2-getting-started.html">AD-R1M ROS 2 Getting Started</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2" id="toctree-collapse-2" checked=""/><div class="collapse"><a class="reference internal" href="../index.html">How-to guides</a><label for="toctree-collapse-2"><div class="icon"></div></label></div><ul class="current">
+<li class="toctree-l2 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-1" id="toctree-collapse-2-1" checked=""/><div class="collapse"><a class="reference internal" href="index.html">Build an AD-R1M from scratch</a><label for="toctree-collapse-2-1"><div class="icon"></div></label></div><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="assemble-hardware.html">1. Assemble the hardware</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2. Set up the internal computer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2"/><div class="collapse"><a class="reference internal" href="../jetson/index.html">Set up Nvidia Jetson AGX Orin</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/agx-orin-setup.html">1) Linux installation on Jetson AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/setup-req-pkg-agx-orin.html">2) Setup required packages on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/setup-isaac-ros-agx-orin.html">3) Setup Isaac ROS on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/setup-isaac-ros-vslam.html">4) Setup Isaac ROS Visual SLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/vslam-setup-and-usage.html">5) VSLAM and RealSense setup and usage on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and Jetson AGX Orin: hardware setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/ad-r1m-cuvslam-setup.html">7) AD-R1M and cuVSLAM setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA cuVSLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/map-building-for-nav2.html">9) Map building for NAV2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/ad-r1m-realsense-gazebo.html">10) AD-R1M Gazebo simulation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../use-cases.html">AD-R1M use-cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-3" id="toctree-collapse-3"/><div class="collapse"><a class="reference internal" href="../../reference/index.html">Reference</a><label for="toctree-collapse-3"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/specs.html">AD-R1M Specifications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-4" id="toctree-collapse-4"/><div class="collapse"><a class="reference internal" href="../../explanation/index.html">Explanation</a><label for="toctree-collapse-4"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../explanation/ros2-architecture.html">AD-R1M ROS2 Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../explanation/software-system-architecture.html">AD-R1M software system architecture</a></li>
+</ul>
+</li>
+</ul>
+
+
+</div>
+        </div>
+      </div>
+
+  <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper" id="top-anchor">
+          <div class="body-header">
+  <nav class="breadcrumb"><ol><li><a href="../index.html">How-to guides</a></li><li><a href="index.html">How to build an AD-R1M from scratch</a></li></ol></nav>
+</div>
+          <div class="body" role="main">
+            
+  <section id="how-to-set-up-the-ad-r1m-internal-computer">
+<h1><span class="section-number">2. </span>How to set up the AD-R1M internal computer<a class="headerlink" href="#how-to-set-up-the-ad-r1m-internal-computer" title="Link to this heading"></a></h1>
+<p>Once you have the hardware assembled, the next step is setting up the OS on the Raspberry Pi. You may choose among the following installation variants:</p>
+<ol class="arabic simple">
+<li><p><a class="reference internal" href="#use-premade-image"><span class="std std-ref">Use a pre-made SD card image</span></a></p></li>
+<li><p><a class="reference internal" href="#install-on-top-of-kuiper"><span class="std std-ref">Install on top of Kuiper Linux</span></a></p></li>
+</ol>
+<section id="use-a-pre-made-sd-card-image">
+<span id="use-premade-image"></span><h2><span class="section-number">2.1. </span>Use a pre-made SD card image<a class="headerlink" href="#use-a-pre-made-sd-card-image" title="Link to this heading"></a></h2>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>We only provide SD card images for major releases. Since the AD-R1M is currently in pre-release state, <strong>there are no SD card images.</strong></p>
+</div>
+</section>
+<section id="install-on-top-of-kuiper-linux">
+<span id="install-on-top-of-kuiper"></span><h2><span class="section-number">2.2. </span>Install on top of Kuiper Linux<a class="headerlink" href="#install-on-top-of-kuiper-linux" title="Link to this heading"></a></h2>
+<p>For this setup variant, you will first install Kuiper Linux on the Pi, configure the OS, then add the AD-R1M system package.</p>
+<section id="install-base-kuiper-image">
+<h3><span class="section-number">2.2.1. </span>Install base Kuiper image<a class="headerlink" href="#install-base-kuiper-image" title="Link to this heading"></a></h3>
+<p>Download the latest Kuiper Linux release SD card image for arm64 from the <a class="icon link reference external" href="https://github.com/analogdevicesinc/kuiper/releases" target="_blank">ADI Kuiper Linux release page</a>.</p>
+<p>Write the image to an SD card (suggested software: <a class="icon link reference external" href="https://github.com/raspberrypi/rpi-imager" target="_blank">Raspberry Pi Imager</a>, <a class="icon link reference external" href="https://etcher.balena.io/" target="_blank">Balena Etcher</a>, <em>Kuiper Imager (coming soon)</em>).</p>
+<p>Load the SD card into the AD-R1M’s Raspberry Pi and power the robot on.</p>
+<p>When booting for the first time, the Pi will not connect to any WiFi network. For first-time configuration, you have two options to gain control:</p>
+<ol class="arabic">
+<li><p>Attach a USB keyboard, mouse, and HDMI screen to the Raspberry Pi, and use the graphical interface. Press <kbd class="kbd docutils literal notranslate">Ctrl</kbd>+<kbd class="kbd docutils literal notranslate">Alt</kbd>+<kbd class="kbd docutils literal notranslate">T</kbd> to open a terminal window.</p></li>
+<li><p>Attach an Ethernet cable to the Raspberry Pi and connect with SSH:</p>
+<div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh<span class="w"> </span>analog@analog.local
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select highlight-text notranslate"><div class="highlight"><pre><span></span>Password: analog
+</pre></div>
+</div>
+<div class="clear-left"></div></div></div><p>This works both if you connect to a LAN, as well as directly to your PC (link-local).</p>
+</li>
+</ol>
+</section>
+<section id="set-hostname">
+<h3><span class="section-number">2.2.2. </span>Set hostname<a class="headerlink" href="#set-hostname" title="Link to this heading"></a></h3>
+<p>The default hostname in ADI Kuiper Linux is <code class="docutils literal notranslate"><span class="pre">analog</span></code>. Choose an appropriate hostname and edit the <code class="docutils literal notranslate"><span class="pre">/etc/hosts</span></code> and <code class="docutils literal notranslate"><span class="pre">/etc/hostname</span></code> files to replace <code class="docutils literal notranslate"><span class="pre">analog</span></code> with your chosen hostname:</p>
+<div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/hosts
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select highlight-text notranslate"><div class="highlight"><pre><span></span>... replace &quot;analog&quot; with your hostname
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/hostname
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select highlight-text notranslate"><div class="highlight"><pre><span></span>... replace &quot;analog&quot; with your hostname
+</pre></div>
+</div>
+<div class="clear-left"></div></div></div><p>In our documentation, you will typically see hostnames of the form <code class="docutils literal notranslate"><span class="pre">ad-r1m-SERIALNUMBER</span></code>, but that is not a requirement.</p>
+</section>
+<section id="connect-to-wi-fi">
+<h3><span class="section-number">2.2.3. </span>Connect to Wi-Fi<a class="headerlink" href="#connect-to-wi-fi" title="Link to this heading"></a></h3>
+<p>To connect the Raspberry Pi to your Wi-Fi network, use the graphical interface or run:</p>
+<div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>nmtui
+</pre></div>
+</div>
+<div class="clear-left"></div></div></div></section>
+<section id="install-system-package">
+<h3><span class="section-number">2.2.4. </span>Install system package<a class="headerlink" href="#install-system-package" title="Link to this heading"></a></h3>
+<p>With networking set up, install the <code class="docutils literal notranslate"><span class="pre">ad-r1m-system-rpi5</span></code> package to set everything else up:</p>
+<div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>ad-r1m-system-rpi5
+</pre></div>
+</div>
+<div class="clear-left"></div></div></div><p>This will install the latest released version. After this command finishes, restart the Raspberry Pi:</p>
+<div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>reboot
+</pre></div>
+</div>
+<div class="clear-left"></div></div></div><p><strong>And enjoy!</strong> After the reboot, you should have a working AD-R1M.</p>
+</section>
+</section>
+<section id="keeping-up-to-date">
+<h2><span class="section-number">2.3. </span>Keeping up to date<a class="headerlink" href="#keeping-up-to-date" title="Link to this heading"></a></h2>
+<p>To get the latest system-level updates, just use the usual apt-get upgrade combo:</p>
+<div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>update
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>apt-get<span class="w"> </span>upgrade
+</pre></div>
+</div>
+<div class="clear-left"></div></div></div></section>
+</section>
+
+
+          </div>
+              <div class="related">
+                &nbsp;
+    <a href="assemble-hardware.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev"><span class="section-number">1. </span>How to assemble the AD-R1M hardware</a>
+    <a href="../jetson/index.html" title="Next document (Alt+Shift+RightArrow)" class="next">NVIDIA AGX Orin and cuVSLAM Integration</a>
+              </div>
+          
+        </div>
+      </div>
+  </div>
+
+  <label id="cancel-area-show-toc" for="input-show-toc"></label>
+  <label id="cancel-area-show-localtoc" for="input-show-localtoc"></label>
+    <footer>
+      &#169;2026, Analog Devices, Inc.
+      
+      |
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+      &amp; <a href="https://github.com/analogdevicesinc/doctools">Doctools</a>
+      
+    </footer>
+  </body>
+</html>

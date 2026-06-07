@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="IMU Data Logging" name="description" />
+
+    <title>AD-R1M Use Case Examples &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=ac863bf0" />
+    <script async="async" src="../_static/app.umd.js?v=09b0c6bc"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="AD-R1M Troubleshooting" href="troubleshooting.html" />
+    <link rel="prev" title="10) AD-R1M Gazebo simulation" href="jetson/ad-r1m-realsense-gazebo.html" />
+   
+  
+  
+  <meta name="repository" content="ad-r1m-ros2">
+  <meta name="version" content="5/merge">
+  
+    <meta name="page_source_suffix" content=".rst">
+  
+  
+  
+
+
+<style>
+  body {
+    
+  }
+
+  body.dark {
+    
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body:not(.light) {
+      
+    }
+  }
+</style>
+  </head>
+  
+    <body>
+  
+  <input type="checkbox" id="input-show-toc">
+  <input type="checkbox" id="input-show-localtoc">
+  <input type="checkbox" id="input-show-repotoc">
+
+  
+  <div class="search-area">
+    <form action="" method="get">
+      <input type="text" name="q" aria-labelledby="search-documentation" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" role="search" placeholder="Search"/>
+      <button class="icon"></button>
+    </form>
+  </div>
+  
+
+  <header>
+    <div id="left">
+      <label id="show-sidebar" class="icon" for="input-show-toc" title="Show/hide index"></label>
+    </div>
+    <div id="right">
+      <span>
+        <a id="logo-org" href="https://analog.com" aria-label="Analog Devices Inc. landing page"></a>
+        <div class="vertical-divider"></div>
+        
+        <label id="show-repotoc" for="input-show-repotoc" title="Show/hide docs">Docs</label>
+        
+        <a id="logo" href="../index.html">
+          <div>AD-R1M Robot Platform</div>
+        </a>
+      </span>
+      <span class="reverse">
+        <label id="show-localtoc" class="icon" for="input-show-localtoc" title="Show/hide contents"></label>
+      </span>
+    </div>
+  </header>
+
+
+  <div class="repotoc-tree overlay">
+    <root/>
+
+  </div>
+    <div class="localtoc">
+      <div class="tocwrapper">
+        <div class="header localtoc-header">
+          <a id="scroll-up" href="#top-anchor" title="Back to top"></a>
+        </div>
+        <nav>
+          <ul>
+<li><a class="reference internal" href="#">AD-R1M Use Case Examples</a><ul>
+<li><a class="reference internal" href="#imu-data-logging">IMU Data Logging</a><ul>
+<li><a class="reference internal" href="#real-time-imu-recording">Real-Time IMU Recording</a></li>
+<li><a class="reference internal" href="#playback-and-analysis">Playback and Analysis</a></li>
+<li><a class="reference internal" href="#python-imu-analysis-script">Python IMU Analysis Script</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#multi-camera-recording-setup">Multi-Camera Recording Setup</a><ul>
+<li><a class="reference internal" href="#recording-tof-camera-data">Recording ToF Camera Data</a></li>
+<li><a class="reference internal" href="#recording-laserscan-data">Recording LaserScan Data</a></li>
+<li><a class="reference internal" href="#multi-sensor-synchronized-recording">Multi-Sensor Synchronized Recording</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#autonomous-patrol-mission">Autonomous Patrol Mission</a><ul>
+<li><a class="reference internal" href="#patrol-script-example">Patrol Script Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#object-tracking-and-following">Object Tracking and Following</a><ul>
+<li><a class="reference internal" href="#follow-point-example">Follow Point Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#odometry-evaluation">Odometry Evaluation</a><ul>
+<li><a class="reference internal" href="#odometry-comparison-script">Odometry Comparison Script</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#low-level-motor-control-without-ros2">Low-Level Motor Control (Without ROS2)</a><ul>
+<li><a class="reference internal" href="#python-canopen-example">Python CANopen Example</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#battery-monitoring-application">Battery Monitoring Application</a><ul>
+<li><a class="reference internal" href="#battery-monitor-node">Battery Monitor Node</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </nav>
+      </div>
+    </div>
+
+  
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+    <a id="no-logo" href="../index.html">
+      AD-R1M Robot Platform
+    </a><input id="input-switch-toc" type="checkbox">
+<label id="show-repotoc" for="input-switch-toc">
+All content
+</label>
+<label id="show-toc" for="input-switch-toc">
+Content on this topic
+</label>
+<div class="repotoc-tree">
+  <root/>
+
+</div>
+<div class="toc-tree">
+  <ul class="current">
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-1" id="toctree-collapse-1"/><div class="collapse"><a class="reference internal" href="../tutorial/index.html">Tutorials</a><label for="toctree-collapse-1"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/getting-started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/system-setup.html">System setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../software-guide.html">Software guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/manage-configurations.html">Manage runtime configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/ros2-writing-your-own-nodes.html">Write your own ROS 2 nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/ros2-examples.html">AD-R1M ROS2 Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/ros2-getting-started.html">AD-R1M ROS 2 Getting Started</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2" id="toctree-collapse-2" checked=""/><div class="collapse"><a class="reference internal" href="index.html">How-to guides</a><label for="toctree-collapse-2"><div class="icon"></div></label></div><ul class="current">
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-1" id="toctree-collapse-2-1"/><div class="collapse"><a class="reference internal" href="build-from-scratch/index.html">Build an AD-R1M from scratch</a><label for="toctree-collapse-2-1"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="build-from-scratch/assemble-hardware.html">1. Assemble the hardware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="build-from-scratch/setup-rpi.html">2. Set up the internal computer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2"/><div class="collapse"><a class="reference internal" href="jetson/index.html">Set up Nvidia Jetson AGX Orin</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="jetson/agx-orin-setup.html">1) Linux installation on Jetson AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/setup-req-pkg-agx-orin.html">2) Setup required packages on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/setup-isaac-ros-agx-orin.html">3) Setup Isaac ROS on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/setup-isaac-ros-vslam.html">4) Setup Isaac ROS Visual SLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/vslam-setup-and-usage.html">5) VSLAM and RealSense setup and usage on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and Jetson AGX Orin: hardware setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/ad-r1m-cuvslam-setup.html">7) AD-R1M and cuVSLAM setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA cuVSLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/map-building-for-nav2.html">9) Map building for NAV2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="jetson/ad-r1m-realsense-gazebo.html">10) AD-R1M Gazebo simulation</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">AD-R1M use-cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-3" id="toctree-collapse-3"/><div class="collapse"><a class="reference internal" href="../reference/index.html">Reference</a><label for="toctree-collapse-3"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/specs.html">AD-R1M Specifications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-4" id="toctree-collapse-4"/><div class="collapse"><a class="reference internal" href="../explanation/index.html">Explanation</a><label for="toctree-collapse-4"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/ros2-architecture.html">AD-R1M ROS2 Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/software-system-architecture.html">AD-R1M software system architecture</a></li>
+</ul>
+</li>
+</ul>
+
+
+</div>
+        </div>
+      </div>
+
+  <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper" id="top-anchor">
+          <div class="body-header">
+  <nav class="breadcrumb"><ol><li><a href="index.html">How-to guides</a></li></ol></nav>
+</div>
+          <div class="body" role="main">
+            
+  <section id="ad-r1m-use-case-examples">
+<h1>AD-R1M Use Case Examples<a class="headerlink" href="#ad-r1m-use-case-examples" title="Link to this heading"></a></h1>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#imu-data-logging" id="id1">IMU Data Logging</a></p>
+<ul>
+<li><p><a class="reference internal" href="#real-time-imu-recording" id="id2">Real-Time IMU Recording</a></p></li>
+<li><p><a class="reference internal" href="#playback-and-analysis" id="id3">Playback and Analysis</a></p></li>
+<li><p><a class="reference internal" href="#python-imu-analysis-script" id="id4">Python IMU Analysis Script</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#multi-camera-recording-setup" id="id5">Multi-Camera Recording Setup</a></p>
+<ul>
+<li><p><a class="reference internal" href="#recording-tof-camera-data" id="id6">Recording ToF Camera Data</a></p></li>
+<li><p><a class="reference internal" href="#recording-laserscan-data" id="id7">Recording LaserScan Data</a></p></li>
+<li><p><a class="reference internal" href="#multi-sensor-synchronized-recording" id="id8">Multi-Sensor Synchronized Recording</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#autonomous-patrol-mission" id="id9">Autonomous Patrol Mission</a></p>
+<ul>
+<li><p><a class="reference internal" href="#patrol-script-example" id="id10">Patrol Script Example</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#object-tracking-and-following" id="id11">Object Tracking and Following</a></p>
+<ul>
+<li><p><a class="reference internal" href="#follow-point-example" id="id12">Follow Point Example</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#odometry-evaluation" id="id13">Odometry Evaluation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#odometry-comparison-script" id="id14">Odometry Comparison Script</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#low-level-motor-control-without-ros2" id="id15">Low-Level Motor Control (Without ROS2)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#python-canopen-example" id="id16">Python CANopen Example</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#battery-monitoring-application" id="id17">Battery Monitoring Application</a></p>
+<ul>
+<li><p><a class="reference internal" href="#battery-monitor-node" id="id18">Battery Monitor Node</a></p></li>
+</ul>
+</li>
+</ul>
+</nav>
+<p>This page provides practical use case examples for the AD-R1M robot platform.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For mapping, localization, and navigation tutorials, see <span class="xref std std-doc">software-guide/ros2-examples</span>.</p>
+</div>
+<section id="imu-data-logging">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">IMU Data Logging</a><a class="headerlink" href="#imu-data-logging" title="Link to this heading"></a></h2>
+<p>Capture and log IMU data for analysis, calibration, or offline processing.</p>
+<section id="real-time-imu-recording">
+<h3><a class="toc-backref" href="#id2" role="doc-backlink">Real-Time IMU Recording</a><a class="headerlink" href="#real-time-imu-recording" title="Link to this heading"></a></h3>
+<p>Record IMU data to a ROS2 bag file:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start recording IMU data</span>
+ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </span>/imu<span class="w"> </span>-o<span class="w"> </span>imu_recording
+
+<span class="c1"># Record with timestamp in filename</span>
+ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </span>/imu<span class="w"> </span>-o<span class="w"> </span>imu_<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d_%H%M%S<span class="k">)</span>
+
+<span class="c1"># Record multiple topics</span>
+ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </span>/imu<span class="w"> </span>/odom<span class="w"> </span>/cam1/scan<span class="w"> </span>-o<span class="w"> </span>sensor_data
+</pre></div>
+</div>
+</section>
+<section id="playback-and-analysis">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Playback and Analysis</a><a class="headerlink" href="#playback-and-analysis" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># List bag contents</span>
+ros2<span class="w"> </span>bag<span class="w"> </span>info<span class="w"> </span>imu_recording
+
+<span class="c1"># Playback bag file</span>
+ros2<span class="w"> </span>bag<span class="w"> </span>play<span class="w"> </span>imu_recording
+
+<span class="c1"># Playback at slower speed for analysis</span>
+ros2<span class="w"> </span>bag<span class="w"> </span>play<span class="w"> </span>imu_recording<span class="w"> </span>--rate<span class="w"> </span><span class="m">0</span>.5
+</pre></div>
+</div>
+</section>
+<section id="python-imu-analysis-script">
+<h3><a class="toc-backref" href="#id4" role="doc-backlink">Python IMU Analysis Script</a><a class="headerlink" href="#python-imu-analysis-script" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rclpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rclpy.node</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sensor_msgs.msg</span><span class="w"> </span><span class="kn">import</span> <span class="n">Imu</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">csv</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ImuLogger</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;imu_logger&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subscription</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span>
+            <span class="n">Imu</span><span class="p">,</span> <span class="s1">&#39;/imu&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">imu_callback</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">csv_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;imu_data.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">csv_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s1">&#39;timestamp&#39;</span><span class="p">,</span> <span class="s1">&#39;ax&#39;</span><span class="p">,</span> <span class="s1">&#39;ay&#39;</span><span class="p">,</span> <span class="s1">&#39;az&#39;</span><span class="p">,</span> <span class="s1">&#39;gx&#39;</span><span class="p">,</span> <span class="s1">&#39;gy&#39;</span><span class="p">,</span> <span class="s1">&#39;gz&#39;</span><span class="p">])</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">imu_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span><span class="o">.</span><span class="n">sec</span> <span class="o">+</span> <span class="n">msg</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span><span class="o">.</span><span class="n">nanosec</span> <span class="o">*</span> <span class="mf">1e-9</span><span class="p">,</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">linear_acceleration</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">linear_acceleration</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">linear_acceleration</span><span class="o">.</span><span class="n">z</span><span class="p">,</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">angular_velocity</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">angular_velocity</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">angular_velocity</span><span class="o">.</span><span class="n">z</span>
+        <span class="p">])</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">rclpy</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+    <span class="n">node</span> <span class="o">=</span> <span class="n">ImuLogger</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">rclpy</span><span class="o">.</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">csv_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">destroy_node</span><span class="p">()</span>
+        <span class="n">rclpy</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="multi-camera-recording-setup">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">Multi-Camera Recording Setup</a><a class="headerlink" href="#multi-camera-recording-setup" title="Link to this heading"></a></h2>
+<p>Configure and record from multiple camera sources for perception development.</p>
+<section id="recording-tof-camera-data">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Recording ToF Camera Data</a><a class="headerlink" href="#recording-tof-camera-data" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Record depth images</span>
+ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </span>/cam1/depth_image<span class="w"> </span>/cam1/camera_info<span class="w"> </span>-o<span class="w"> </span>tof_recording
+
+<span class="c1"># Record with compression</span>
+ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </span>/cam1/depth_image<span class="w"> </span>--compression-mode<span class="w"> </span>file<span class="w"> </span>-o<span class="w"> </span>tof_compressed
+</pre></div>
+</div>
+</section>
+<section id="recording-laserscan-data">
+<h3><a class="toc-backref" href="#id7" role="doc-backlink">Recording LaserScan Data</a><a class="headerlink" href="#recording-laserscan-data" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Record converted laser scan</span>
+ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </span>/cam1/scan<span class="w"> </span>-o<span class="w"> </span>laserscan_recording
+
+<span class="c1"># Record all camera-related topics</span>
+ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </span>/cam1/depth_image<span class="w"> </span>/cam1/scan<span class="w"> </span>/cam1/camera_info<span class="w"> </span>-o<span class="w"> </span>camera_full
+</pre></div>
+</div>
+</section>
+<section id="multi-sensor-synchronized-recording">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Multi-Sensor Synchronized Recording</a><a class="headerlink" href="#multi-sensor-synchronized-recording" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Record all sensor data for full system capture</span>
+ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>/imu<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>/cam1/depth_image<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>/cam1/scan<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>/cam1/camera_info<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>/odom<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>/tf<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>/tf_static<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-o<span class="w"> </span>full_sensor_recording
+</pre></div>
+</div>
+</section>
+</section>
+<section id="autonomous-patrol-mission">
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Autonomous Patrol Mission</a><a class="headerlink" href="#autonomous-patrol-mission" title="Link to this heading"></a></h2>
+<p>Create a patrol mission where the robot visits multiple waypoints repeatedly.</p>
+<section id="patrol-script-example">
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Patrol Script Example</a><a class="headerlink" href="#patrol-script-example" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">rclpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rclpy.node</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nav2_simple_commander.robot_navigator</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasicNavigator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">geometry_msgs.msg</span><span class="w"> </span><span class="kn">import</span> <span class="n">PoseStamped</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PatrolMission</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;patrol_mission&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span> <span class="o">=</span> <span class="n">BasicNavigator</span><span class="p">()</span>
+
+        <span class="c1"># Define patrol waypoints</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">waypoints</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">create_pose</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">create_pose</span><span class="p">(</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.57</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">create_pose</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">,</span> <span class="mf">3.14</span><span class="p">),</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">create_pose</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.57</span><span class="p">),</span>
+        <span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">create_pose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">yaw</span><span class="p">):</span>
+        <span class="n">pose</span> <span class="o">=</span> <span class="n">PoseStamped</span><span class="p">()</span>
+        <span class="n">pose</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s1">&#39;map&#39;</span>
+        <span class="n">pose</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_clock</span><span class="p">()</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">to_msg</span><span class="p">()</span>
+        <span class="n">pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="n">pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">yaw</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">yaw</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pose</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">run_patrol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_loops</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span><span class="o">.</span><span class="n">waitUntilNav2Active</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">loop</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_loops</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Starting patrol loop </span><span class="si">{</span><span class="n">loop</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">num_loops</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">waypoint</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">waypoints</span><span class="p">):</span>
+                <span class="n">waypoint</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_clock</span><span class="p">()</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">to_msg</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span><span class="o">.</span><span class="n">goToPose</span><span class="p">(</span><span class="n">waypoint</span><span class="p">)</span>
+
+                <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span><span class="o">.</span><span class="n">isTaskComplete</span><span class="p">():</span>
+                    <span class="n">feedback</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span><span class="o">.</span><span class="n">getFeedback</span><span class="p">()</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span><span class="o">.</span><span class="n">getResult</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Waypoint </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1"> reached: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Patrol loop </span><span class="si">{</span><span class="n">loop</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1"> complete&#39;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">rclpy</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+    <span class="n">patrol</span> <span class="o">=</span> <span class="n">PatrolMission</span><span class="p">()</span>
+    <span class="n">patrol</span><span class="o">.</span><span class="n">run_patrol</span><span class="p">(</span><span class="n">num_loops</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+    <span class="n">patrol</span><span class="o">.</span><span class="n">destroy_node</span><span class="p">()</span>
+    <span class="n">rclpy</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="object-tracking-and-following">
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Object Tracking and Following</a><a class="headerlink" href="#object-tracking-and-following" title="Link to this heading"></a></h2>
+<p>Implement a simple follow behavior using sensor data.</p>
+<section id="follow-point-example">
+<h3><a class="toc-backref" href="#id12" role="doc-backlink">Follow Point Example</a><a class="headerlink" href="#follow-point-example" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">rclpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rclpy.node</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sensor_msgs.msg</span><span class="w"> </span><span class="kn">import</span> <span class="n">LaserScan</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">geometry_msgs.msg</span><span class="w"> </span><span class="kn">import</span> <span class="n">Twist</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">FollowClosest</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;follow_closest&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subscription</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span>
+            <span class="n">LaserScan</span><span class="p">,</span> <span class="s1">&#39;/cam1/scan&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan_callback</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">publisher</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_publisher</span><span class="p">(</span><span class="n">Twist</span><span class="p">,</span> <span class="s1">&#39;/cmd_vel_nav&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">target_distance</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># meters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kp_linear</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kp_angular</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">scan_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="c1"># Find closest point</span>
+        <span class="n">min_range</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+        <span class="n">min_angle</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">ranges</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">range_min</span> <span class="o">&lt;</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">msg</span><span class="o">.</span><span class="n">range_max</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">min_range</span><span class="p">:</span>
+                    <span class="n">min_range</span> <span class="o">=</span> <span class="n">r</span>
+                    <span class="n">min_angle</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">angle_min</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">msg</span><span class="o">.</span><span class="n">angle_increment</span>
+
+        <span class="k">if</span> <span class="n">min_range</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">):</span>
+            <span class="n">cmd</span> <span class="o">=</span> <span class="n">Twist</span><span class="p">()</span>
+
+            <span class="c1"># Linear velocity: move toward target distance</span>
+            <span class="n">distance_error</span> <span class="o">=</span> <span class="n">min_range</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">target_distance</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kp_linear</span> <span class="o">*</span> <span class="n">distance_error</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">cmd</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">x</span><span class="p">))</span>
+
+            <span class="c1"># Angular velocity: turn toward closest point</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">kp_angular</span> <span class="o">*</span> <span class="n">min_angle</span>
+            <span class="n">cmd</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cmd</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">z</span><span class="p">))</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">publisher</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">rclpy</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+    <span class="n">node</span> <span class="o">=</span> <span class="n">FollowClosest</span><span class="p">()</span>
+    <span class="n">rclpy</span><span class="o">.</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">destroy_node</span><span class="p">()</span>
+    <span class="n">rclpy</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="odometry-evaluation">
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">Odometry Evaluation</a><a class="headerlink" href="#odometry-evaluation" title="Link to this heading"></a></h2>
+<p>Compare wheel odometry with fused odometry to evaluate sensor fusion performance.</p>
+<section id="odometry-comparison-script">
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">Odometry Comparison Script</a><a class="headerlink" href="#odometry-comparison-script" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">rclpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rclpy.node</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">nav_msgs.msg</span><span class="w"> </span><span class="kn">import</span> <span class="n">Odometry</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">OdometryComparator</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;odom_comparator&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wheel_odom</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fused_odom</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_wheel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span>
+            <span class="n">Odometry</span><span class="p">,</span> <span class="s1">&#39;/diff_drive_controller/odom&#39;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wheel_callback</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub_fused</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span>
+            <span class="n">Odometry</span><span class="p">,</span> <span class="s1">&#39;/odometry/filtered&#39;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fused_callback</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_timer</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">compare_callback</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">wheel_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wheel_odom</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">fused_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fused_odom</span> <span class="o">=</span> <span class="n">msg</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compare_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wheel_odom</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">fused_odom</span><span class="p">:</span>
+            <span class="n">dx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fused_odom</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">wheel_odom</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span>
+            <span class="n">dy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fused_odom</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">wheel_odom</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span>
+            <span class="n">distance_error</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dx</span><span class="o">*</span><span class="n">dx</span> <span class="o">+</span> <span class="n">dy</span><span class="o">*</span><span class="n">dy</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;Position difference: </span><span class="si">{</span><span class="n">distance_error</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">m &#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;(dx=</span><span class="si">{</span><span class="n">dx</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">, dy=</span><span class="si">{</span><span class="n">dy</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">rclpy</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+    <span class="n">node</span> <span class="o">=</span> <span class="n">OdometryComparator</span><span class="p">()</span>
+    <span class="n">rclpy</span><span class="o">.</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">destroy_node</span><span class="p">()</span>
+    <span class="n">rclpy</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="low-level-motor-control-without-ros2">
+<h2><a class="toc-backref" href="#id15" role="doc-backlink">Low-Level Motor Control (Without ROS2)</a><a class="headerlink" href="#low-level-motor-control-without-ros2" title="Link to this heading"></a></h2>
+<p>For direct motor control without the ROS2 stack, use Python CANopen.</p>
+<section id="python-canopen-example">
+<h3><a class="toc-backref" href="#id16" role="doc-backlink">Python CANopen Example</a><a class="headerlink" href="#python-canopen-example" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">canopen</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">canopen.profiles.p402</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseNode402</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="c1"># Initialize motor node</span>
+<span class="n">node</span> <span class="o">=</span> <span class="n">BaseNode402</span><span class="p">(</span><span class="mh">0x16</span><span class="p">,</span> <span class="s1">&#39;ardagvmotor.eds&#39;</span><span class="p">)</span>
+<span class="n">network</span> <span class="o">=</span> <span class="n">canopen</span><span class="o">.</span><span class="n">Network</span><span class="p">()</span>
+<span class="n">network</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;can0&#39;</span><span class="p">,</span> <span class="n">interface</span><span class="o">=</span><span class="s1">&#39;socketcan&#39;</span><span class="p">,</span> <span class="n">bitrate</span><span class="o">=</span><span class="mi">500000</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+<span class="c1"># Start sync messages</span>
+<span class="n">network</span><span class="o">.</span><span class="n">sync</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+<span class="c1"># Configure node</span>
+<span class="n">node</span><span class="o">.</span><span class="n">nmt</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s1">&#39;RESET&#39;</span>
+<span class="n">node</span><span class="o">.</span><span class="n">nmt</span><span class="o">.</span><span class="n">wait_for_bootup</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">node</span><span class="o">.</span><span class="n">load_configuration</span><span class="p">()</span>
+<span class="n">node</span><span class="o">.</span><span class="n">setup_402_state_machine</span><span class="p">()</span>
+<span class="n">node</span><span class="o">.</span><span class="n">nmt</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s1">&#39;OPERATIONAL&#39;</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">set_speed</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set motor speed. v = -1 to 1&quot;&quot;&quot;</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="mi">4000000</span><span class="p">)</span>  <span class="c1"># Convert to internal units</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">rpdo</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;Controlword&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="mb">0b1111</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">rpdo</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;Target velocity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">v</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">rpdo</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">transmit</span><span class="p">()</span>
+
+<span class="c1"># Enable motors</span>
+<span class="n">node</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s1">&#39;OPERATION ENABLED&#39;</span>
+
+<span class="c1"># Test motion</span>
+<span class="n">set_speed</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">set_speed</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">set_speed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Disable motors</span>
+<span class="n">node</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s1">&#39;SWITCH ON DISABLED&#39;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="battery-monitoring-application">
+<h2><a class="toc-backref" href="#id17" role="doc-backlink">Battery Monitoring Application</a><a class="headerlink" href="#battery-monitoring-application" title="Link to this heading"></a></h2>
+<p>Monitor battery status and implement low-battery behavior.</p>
+<section id="battery-monitor-node">
+<h3><a class="toc-backref" href="#id18" role="doc-backlink">Battery Monitor Node</a><a class="headerlink" href="#battery-monitor-node" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">rclpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rclpy.node</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">std_msgs.msg</span><span class="w"> </span><span class="kn">import</span> <span class="n">Float32</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">geometry_msgs.msg</span><span class="w"> </span><span class="kn">import</span> <span class="n">Twist</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">BatteryMonitor</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;battery_monitor&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">battery_voltage</span> <span class="o">=</span> <span class="mf">12.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">low_voltage_threshold</span> <span class="o">=</span> <span class="mf">10.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">critical_voltage_threshold</span> <span class="o">=</span> <span class="mf">9.0</span>
+
+        <span class="c1"># Subscribe to battery voltage (from CRSF telemetry)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span>
+            <span class="n">Float32</span><span class="p">,</span> <span class="s1">&#39;/battery_voltage&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">battery_callback</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="c1"># Publisher to stop robot in emergency</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_pub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_publisher</span><span class="p">(</span><span class="n">Twist</span><span class="p">,</span> <span class="s1">&#39;/cmd_vel&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_timer</span><span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_battery</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">battery_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">battery_voltage</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">data</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_battery</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">battery_voltage</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">critical_voltage_threshold</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;CRITICAL: Battery at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">battery_voltage</span><span class="si">}</span><span class="s1">V! Stopping robot.&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">stop_robot</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">battery_voltage</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">low_voltage_threshold</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;LOW BATTERY: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">battery_voltage</span><span class="si">}</span><span class="s1">V. Return to charger soon.&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Battery: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">battery_voltage</span><span class="si">}</span><span class="s1">V&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">stop_robot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">cmd</span> <span class="o">=</span> <span class="n">Twist</span><span class="p">()</span>
+        <span class="n">cmd</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">cmd</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_pub</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">rclpy</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+    <span class="n">node</span> <span class="o">=</span> <span class="n">BatteryMonitor</span><span class="p">()</span>
+    <span class="n">rclpy</span><span class="o">.</span><span class="n">spin</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">destroy_node</span><span class="p">()</span>
+    <span class="n">rclpy</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+              <div class="related">
+                &nbsp;
+    <a href="jetson/ad-r1m-realsense-gazebo.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev">10) AD-R1M Gazebo simulation</a>
+    <a href="troubleshooting.html" title="Next document (Alt+Shift+RightArrow)" class="next">AD-R1M Troubleshooting</a>
+              </div>
+          
+        </div>
+      </div>
+  </div>
+
+  <label id="cancel-area-show-toc" for="input-show-toc"></label>
+  <label id="cancel-area-show-localtoc" for="input-show-localtoc"></label>
+    <footer>
+      &#169;2026, Analog Devices, Inc.
+      
+      |
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+      &amp; <a href="https://github.com/analogdevicesinc/doctools">Doctools</a>
+      
+    </footer>
+  </body>
+</html>
