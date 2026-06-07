@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Ref" name="description" />
+
+    <title>1. How to assemble the AD-R1M hardware &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/app.min.css?v=ac863bf0" />
+    <script async="async" src="../../_static/app.umd.js?v=09b0c6bc"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="2. How to set up the AD-R1M internal computer" href="setup-rpi.html" />
+    <link rel="prev" title="How to build an AD-R1M from scratch" href="index.html" />
+   
+  
+  
+  <meta name="repository" content="ad-r1m-ros2">
+  <meta name="version" content="8/merge">
+  
+    <meta name="page_source_suffix" content=".rst">
+  
+  
+  
+
+
+<style>
+  body {
+    
+  }
+
+  body.dark {
+    
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body:not(.light) {
+      
+    }
+  }
+</style>
+  </head>
+  
+    <body>
+  
+  <input type="checkbox" id="input-show-toc">
+  <input type="checkbox" id="input-show-localtoc">
+  <input type="checkbox" id="input-show-repotoc">
+
+  
+  <div class="search-area">
+    <form action="" method="get">
+      <input type="text" name="q" aria-labelledby="search-documentation" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" role="search" placeholder="Search"/>
+      <button class="icon"></button>
+    </form>
+  </div>
+  
+
+  <header>
+    <div id="left">
+      <label id="show-sidebar" class="icon" for="input-show-toc" title="Show/hide index"></label>
+    </div>
+    <div id="right">
+      <span>
+        <a id="logo-org" href="https://analog.com" aria-label="Analog Devices Inc. landing page"></a>
+        <div class="vertical-divider"></div>
+        
+        <label id="show-repotoc" for="input-show-repotoc" title="Show/hide docs">Docs</label>
+        
+        <a id="logo" href="../../index.html">
+          <div>AD-R1M Robot Platform</div>
+        </a>
+      </span>
+      <span class="reverse">
+        <label id="show-localtoc" class="icon" for="input-show-localtoc" title="Show/hide contents"></label>
+      </span>
+    </div>
+  </header>
+
+
+  <div class="repotoc-tree overlay">
+    <root/>
+
+  </div>
+    <div class="localtoc">
+      <div class="tocwrapper">
+        <div class="header localtoc-header">
+          <a id="scroll-up" href="#top-anchor" title="Back to top"></a>
+        </div>
+        <nav>
+          <ul>
+<li><a class="reference internal" href="#">1. How to assemble the AD-R1M hardware</a><ul>
+<li><a class="reference internal" href="#bill-of-materials">1.1. Bill of Materials</a></li>
+<li><a class="reference internal" href="#tools-needed">1.2. Tools needed</a></li>
+<li><a class="reference internal" href="#assembly-steps">1.3. Assembly steps</a></li>
+<li><a class="reference internal" href="#frame">1.4. Frame</a><ul>
+<li><a class="reference internal" href="#step-1">1.4.1. Step 1</a></li>
+<li><a class="reference internal" href="#step-2">1.4.2. Step 2</a></li>
+<li><a class="reference internal" href="#step-3">1.4.3. Step 3</a></li>
+<li><a class="reference internal" href="#step-4">1.4.4. Step 4</a></li>
+<li><a class="reference internal" href="#step-5">1.4.5. Step 5</a></li>
+<li><a class="reference internal" href="#step-6">1.4.6. Step 6</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#electronic-modules">1.5. Electronic modules</a><ul>
+<li><a class="reference internal" href="#id1">1.5.1. Step 1</a></li>
+<li><a class="reference internal" href="#id2">1.5.2. Step 2</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#control-panel">1.6. Control Panel</a></li>
+<li><a class="reference internal" href="#wiring-harness">1.7. Wiring Harness</a><ul>
+<li><a class="reference internal" href="#can">1.7.1. CAN</a></li>
+<li><a class="reference internal" href="#motor-encoder">1.7.2. Motor encoder</a></li>
+<li><a class="reference internal" href="#battery-balancing">1.7.3. Battery balancing</a></li>
+<li><a class="reference internal" href="#power-wires">1.7.4. Power wires</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </nav>
+      </div>
+    </div>
+
+  
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+    <a id="no-logo" href="../../index.html">
+      AD-R1M Robot Platform
+    </a><input id="input-switch-toc" type="checkbox">
+<label id="show-repotoc" for="input-switch-toc">
+All content
+</label>
+<label id="show-toc" for="input-switch-toc">
+Content on this topic
+</label>
+<div class="repotoc-tree">
+  <root/>
+
+</div>
+<div class="toc-tree">
+  <ul class="current">
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-1" id="toctree-collapse-1"/><div class="collapse"><a class="reference internal" href="../../tutorial/index.html">Tutorials</a><label for="toctree-collapse-1"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/getting-started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/system-setup.html">System setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../software-guide.html">Software guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/manage-configurations.html">Manage runtime configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/ros2-writing-your-own-nodes.html">Write your own ROS 2 nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/ros2-examples.html">AD-R1M ROS2 Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../tutorial/ros2-getting-started.html">AD-R1M ROS 2 Getting Started</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2" id="toctree-collapse-2" checked=""/><div class="collapse"><a class="reference internal" href="../index.html">How-to guides</a><label for="toctree-collapse-2"><div class="icon"></div></label></div><ul class="current">
+<li class="toctree-l2 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-1" id="toctree-collapse-2-1" checked=""/><div class="collapse"><a class="reference internal" href="index.html">Build an AD-R1M from scratch</a><label for="toctree-collapse-2-1"><div class="icon"></div></label></div><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">1. Assemble the hardware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup-rpi.html">2. Set up the internal computer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2"/><div class="collapse"><a class="reference internal" href="../jetson/index.html">Set up Nvidia Jetson AGX Orin</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/agx-orin-setup.html">1) Linux installation on Jetson AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/setup-req-pkg-agx-orin.html">2) Setup required packages on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/setup-isaac-ros-agx-orin.html">3) Setup Isaac ROS on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/setup-isaac-ros-vslam.html">4) Setup Isaac ROS Visual SLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/vslam-setup-and-usage.html">5) VSLAM and RealSense setup and usage on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and Jetson AGX Orin: hardware setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/ad-r1m-cuvslam-setup.html">7) AD-R1M and cuVSLAM setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA cuVSLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/map-building-for-nav2.html">9) Map building for NAV2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../jetson/ad-r1m-realsense-gazebo.html">10) AD-R1M Gazebo simulation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../use-cases.html">AD-R1M use-cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-3" id="toctree-collapse-3"/><div class="collapse"><a class="reference internal" href="../../reference/index.html">Reference</a><label for="toctree-collapse-3"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../reference/specs.html">AD-R1M Specifications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-4" id="toctree-collapse-4"/><div class="collapse"><a class="reference internal" href="../../explanation/index.html">Explanation</a><label for="toctree-collapse-4"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../explanation/ros2-architecture.html">AD-R1M ROS2 Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../explanation/software-system-architecture.html">AD-R1M software system architecture</a></li>
+</ul>
+</li>
+</ul>
+
+
+</div>
+        </div>
+      </div>
+
+  <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper" id="top-anchor">
+          <div class="body-header">
+  <nav class="breadcrumb"><ol><li><a href="../index.html">How-to guides</a></li><li><a href="index.html">How to build an AD-R1M from scratch</a></li></ol></nav>
+</div>
+          <div class="body" role="main">
+            
+  <section id="how-to-assemble-the-ad-r1m-hardware">
+<h1><span class="section-number">1. </span>How to assemble the AD-R1M hardware<a class="headerlink" href="#how-to-assemble-the-ad-r1m-hardware" title="Link to this heading"></a></h1>
+<section id="bill-of-materials">
+<h2><span class="section-number">1.1. </span>Bill of Materials<a class="headerlink" href="#bill-of-materials" title="Link to this heading"></a></h2>
+<div class="table-wrapper colwidths-auto docutils container" id="table-bom">
+<table class="docutils align-default" id="table-bom">
+<caption><span class="caption-text">AD-R1M Bill of Materials</span><a class="headerlink" href="#table-bom" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Ref</p></th>
+<th class="head"><p>Qty</p></th>
+<th class="head"><p>P/N</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>3D1</p></td>
+<td><p>4</p></td>
+<td><p>N/A</p></td>
+<td><p>16 mm caster raiser</p></td>
+</tr>
+<tr class="row-odd"><td><p>3D2</p></td>
+<td><p>2</p></td>
+<td><p>N/A</p></td>
+<td><p>Motor mounts</p></td>
+</tr>
+<tr class="row-even"><td><p>3D3</p></td>
+<td><p>2</p></td>
+<td><p>N/A</p></td>
+<td><p>3D printed camera mount brackets</p></td>
+</tr>
+<tr class="row-odd"><td><p>3D4</p></td>
+<td><p>1</p></td>
+<td><p>N/A</p></td>
+<td><p>3D printed camera housing</p></td>
+</tr>
+<tr class="row-even"><td><p>3D5</p></td>
+<td><p>2</p></td>
+<td><p>N/A</p></td>
+<td><p>Wheel assembly</p></td>
+</tr>
+<tr class="row-odd"><td><p>3D6</p></td>
+<td><p>1</p></td>
+<td><p>N/A</p></td>
+<td><p>Electronics sub-assemblies mounting plate</p></td>
+</tr>
+<tr class="row-even"><td><p>3D7</p></td>
+<td><p>1</p></td>
+<td><p>N/A</p></td>
+<td><p>3D Printed Front Panel</p></td>
+</tr>
+<tr class="row-odd"><td><p>ADI1</p></td>
+<td><p>2</p></td>
+<td><p><a class="icon adi reference external" href="https://www.analog.com/qsh5718" target="_blank">QSH5718-51-28-101-10K</a></p></td>
+<td><p>NEMA 23 stepper motor 55Ncm, 2.8A</p>
+<a class="reference internal image-reference" href="../../_images/qsh5718-51-28-101-10k.jpg"><img alt="../../_images/qsh5718-51-28-101-10k.jpg" src="../../_images/qsh5718-51-28-101-10k.jpg" style="width: 8rem;" />
+</a>
+</td>
+</tr>
+<tr class="row-even"><td><p>ADI2</p></td>
+<td><p>1</p></td>
+<td><p><a class="icon adi reference external" href="https://www.analog.com/EVAL-ADTF3175D-NXZ" target="_blank">EVAL-ADTF3175D-NXZ</a></p></td>
+<td><p>Time-of-Flight depth camera for perception</p>
+<a class="reference internal image-reference" href="../../_images/eval_adtf3175.png"><img alt="../../_images/eval_adtf3175.png" src="../../_images/eval_adtf3175.png" style="width: 8rem;" />
+</a>
+</td>
+</tr>
+<tr class="row-odd"><td><p>ADI3</p></td>
+<td><p>2</p></td>
+<td><p><a class="icon adi reference external" href="https://www.analog.com/ADRD3161-01Z" target="_blank">ADRD3161-01Z</a></p></td>
+<td><p>Motor Control PCB</p>
+<a class="reference internal image-reference" href="../../_images/adrd3161.jpg"><img alt="../../_images/adrd3161.jpg" src="../../_images/adrd3161.jpg" style="width: 8rem;" />
+</a>
+</td>
+</tr>
+<tr class="row-even"><td><p>ADI4</p></td>
+<td><p>1</p></td>
+<td><p><a class="icon adi reference external" href="https://www.analog.com/ADRD5161-01Z" target="_blank">ADRD5161-01Z</a></p></td>
+<td><p>BMS</p>
+<a class="reference internal image-reference" href="../../_images/adrd5161.png"><img alt="../../_images/adrd5161.png" src="../../_images/adrd5161.png" style="width: 8rem;" />
+</a>
+</td>
+</tr>
+<tr class="row-odd"><td><p>ADI5</p></td>
+<td><p>1</p></td>
+<td><p><a class="icon adi reference external" href="https://www.analog.com/ADRD4161-01Z" target="_blank">ADRD4161-01Z</a></p></td>
+<td><p>Compute Carrier</p>
+<a class="reference internal image-reference" href="../../_images/adrd4161_board.jpg"><img alt="../../_images/adrd4161_board.jpg" src="../../_images/adrd4161_board.jpg" style="width: 8rem;" />
+</a>
+</td>
+</tr>
+<tr class="row-even"><td><p>ADI6</p></td>
+<td><p>1</p></td>
+<td><p>N/A</p></td>
+<td><p>Battery Holder</p></td>
+</tr>
+<tr class="row-odd"><td><p>E1</p></td>
+<td><p>1</p></td>
+<td><p>RPi 5</p></td>
+<td><p>Raspberry Pi 5 SBC</p></td>
+</tr>
+<tr class="row-even"><td><p>E2</p></td>
+<td><p>1</p></td>
+<td><p>IND16-12B-C</p></td>
+<td><p>Status LED</p></td>
+</tr>
+<tr class="row-odd"><td><p>E3</p></td>
+<td><p>1</p></td>
+<td><p>82-4151.1000</p></td>
+<td><p>SPDT Button</p></td>
+</tr>
+<tr class="row-even"><td><p>E4</p></td>
+<td><p>1</p></td>
+<td><p>82-4151.1123</p></td>
+<td><p>SPDT Button</p></td>
+</tr>
+<tr class="row-odd"><td><p>M1</p></td>
+<td><p>6</p></td>
+<td><p>FA-093W201N05S01</p></td>
+<td><p>Angle bracket</p></td>
+</tr>
+<tr class="row-even"><td><p>M2</p></td>
+<td><p>6</p></td>
+<td><p>A-094411M4</p></td>
+<td><p>Panel holder</p></td>
+</tr>
+<tr class="row-odd"><td><p>M3</p></td>
+<td><p>1</p></td>
+<td><p>K2020-I5 KRAFTBERG</p></td>
+<td><p>340mm Aluminum 20X20 profile</p></td>
+</tr>
+<tr class="row-even"><td><p>M4</p></td>
+<td><p>2</p></td>
+<td><p>K2040-I5 KRAFTBERG</p></td>
+<td><p>530mm Aluminum 20X40 profile</p></td>
+</tr>
+<tr class="row-odd"><td><p>M5</p></td>
+<td><p>1</p></td>
+<td><p>K2040-I5 KRAFTBERG</p></td>
+<td><p>340mm Aluminum 20X40 profile</p></td>
+</tr>
+<tr class="row-even"><td><p>M6</p></td>
+<td><p>12</p></td>
+<td><p>M5X8/D912-A4</p></td>
+<td><p>Screw</p></td>
+</tr>
+<tr class="row-odd"><td><p>M7</p></td>
+<td><p>28</p></td>
+<td><p>FA-096215</p></td>
+<td><p>M5 Profile nut</p></td>
+</tr>
+<tr class="row-even"><td><p>M8</p></td>
+<td><p>4</p></td>
+<td><p>JDPE-0501-1001</p></td>
+<td><p>Casters</p></td>
+</tr>
+<tr class="row-odd"><td><p>M9</p></td>
+<td><p>8</p></td>
+<td><p>B5X25/BN3</p></td>
+<td><p>M5 25mm screw</p></td>
+</tr>
+<tr class="row-even"><td><p>M10</p></td>
+<td><p>8</p></td>
+<td><p>B5/BN715</p></td>
+<td><p>5mm washer</p></td>
+</tr>
+<tr class="row-odd"><td><p>M11</p></td>
+<td><p>8</p></td>
+<td><p>B5X10/BN3</p></td>
+<td><p>M5 10mm screw</p></td>
+</tr>
+<tr class="row-even"><td><p>M12</p></td>
+<td><p>8</p></td>
+<td><p>B5/BN161</p></td>
+<td><p>M5 nut lock</p></td>
+</tr>
+<tr class="row-odd"><td><p>M13</p></td>
+<td><p>2</p></td>
+<td><p>B4X8/BN3</p></td>
+<td><p>M4 x 8 HEX</p></td>
+</tr>
+<tr class="row-even"><td><p>M14</p></td>
+<td><p>2</p></td>
+<td><p>B4/BN1074</p></td>
+<td><p>M4 Washer</p></td>
+</tr>
+<tr class="row-odd"><td><p>M15</p></td>
+<td><p>8</p></td>
+<td><p>M3X15/DR213</p></td>
+<td><p>Standoff TFF</p></td>
+</tr>
+<tr class="row-even"><td><p>M16</p></td>
+<td><p>4</p></td>
+<td><p>M3X20/DR113</p></td>
+<td><p>Standoff TFM</p></td>
+</tr>
+<tr class="row-odd"><td><p>M17</p></td>
+<td><p>8</p></td>
+<td><p>M3X25/DR213</p></td>
+<td><p>Standoff TFF</p></td>
+</tr>
+<tr class="row-even"><td><p>M18</p></td>
+<td><p>16</p></td>
+<td><p>M3X5/D7985</p></td>
+<td><p>Screw</p></td>
+</tr>
+<tr class="row-odd"><td><p>M19</p></td>
+<td><p>16</p></td>
+<td><p>B3X5/BN610</p></td>
+<td><p>HEX Screw</p></td>
+</tr>
+<tr class="row-even"><td><p>M20</p></td>
+<td><p>8</p></td>
+<td><p>B5X16/BN3</p></td>
+<td><p>M5 x 16 screw</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="tools-needed">
+<h2><span class="section-number">1.2. </span>Tools needed<a class="headerlink" href="#tools-needed" title="Link to this heading"></a></h2>
+<div class="table-wrapper colwidths-auto docutils container" id="table-tools">
+<table class="docutils align-default" id="table-tools">
+<caption><span class="caption-text">Tools Required</span><a class="headerlink" href="#table-tools" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Item</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Tape measure</p></td>
+<td><p>For measuring frame dimensions and diagonals</p></td>
+</tr>
+<tr class="row-odd"><td><p>Allen Key set</p></td>
+<td><p>For tightening hex screws</p></td>
+</tr>
+<tr class="row-even"><td><p>Pliers</p></td>
+<td><p>For general assembly</p></td>
+</tr>
+<tr class="row-odd"><td><p>Crimping tools</p></td>
+<td><p>For wire harness assembly</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="assembly-steps">
+<h2><span class="section-number">1.3. </span>Assembly steps<a class="headerlink" href="#assembly-steps" title="Link to this heading"></a></h2>
+</section>
+<section id="frame">
+<h2><span class="section-number">1.4. </span>Frame<a class="headerlink" href="#frame" title="Link to this heading"></a></h2>
+<section id="step-1">
+<h3><span class="section-number">1.4.1. </span>Step 1<a class="headerlink" href="#step-1" title="Link to this heading"></a></h3>
+<p>Assemble the frame using the aluminum profiles and the angle brackets.</p>
+<p>Make sure it results in a rectangular shape by measuring the diagonals.</p>
+<p>Use 2 angle brackets to connect two K2040 profiles.</p>
+<p>Place 4 “M2” holders 30mm away from the interior of the profile and 2 in the middle of the 530mm profiles.</p>
+<div class="table-wrapper colwidths-auto docutils container" id="table-frame-step1">
+<table class="docutils align-default" id="table-frame-step1">
+<caption><span class="caption-text">Frame Step 1 - Frame Assembly</span><a class="headerlink" href="#table-frame-step1" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Ref</p></th>
+<th class="head"><p>Qty</p></th>
+<th class="head"><p>P/N</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>M1</p></td>
+<td><p>6</p></td>
+<td><p>FA-093W201N05S01</p></td>
+<td><p>Angle bracket</p></td>
+</tr>
+<tr class="row-odd"><td><p>M2</p></td>
+<td><p>6</p></td>
+<td><p>A-094411M4</p></td>
+<td><p>Panel holder</p></td>
+</tr>
+<tr class="row-even"><td><p>M3</p></td>
+<td><p>1</p></td>
+<td><p>K2020-I5 KRAFTBERG</p></td>
+<td><p>340mm Aluminum 20X20 profile</p></td>
+</tr>
+<tr class="row-odd"><td><p>M4</p></td>
+<td><p>2</p></td>
+<td><p>K2040-I5 KRAFTBERG</p></td>
+<td><p>530mm Aluminum 20X40 profile</p></td>
+</tr>
+<tr class="row-even"><td><p>M5</p></td>
+<td><p>1</p></td>
+<td><p>K2040-I5 KRAFTBERG</p></td>
+<td><p>340mm Aluminum 20X40 profile</p></td>
+</tr>
+<tr class="row-odd"><td><p>M6</p></td>
+<td><p>12</p></td>
+<td><p>M5X8/D912-A4</p></td>
+<td><p>Screw</p></td>
+</tr>
+<tr class="row-even"><td><p>M7</p></td>
+<td><p>12</p></td>
+<td><p>FA-096215</p></td>
+<td><p>M5 Profile nut</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<a class="reference internal image-reference" href="../../_images/image2.jpeg"><img alt="../../_images/image2.jpeg" src="../../_images/image2.jpeg" style="width: 5.45347in;" />
+</a>
+</section>
+<section id="step-2">
+<h3><span class="section-number">1.4.2. </span>Step 2<a class="headerlink" href="#step-2" title="Link to this heading"></a></h3>
+<p>Place the wheels using the 3D printed 15mm caster raiser “3D1”.</p>
+<div class="table-wrapper colwidths-auto docutils container" id="table-frame-step2">
+<table class="docutils align-default" id="table-frame-step2">
+<caption><span class="caption-text">Frame Step 2 - Wheels</span><a class="headerlink" href="#table-frame-step2" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Ref</p></th>
+<th class="head"><p>Qty</p></th>
+<th class="head"><p>P/N</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>M8</p></td>
+<td><p>4</p></td>
+<td><p>JDPE-0501-1001</p></td>
+<td><p>casters</p></td>
+</tr>
+<tr class="row-odd"><td><p>3D1</p></td>
+<td><p>4</p></td>
+<td><p>N/A</p></td>
+<td><p>16 mm caster raiser</p></td>
+</tr>
+<tr class="row-even"><td><p>M7</p></td>
+<td><p>8</p></td>
+<td><p>FA-096215</p></td>
+<td><p>M5 profile nut</p></td>
+</tr>
+<tr class="row-odd"><td><p>M9</p></td>
+<td><p>8</p></td>
+<td><p>B5X25/BN3</p></td>
+<td><p>M5 25mm screw</p></td>
+</tr>
+<tr class="row-even"><td><p>M10</p></td>
+<td><p>8</p></td>
+<td><p>B5/BN715</p></td>
+<td><p>5mm washer</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<a class="reference internal image-reference" href="../../_images/image3.jpeg"><img alt="../../_images/image3.jpeg" src="../../_images/image3.jpeg" style="width: 5.88333in;" />
+</a>
+</section>
+<section id="step-3">
+<h3><span class="section-number">1.4.3. </span>Step 3<a class="headerlink" href="#step-3" title="Link to this heading"></a></h3>
+<p>Install the motor mounts “3D2”. The motor mounts need to be placed in the center
+of the 530mm longitudinal profiles.</p>
+<div class="table-wrapper colwidths-auto docutils container" id="table-frame-step3">
+<table class="docutils align-default" id="table-frame-step3">
+<caption><span class="caption-text">Frame Step 3 - Motor Mounts</span><a class="headerlink" href="#table-frame-step3" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Ref</p></th>
+<th class="head"><p>Qty</p></th>
+<th class="head"><p>P/N</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>3D2</p></td>
+<td><p>2</p></td>
+<td><p>N/A</p></td>
+<td><p>Motor mounts</p></td>
+</tr>
+<tr class="row-odd"><td><p>M7</p></td>
+<td><p>8</p></td>
+<td><p>FA-096215</p></td>
+<td><p>M5 profile nut</p></td>
+</tr>
+<tr class="row-even"><td><p>M11</p></td>
+<td><p>8</p></td>
+<td><p>B5X10/BN3</p></td>
+<td><p>M5 10mm screw</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<a class="reference internal image-reference" href="../../_images/image4.jpeg"><img alt="../../_images/image4.jpeg" src="../../_images/image4.jpeg" style="width: 6.47917in;" />
+</a>
+</section>
+<section id="step-4">
+<h3><span class="section-number">1.4.4. </span>Step 4<a class="headerlink" href="#step-4" title="Link to this heading"></a></h3>
+<div class="table-wrapper colwidths-auto docutils container" id="table-frame-step4">
+<table class="docutils align-default" id="table-frame-step4">
+<caption><span class="caption-text">Frame Step 4 - Motors</span><a class="headerlink" href="#table-frame-step4" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Ref</p></th>
+<th class="head"><p>Qty</p></th>
+<th class="head"><p>P/N</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>M20</p></td>
+<td><p>8</p></td>
+<td><p>B5X16/BN3</p></td>
+<td><p>M5 x 16 screw</p></td>
+</tr>
+<tr class="row-odd"><td><p>M12</p></td>
+<td><p>8</p></td>
+<td><p>B5/BN161</p></td>
+<td><p>M5 nut lock</p></td>
+</tr>
+<tr class="row-even"><td><p>ADI1</p></td>
+<td><p>2</p></td>
+<td><p>QSH5718-51-28-101-10K</p></td>
+<td><p>NEMA 23 stepper motor 55Ncm, 2.8A</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Install the motors.</p>
+<a class="reference internal image-reference" href="../../_images/image5.png"><img alt="../../_images/image5.png" src="../../_images/image5.png" style="width: 3.48542in;" />
+</a>
+</section>
+<section id="step-5">
+<h3><span class="section-number">1.4.5. </span>Step 5<a class="headerlink" href="#step-5" title="Link to this heading"></a></h3>
+<p>Install camera mounts 116.5 mm from the side 135.5 from camera.</p>
+<p>Camera mounts and camera housing are 3D printed.</p>
+<div class="table-wrapper colwidths-auto docutils container" id="table-frame-step5">
+<table class="docutils align-default" id="table-frame-step5">
+<caption><span class="caption-text">Frame Step 5 - Camera Mounts</span><a class="headerlink" href="#table-frame-step5" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Ref</p></th>
+<th class="head"><p>Qty</p></th>
+<th class="head"><p>P/N</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>M13</p></td>
+<td><p>2</p></td>
+<td><p>B4X8/BN3</p></td>
+<td><p>M4 x 8 HEX</p></td>
+</tr>
+<tr class="row-odd"><td><p>M14</p></td>
+<td><p>2</p></td>
+<td><p>B4/BN1074</p></td>
+<td><p>M4 Washer</p></td>
+</tr>
+<tr class="row-even"><td><p>3D3</p></td>
+<td><p>2</p></td>
+<td><p>NA</p></td>
+<td><p>3D printed camera mount brackets</p></td>
+</tr>
+<tr class="row-odd"><td><p>3D4</p></td>
+<td><p>1</p></td>
+<td><p>NA</p></td>
+<td><p>3D printed camera housing</p></td>
+</tr>
+<tr class="row-even"><td><p>ADI2</p></td>
+<td><p>1</p></td>
+<td><p>EVAL-ADTF3175</p></td>
+<td><p>Time-of-Flight depth camera for perception</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<a class="reference internal image-reference" href="../../_images/image6.jpeg"><img alt="../../_images/image6.jpeg" src="../../_images/image6.jpeg" style="width: 6.48958in;" />
+</a>
+</section>
+<section id="step-6">
+<h3><span class="section-number">1.4.6. </span>Step 6<a class="headerlink" href="#step-6" title="Link to this heading"></a></h3>
+<p>Install the wheel assembly on the motor</p>
+<div class="table-wrapper colwidths-auto docutils container" id="table-frame-step6">
+<table class="docutils align-default" id="table-frame-step6">
+<caption><span class="caption-text">Frame Step 6 - Wheel Assembly</span><a class="headerlink" href="#table-frame-step6" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Ref</p></th>
+<th class="head"><p>Qty</p></th>
+<th class="head"><p>P/N</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>3D5</p></td>
+<td><p>2</p></td>
+<td><p>N/A</p></td>
+<td><p>Wheel assembly</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="electronic-modules">
+<h2><span class="section-number">1.5. </span>Electronic modules<a class="headerlink" href="#electronic-modules" title="Link to this heading"></a></h2>
+<section id="id1">
+<h3><span class="section-number">1.5.1. </span>Step 1<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<p>Place board spacers.</p>
+<div class="table-wrapper colwidths-auto docutils container" id="table-board-step1">
+<table class="docutils align-default" id="table-board-step1">
+<caption><span class="caption-text">Electronics Assembly Step 1 - Spacers</span><a class="headerlink" href="#table-board-step1" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Ref</p></th>
+<th class="head"><p>Qty</p></th>
+<th class="head"><p>P/N</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>3D6</p></td>
+<td><p>1</p></td>
+<td><p>N/A</p></td>
+<td><p>Electronics sub-assemblies mounting plate</p></td>
+</tr>
+<tr class="row-odd"><td><p>M15</p></td>
+<td><p>8</p></td>
+<td><p>M3X15/DR213</p></td>
+<td><p>Standoff TFF</p></td>
+</tr>
+<tr class="row-even"><td><p>M16</p></td>
+<td><p>4</p></td>
+<td><p>M3X20/DR113</p></td>
+<td><p>Standoff TFM</p></td>
+</tr>
+<tr class="row-odd"><td><p>M17</p></td>
+<td><p>4</p></td>
+<td><p>M3X25/DR213</p></td>
+<td><p>Standoff TFF</p></td>
+</tr>
+<tr class="row-even"><td><p>M18</p></td>
+<td><p>16</p></td>
+<td><p>M3X5/D7985</p></td>
+<td><p>Screw</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<a class="reference internal image-reference" href="../../_images/image7.png"><img alt="../../_images/image7.png" src="../../_images/image7.png" style="width: 5.2625in;" />
+</a>
+<a class="reference internal image-reference" href="../../_images/image8.png"><img alt="../../_images/image8.png" src="../../_images/image8.png" style="width: 5.31319in;" />
+</a>
+<a class="reference internal image-reference" href="../../_images/image23.png"><img alt="../../_images/image23.png" src="../../_images/image23.png" style="width: 3.16528in;" />
+</a>
+</section>
+<section id="id2">
+<h3><span class="section-number">1.5.2. </span>Step 2<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<p>Place PCB sub-assemblies.</p>
+<p>The BMS board goes above the battery holder on 4 M3X25 standoffs.</p>
+<div class="table-wrapper colwidths-auto docutils container" id="table-board-step2">
+<table class="docutils align-default" id="table-board-step2">
+<caption><span class="caption-text">Electronics Assembly Step 2 - Boards</span><a class="headerlink" href="#table-board-step2" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Ref</p></th>
+<th class="head"><p>Qty</p></th>
+<th class="head"><p>P/N</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>M19</p></td>
+<td><p>16</p></td>
+<td><p>B3X5/BN610</p></td>
+<td><p>HEX Screw</p></td>
+</tr>
+<tr class="row-odd"><td><p>M17</p></td>
+<td><p>4</p></td>
+<td><p>M3X25/DR213</p></td>
+<td><p>Standoff TFF</p></td>
+</tr>
+<tr class="row-even"><td><p>ADI3</p></td>
+<td><p>1</p></td>
+<td><p>ADRD3161</p></td>
+<td><p>Motor Control PCB</p></td>
+</tr>
+<tr class="row-odd"><td><p>ADI4</p></td>
+<td><p>1</p></td>
+<td><p>ADRD5161</p></td>
+<td><p>BMS</p></td>
+</tr>
+<tr class="row-even"><td><p>ADI5</p></td>
+<td><p>1</p></td>
+<td><p>ADRD4161</p></td>
+<td><p>Compute Carrier</p></td>
+</tr>
+<tr class="row-odd"><td><p>ADI6</p></td>
+<td><p>1</p></td>
+<td><p>N/A</p></td>
+<td><p>Battery Holder</p></td>
+</tr>
+<tr class="row-even"><td><p>E1</p></td>
+<td><p>1</p></td>
+<td><p>RPi 5</p></td>
+<td><p>Raspberry Pi 5 SBC</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<a class="reference internal image-reference" href="../../_images/image9.png"><img alt="../../_images/image9.png" src="../../_images/image9.png" style="width: 6.5in;" />
+</a>
+</section>
+</section>
+<section id="control-panel">
+<h2><span class="section-number">1.6. </span>Control Panel<a class="headerlink" href="#control-panel" title="Link to this heading"></a></h2>
+<div class="table-wrapper colwidths-auto docutils container" id="table-control-panel">
+<table class="docutils align-default" id="table-control-panel">
+<caption><span class="caption-text">Control Panel Components</span><a class="headerlink" href="#table-control-panel" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Ref</p></th>
+<th class="head"><p>Qty</p></th>
+<th class="head"><p>P/N</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>E2</p></td>
+<td><p>1</p></td>
+<td><p>IND16-12B-C</p></td>
+<td><p>Status LED</p></td>
+</tr>
+<tr class="row-odd"><td><p>E3</p></td>
+<td><p>1</p></td>
+<td><p>82-4151.1000</p></td>
+<td><p>SPDT Button</p></td>
+</tr>
+<tr class="row-even"><td><p>E4</p></td>
+<td><p>1</p></td>
+<td><p>82-4151.1123</p></td>
+<td><p>SPDT Button</p></td>
+</tr>
+<tr class="row-odd"><td><p>3D7</p></td>
+<td><p>1</p></td>
+<td><p>N/A</p></td>
+<td><p>3D Printed Front Panel</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<a class="reference internal image-reference" href="../../_images/image10.png"><img alt="../../_images/image10.png" src="../../_images/image10.png" style="width: 3.36458in;" />
+</a>
+<a class="reference internal image-reference" href="../../_images/image11.png"><img alt="../../_images/image11.png" src="../../_images/image11.png" style="width: 3.16667in;" />
+</a>
+</section>
+<section id="wiring-harness">
+<h2><span class="section-number">1.7. </span>Wiring Harness<a class="headerlink" href="#wiring-harness" title="Link to this heading"></a></h2>
+<p>Main wiring diagram:</p>
+<a class="reference internal image-reference" href="../../_images/image12.jpeg"><img alt="../../_images/image12.jpeg" src="../../_images/image12.jpeg" style="width: 6.93333in;" />
+</a>
+<a class="reference internal image-reference" href="../../_images/image13.png"><img alt="../../_images/image13.png" src="../../_images/image13.png" style="width: 6.5in;" />
+</a>
+<p>Wiring steps:</p>
+<a class="reference internal image-reference" href="../../_images/image14.png"><img alt="../../_images/image14.png" src="../../_images/image14.png" style="width: 6.47847in;" />
+</a>
+<a class="reference internal image-reference" href="../../_images/image15.png"><img alt="../../_images/image15.png" src="../../_images/image15.png" style="width: 4.32639in;" />
+</a>
+<a class="reference internal image-reference" href="../../_images/image16.jpeg"><img alt="../../_images/image16.jpeg" src="../../_images/image16.jpeg" style="width: 3.69931in;" />
+</a>
+<p>Wire assemblies:</p>
+<section id="can">
+<h3><span class="section-number">1.7.1. </span>CAN<a class="headerlink" href="#can" title="Link to this heading"></a></h3>
+<p>Twisted pair + GND with Molex Micro-Fit 3.0 <strong>43025-0400</strong> connectors on
+both sides.</p>
+<a class="reference internal image-reference" href="../../_images/image17.png"><img alt="../../_images/image17.png" src="../../_images/image17.png" style="width: 6.5in;" />
+</a>
+</section>
+<section id="motor-encoder">
+<h3><span class="section-number">1.7.2. </span>Motor encoder<a class="headerlink" href="#motor-encoder" title="Link to this heading"></a></h3>
+<p>Wire assembly with Molex Micro-Fit 3.0 <strong>43025-0800</strong> connector on the
+motor control board side. For more details check ADRD3161 documentation.</p>
+<a class="reference internal image-reference" href="../../_images/image18.jpeg"><img alt="../../_images/image18.jpeg" src="../../_images/image18.jpeg" style="width: 5.85694in;" />
+</a>
+</section>
+<section id="battery-balancing">
+<h3><span class="section-number">1.7.3. </span>Battery balancing<a class="headerlink" href="#battery-balancing" title="Link to this heading"></a></h3>
+<p>Wire assembly, 4 wires with JST <strong>XHP-4</strong> connectors on both sides.</p>
+<a class="reference internal image-reference" href="../../_images/image19.png"><img alt="../../_images/image19.png" src="../../_images/image19.png" style="width: 5.29722in;" />
+</a>
+<a class="reference internal image-reference" href="../../_images/image20.jpeg"><img alt="../../_images/image20.jpeg" src="../../_images/image20.jpeg" style="width: 2.27778in;" />
+</a>
+</section>
+<section id="power-wires">
+<h3><span class="section-number">1.7.4. </span>Power wires<a class="headerlink" href="#power-wires" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>2.5mm wires with bootlace ferrule.</p></li>
+<li><p>450 mm length from the BMS to the motor control board, 2 pairs.</p></li>
+</ul>
+<a class="reference internal image-reference" href="../../_images/image21.png"><img alt="../../_images/image21.png" src="../../_images/image21.png" style="width: 5.27361in;" />
+</a>
+<a class="reference internal image-reference" href="../../_images/image22.png"><img alt="../../_images/image22.png" src="../../_images/image22.png" style="width: 5.89583in;" />
+</a>
+<a class="reference internal image-reference" href="../../_images/image24.png"><img alt="../../_images/image24.png" src="../../_images/image24.png" style="width: 6.5in;" />
+</a>
+<a class="reference internal image-reference" href="../../_images/image25.png"><img alt="../../_images/image25.png" src="../../_images/image25.png" style="width: 6.5in;" />
+</a>
+<a class="reference internal image-reference" href="../../_images/image26.png"><img alt="../../_images/image26.png" src="../../_images/image26.png" style="width: 6.5in;" />
+</a>
+</section>
+</section>
+</section>
+
+
+          </div>
+              <div class="related">
+                &nbsp;
+    <a href="index.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev">How to build an AD-R1M from scratch</a>
+    <a href="setup-rpi.html" title="Next document (Alt+Shift+RightArrow)" class="next"><span class="section-number">2. </span>How to set up the AD-R1M internal computer</a>
+              </div>
+          
+        </div>
+      </div>
+  </div>
+
+  <label id="cancel-area-show-toc" for="input-show-toc"></label>
+  <label id="cancel-area-show-localtoc" for="input-show-localtoc"></label>
+    <footer>
+      &#169;2026, Analog Devices, Inc.
+      
+      |
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+      &amp; <a href="https://github.com/analogdevicesinc/doctools">Doctools</a>
+      
+    </footer>
+  </body>
+</html>
