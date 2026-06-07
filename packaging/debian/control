@@ -18,7 +18,8 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
  can-utils,
  bc,
  libiio0,
- sshpass
+ sshpass,
+ chrony
 Description: AD-R1M system setup for default hardware variant
  Set up host system to support the AD-R1M software stack for the default
  hardware variant:
