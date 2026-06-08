@@ -36,6 +36,9 @@ def generate_launch_description():
             {'diag_data_enable': False},
             {'ident_data_enable': False},
             {'frame_id': frame_id},
+            {'covariance': {
+                'enabled': True,
+            }}
         ],
         output='screen'
     )
