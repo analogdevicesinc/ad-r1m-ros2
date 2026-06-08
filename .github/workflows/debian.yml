@@ -36,6 +36,8 @@ jobs:
     name: 'Debian package build'
     runs-on: ubuntu-latest
     container: 'debian:trixie'
+    outputs:
+      cloudsmith_component: ${{ steps.vars.outputs.cloudsmith_component }}
 
     steps:
     - name: Set up dependencies
@@ -49,53 +51,44 @@ jobs:
         git config --global user.name "GitHub Actions"
         git config --global user.email "41898282+github-actions@users.noreply.github.com"
 
-    - if: github.event_name == 'pull_request'
-      name: Prepare run (PR)
+    - name: Set variables
+      id: vars
       shell: bash
       run: |
-        export VERSION_SUFFIX="~git$(date -u +'%Y%m%d.%H%M').${GITHUB_SHA:0:7}-1"
         export DEBFULLNAME="$(git config user.name)"
         export DEBEMAIL="$(git config user.email)"
-        
-        echo "VERSION_SUFFIX=$VERSION_SUFFIX" >> "$GITHUB_ENV"
         echo "DEBFULLNAME=$DEBFULLNAME" >> "$GITHUB_ENV"
         echo "DEBEMAIL=$DEBEMAIL" >> "$GITHUB_ENV"
-        echo "BUILD_TYPE=pr" >> "$GITHUB_ENV"
 
-        # Add changelog entry
-        cd packaging/
-        dch -b --newversion "$(cat ../VERSION)$VERSION_SUFFIX" \
-          "Lint CI build from commit $GITHUB_SHA"
-
-    - if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      name: Set variables (Nightly)
-      shell: bash
-      run: |
+        # Default to git version suffix
         export VERSION_SUFFIX="~git$(date -u +'%Y%m%d.%H%M').${GITHUB_SHA:0:7}-1"
-        export DEBFULLNAME="$(git config user.name)"
-        export DEBEMAIL="$(git config user.email)"
-
         echo "VERSION_SUFFIX=$VERSION_SUFFIX" >> "$GITHUB_ENV"
-        echo "DEBFULLNAME=$DEBFULLNAME" >> "$GITHUB_ENV"
-        echo "DEBEMAIL=$DEBEMAIL" >> "$GITHUB_ENV"
-        echo "BUILD_TYPE=nightly" >> "$GITHUB_ENV"
-        echo "CLOUDSMITH_COMPONENT=nightly" >> "$GITHUB_ENV"
 
-        # Add changelog entry
-        cd packaging/
-        dch -b --newversion "$(cat ../VERSION)$VERSION_SUFFIX" \
-          "Nightly CI build from commit $GITHUB_SHA"
+        if ${{ github.ref_type == 'tag' }}; then
+          echo "Release build"
 
-    - if: github.ref_type == 'tag'
-      name: Set variables (Release)
-      shell: bash
-      run: |
-        echo "BUILD_TYPE=release" >> "$GITHUB_ENV"
-        echo "VERSION_SUFFIX=-1" >> "$GITHUB_ENV"
-        echo "CLOUDSMITH_COMPONENT=main" >> "$GITHUB_ENV"
+          echo "VERSION_SUFFIX=-1" >> "$GITHUB_ENV" # Overwrite default
+          echo "cloudsmith_component=main" >> "$GITHUB_OUTPUT"
 
-        # No extra changelog entry! Maintainer should have ran dch and committed
-        # the result before tagging!
+          # No extra changelog entry! Maintainer should have ran dch and committed
+          # the result before tagging!
+        elif ${{ github.ref == 'refs/heads/main' }}; then
+          echo "Nightly build"
+
+          echo "cloudsmith_component=nightly" >> "$GITHUB_OUTPUT"
+
+          # Add automated changelog entry
+          cd packaging/
+          dch -b --newversion "$(cat ../VERSION)$VERSION_SUFFIX" \
+            "Nightly CI build from commit $GITHUB_SHA"
+        else
+          echo "Lint build"
+
+          # Add automated changelog entry
+          cd packaging/
+          dch -b --newversion "$(cat ../VERSION)$VERSION_SUFFIX" \
+            "Lint CI build from ref ${{ github.ref }} commit ${{ github.sha }}"
+        fi
 
     - name: Build debian packages
       shell: bash
@@ -123,19 +116,29 @@ jobs:
           packaging/build/*.debian.tar.xz
 
   deploy:
+    needs: [debian-build]
     environment: nightly
     runs-on: ubuntu-latest
     if: github.ref_type == 'tag' || github.ref == 'refs/heads/main'
 
     steps:
+    - name: Set up dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y devscripts
+
     - name: Cloudsmith OIDC
       uses: cloudsmith-io/cloudsmith-cli-action@18665afcce9f859312b61989671af9af7402e4fb # v2.0.2
       with:
         oidc-namespace: adi
         oidc-service-slug: ${{ secrets.CLOUDSMITH_USER }}
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: debian-packages
     
     - name: Upload Debian packages to Cloudsmith
-      working-directory: packaging/build
       shell: sh
       run: |
         echo "Push source packages"
@@ -144,12 +147,12 @@ jobs:
           cloudsmith push deb adi/adrd-common/debian/trixie "$dsc" \
             --sources-file=$(dcmd --orig "$dsc") \
             --changes-file=$(dcmd --debtar "$dsc") \
-            --component="${{ env.CLOUDSMITH_COMPONENT }}"
+            --component="${{ needs.debian-build.outputs.cloudsmith_component }}"
         done
-      
+
         echo "Push binary packages"
         for deb in *.deb; do
           echo "Uploading binary package $deb"
           cloudsmith push deb adi/adrd-common/debian/trixie "$deb" \
-            --component="${{ env.CLOUDSMITH_COMPONENT }}"
+            --component="${{ needs.debian-build.outputs.cloudsmith_component }}"
         done
