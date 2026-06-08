@@ -8,7 +8,7 @@ on:
       docker_target: { type: string, required: true }
       docker_push: { type: boolean, required: true }
       tag_prefix: { type: string, required: true }
-      tag_suffixes: { type: string, required: true }
+      tag_suffixes: { type: string, required: true } # Comma-separated list with possible empty elements, e.g. ',-1,-1.2,-1.2.3'
       full_version: { type: string, required: true }
 
 permissions:
@@ -182,7 +182,10 @@ jobs:
           done
 
           # imagetools create both creates AND pushes the manifest to the registry
-          for tag_suffix in ${{ inputs.tag_suffixes }}; do
+          tag_suffixes='${{ inputs.tag_suffixes }}'
+          IFS=","
+          for tag_suffix in $tag_suffixes; do
+            IFS=" "
             tag="${{ env.REGISTRY }}/${{ inputs.name }}:${{ inputs.tag_prefix }}${tag_suffix}"
             echo "Creating and pushing manifest: $tag"
             docker buildx imagetools create -t "$tag" $digests

@@ -61,14 +61,13 @@ jobs:
             echo "Test ref ${{ github.ref_name }}"
           fi
 
-          {
-            echo "tag_suffixes<<EOF"
-            echo "${suffix}"
-            echo "-${v_major}${suffix}"
-            echo "-${v_major}.${v_minor}${suffix}"
-            echo "-${v_major}.${v_minor}.${v_patch}${suffix}"
-            echo "EOF"
+          tag_suffixes="${suffix}" # ...-nightly
+          tag_suffixes="${tag_suffixes},-${v_major}${suffix}" # ...-1-nightly
+          tag_suffixes="${tag_suffixes},-${v_major}.${v_minor}${suffix}" # ...-1.2-nightly
+          tag_suffixes="${tag_suffixes},-${v_major}.${v_minor}.${v_patch}${suffix}" # ...-1.2.3-nightly
 
+          {
+            echo "tag_suffixes=$tag_suffixes"
             echo "docker_target=$docker_target"
             echo "docker_push=$docker_push"
             echo "full_version=${v_major}.${v_minor}.${v_patch}${suffix}"
