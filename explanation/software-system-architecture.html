@@ -695,12 +695,12 @@ distribution with built-in support for a large number of Analog Devices products
     </pre></section>
 <section id="ros-2-reconfiguration">
 <h3>ROS 2 reconfiguration<a class="headerlink" href="#ros-2-reconfiguration" title="Link to this heading"></a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">ad-r1m</span> <span class="pre">start</span></code> command looks in the current directory (or the directory specified as the first argument) for the following configuration files:</p>
+<p>Runtime configurations are managed as docker compose folders, which by default contain:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ad-r1m.env</span></code> – Environment variables</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">compose.yaml</span></code> – Docker compose file describing which containers to start up</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ros_data/</span></code> – Directory with data to pass to containers and persist across runs: logs, configs, maps, etc. It is mounted to <code class="docutils literal notranslate"><span class="pre">/ros_data/</span></code> inside the containers.</p></li>
 </ul>
-<p>The default <code class="docutils literal notranslate"><span class="pre">compose.yaml</span></code> uses the <code class="docutils literal notranslate"><span class="pre">./ros_data</span></code> directory (relative to the compose file) for persisting logs, configs, maps, etc. between runs. It is mounted to <code class="docutils literal notranslate"><span class="pre">/ros_data/</span></code> inside the containers.</p>
 <p>The default configuration is present in <code class="docutils literal notranslate"><span class="pre">/usr/share/ad-r1m/default-config</span></code> and shouldn’t be modified by users. To create an alternate configuration, use the <code class="docutils literal notranslate"><span class="pre">ad-r1m</span> <span class="pre">mkconfig</span></code> command and edit as you please:</p>
 <div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
 </pre></div>
@@ -738,7 +738,7 @@ distribution with built-in support for a large number of Analog Devices products
 <div class="clear-left"></div></div><div><div class="no-select highlight-text notranslate"><div class="highlight"><pre><span></span>...
 </pre></div>
 </div>
-<div class="clear-left"></div></div></div><p>To start the robot software using that configuration, enter your configuration folder and run <code class="docutils literal notranslate"><span class="pre">ad-r1m</span> <span class="pre">start</span></code>:</p>
+<div class="clear-left"></div></div></div><p>To start the robot software using that configuration, enter your configuration folder and run Docker compose commands, e.g.:</p>
 <div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
 </pre></div>
 </div>
@@ -748,7 +748,7 @@ distribution with built-in support for a large number of Analog Devices products
 <div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/my-config$
 </pre></div>
 </div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ad-r1m<span class="w"> </span>start
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>up
 </pre></div>
 </div>
 <div class="clear-left"></div></div></div><p>To automatically start an alternative configuration at boot-time, use <code class="docutils literal notranslate"><span class="pre">ad-r1m</span> <span class="pre">enable</span> <span class="pre">&lt;folder&gt;</span></code>:</p>
