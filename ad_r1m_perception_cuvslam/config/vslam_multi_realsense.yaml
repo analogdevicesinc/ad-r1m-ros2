@@ -54,7 +54,7 @@ common_params:
   pointcloud.enable: False
   publish_tf: True
   enable_sync: True
-  initial_reset: True
+  initial_reset: False
   rgb_camera.color_profile: '640,360,30'
   depth_module.infra_profile: '640,360,30'
   depth_module.enable_auto_exposure: True
