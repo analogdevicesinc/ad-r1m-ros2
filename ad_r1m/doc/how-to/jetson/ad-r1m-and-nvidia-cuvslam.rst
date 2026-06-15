@@ -89,6 +89,18 @@ The EKF will now combine measurements from the IMU, wheel odometry, and visual o
 
     * For more information on RealSense hardware synchronization, see: https://dev.realsenseai.com/docs/multiple-depth-cameras-configuration
 
+.. important::
+    * When using cuVSLAM with multiple RealSense cameras which are hardware synchronized the *initial_reset* parameter in **vslam_multi_realsense.yaml** must be set to **False** on all cameras:
+
+    .. code-block:: yaml
+
+        common_params:
+            initial_reset: False
+    
+    * Having this parameter **True** triggers a hardware reset on each camera at node startup. In a multi-camera hardware-sync setup, this might create a startup race condition between the master and slave ROS2 nodes.
+    * This issue was confirmed on our setup (AGX Orin + D435i master + D455 slave + cuVSLAM) where the D455 camera consistently failed to publish infrared streams. Setting it to *False* solved the problem.
+    * For more info regarding potential issues we recommend checking the https://github.com/realsenseai/realsense-ros/issues page.
+
 **cuVSLAM parameter setup**
 
 .. note::
