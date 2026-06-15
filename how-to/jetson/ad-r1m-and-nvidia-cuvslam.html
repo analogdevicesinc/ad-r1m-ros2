@@ -251,6 +251,21 @@ ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_cuvslam<span cl
 <li><p>For more information on RealSense hardware synchronization, see: <a class="icon link reference external" href="https://dev.realsenseai.com/docs/multiple-depth-cameras-configuration" target="_blank">https://dev.realsenseai.com/docs/multiple-depth-cameras-configuration</a></p></li>
 </ul>
 </div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<ul class="simple">
+<li><p>When using cuVSLAM with multiple RealSense cameras which are hardware synchronized the <em>initial_reset</em> parameter in <strong>vslam_multi_realsense.yaml</strong> must be set to <strong>False</strong> on all cameras:</p></li>
+</ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">common_params</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">initial_reset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Having this parameter <strong>True</strong> triggers a hardware reset on each camera at node startup. In a multi-camera hardware-sync setup, this might create a startup race condition between the master and slave ROS2 nodes.</p></li>
+<li><p>This issue was confirmed on our setup (AGX Orin + D435i master + D455 slave + cuVSLAM) where the D455 camera consistently failed to publish infrared streams. Setting it to <em>False</em> solved the problem.</p></li>
+<li><p>For more info regarding potential issues we recommend checking the <a class="icon link reference external" href="https://github.com/realsenseai/realsense-ros/issues" target="_blank">https://github.com/realsenseai/realsense-ros/issues</a> page.</p></li>
+</ul>
+</div>
 <p><strong>cuVSLAM parameter setup</strong></p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
