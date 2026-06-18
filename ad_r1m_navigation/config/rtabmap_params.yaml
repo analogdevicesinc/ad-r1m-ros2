@@ -1,7 +1,11 @@
 # RTAB-Map parameters for AD-R1M robot
 # Tuned for: ToF camera (ADTF3175D) + IMU (ADIS16470) + differential drive
 #
-# Reference: https://github.com/introlab/rtabmap/wiki/RTAB-Map%27s-Parameters
+# References:
+#   - https://github.com/introlab/rtabmap/wiki/RTAB-Map%27s-Parameters
+#   - Labbé & Michaud, 2024: RTAB-Map as Open-Source SLAM Library
+#   - Phan et al., 2023: Sensor Fusion for RTAB-Map (EKF integration)
+#   - Muravyev & Yakovlev, 2022: RGB-D SLAM in Large Indoor Environments
 
 rtabmap:
   ros__parameters:
@@ -30,23 +34,29 @@ rtabmap:
     # ============================================
     # Visual Features (for ToF IR image)
     # ============================================
-    # Feature detector: 0=SURF, 1=SIFT, 2=ORB, 3=FAST, 6=ORB-OCTREE, 8=GFTT
+    # Feature detector: 6=ORB-OCTREE (fast, good for RPi)
     Vis/FeatureType: "6"
 
     # Max features to extract (reduce for RPi)
     Vis/MaxFeatures: "200"
 
+    # Loop closure keypoint features (half of Vis/MaxFeatures)
+    Kp/MaxFeatures: "100"
+
     # Min inliers for valid transformation
     Vis/MinInliers: "15"
 
-    # Correspondence type: 0=Features Matching, 1=Optical Flow
+    # Correspondence type: 0=Features Matching
     Vis/CorType: "0"
 
     # ============================================
     # Grid/Occupancy Map
     # ============================================
-    Grid/RayTracing: "true"
+    # CRITICAL: Disable ray tracing for narrow FOV camera mounted above obstacles
+    # Paper (Labbé 2024): "ray tracing can incorrectly clear obstacles when camera can't see them"
+    Grid/RayTracing: "false"
     Grid/3D: "false"
+    Grid/FromDepth: "true"
     Grid/RangeMax: "5.0"
     Grid/RangeMin: "0.3"
     Grid/CellSize: "0.05"
@@ -54,31 +64,42 @@ rtabmap:
     Grid/MaxGroundHeight: "0.05"
     Grid/MaxObstacleHeight: "0.5"
     Grid/MinClusterSize: "10"
+    Grid/MaxGroundAngle: "45"
 
     # ============================================
-    # Loop Closure
+    # Memory Management (CRITICAL for RPi)
+    # Paper Section 5.1: Essential for resource-constrained devices
+    # Muravyev 2022: RTAB-Map uses ~3.6GB for 300m trajectory without limits
     # ============================================
-    # Detection rate (Hz), reduce for RPi
-    Rtabmap/DetectionRate: "1.0"
+    # Max nodes in working memory (transfers excess to LTM)
+    Rtabmap/MemoryThr: "300"
+
+    # Max processing time per update (ms) - prevents blocking
+    Rtabmap/TimeThr: "700"
+
+    # Detection rate (Hz) - match with EKF rate for better fusion
+    # Phan 2023: Higher rate improves map quality
+    Rtabmap/DetectionRate: "2.0"
 
     # Loop closure hypothesis threshold
     Rtabmap/LoopThr: "0.11"
 
-    # Min visual words for loop closure
-    Rtabmap/LoopRatio: "0.0"
-
-    # ============================================
-    # Memory Management (tune for RPi)
-    # ============================================
-    # Image decimation before processing
+    # Image decimation before/after processing
     Mem/ImagePreDecimation: "2"
     Mem/ImagePostDecimation: "2"
 
     # Reduce stored images
     Mem/ImageCompressionFormat: ".jpg"
 
-    # Working memory management
-    Mem/STMSize: "10"
+    # Short-term memory for temporal filtering (dynamic objects)
+    # DYR-SLAM (Li 2025): STM helps filter transient objects
+    Mem/STMSize: "30"
+
+    # Incremental memory (required for SLAM mode)
+    Mem/IncrementalMemory: "true"
+
+    # Similarity threshold for rehearsal (avoid redundant frames)
+    Mem/RehearsalSimilarity: "0.2"
 
     # ============================================
     # Optimizer
@@ -86,18 +107,33 @@ rtabmap:
     # Disable gravity constraints (2D mode)
     Optimizer/GravitySigma: "0"
 
-    # GTSAM optimizer
-    Optimizer/Strategy: "1"
+    # GTSAM optimizer (best for multi-session)
+    Optimizer/Strategy: "2"
     Optimizer/Iterations: "10"
 
     # ============================================
-    # RGBD settings
+    # Loop Closure & RGBD settings
     # ============================================
+    # Enable proximity detection (critical for narrow 70° FOV)
+    # Allows loop closures when approaching from different angles
     RGBD/ProximityBySpace: "true"
-    RGBD/ProximityMaxGraphDepth: "0"
+    RGBD/ProximityMaxGraphDepth: "50"
     RGBD/ProximityPathMaxNeighbors: "10"
+
+    # Update thresholds
     RGBD/AngularUpdate: "0.1"
     RGBD/LinearUpdate: "0.1"
+
+    # Reject bad loop closures
+    RGBD/OptimizeMaxError: "1.0"
+
+    # Refine links with scan/depth data
+    RGBD/NeighborLinkRefining: "true"
+
+    # Re-extract features for loop closure (more robust matching)
+    # Muharom 2023: >300 matching IDs per 500 images for accurate model
+    RGBD/LoopClosureReextractFeatures: "true"
+
     RGBD/OptimizeFromGraphEnd: "false"
     RGBD/CreateOccupancyGrid: "true"
 
