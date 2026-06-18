@@ -24,8 +24,10 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <fstream>
 #include <functional>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -202,6 +204,11 @@ public:
     // Moving average parameters
     this->declare_parameter<bool>("moving_average_enable", false);
     this->declare_parameter<float>("ma_alpha", 0.9f);
+    // Initial map loading
+    this->declare_parameter<std::string>("initial_map_source", "");
+    this->declare_parameter<std::string>("initial_map_file", "");
+    this->declare_parameter<std::string>("initial_map_topic", "/map");
+    this->declare_parameter<float>("initial_map_weight", 50.0f);
 
     this->get_parameter("mapi_topic_name", grid_map.mapi_topic_name);
     this->get_parameter("maph_topic_name", grid_map.maph_topic_name);
@@ -261,6 +268,11 @@ public:
     this->get_parameter("moving_average_enable",
                         grid_map.filter.moving_average_enable);
     this->get_parameter("ma_alpha", grid_map.filter.ma_alpha);
+    // Initial map loading
+    this->get_parameter("initial_map_source", initial_map_source_);
+    this->get_parameter("initial_map_file", initial_map_file_);
+    this->get_parameter("initial_map_topic", initial_map_topic_);
+    this->get_parameter("initial_map_weight", initial_map_weight_);
 
     grid_map.paramRefresh();
 
@@ -274,6 +286,22 @@ public:
         grid_map.maph_gridmap_topic_name, 10);
 
     avg_ipoints.assign(grid_map.cell_num_x * grid_map.cell_num_y, 0.0);
+
+    // Load initial map if configured
+    if (initial_map_source_ == "file") {
+      if (initial_map_file_.empty()) {
+        RCLCPP_ERROR(this->get_logger(),
+                     "initial_map_source is 'file' but initial_map_file is empty.");
+      } else {
+        load_initial_map_from_file();
+      }
+    } else if (initial_map_source_ == "topic") {
+      load_initial_map_from_topic();
+    } else if (!initial_map_source_.empty()) {
+      RCLCPP_WARN(this->get_logger(),
+                  "Unknown initial_map_source '%s'. Use 'file', 'topic', or '' (disabled).",
+                  initial_map_source_.c_str());
+    }
 
     // Configure QoS for sensor data - use BEST_EFFORT
     // reliability to match typical sensor publishers
@@ -352,10 +380,194 @@ public:
             << (grid_map.filter.normal_averaging_enable ? "true" : "false")
             << "\n\t Moving average enable: "
             << (grid_map.filter.moving_average_enable ? "true" : "false")
-            << ",\n\t\t ma_alpha: " << grid_map.filter.ma_alpha);
+            << ",\n\t\t ma_alpha: " << grid_map.filter.ma_alpha
+            << "\n\t Initial map: source='"
+            << (initial_map_source_.empty() ? "disabled" : initial_map_source_)
+            << "', weight=" << initial_map_weight_);
   }
 
 private:
+  void apply_initial_map(const nav_msgs::msg::OccupancyGrid &map_msg) {
+    size_t expected = grid_map.cell_num_x * grid_map.cell_num_y;
+    size_t incoming = map_msg.info.width * map_msg.info.height;
+    if (incoming != expected) {
+      RCLCPP_ERROR(this->get_logger(),
+                   "Initial map size mismatch: got %zu cells, expected %zu. "
+                   "Skipping initial map.",
+                   incoming, expected);
+      return;
+    }
+    float res_diff =
+        std::abs(map_msg.info.resolution - grid_map.cell_size);
+    if (res_diff > 1e-3f) {
+      RCLCPP_WARN(this->get_logger(),
+                  "Initial map resolution (%.4f) differs from grid cell_size "
+                  "(%.4f). Loading anyway.",
+                  map_msg.info.resolution, grid_map.cell_size);
+    }
+    for (size_t i = 0; i < expected; ++i) {
+      int8_t val = map_msg.data[i];
+      if (val < 0) {
+        avg_ipoints[i] = 0.0f;
+      } else {
+        avg_ipoints[i] = static_cast<float>(val);
+      }
+    }
+    normal_avg_count = initial_map_weight_;
+    initial_map_loaded_ = true;
+    RCLCPP_INFO(this->get_logger(),
+                "Initial map loaded: %zu cells, weight=%.1f",
+                expected, initial_map_weight_);
+  }
+
+  void load_initial_map_from_topic() {
+    auto qos = rclcpp::QoS(1)
+                   .reliability(RMW_QOS_POLICY_RELIABILITY_RELIABLE)
+                   .durability(RMW_QOS_POLICY_DURABILITY_TRANSIENT_LOCAL);
+    RCLCPP_INFO(this->get_logger(),
+                "Waiting for initial map on topic '%s'...",
+                initial_map_topic_.c_str());
+    sub_initial_map_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(
+        initial_map_topic_, qos,
+        [this](const nav_msgs::msg::OccupancyGrid::SharedPtr msg) {
+          if (initial_map_loaded_) return;
+          apply_initial_map(*msg);
+          sub_initial_map_.reset();
+        });
+  }
+
+  bool load_initial_map_from_file() {
+    std::ifstream yaml_file(initial_map_file_);
+    if (!yaml_file.is_open()) {
+      RCLCPP_ERROR(this->get_logger(), "Cannot open map YAML: %s",
+                   initial_map_file_.c_str());
+      return false;
+    }
+    std::string image_path;
+    float resolution = 0.0f;
+    float origin_x = 0.0f, origin_y = 0.0f;
+    bool negate = false;
+    float occupied_thresh = 0.65f;
+    float free_thresh = 0.25f;
+
+    std::string line;
+    while (std::getline(yaml_file, line)) {
+      std::istringstream iss(line);
+      std::string key;
+      if (!(iss >> key)) continue;
+      if (key == "image:") {
+        iss >> image_path;
+      } else if (key == "resolution:") {
+        iss >> resolution;
+      } else if (key == "origin:") {
+        std::string rest;
+        std::getline(iss, rest);
+        // Parse [x, y, theta] format
+        size_t bracket = rest.find('[');
+        if (bracket != std::string::npos) {
+          rest = rest.substr(bracket + 1);
+          std::replace(rest.begin(), rest.end(), ',', ' ');
+          std::replace(rest.begin(), rest.end(), ']', ' ');
+          std::istringstream origin_ss(rest);
+          origin_ss >> origin_x >> origin_y;
+        }
+      } else if (key == "negate:") {
+        int val;
+        iss >> val;
+        negate = (val != 0);
+      } else if (key == "occupied_thresh:") {
+        iss >> occupied_thresh;
+      } else if (key == "free_thresh:") {
+        iss >> free_thresh;
+      }
+    }
+    yaml_file.close();
+
+    if (image_path.empty()) {
+      RCLCPP_ERROR(this->get_logger(), "No 'image:' field in YAML: %s",
+                   initial_map_file_.c_str());
+      return false;
+    }
+    // Resolve relative image path against the YAML directory
+    if (image_path[0] != '/') {
+      size_t slash = initial_map_file_.rfind('/');
+      if (slash != std::string::npos) {
+        image_path = initial_map_file_.substr(0, slash + 1) + image_path;
+      }
+    }
+
+    // Read PGM file (P5 binary format)
+    std::ifstream pgm_file(image_path, std::ios::binary);
+    if (!pgm_file.is_open()) {
+      RCLCPP_ERROR(this->get_logger(), "Cannot open PGM image: %s",
+                   image_path.c_str());
+      return false;
+    }
+    std::string magic;
+    pgm_file >> magic;
+    if (magic != "P5") {
+      RCLCPP_ERROR(this->get_logger(),
+                   "Unsupported PGM format '%s' (expected P5): %s",
+                   magic.c_str(), image_path.c_str());
+      return false;
+    }
+    // Skip comments
+    int pgm_width, pgm_height, max_val;
+    char c;
+    pgm_file.get(c);
+    while (pgm_file.peek() == '#') {
+      std::string comment;
+      std::getline(pgm_file, comment);
+    }
+    pgm_file >> pgm_width >> pgm_height >> max_val;
+    pgm_file.get(c); // consume the single whitespace after max_val
+
+    size_t expected = grid_map.cell_num_x * grid_map.cell_num_y;
+    size_t incoming = static_cast<size_t>(pgm_width) * pgm_height;
+    if (incoming != expected) {
+      RCLCPP_ERROR(this->get_logger(),
+                   "PGM size mismatch: %dx%d=%zu cells, expected %zu. "
+                   "Skipping initial map.",
+                   pgm_width, pgm_height, incoming, expected);
+      return false;
+    }
+
+    std::vector<uint8_t> pixels(incoming);
+    pgm_file.read(reinterpret_cast<char *>(pixels.data()), incoming);
+    pgm_file.close();
+
+    // Convert pixels to occupancy values [0-100] using map_server convention:
+    // PGM stores rows top-to-bottom, but OccupancyGrid is bottom-to-top
+    float occ_threshold = occupied_thresh * 255.0f;
+    float free_threshold = free_thresh * 255.0f;
+    for (int row = 0; row < pgm_height; ++row) {
+      int flipped_row = pgm_height - 1 - row;
+      for (int col = 0; col < pgm_width; ++col) {
+        size_t pgm_idx = row * pgm_width + col;
+        size_t grid_idx = flipped_row * pgm_width + col;
+        float pixel = static_cast<float>(pixels[pgm_idx]);
+        if (negate) pixel = 255.0f - pixel;
+        // map_server convention: high pixel = free, low pixel = occupied
+        float occ;
+        if (pixel >= occ_threshold) {
+          occ = 0.0f; // free
+        } else if (pixel <= free_threshold) {
+          occ = 100.0f; // occupied
+        } else {
+          occ = (1.0f - (pixel / 255.0f)) * 100.0f;
+        }
+        avg_ipoints[grid_idx] = occ;
+      }
+    }
+    normal_avg_count = initial_map_weight_;
+    initial_map_loaded_ = true;
+    RCLCPP_INFO(this->get_logger(),
+                "Initial map loaded from file: %s (%dx%d, res=%.3f, weight=%.1f)",
+                image_path.c_str(), pgm_width, pgm_height, resolution,
+                initial_map_weight_);
+    return true;
+  }
+
   // Method for recursively average intentity maps
   void update_normal_average(std::vector<float> &ipoints,
                              float &normal_avg_count) {
@@ -670,11 +882,19 @@ private:
   rclcpp::Publisher<grid_map_msgs::msg::GridMap>::SharedPtr pub_igridmap,
       pub_hgridmap;
   rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr sub_pc2_;
+  rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr sub_initial_map_;
   OnSetParametersCallbackHandle::SharedPtr callback_handle_;
   std::string cloud_in_topic = "nonground";
   bool verbose1 = true, verbose2 = false;
   GridMap grid_map;
   size_t count_;
+
+  // Initial map loading
+  std::string initial_map_source_;
+  std::string initial_map_file_;
+  std::string initial_map_topic_;
+  float initial_map_weight_ = 50.0f;
+  bool initial_map_loaded_ = false;
 
   // Grid message storage
   std::shared_ptr<nav_msgs::msg::OccupancyGrid> height_grid =
