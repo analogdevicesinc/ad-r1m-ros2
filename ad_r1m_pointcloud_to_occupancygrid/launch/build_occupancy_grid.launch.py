@@ -10,6 +10,22 @@ def generate_launch_description():
             'topic',
             description='a pointcloud topic to process',
             default_value='nonground'),
+        DeclareLaunchArgument(
+            'initial_map_source',
+            description='Initial map source: "file", "topic", or "" (disabled)',
+            default_value=''),
+        DeclareLaunchArgument(
+            'initial_map_file',
+            description='Path to .yaml map file (when initial_map_source=file)',
+            default_value=''),
+        DeclareLaunchArgument(
+            'initial_map_topic',
+            description='Topic to subscribe for initial map (when initial_map_source=topic)',
+            default_value='/map'),
+        DeclareLaunchArgument(
+            'initial_map_weight',
+            description='Virtual observation count for the loaded initial map',
+            default_value='50.0'),
         Node(
             package='ad_r1m_pointcloud_to_occupancygrid',
             executable='pointcloud_to_grid_node',
@@ -67,6 +83,11 @@ def generate_launch_description():
                 # Moving average parameters
                 {'moving_average_enable': False},
                 {'ma_alpha': 0.5},
+                # Initial map loading
+                {'initial_map_source': LaunchConfiguration('initial_map_source')},
+                {'initial_map_file': LaunchConfiguration('initial_map_file')},
+                {'initial_map_topic': LaunchConfiguration('initial_map_topic')},
+                {'initial_map_weight': LaunchConfiguration('initial_map_weight')},
             ]
         )
     ])
