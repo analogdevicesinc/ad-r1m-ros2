@@ -6,7 +6,7 @@
   <joint name="camera1" type="fixed">
     <parent link="base_link"/>
     <child link="camera1_link"/>
-    <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+    <origin xyz="0.3 0.0 0.0" rpy="0 0 0"/>
   </joint>
 
   <link name="camera1_link"/>
@@ -14,7 +14,8 @@
   <joint name="camera2" type="fixed">
     <parent link="base_link"/>
     <child link="camera2_link"/>
-    <origin xyz="-0.14 0.06 0.0" rpy="0 0 -1.5707"/>
+    <!--origin xyz="-0.098 -0.032 0.0" rpy="0 0 -1.5707"/-->
+    <origin xyz="-0.048876 -0.055130 0.032332" rpy="0.028781 0.000890 -1.583501"/>
   </joint>
 
   <link name="camera2_link"/>

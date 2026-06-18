@@ -25,8 +25,8 @@ def launch_setup(context, *args, **kwargs):
         XMLLaunchDescriptionSource([foxglove_xml_config])
     )
 
-    # for multiple cameras use realsense_calibration.urdf.xacro
-    urdf_file = os.path.join(pkg_share, 'urdf', 'single_realsense_calibration.urdf.xacro')
+    # for multiple cameras use realsense_calibration.urdf.xacro, for one: single_realsense_calibration.urdf.xacro
+    urdf_file = os.path.join(pkg_share, 'urdf', 'realsense_calibration.urdf.xacro')
     with open(urdf_file, 'r') as f:
         robot_description = f.read()
 
@@ -104,10 +104,10 @@ def launch_setup(context, *args, **kwargs):
 
 def generate_launch_description():
     pkg_share = get_package_share_directory('ad_r1m_perception_cuvslam')
-
+    # for one realsense: vslam_single_realsense.yaml'
     config_path_arg = DeclareLaunchArgument(
         'config_path',
-        default_value=os.path.join(pkg_share, 'config', 'vslam_single_realsense.yaml'),
+        default_value=os.path.join(pkg_share, 'config', 'vslam_multi_realsense.yaml'),
         description='Path to the YAML configuration file'
     )
 

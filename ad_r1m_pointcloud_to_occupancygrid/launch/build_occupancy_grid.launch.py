@@ -51,7 +51,7 @@ def generate_launch_description():
                 # Fitering parameters
                 {'filter_enable': True},
                 {'z_min': 0.0},
-                {'z_max': 0.5},
+                {'z_max': 0.4},
                 # Radius outlier removal
                 {'ror_enable': True},
                 {'ror_radius': 0.35},
@@ -63,7 +63,7 @@ def generate_launch_description():
                 # Pass through filter (z-band)
                 {'pass_enable': True},
                 {'pass_z_min': 0.0},
-                {'pass_z_max': 0.5},
+                {'pass_z_max': 0.4},
                 # Voxel grid
                 {'voxel_enable': True},
                 {'voxel_lx': 0.07},
