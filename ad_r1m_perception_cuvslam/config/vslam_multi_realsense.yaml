@@ -3,8 +3,8 @@
 ---
 #cuVSLAM parameters
 visual_slam:
-  enable_ground_constraint_in_odometry: False
-  enable_ground_constraint_in_slam: False
+  enable_ground_constraint_in_odometry: True
+  enable_ground_constraint_in_slam: True
   enable_localization_n_mapping: True #False to use only vslam odometry in robot_localization
   enable_image_denoising: False
   rectified_images: True
@@ -16,12 +16,14 @@ visual_slam:
   calibration_frequency: 200.0
   image_jitter_threshold_ms: 80.00 #Acceptable time delta between consec synced images
   imu_jitter_threshold_ms: 10.0
-  sync_matching_threshold_ms: 5.0 #max delta between image timestamp to still consider them synced
+  sync_matching_threshold_ms: 10.0 #max delta between image timestamp to still consider them synced
   base_frame: 'base_link' #'camera_link' #'base_link' #'realsense_d435i_bottom_screw_frame' #for simulation mode #'camera_link' # for real camera
   imu_frame: 'base_link'
   camera_optical_frames:
-    - 'camera_infra1_optical_frame'
-    - 'camera_infra2_optical_frame'
+    - 'camera1_infra1_optical_frame'
+    - 'camera1_infra2_optical_frame'
+    - 'camera2_infra1_optical_frame'
+    - 'camera2_infra2_optical_frame'
   publish_map_to_odom_tf: True
   publish_odom_to_base_tf: False
   enable_slam_visualization: True
@@ -42,11 +44,6 @@ visual_slam:
   localizer_vertical_step: 0.25
   localizer_angular_step: 0.1745
 
-#camera sync parameters
-camera_sync:
-  inter_message_slop: 0.001  # max time delta between images on different topics [sec]
-  inner_message_slop: 0.001  # max time delta between images on same topic [sec]
-
 #common Realsense cameras parameters
 common_params:
   enable_infra1: True
@@ -58,21 +55,23 @@ common_params:
   enable_accel: False
   pointcloud.enable: False
   publish_tf: True
-  enable_sync: True
+  enable_sync: False
   initial_reset: False
-  rgb_camera.color_profile: '640,360,30'
-  depth_module.infra_profile: '640,360,30'
+  rgb_camera.color_profile: '640,480,15'
+  depth_module.depth_profile: '640,480,15'
+  depth_module.infra_profile: '640,480,15'
+  depth_module.profile: '640,480,15'
   depth_module.enable_auto_exposure: True
   depth_module.emitter_enabled: 0
 
 #specific camera parematers
 cameras:
-  - camera_name: camera1
+  - camera_name: camera2
     serial_no: '234222300435' #D455 camera
     usb_port_id: ''
-    depth_module.inter_cam_sync_mode: 1 #check what this parameter is about
+    depth_module.inter_cam_sync_mode: 2 #check what this parameter is about
 
-  - camera_name: camera2
+  - camera_name: camera1
     serial_no: '243322074768' #D435i camera
     usb_port_id: ''
-    depth_module.inter_cam_sync_mode: 2 #check what this parameter is about
+    depth_module.inter_cam_sync_mode: 1 #check what this parameter is about
