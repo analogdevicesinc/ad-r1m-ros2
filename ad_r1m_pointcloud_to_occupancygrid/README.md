@@ -27,6 +27,7 @@ Don't foget to `source ~/<your_ros_workspace>/install/setup.bash`.
   - **Gaussian Z-Weighting** – weights points based on height using a Gaussian curve (mean ≈ robot mid-height, stddev ≈ half robot height) to suppress floor/ceiling noise in intensity mapping.
   - **Normal Mean Averaging** – maintains a cumulative average of all generated grids for stable maps in static environments.
   - **Moving Average Filtering** – exponential smoothing of consecutive maps to reduce noise while allowing gradual adaptation to dynamic environments.
+  - **Initial Map Loading** – seed the averaging with a previously saved occupancy grid so the map doesn't start from scratch each session. Supports loading from a PGM+YAML file or from a ROS topic (e.g. `map_server`). A configurable weight controls how resistant the loaded map is to new observations.
 
 
 # Getting started
@@ -84,6 +85,10 @@ The package supports publishing both `nav_msgs/OccupancyGrid` and `grid_map_msgs
 | `normal_averaging_enable` | bool | `false` | Enable/Disable normal mean averaging over all maps produced so far.<br> Produces a stable long-term map in static environments|
 | `moving_average_enable` | bool | `false` | Enable/Disable exponential moving average. <br> Suited for dynamic environments where old data should slowly fade out. |
 | `ma_alpha` | float | `0.9f` | Smoothing factor [0, 1]. <br>`ma_alpha` close to 1 &rarr; fast reaction to new data.<br> `ma_alpha` close to 0 &rarr; slow smoothing of noise. |
+| `initial_map_source` | string | `""` | Initial map source: `"file"` = load from PGM+YAML, `"topic"` = subscribe to a map topic, `""` = disabled (default, backward compatible). |
+| `initial_map_file` | string | `""` | Path to the `.yaml` map file (used when `initial_map_source` = `"file"`). |
+| `initial_map_topic` | string | `"/map"` | Topic to subscribe for the initial map (used when `initial_map_source` = `"topic"`). Uses transient_local QoS to receive latched maps from `map_server`. |
+| `initial_map_weight` | float | `50.0f` | Number of virtual observations the loaded map represents. Controls how resistant the initial map is to new pointcloud data. Higher = more persistent. With weight=50, the first new frame blends at 1/51 (~2%). |
 
 
 
@@ -105,6 +110,69 @@ The node publishes to four topics simultaneously:
 # Launch with custom GridMap topic names
 ros2 launch ad_r1m_pointcloud_to_occupancygrid build_occupancy_grid.launch.py topic:=my_pointcloud mapi_gridmap_topic_name:=my_intensity_map maph_gridmap_topic_name:=my_height_map
 ```
+
+## Initial Map Loading
+
+When using cuVSLAM (or any SLAM system) across multiple sessions, the occupancy grid
+normally starts from a blank state and must be rebuilt from scratch. The initial map
+loading feature allows the node to start with a previously saved occupancy grid as its
+baseline, so new landmark observations blend into the existing map via the normal
+averaging logic.
+
+**Requirements:**
+- `normal_averaging_enable` must be `true` (the loaded map seeds the averaging state)
+- The loaded map must have the same dimensions (width x height in cells) as the node's
+  grid configuration. If they don't match, the node logs an error and falls back to a
+  blank grid.
+
+### From a file (PGM + YAML)
+
+Load a map previously saved with `nav2_map_server`'s `map_saver_cli`:
+
+```bash
+ros2 launch ad_r1m_pointcloud_to_occupancygrid build_occupancy_grid.launch.py \
+    topic:=/visual_slam/vis/landmarks_cloud \
+    initial_map_source:=file \
+    initial_map_file:=/ros_data/cuvslam_map_grid.yaml
+```
+
+The node parses the YAML to find the PGM image path, reads the P5 binary PGM, and
+converts pixel values to occupancy [0-100] using the `occupied_thresh` and
+`free_thresh` values from the YAML.
+
+### From a topic
+
+Subscribe to a running `map_server` and use the first published map:
+
+```bash
+# Start map_server with the saved map
+ros2 run nav2_map_server map_server --ros-args \
+    -p yaml_filename:=/ros_data/cuvslam_map_grid.yaml
+
+# Start the grid node
+ros2 launch ad_r1m_pointcloud_to_occupancygrid build_occupancy_grid.launch.py \
+    topic:=/visual_slam/vis/landmarks_cloud \
+    initial_map_source:=topic \
+    initial_map_topic:=/map
+```
+
+The subscription uses `transient_local` durability QoS to receive the latched map from
+`map_server`. After the first message is received, the subscription is destroyed.
+
+### Tuning the weight
+
+The `initial_map_weight` parameter controls how many "virtual observations" the loaded
+map represents. The normal averaging formula is:
+
+```
+new_avg = old_avg + (new_value - old_avg) / n
+```
+
+| Weight | First frame influence | Use case |
+|--------|----------------------|----------|
+| 10 | ~9% | Light prior, quick adaptation |
+| 50 | ~2% | Balanced (default) |
+| 200 | ~0.5% | Strong prior, very slow drift |
 
 ## QoS Configuration
 
