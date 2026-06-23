@@ -61,5 +61,5 @@ global_costmap:
 map_server:
   ros__parameters:
     use_sim_time: False
-    yaml_filename: "/home/runner/ros2_ws/src/adrd_demo_ros2/config/map.yaml"
+    yaml_filename: "/ros2_ws/ad-r1m-ros2/ad_r1m_navigation/maps/map.yaml"
 
