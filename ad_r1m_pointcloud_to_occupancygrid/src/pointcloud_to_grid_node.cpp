@@ -98,7 +98,7 @@ class PointCloudToGrid : public rclcpp::Node {
       } else if (name == "sor_enable") {
         grid_map.filter.sor_enable = param.as_bool();
       } else if (name == "sor_mean") {
-        grid_map.filter.sor_mean = static_cast<float>(param.as_int());
+        grid_map.filter.sor_mean = param.as_int();
       } else if (name == "sor_stddev_mul_thresh") {
         grid_map.filter.sor_stddev_mul_thresh = param.as_double();
       } else if (name == "pass_enable") {
