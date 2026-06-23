@@ -15,7 +15,7 @@ CANopen Object Dictionary (CiA 419 profile):
 - 0x6081: batteryStateOfCharge (8-bit, %)
 
 Manufacturer-specific:
-- 0x2060: batteryCellVoltages (array sub 1-4, 16-bit each, mV)
+- 0x2060: batteryCellVoltages (array sub 1-3 for 3S, 16-bit each, mV)
 - 0x2071: current (32-bit signed, µA)
 """
 
@@ -25,7 +25,7 @@ from canopen_interfaces.msg import COData
 from canopen_interfaces.srv import CORead
 from sensor_msgs.msg import BatteryState
 
-NCELLS = 4
+NCELLS = 3
 
 
 class AdrdBmsNode(Node):
@@ -131,7 +131,7 @@ class AdrdBmsNode(Node):
                 self.battery_state.percentage = codata.data / 100.0
                 self.get_logger().info(f'SOC: {codata.data}%')
 
-            case (0x2060, subindex) if 1 <= subindex <= 4:  # Cell voltages (mV)
+            case (0x2060, subindex) if 1 <= subindex <= NCELLS:  # Cell voltages (mV)
                 cell_idx = subindex - 1
                 self.battery_state.cell_voltage[cell_idx] = codata.data / 1000.0
                 self.get_logger().debug(
