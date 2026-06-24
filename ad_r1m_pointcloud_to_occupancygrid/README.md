@@ -174,29 +174,57 @@ new_avg = old_avg + (new_value - old_avg) / n
 | 50 | ~2% | Balanced (default) |
 | 200 | ~0.5% | Strong prior, very slow drift |
 
+## Saving the Occupancy Grid
+
+To save the built occupancy grid for later use with Nav2, use the `map_saver_cli` tool. The `-t` flag specifies the topic to subscribe to:
+
+```bash
+ros2 run nav2_map_server map_saver_cli -f /ros_data/cuvslam_map_grid -t intensity_grid --ros-args -p save_map_timeout:=20.0
+```
+
+> **Tip:** During the timeout period, you may need to move the robot slightly so that the SLAM system generates a new landmark message. This triggers a new occupancy grid publication that `map_saver` can capture. If the robot is stationary, no new map messages may be published and the saver will time out.
+
+## Post-Processing Saved Maps from Visual SLAM
+
+When building occupancy grids from visual SLAM pointclouds (e.g. cuVSLAM landmarks), the saved map files may need adjustments before use with Nav2:
+
+**PGM rotation:** The `.pgm` file is rotated by approximately 180 degrees. Rotate it before use:
+
+```bash
+convert /ros_data/cuvslam_map_grid.pgm -rotate 180 /ros_data/cuvslam_map_grid.pgm
+```
+
+**Map YAML adjustments:** Because visual SLAM produces sparse pointclouds, the occupancy percentages in the grid tend to be low. In the `.yaml` file:
+- Lower `occupied_thresh` to detect cells with lower occupancy as obstacles
+- Adjust `free_thresh` to match the actual occupancy distribution
+- Verify the `origin` [x, y, theta] values match the rotated map
+
+**Intensity factor tuning:** The `intensity_factor` parameter controls how strongly points contribute to cell occupancy. For sparse visual SLAM pointclouds, use a lower value (e.g. 0.3) to avoid saturating the grid. For dense LiDAR data, the default (1.0) is appropriate.
+
+## Loading and Updating an Existing Map
+
+To resume mapping across sessions — loading a previously saved map and updating it with new observations:
+
+1. Save the cuVSLAM map (`.mdb` database) and the occupancy grid (`.pgm` + `.yaml`)
+2. On the next session, start cuVSLAM with `load_map_folder_path` pointing to the saved `.mdb` map
+3. Start the occupancy grid node with the saved grid as the initial map:
+
+```bash
+ros2 launch ad_r1m_pointcloud_to_occupancygrid build_occupancy_grid.launch.py \
+    topic:=/visual_slam/vis/landmarks_cloud \
+    initial_map_source:=file \
+    initial_map_file:=/ros_data/cuvslam_map_grid.yaml
+```
+
+New landmark observations will blend into the loaded map via the normal averaging logic. The `initial_map_weight` parameter controls how resistant the loaded map is to updates (see [Tuning the weight](#tuning-the-weight) above).
+
+> **Note:** `normal_averaging_enable` must be `true` for initial map loading to work — the loaded map seeds the averaging state.
+
 ## QoS Configuration
 
 The package is configured to use `BEST_EFFORT` reliability QoS policy for the input point cloud subscription. This ensures compatibility with typical LiDAR sensor publishers that often use this policy for performance reasons. This prevents QoS compatibility warnings that might appear with the default `RELIABLE` policy.
 
-
 ## Related solutions
 - [https://github.com/jkk-research/pointcloud_to_grid/tree/ros2](https://github.com/jkk-research/pointcloud_to_grid/tree/ros2) - This is a ROS package used for occupancy grid and grid map building from raw LIDAR pointcloud data. Does not include pre-filtering options for the pointcloud.
-- [github.com/ANYbotics/grid_map](https://github.com/ANYbotics/grid_map) - This is a C++ library with ROS interface to manage two-dimensional grid maps with multiple data layers. 
+- [github.com/ANYbotics/grid_map](https://github.com/ANYbotics/grid_map) - This is a C++ library with ROS interface to manage two-dimensional grid maps with multiple data layers.
 - [github.com/306327680/PointCloud-to-grid-map](https://github.com/306327680/PointCloud-to-grid-map) - A similar solution but instead PointCloud2 it uses PointCloud
-
-## Remarks
-
-In VS code it is advised to add the following to include path:
-
-``` r
-${workspaceFolder}/**
-/opt/ros/humble/include/**
-/usr/include/pcl-1.12/**
-/usr/include/eigen3/**
-```
-
-If you are not sure where your header files are use e.g.:
-``` r
-find /usr/include -name point_cloud.h
-find /usr/include -name crop_box.h
-```

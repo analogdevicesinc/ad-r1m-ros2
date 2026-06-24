@@ -50,6 +50,44 @@ Inside the container, launch the cuVSLAM node:
 
 The EKF will now combine measurements from the IMU, wheel odometry, and visual odometry to produce the pose estimate.
 
+**Understanding the EKF sensor fusion**
+
+The EKF fuses three complementary sensor sources. Each source compensates for the weaknesses of the others:
+
+- **odom0** (wheel odometry from ``diff_drive_controller/odom``): provides absolute position (x, y), velocity (vx, vy), and yaw rate. Configured with ``odom0_differential: false`` since wheel odometry provides absolute pose estimates in the odom frame. Drifts over time due to wheel slip on smooth or uneven surfaces.
+- **odom1** (cuVSLAM visual odometry from ``/visual_slam/tracking/odometry``): provides position (x, y) and yaw. Configured with ``odom1_relative: true`` and ``odom1_differential: false`` — this is useful because cuVSLAM provides consistent odometry in the map frame (which cuVSLAM itself publishes), and wheel odometry serves as an additional incremental source for the EKF. Corrects wheel odometry drift using visual features, but can experience momentary tracking loss in featureless environments.
+- **imu0** (IMU from ``/imu``): provides yaw rate and linear accelerations. Fills in fast rotational dynamics that wheel and visual odometry may miss.
+
+The full EKF configuration in **ekf.yaml**:
+
+.. code-block:: yaml
+
+    odom0: diff_drive_controller/odom
+    odom0_config: [true,  true,  false,
+                   false, false, false,
+                   true,  true,  false,
+                   false, false, true,
+                   false, false, false]
+    odom0_differential: false
+
+    odom1: /visual_slam/tracking/odometry
+    odom1_config: [true, true, false,
+                  false, false, true,
+                  false, false, false,
+                  false, false, false,
+                  false, false, false]
+    odom1_relative: true
+    odom1_differential: false
+
+    imu0: imu
+    imu0_config: [false, false, false,
+                  false, false, false,
+                  false, false, false,
+                  false, false, true,
+                  true,  true,  false]
+
+    imu0_remove_gravitational_acceleration: true
+
 .. important::
     * Make sure the transform between *ad_r1m_0/base_link* and *camera1_link* matches your configuration. By default, it is set as a translation of +0.335 m along the X-axis (front of the robot) in **single_realsense_calibration.urdf**.
 
@@ -81,13 +119,18 @@ The EKF will now combine measurements from the IMU, wheel odometry, and visual o
 .. note::
     * You can use multiple RealSense cameras (up to 16 stereo cameras) without modifying the launch script. Simply configure each camera's serial number in **vslam_single_realsense.yaml** and set the corresponding transform in **single_realsense_calibration.urdf**.
     * When using multiple stereo cameras, it is recommended to perform inter-camera synchronization to ensure reliable visual odometry feedback. RealSense cameras support hardware synchronization by designating one camera as the master and the others as slaves:
-    
+
     .. code-block:: yaml
-        
-        depth_module.inter_cam_sync_mode: 1 # setting the master camera
-        depth_module.inter_cam_sync_mode: 2 # setting the slave cameras
+
+        depth_module.inter_cam_sync_mode: 1 # master camera
+        depth_module.inter_cam_sync_mode: 2 # slave cameras
 
     * For more information on RealSense hardware synchronization, see: https://dev.realsenseai.com/docs/multiple-depth-cameras-configuration
+    * When using infrared streams for cuVSLAM, the IR emitter **must** be disabled on all cameras. The projected dot pattern interferes with visual feature extraction and degrades tracking stability:
+
+    .. code-block:: yaml
+
+        depth_module.emitter_enabled: 0
 
 .. important::
     * When using cuVSLAM with multiple RealSense cameras which are hardware synchronized the *initial_reset* parameter in **vslam_multi_realsense.yaml** must be set to **False** on all cameras:
@@ -134,4 +177,53 @@ The EKF will now combine measurements from the IMU, wheel odometry, and visual o
 
         publish_map_to_odom_tf: True
         publish_odom_to_base_tf: False #When EKF publish_tf is true
+
+**Saving the cuVSLAM map**
+
+To persist the cuVSLAM map across sessions, set the ``save_map_folder_path`` parameter to the desired output directory in the cuVSLAM configuration YAML (e.g. **vslam_multi_realsense.yaml**):
+
+.. code-block:: yaml
+
+    visual_slam:
+      save_map_folder_path: '/ros_data/cuvslam_map'
+
+cuVSLAM will save its internal map database (``.mdb`` files) to this folder. The map can later be loaded to resume localization without rebuilding from scratch.
+
+**Loading a saved map and automatic localization**
+
+To load a previously saved map and have cuVSLAM automatically localize within it at startup, configure the following parameters:
+
+.. code-block:: yaml
+
+    visual_slam:
+      load_map_folder_path: '/ros_data/cuvslam_map'
+      localize_on_startup: True
+
+      # Localizer search parameters
+      localizer_horizontal_radius: 1.5   # horizontal search area around startup position (m)
+      localizer_vertical_radius: 0.5     # vertical search range (m)
+      localizer_horizontal_step: 0.5     # grid step for horizontal search (m)
+      localizer_vertical_step: 0.25      # grid step for vertical search (m)
+      localizer_angular_step: 0.1745     # angular search step (~10 deg)
+
+The localizer parameters define the search space cuVSLAM uses to find its initial position within the loaded map. Wider radii and smaller steps increase the chance of successful localization but take longer to converge. The defaults work well when the robot starts near its previous position.
+
+**Using cuVSLAM for navigation**
+
+When using cuVSLAM with Nav2 for autonomous navigation, cuVSLAM publishes the ``map → odom`` transform. This means any other global localizer (such as AMCL) that also publishes this transform **must be disabled** — otherwise the conflicting transforms will break navigation.
+
+In the navigation parameters, set ``set_initial_pose`` to ``False`` so that the navigation stack does not publish an initial pose that conflicts with cuVSLAM's computed position in the map:
+
+.. code-block:: yaml
+
+    amcl:
+      ros__parameters:
+        set_initial_pose: False
+
+If AMCL is not needed at all (cuVSLAM handles global localization), it can be removed from the launch entirely.
+
+.. important::
+    * Ensure the cuVSLAM configuration has ``publish_map_to_odom_tf: True`` so that Nav2 receives the global ``map → odom`` transform.
+    * Keep ``publish_odom_to_base_tf: False`` when the EKF is publishing the ``odom → base_link`` transform.
+    * If both cuVSLAM and AMCL attempt to publish ``map → odom``, the robot pose will oscillate and navigation will fail.
 
