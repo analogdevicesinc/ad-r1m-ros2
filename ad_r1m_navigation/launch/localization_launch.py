@@ -12,7 +12,11 @@ def launch_setup(context, *args, **kwargs):
     use_sim_time = LaunchConfiguration('use_sim_time')
     autostart = LaunchConfiguration('autostart')
     params_file = LaunchConfiguration('params_file')
-    lifecycle_nodes = ['map_server', 'amcl']
+    use_amcl = LaunchConfiguration('amcl').perform(context).lower() == 'true'
+
+    lifecycle_nodes = ['map_server']
+    if use_amcl:
+        lifecycle_nodes.append('amcl')
 
     namespace_str = namespace.perform(context)
 
@@ -20,7 +24,6 @@ def launch_setup(context, *args, **kwargs):
     if namespace_str == '':
         remappings.append(('map', '/map'))
 
-    # Create our own temporary YAML files that include substitutions
     param_substitutions = {
         'use_sim_time': use_sim_time,
         'yaml_filename': map_yaml_file}
@@ -35,7 +38,7 @@ def launch_setup(context, *args, **kwargs):
         param_rewrites=param_substitutions,
         convert_types=True)
 
-    return [
+    nodes = [
         Node(
             package='nav2_map_server',
             executable='map_server',
@@ -44,16 +47,20 @@ def launch_setup(context, *args, **kwargs):
             parameters=[configured_params],
             namespace=namespace,
             remappings=remappings),
+    ]
 
-        Node(
-            package='nav2_amcl',
-            executable='amcl',
-            name='amcl',
-            output='screen',
-            parameters=[configured_params],
-            namespace=namespace,
-            remappings=remappings),
+    if use_amcl:
+        nodes.append(
+            Node(
+                package='nav2_amcl',
+                executable='amcl',
+                name='amcl',
+                output='screen',
+                parameters=[configured_params],
+                namespace=namespace,
+                remappings=remappings))
 
+    nodes.append(
         Node(
             package='nav2_lifecycle_manager',
             executable='lifecycle_manager',
@@ -62,16 +69,15 @@ def launch_setup(context, *args, **kwargs):
             parameters=[{'use_sim_time': use_sim_time},
                         {'autostart': autostart},
                         {'node_names': lifecycle_nodes}],
-            namespace=namespace)
-    ]
+            namespace=namespace))
+
+    return nodes
 
 
 def generate_launch_description():
-    # Get the launch directory
     pkg_dir = FindPackageShare('ad_r1m_navigation')
 
     return LaunchDescription([
-        # Set env var to print messages to stdout immediately
         SetEnvironmentVariable('RCUTILS_LOGGING_BUFFERED_STREAM', '1'),
 
         DeclareLaunchArgument(
@@ -96,6 +102,10 @@ def generate_launch_description():
             default_value=PathJoinSubstitution(
                 [pkg_dir, 'config', 'nav2_params_sim.yaml']),
             description='Full path to the ROS2 parameters file to use'),
+
+        DeclareLaunchArgument(
+            'amcl', default_value='true',
+            description='Launch AMCL for localization'),
 
         OpaqueFunction(function=launch_setup)
     ])
