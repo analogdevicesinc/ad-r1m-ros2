@@ -36,11 +36,11 @@ def generate_launch_description():
                 {'position_y': 0.0},
                 {'verbose1': False},
                 {'verbose2': False},
-                {'cell_size': 0.1},
+                {'cell_size': 0.05},
                 {'length_x': 40.0},
                 {'length_y': 60.0},
                 {'height_factor': 1.0},
-                {'intensity_factor': 1.0},
+                {'intensity_factor': 0.3},
                 # {'frame_out': 'os1_sensor'},
                 # OccupancyGrid topics
                 {'mapi_topic_name': 'intensity_grid'},
@@ -50,25 +50,25 @@ def generate_launch_description():
                 {'maph_gridmap_topic_name': 'height_gridmap'},
                 # Fitering parameters
                 {'filter_enable': True},
-                {'z_min': 0.0},
-                {'z_max': 0.4},
+                {'z_min': 0.03},
+                {'z_max': 0.45},
                 # Radius outlier removal
                 {'ror_enable': True},
-                {'ror_radius': 0.35},
-                {'ror_min_neighbors_in_radius': 5},
+                {'ror_radius': 0.20},
+                {'ror_min_neighbors_in_radius': 3},
                 # Statistical outlier removal
                 {'sor_enable': False},
                 {'sor_mean': 30},
                 {'sor_stddev_mul_thresh': 0.5},
                 # Pass through filter (z-band)
                 {'pass_enable': True},
-                {'pass_z_min': 0.0},
-                {'pass_z_max': 0.4},
+                {'pass_z_min': 0.03},
+                {'pass_z_max': 0.45},
                 # Voxel grid
                 {'voxel_enable': True},
-                {'voxel_lx': 0.07},
-                {'voxel_ly': 0.07},
-                {'voxel_lz': 0.17},
+                {'voxel_lx': 0.04},
+                {'voxel_ly': 0.04},
+                {'voxel_lz': 0.10},
                 # Clustering
                 {'cluster_enable': False},
                 {'cluster_tolerance': 0.2},
@@ -76,8 +76,8 @@ def generate_launch_description():
                 {'cluster_max_size': 25000},
                 # Gaussian mapping on z for intensity mapping
                 {'gaussian_enable': True},
-                {'gaussian_mean': 0.2},
-                {'gaussian_stddev': 0.05},
+                {'gaussian_mean': 0.18},
+                {'gaussian_stddev': 0.12},
                 # Normal mean averaging of maps
                 {'normal_averaging_enable': True},
                 # Moving average parameters
