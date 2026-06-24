@@ -53,6 +53,40 @@ become clearer, and short-lived or unstable points are suppressed.
     :align: center
     :width: 800px
 
-More information about the **ad_r1m_pointcloud_to_occupancygrid** package can be found at:
+Saving the occupancy grid
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
-- `ad_r1m_pointcloud_to_occupancygrid on GitHub <https://github.com/analogdevicesinc/ad-r1m-ros2/tree/main/ad_r1m_pointcloud_to_occupacygrid>`__
+Once the occupancy grid has been built, save it using the Nav2 map saver. The ``-t`` flag specifies the topic to subscribe to, and ``save_map_timeout`` sets how long to wait for a map message:
+
+.. code-block:: bash
+
+    ros2 run nav2_map_server map_saver_cli -f /ros_data/cuvslam_map_grid -t intensity_grid --ros-args -p save_map_timeout:=20.0
+
+.. tip::
+    During the timeout period, you may need to move the robot slightly so that cuVSLAM generates a new landmark message. This triggers a new occupancy grid message that ``map_saver`` can capture. If the robot remains stationary and no new landmarks are published, the saver may time out without saving.
+
+Post-processing the saved map
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``.pgm`` file generated from cuVSLAM landmarks is rotated by approximately 180 degrees. Before using the map with Nav2, rotate the image:
+
+.. code-block:: bash
+
+    convert /ros_data/cuvslam_map_grid.pgm -rotate 180 /ros_data/cuvslam_map_grid.pgm
+
+The map ``.yaml`` file may also need adjustments. Because cuVSLAM produces a sparse pointcloud, the resulting occupancy percentages in the grid can be low. Consider tuning:
+
+- ``occupied_thresh`` — lower this value to detect cells with lower occupancy as obstacles
+- ``free_thresh`` — adjust to match the actual occupancy distribution in the sparse map
+- ``origin`` — verify the [x, y, theta] values match the rotated map
+
+Key parameters for cuVSLAM-based maps
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The ``intensity_factor`` parameter is critical when building occupancy grids from cuVSLAM landmarks. A lower value (e.g. 0.3) prevents the sparse pointcloud from saturating the grid with noisy points, while a higher value (e.g. 1.0) is more appropriate for dense LiDAR data.
+
+.. code-block:: python
+
+    {'intensity_factor': 0.3},  # lower for sparse cuVSLAM pointclouds
+
+For a complete list of parameters and configuration options, see the `ad_r1m_pointcloud_to_occupancygrid README <https://github.com/analogdevicesinc/ad-r1m-ros2/tree/main/ad_r1m_pointcloud_to_occupancygrid>`__.
