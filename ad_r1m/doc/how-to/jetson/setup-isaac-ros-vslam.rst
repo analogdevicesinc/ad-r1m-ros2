@@ -21,7 +21,7 @@ Configure the container to include RealSense packages.
     touch .isaac_ros_common-config
     echo CONFIG_IMAGE_KEY=ros2_humble.realsense > .isaac_ros_common-config
 
-4.2) Download quickstart data from NGC (Nvidia GPU Cloud)
+4.2) Download quickstart data from NGC (NVIDIA GPU Cloud)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash

@@ -201,7 +201,7 @@ The output should be similar to:
 
 **Reference links**
 
-This tutorial is based on the official **NVIDIA Isaac ROS** documentation. More information about configuring VSLAM in the Nvidia ecosystem can be found at the following pages:
+This tutorial is based on the official **NVIDIA Isaac ROS** documentation. More information about configuring VSLAM in the NVIDIA ecosystem can be found at the following pages:
     * https://nvidia-isaac-ros.github.io/concepts/visual_slam/cuvslam/index.html
     * https://nvidia-isaac-ros.github.io/repositories_and_packages/isaac_ros_visual_slam/index.html
     * https://nvidia-isaac-ros.github.io/repositories_and_packages/isaac_ros_visual_slam/isaac_ros_visual_slam/index.html

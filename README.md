@@ -18,7 +18,7 @@ Most top-level folders are ROS 2 packages:
 * `ad_r1m_bringup` -- AD-R1M real robot bringup
 * `ad_r1m_navigation` -- AD-R1M default navigation stack
 * `ad_r1m_perception_aditof` -- AD-R1M default perception stack using an EVAL-ADTF3175D-NXZ
-* `ad_r1m_perception_cuvslam` -- AD-R1M perception using Nvidia cuVSLAM
+* `ad_r1m_perception_cuvslam` -- AD-R1M perception using NVIDIA cuVSLAM
 * `ad_r1m_pointcloud_to_occupancygrid` -- Convert PointCloud2 to OccupancyGrid for integrating cuVSLAM output with nav2
 * `ad_r1m_examples` -- Example apps that build on top of the AD-R1M stack
 
@@ -46,7 +46,7 @@ These are Debian packages, making system bootstrapping a matter of running somet
 |------------------|------------|------------------|----|
 | AD-R1M (default) | <ul><li>Raspberry Pi 5 running ADI Kuiper Linux</li><li>ADRD4161-01Z carrier</li><li>ADRD3161-01Z motor drives</li><li>ADRD5161-01Z BMS</li></ul> | Debian package: `ad-r1m-system-rpi5` | TODO |
 
-This does not include packages for the supported coprocessing platforms, such as the Nvidia Jetson platforms, because they currently don't run robot control directly, but rather only act on the behaviour / processing level.
+This does not include packages for the supported coprocessing platforms, such as the NVIDIA Jetson platforms, because they currently don't run robot control directly, but rather only act on the behaviour / processing level.
 
 Relevant folders:
 
