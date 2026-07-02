@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1
+
 # Build arguments
 ARG ROS_DISTRO=humble
 ARG FROM_IMAGE=ros:$ROS_DISTRO
