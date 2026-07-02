@@ -8,7 +8,7 @@ This section describes the required steps for having a bootable device, with lat
 The following steps imply the usage of a NVMe as install target and bootable mass storage.
 
 .. tip::
-    It is highly advised to have two identical NVMes if you intent to use the backup-restore tools from Nvidia.
+    It is highly advised to have two identical NVMes if you intent to use the backup-restore tools from NVIDIA.
 
 1.1) Linux host preparation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -20,7 +20,7 @@ Table below contains the requirements for the notebook or desktop computer.
 +====================+===================+==============================+
 | OS                 | Ubuntu 22.04 LTS  | X86_64                       |
 +--------------------+-------------------+------------------------------+
-| Nvidia SDK Manager | > 2.3.0           | Should Support JetPack 6.2.1 |
+| NVIDIA SDK Manager | > 2.3.0           | Should Support JetPack 6.2.1 |
 +--------------------+-------------------+------------------------------+
 
 1.2) Jetson AGX Orin DevKit preparation
@@ -33,12 +33,12 @@ Table below contains the requirements for the notebook or desktop computer.
     * Connect the monitor, keyboard, and mouse.
     * Connect the power supply.
 
-1.3) Installation procedure with Nvidia SDK Manager
+1.3) Installation procedure with NVIDIA SDK Manager
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 **On AGX Orin:**
     * start the device in Forced Recovery mode
 **On the Linux host:**
-    * Launch Nvidia SDK Manager
+    * Launch NVIDIA SDK Manager
     * based on what devices are detected in forced recovery mode, the following list is displayed:
 
     .. figure:: figures/NVDA_SDKM_step_1_0.png
@@ -148,7 +148,7 @@ The Jetson L4T (36.4.4) and timestamp (20250616) correspond to the one displayed
     sudo apt dist-upgrade
     sudo apt install nvidia-jetpack
 
-**Nvidia Prerequisites**
+**NVIDIA Prerequisites**
 
 
 Check the installed CUDA version
