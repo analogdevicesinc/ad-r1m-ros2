@@ -7,5 +7,5 @@ repositories:
   adi_imu:
     type: git
     url: https://github.com/analogdevicesinc/imu_ros2.git
-    version: ca711b738e777b7ee1d104e8c7c9c5fc4dd4eb46
+    version: f050b8bfbd9dffbac0e1de9ebb7ffadbf4c543e9
 
