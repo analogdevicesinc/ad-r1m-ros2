@@ -214,6 +214,41 @@ ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_cuvslam<span cl
 </pre></div>
 </div>
 <p>The EKF will now combine measurements from the IMU, wheel odometry, and visual odometry to produce the pose estimate.</p>
+<p><strong>Understanding the EKF sensor fusion</strong></p>
+<p>The EKF fuses three complementary sensor sources. Each source compensates for the weaknesses of the others:</p>
+<ul class="simple">
+<li><p><strong>odom0</strong> (wheel odometry from <code class="docutils literal notranslate"><span class="pre">diff_drive_controller/odom</span></code>): provides absolute position (x, y), velocity (vx, vy), and yaw rate. Configured with <code class="docutils literal notranslate"><span class="pre">odom0_differential:</span> <span class="pre">false</span></code> since wheel odometry provides absolute pose estimates in the odom frame. Drifts over time due to wheel slip on smooth or uneven surfaces.</p></li>
+<li><p><strong>odom1</strong> (cuVSLAM visual odometry from <code class="docutils literal notranslate"><span class="pre">/visual_slam/tracking/odometry</span></code>): provides position (x, y) and yaw. Configured with <code class="docutils literal notranslate"><span class="pre">odom1_relative:</span> <span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">odom1_differential:</span> <span class="pre">false</span></code> — this is useful because cuVSLAM provides consistent odometry in the map frame (which cuVSLAM itself publishes), and wheel odometry serves as an additional incremental source for the EKF. Corrects wheel odometry drift using visual features, but can experience momentary tracking loss in featureless environments.</p></li>
+<li><p><strong>imu0</strong> (IMU from <code class="docutils literal notranslate"><span class="pre">/imu</span></code>): provides yaw rate and linear accelerations. Fills in fast rotational dynamics that wheel and visual odometry may miss.</p></li>
+</ul>
+<p>The full EKF configuration in <strong>ekf.yaml</strong>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">odom0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">diff_drive_controller/odom</span>
+<span class="nt">odom0_config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">               </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">               </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">               </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
+<span class="w">               </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">]</span>
+<span class="nt">odom0_differential</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="nt">odom1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/visual_slam/tracking/odometry</span>
+<span class="nt">odom1_config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">              </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
+<span class="w">              </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">              </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">              </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">]</span>
+<span class="nt">odom1_relative</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">odom1_differential</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="nt">imu0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">imu</span>
+<span class="nt">imu0_config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">              </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">              </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span>
+<span class="w">              </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span>
+<span class="w">              </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">false</span><span class="p p-Indicator">]</span>
+
+<span class="nt">imu0_remove_gravitational_acceleration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</pre></div>
+</div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <ul class="simple">
@@ -248,13 +283,17 @@ ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_cuvslam<span cl
 <li><p>You can use multiple RealSense cameras (up to 16 stereo cameras) without modifying the launch script. Simply configure each camera’s serial number in <strong>vslam_single_realsense.yaml</strong> and set the corresponding transform in <strong>single_realsense_calibration.urdf</strong>.</p></li>
 <li><p>When using multiple stereo cameras, it is recommended to perform inter-camera synchronization to ensure reliable visual odometry feedback. RealSense cameras support hardware synchronization by designating one camera as the master and the others as slaves:</p></li>
 </ul>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">depth_module.inter_cam_sync_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"> </span><span class="c1"># setting the master camera</span>
-<span class="nt">depth_module.inter_cam_sync_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"> </span><span class="c1"># setting the slave cameras</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">depth_module.inter_cam_sync_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"> </span><span class="c1"># master camera</span>
+<span class="nt">depth_module.inter_cam_sync_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"> </span><span class="c1"># slave cameras</span>
 </pre></div>
 </div>
 <ul class="simple">
 <li><p>For more information on RealSense hardware synchronization, see: <a class="icon link reference external" href="https://dev.realsenseai.com/docs/multiple-depth-cameras-configuration" target="_blank">https://dev.realsenseai.com/docs/multiple-depth-cameras-configuration</a></p></li>
+<li><p>When using infrared streams for cuVSLAM, the IR emitter <strong>must</strong> be disabled on all cameras. The projected dot pattern interferes with visual feature extraction and degrades tracking stability:</p></li>
 </ul>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">depth_module.emitter_enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+</pre></div>
+</div>
 </div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
@@ -304,6 +343,45 @@ ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_cuvslam<span cl
 <span class="nt">publish_odom_to_base_tf</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w"> </span><span class="c1">#When EKF publish_tf is true</span>
 </pre></div>
 </div>
+</div>
+<p><strong>Saving the cuVSLAM map</strong></p>
+<p>To persist the cuVSLAM map across sessions, set the <code class="docutils literal notranslate"><span class="pre">save_map_folder_path</span></code> parameter to the desired output directory in the cuVSLAM configuration YAML (e.g. <strong>vslam_multi_realsense.yaml</strong>):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">visual_slam</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">save_map_folder_path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;/ros_data/cuvslam_map&#39;</span>
+</pre></div>
+</div>
+<p>cuVSLAM will save its internal map database (<code class="docutils literal notranslate"><span class="pre">.mdb</span></code> files) to this folder. The map can later be loaded to resume localization without rebuilding from scratch.</p>
+<p><strong>Loading a saved map and automatic localization</strong></p>
+<p>To load a previously saved map and have cuVSLAM automatically localize within it at startup, configure the following parameters:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">visual_slam</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">load_map_folder_path</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;/ros_data/cuvslam_map&#39;</span>
+<span class="w">  </span><span class="nt">localize_on_startup</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
+
+<span class="w">  </span><span class="c1"># Localizer search parameters</span>
+<span class="w">  </span><span class="nt">localizer_horizontal_radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.5</span><span class="w">   </span><span class="c1"># horizontal search area around startup position (m)</span>
+<span class="w">  </span><span class="nt">localizer_vertical_radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span><span class="w">     </span><span class="c1"># vertical search range (m)</span>
+<span class="w">  </span><span class="nt">localizer_horizontal_step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span><span class="w">     </span><span class="c1"># grid step for horizontal search (m)</span>
+<span class="w">  </span><span class="nt">localizer_vertical_step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.25</span><span class="w">      </span><span class="c1"># grid step for vertical search (m)</span>
+<span class="w">  </span><span class="nt">localizer_angular_step</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1745</span><span class="w">     </span><span class="c1"># angular search step (~10 deg)</span>
+</pre></div>
+</div>
+<p>The localizer parameters define the search space cuVSLAM uses to find its initial position within the loaded map. Wider radii and smaller steps increase the chance of successful localization but take longer to converge. The defaults work well when the robot starts near its previous position.</p>
+<p><strong>Using cuVSLAM for navigation</strong></p>
+<p>When using cuVSLAM with Nav2 for autonomous navigation, cuVSLAM publishes the <code class="docutils literal notranslate"><span class="pre">map</span> <span class="pre">→</span> <span class="pre">odom</span></code> transform. This means any other global localizer (such as AMCL) that also publishes this transform <strong>must be disabled</strong> — otherwise the conflicting transforms will break navigation.</p>
+<p>In the navigation parameters, set <code class="docutils literal notranslate"><span class="pre">set_initial_pose</span></code> to <code class="docutils literal notranslate"><span class="pre">False</span></code> so that the navigation stack does not publish an initial pose that conflicts with cuVSLAM’s computed position in the map:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">amcl</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">set_initial_pose</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
+</pre></div>
+</div>
+<p>If AMCL is not needed at all (cuVSLAM handles global localization), it can be removed from the launch entirely.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<ul class="simple">
+<li><p>Ensure the cuVSLAM configuration has <code class="docutils literal notranslate"><span class="pre">publish_map_to_odom_tf:</span> <span class="pre">True</span></code> so that Nav2 receives the global <code class="docutils literal notranslate"><span class="pre">map</span> <span class="pre">→</span> <span class="pre">odom</span></code> transform.</p></li>
+<li><p>Keep <code class="docutils literal notranslate"><span class="pre">publish_odom_to_base_tf:</span> <span class="pre">False</span></code> when the EKF is publishing the <code class="docutils literal notranslate"><span class="pre">odom</span> <span class="pre">→</span> <span class="pre">base_link</span></code> transform.</p></li>
+<li><p>If both cuVSLAM and AMCL attempt to publish <code class="docutils literal notranslate"><span class="pre">map</span> <span class="pre">→</span> <span class="pre">odom</span></code>, the robot pose will oscillate and navigation will fail.</p></li>
+</ul>
 </div>
 </section>
 

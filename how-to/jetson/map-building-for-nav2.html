@@ -94,7 +94,12 @@
         </div>
         <nav>
           <ul>
-<li><a class="reference internal" href="#">9) Map building for NAV2</a></li>
+<li><a class="reference internal" href="#">9) Map building for NAV2</a><ul>
+<li><a class="reference internal" href="#saving-the-occupancy-grid">Saving the occupancy grid</a></li>
+<li><a class="reference internal" href="#post-processing-the-saved-map">Post-processing the saved map</a></li>
+<li><a class="reference internal" href="#key-parameters-for-cuvslam-based-maps">Key parameters for cuVSLAM-based maps</a></li>
+</ul>
+</li>
 </ul>
 
         </nav>
@@ -225,10 +230,38 @@ likely obstacles.</p>
 <a class="reference internal image-reference" href="../../_images/Map_build_sim_demo.gif"><img alt="AD-R1M, cuVSLAM and 2D occupancy grid build" src="../../_images/Map_build_sim_demo.gif" style="width: 800px;" />
 </a>
 </figure>
-<p>More information about the <strong>ad_r1m_pointcloud_to_occupancygrid</strong> package can be found at:</p>
+<section id="saving-the-occupancy-grid">
+<h2>Saving the occupancy grid<a class="headerlink" href="#saving-the-occupancy-grid" title="Link to this heading"></a></h2>
+<p>Once the occupancy grid has been built, save it using the Nav2 map saver. The <code class="docutils literal notranslate"><span class="pre">-t</span></code> flag specifies the topic to subscribe to, and <code class="docutils literal notranslate"><span class="pre">save_map_timeout</span></code> sets how long to wait for a map message:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>nav2_map_server<span class="w"> </span>map_saver_cli<span class="w"> </span>-f<span class="w"> </span>/ros_data/cuvslam_map_grid<span class="w"> </span>-t<span class="w"> </span>intensity_grid<span class="w"> </span>--ros-args<span class="w"> </span>-p<span class="w"> </span>save_map_timeout:<span class="o">=</span><span class="m">20</span>.0
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>During the timeout period, you may need to move the robot slightly so that cuVSLAM generates a new landmark message. This triggers a new occupancy grid message that <code class="docutils literal notranslate"><span class="pre">map_saver</span></code> can capture. If the robot remains stationary and no new landmarks are published, the saver may time out without saving.</p>
+</div>
+</section>
+<section id="post-processing-the-saved-map">
+<h2>Post-processing the saved map<a class="headerlink" href="#post-processing-the-saved-map" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">.pgm</span></code> file generated from cuVSLAM landmarks is rotated by approximately 180 degrees. Before using the map with Nav2, rotate the image:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>convert<span class="w"> </span>/ros_data/cuvslam_map_grid.pgm<span class="w"> </span>-rotate<span class="w"> </span><span class="m">180</span><span class="w"> </span>/ros_data/cuvslam_map_grid.pgm
+</pre></div>
+</div>
+<p>The map <code class="docutils literal notranslate"><span class="pre">.yaml</span></code> file may also need adjustments. Because cuVSLAM produces a sparse pointcloud, the resulting occupancy percentages in the grid can be low. Consider tuning:</p>
 <ul class="simple">
-<li><p><a class="icon link reference external" href="https://github.com/analogdevicesinc/ad-r1m-ros2/tree/main/ad_r1m_pointcloud_to_occupacygrid" target="_blank">ad_r1m_pointcloud_to_occupancygrid on GitHub</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">occupied_thresh</span></code> — lower this value to detect cells with lower occupancy as obstacles</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">free_thresh</span></code> — adjust to match the actual occupancy distribution in the sparse map</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">origin</span></code> — verify the [x, y, theta] values match the rotated map</p></li>
 </ul>
+</section>
+<section id="key-parameters-for-cuvslam-based-maps">
+<h2>Key parameters for cuVSLAM-based maps<a class="headerlink" href="#key-parameters-for-cuvslam-based-maps" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">intensity_factor</span></code> parameter is critical when building occupancy grids from cuVSLAM landmarks. A lower value (e.g. 0.3) prevents the sparse pointcloud from saturating the grid with noisy points, while a higher value (e.g. 1.0) is more appropriate for dense LiDAR data.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;intensity_factor&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">},</span>  <span class="c1"># lower for sparse cuVSLAM pointclouds</span>
+</pre></div>
+</div>
+<p>For a complete list of parameters and configuration options, see the <a class="icon link reference external" href="https://github.com/analogdevicesinc/ad-r1m-ros2/tree/main/ad_r1m_pointcloud_to_occupancygrid" target="_blank">ad_r1m_pointcloud_to_occupancygrid README</a>.</p>
+</section>
 </section>
 
 
