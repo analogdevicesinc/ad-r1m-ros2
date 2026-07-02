@@ -10,7 +10,7 @@ services:
       - RMW_IMPLEMENTATION
 
   fastdds_discovery_server:
-    profiles: [rmw_fastdds]
+    profiles: [rmw_fastrtps_cpp]
     image: $DOCKER_IMAGE
     command: fastdds discovery --server-id 0
     network_mode: host
@@ -44,7 +44,7 @@ services:
   tof:
     image: $DOCKER_IMAGE
     command: |
-      ros2 launch ad_r1m_perception_aditof depthimage_to_laserscan.launch.py $${ROBOT_NAMESPACE:+namespace:=}$${ROBOT_NAMESPACE}
+      ros2 launch ad_r1m_perception_aditof depthimage_to_laserscan.launch.py ${ROBOT_NAMESPACE:+namespace:=}${ROBOT_NAMESPACE}
     network_mode: host
     ipc: host
     pid: host
@@ -77,9 +77,11 @@ services:
         condition: "service_started"
         required: false
 
+  # One-off actions, run with `docker compose run ...`
   teleop_keyboard:
+    profiles: [oneoff]
     image: $DOCKER_IMAGE
-    command: ros2 run ad_r1m_bringup teleop_keyboard.py --ros-args --params-file /ros_data/teleop_parameters.yaml -r __ns:=/${ROBOT_NAMESPACE:-}
+    command: ros2 run ad_r1m_bringup teleop_keyboard.py --ros-args --params-file /ros_data/teleop_parameters.yaml -r __ns:="${ROBOT_NAMESPACE:-/}"
     network_mode: host
     ipc: host
     pid: host
@@ -95,7 +97,6 @@ services:
         condition: "service_started"
         required: false
 
-  # One-off actions, run with `docker compose run ...`
   shell:
     profiles: [oneoff]
     image: $DOCKER_IMAGE
@@ -108,6 +109,10 @@ services:
       - ./ros_data/log:/root/.ros/log
     environment:
       - RMW_IMPLEMENTATION
+    depends_on:
+      zenoh_router:
+        condition: "service_started"
+        required: false
 
   save_map:
     profiles: [oneoff]
@@ -122,6 +127,10 @@ services:
       - ./ros_data/log:/root/.ros/log
     environment:
       - RMW_IMPLEMENTATION
+    depends_on:
+      zenoh_router:
+        condition: "service_started"
+        required: false
 
   # AMCL based localization profile. Select with `docker compose --profile loc_amcl ...`
   localization_amcl:
@@ -137,27 +146,16 @@ services:
       - ./ros_data/log:/root/.ros/log
     environment:
       - RMW_IMPLEMENTATION
+    depends_on:
+      zenoh_router:
+        condition: "service_started"
+        required: false
 
   # Blind (empty map) localization profile. Select with `docker compose --profile loc_blind ...`
   localization_blind:
     profiles: [loc_blind]
     image: $DOCKER_IMAGE
-    command: |
-      sh -c 'ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --yaw 0 --pitch 0 --roll 0 --frame-id map --child-frame-id $${ROBOT_NAMESPACE}$${ROBOT_NAMESPACE:+/}odom'
-    ipc: host
-    pid: host
-    privileged: true
-    volumes:
-      - ./ros_data:/ros_data
-      - ./ros_data/log:/root/.ros/log
-    environment:
-      - RMW_IMPLEMENTATION
-
-  # Map server for dead-reckoning localization. Runs together with localization_blind.
-  map_server:
-    profiles: [loc_blind]
-    image: $DOCKER_IMAGE
-    command: ros2 launch ad_r1m_navigation map_server_launch.py map:=/ros_data/maps/empty300.yaml
+    command: bash -c 'ros2 run tf2_ros static_transform_publisher --x 0 --y 0 --z 0 --yaw 0 --pitch 0 --roll 0 --frame-id map --child-frame-id $${ROBOT_NAMESPACE#/}odom'
     network_mode: host
     ipc: host
     pid: host
@@ -167,6 +165,29 @@ services:
       - ./ros_data/log:/root/.ros/log
     environment:
       - RMW_IMPLEMENTATION
+      - ROBOT_NAMESPACE
+    depends_on:
+      zenoh_router:
+        condition: "service_started"
+        required: false
+
+  # Map server for dead-reckoning localization. Runs together with localization_blind.
+  map_server:
+    profiles: [loc_blind]
+    image: $DOCKER_IMAGE
+    command: ros2 launch ad_r1m_navigation map_server_launch.py map:=/ros_data/maps/empty300.yaml
+    network_mode: host
+    ipc: host
+    pid: host
+    volumes:
+      - ./ros_data:/ros_data
+      - ./ros_data/log:/root/.ros/log
+    environment:
+      - RMW_IMPLEMENTATION
+    depends_on:
+      zenoh_router:
+        condition: "service_started"
+        required: false
 
   # Navigation profile. Select with `docker compose --profile nav ...`
   nav:
@@ -182,6 +203,10 @@ services:
       - ./ros_data/log:/root/.ros/log
     environment:
       - RMW_IMPLEMENTATION
+    depends_on:
+      zenoh_router:
+        condition: "service_started"
+        required: false
 
   # Mapping profile. Select with `docker compose --profile slam ...`
   slam:
@@ -197,6 +222,10 @@ services:
       - ./ros_data/log:/root/.ros/log
     environment:
       - RMW_IMPLEMENTATION
+    depends_on:
+      zenoh_router:
+        condition: "service_started"
+        required: false
 
   # Individual services for motor ccontrol, sensors and tools. Development and debugging purposes. Select with `docker compose --profile <service> ...`
   # Motor control service. Select with `docker compose --profile motors ...`
@@ -216,6 +245,10 @@ services:
       - ./ros_data/log:/root/.ros/log
     environment:
       - RMW_IMPLEMENTATION
+    depends_on:
+      zenoh_router:
+        condition: "service_started"
+        required: false
 
   # EKF sensor fusion service. Runs together with motors, published odom->base_link transform.
   sensor_fusion:
@@ -234,6 +267,10 @@ services:
       - ./ros_data/log:/root/.ros/log
     environment:
       - RMW_IMPLEMENTATION
+    depends_on:
+      zenoh_router:
+        condition: "service_started"
+        required: false
 
   # IMU service. Select with `docker compose --profile imu ...`
   imu:
@@ -249,3 +286,7 @@ services:
       - ./ros_data/log:/root/.ros/log
     environment:
       - RMW_IMPLEMENTATION
+    depends_on:
+      zenoh_router:
+        condition: "service_started"
+        required: false
