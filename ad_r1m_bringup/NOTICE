@@ -1,0 +1,6 @@
+ad_r1m_bringup
+Copyright 2024-2026 (c) Analog Devices, Inc.
+
+scripts/crsf/teleop_keyboard.py is derived from teleop_twist_keyboard
+(https://github.com/ros-teleop/teleop_twist_keyboard), licensed under BSD-3-Clause.
+
