@@ -63,7 +63,7 @@ Multi-robot fleet
 .. image:: figures/amr_multi_robot.gif
   :width: 600px
 
-Nvidia cuVSLAM
+NVIDIA cuVSLAM
 ^^^^^^^^^^^^^^
 
 .. image:: figures/ad_r1m_and_cuvslam_demo.gif
