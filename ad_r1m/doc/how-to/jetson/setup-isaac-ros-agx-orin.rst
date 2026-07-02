@@ -89,7 +89,7 @@ It should display:
     NVIDIA Container Runtime Hook version 1.16.2
     commit: a5a5833c14a15fd9c86bcece85d5ec6621b65652
 
-Configure Docker to use Nvidia container runtime:
+Configure Docker to use NVIDIA container runtime:
 
 .. code-block:: bash
     
