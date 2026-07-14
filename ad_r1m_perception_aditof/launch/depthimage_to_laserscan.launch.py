@@ -42,8 +42,9 @@ def generate_launch_description():
     param_file = LaunchConfiguration('param_file')
 
     # Create frame_id that includes namespace if provided
+    # Strip leading slash - TF2 frames should be 'cam1_scan' or 'robot1/cam1_scan', never '/cam1_scan'
     output_frame = PythonExpression([
-        "'", namespace, "/cam1_scan' if '", namespace, "' else 'cam1_scan'"
+        "'cam1_scan' if '", namespace, "'.strip('/') == '' else '", namespace, "'.strip('/') + '/cam1_scan'"
     ])
 
     # Create depthimage_to_laserscan node
