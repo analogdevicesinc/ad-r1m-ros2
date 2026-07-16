@@ -187,3 +187,9 @@ html_static_path = []
 # 'searchbox.html']``.
 #
 # html_sidebars = {}
+
+# Adding the registered mark and trademark symbols globally
+rst_prolog = """
+.. |reg| unicode:: U+00AE
+.. |tm| unicode:: U+2122
+"""

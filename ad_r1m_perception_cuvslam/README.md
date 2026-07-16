@@ -1,29 +1,27 @@
 
 # `ad_r1m_perception_cuvslam` ROS2 Package
 
-This package provides the launch files and URDF descriptions needed to start and use the base navigation functionality of the AD_R1M platform together with NVIDIA cuVSLAM.  
-Note: This is a *high‑level overview*. Full setup instructions and detailed documentation are available on the official AD_R1M documentation page.
-
-TODO: INSERT LINK TO OFFICIAL DOCUMENTATION HERE
+This package provides the launch files and URDF descriptions needed to start and use the base navigation functionality of the AD_R1M platform together with NVIDIA® Isaac™ ROS Visual SLAM.  
+Note: This is a *high‑level overview*. Full setup instructions and detailed documentation are available on the [official AD-R1M documentation page](https://developer.analog.com/docs/system-level/solutions/reference-designs/ad-r1m/index.html#getting-started).
 
 ## Prerequisites
 
 ### Hardware
 - AD_R1M mobile robot platform
-- NVIDIA AGX Orin or any desktop station with an NVIDIA GPU  
+- NVIDIA® Jetson™ AGX Orin or any desktop station with an NVIDIA GPU  
   (setup instructions are provided only for the AGX Orin variant)
-- Intel RealSense camera(s)  
+- Intel® RealSense™ camera(s)  
   (ZED cameras are also supported by NVIDIA Isaac ROS, but they are not part of our standard hardware setup. For ZED configuration details, see: https://nvidia-isaac-ros.github.io/getting_started/sensors/zed_setup.html)
 
 ### Software
 - Intel RealSense drivers and ROS2 packages
-- Isaac ROS cuVSLAM packages installed on your NVIDIA platform
+- Isaac ROS Visual SLAM packages installed on your NVIDIA platform
 
 ### Simulation
 - Gazebo Ignition  
-  A Gazebo model of AD‑R1M equipped with a RealSense D435i is provided for testing AD‑R1M + cuVSLAM functionality in simulation.
+  A Gazebo model of AD‑R1M equipped with a Intel RealSense D435i is provided for testing AD‑R1M + Isaac ROS Visual SLAM functionality in simulation.
 
-All setup steps and requirements related to AD‑R1M and NVIDIA cuVSLAM can be found on the official documentation page.
+All setup steps and requirements related to AD‑R1M and NVIDIA Isaac ROS Visual SLAM can be found on the official documentation page.
 
 ## Use Cases
 
@@ -51,7 +49,7 @@ After completing all setup steps from the official documentation:
 
   The default values correspond to a camera mounted in front of the robot, above the ToF camera (0.335 m translation on the X-axis and zero rotation on all axes).
 
-- On your NVIDIA AGX Orin, run the Isaac ROS Docker container:
+- On your NVIDIA® Jetson™ AGX Orin, run the Isaac ROS Docker container:
 
 ```r
     cd $ISAAC_ROS_WS/src/isaac_ros_common
@@ -65,7 +63,7 @@ After completing all setup steps from the official documentation:
     ros2 launch ad_r1m_perception_cuvslam cuvslam_multirealsense.launch.py
 ```
 
-This starts all required RealSense and cuVSLAM nodes.
+This starts all required RealSense and Isaac ROS Visual SLAM nodes.
 
 ### 2) Simulation
 
@@ -79,7 +77,7 @@ This starts all required RealSense and cuVSLAM nodes.
         world_name:=<your_world_name.world>
 ```
 
-- On the NVIDIA AGX Orin, run the Docker container:
+- On the NVIDIA Jetson AGX Orin, run the Docker container:
 
 ```r
     cd $ISAAC_ROS_WS/src/isaac_ros_common
@@ -94,10 +92,10 @@ This starts all required RealSense and cuVSLAM nodes.
 ```
 
 ## Configuration
-Configuration files for RealSense and cuVSLAM parameters can be found in **config/**. 
+Configuration files for RealSense cameras and Isaac ROS Visual SLAM parameters can be found in **config/**. 
 - The setup using the real robot loads: *vslam_single_realsense.yaml*
 - The simulation setup uses: *cuvslam_single_realsense.yaml*
 
-More details on how to configure ROS2 cuVSLAM or RealSense parameters can be found at:
+More details on how to configure Isaac ROS Visual SLAM or RealSense parameters can be found at their official documentation pages:
 - https://nvidia-isaac-ros.github.io/repositories_and_packages/isaac_ros_visual_slam/isaac_ros_visual_slam/index.html
 - https://github.com/realsenseai/realsense-ros
