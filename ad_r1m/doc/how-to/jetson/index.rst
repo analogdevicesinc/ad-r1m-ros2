@@ -1,14 +1,14 @@
-NVIDIA AGX Orin and cuVSLAM Integration
+NVIDIA\ |reg| Jetson\ |tm| AGX Orin and NVIDIA\ |reg| Isaac\ |tm| ROS Visual SLAM Integration
 ========================================
 
 This section covers integration of the AD-R1M robot with NVIDIA Jetson AGX Orin
-and Isaac ROS cuVSLAM for advanced visual SLAM capabilities.
+and Isaac\ |tm| ROS Visual SLAM for advanced localization and mapping capabilities.
 
 Overview
 --------
 
 The NVIDIA Jetson AGX Orin integration extends the AD-R1M platform with GPU-accelerated
-visual SLAM capabilities using Isaac ROS cuVSLAM. This enables:
+visual SLAM capabilities using Isaac ROS Visual SLAM. This enables:
 
 - Real-time visual-inertial odometry
 - GPU-accelerated point cloud processing
@@ -18,9 +18,9 @@ visual SLAM capabilities using Isaac ROS cuVSLAM. This enables:
 Requirements
 ------------
 
-- NVIDIA Jetson AGX Orin Developer Kit
-- JetPack 6.2.1 or later
-- Intel RealSense D455 Camera
+- NVIDIA\ |reg| Jetson\ |tm| AGX Orin Developer Kit
+- NVIDIA\ |reg| JetPack\ |tm| 6.2.1 or later
+- Intel\ |reg| RealSense\ |tm| D455 Camera
 - AD-R1M Robot Platform
 
 Getting Started

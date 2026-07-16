@@ -1,5 +1,5 @@
-6) AD-R1M and Jetson AGX Orin: hardware setup
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+6) AD-R1M and NVIDIA\ |reg| Jetson\ |tm| AGX Orin: hardware setup
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Connect a DC power jack with a 5.5 mm outer diameter and 2.5 mm inner diameter (male connector) to the AD-R1M external power supply, and the ethernet cable to the port in front of the robot. Ensure that the center pin is wired with positive polarity:
 

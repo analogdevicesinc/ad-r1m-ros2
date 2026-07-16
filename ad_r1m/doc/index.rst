@@ -63,8 +63,8 @@ Multi-robot fleet
 .. image:: figures/amr_multi_robot.gif
   :width: 600px
 
-NVIDIA cuVSLAM
-^^^^^^^^^^^^^^
+NVIDIA\ |reg| Isaac\ |tm| ROS
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. image:: figures/ad_r1m_and_cuvslam_demo.gif
   :width: 600px
@@ -90,7 +90,7 @@ Features
 - Open-source hardware and software design
 - Support for ROS 2 Humble, Jazzy
 - Differential drive mobile base with encoder feedback
-- Support for NVIDIA Jetson AGX Orin for GPU-accelerated workloads
+- Support for NVIDIA\ |reg| Jetson\ |tm| AGX Orin for GPU-accelerated workloads
 - Gazebo simulation environment included
 
 Components
@@ -133,10 +133,10 @@ System Architecture
 
 The AD-R1M platform consists of the following major subsystems:
 
-- **Processing Unit**: Raspberry Pi 5 (base) or NVIDIA Jetson AGX Orin (advanced)
+- **Processing Unit**: Raspberry Pi 5 (base) or NVIDIA\ |reg| Jetson\ |tm| AGX Orin (advanced)
 - **Motion Control**: Dual ADRD3161 motor driver boards with CAN interface
 - **Power Management**: ADRD5161 BMS board (3S or 12S battery variants)
-- **Sensors**: ADIS16470 IMU, ADTF3175D ToF camera, optional Intel RealSense
+- **Sensors**: ADIS16470 IMU, ADTF3175D ToF camera, optional Intel\ |reg| RealSense\ |tm|
 - **Connectivity**: CAN bus, USB, Ethernet, Wi-Fi, CRSF radio
 
 Repository

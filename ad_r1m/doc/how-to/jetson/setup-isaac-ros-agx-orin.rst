@@ -1,4 +1,4 @@
-3) Setup Isaac ROS on AGX Orin
+3) Setup NVIDIA\ |reg| Isaac\ |tm| ROS on AGX Orin
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 3.1) Set locale 
