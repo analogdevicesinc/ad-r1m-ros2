@@ -28,7 +28,7 @@ Hardware Components
 **Processing Units**
 
 - Raspberry Pi 5 (with ADI Kuiper2)
-- NVIDIA Jetson AGX Orin
+- NVIDIA\ |reg| Jetson\ |tm| AGX Orin
 
 **Motor & Motion Control**
 
@@ -48,7 +48,7 @@ Hardware Components
 
 - ADI IMU (ADIS16470) for Localization
 - ADI Time-of-Flight Camera (ADTF3175D) for Perception
-- Intel RealSense Camera (optional)
+- Intel\ |reg| RealSense\ |tm| Camera (optional)
 
 **Connectivity**
 

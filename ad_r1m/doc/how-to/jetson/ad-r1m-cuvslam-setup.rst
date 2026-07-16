@@ -1,9 +1,9 @@
-7) AD-R1M and cuVSLAM setup
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+7) AD-R1M and NVIDIA\ |reg| Isaac\ |tm| ROS Visual SLAM setup
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Up to this point, the NVIDIA Docker container has been configured with all required dependencies for running cuVSLAM with a RealSense camera. To enable full integration of cuVSLAM on the AD-R1M platform, a few additional configuration steps are necessary.
+Up to this point, the NVIDIA Docker container has been configured with all required dependencies for running Isaac ROS Visual SLAM with a Intel\ |reg| RealSense\ |tm| camera. To enable full integration of Isaac ROS Visual SLAM on the AD-R1M platform, a few additional configuration steps are necessary.
 
-The following steps should be run on the AGX Orin platform. Open a new terminal and run the following commands:
+The following steps should be run on the NVIDIA\ |reg| Jetson\ |tm| AGX Orin platform. Open a new terminal and run the following commands:
 
 .. code-block:: bash
     

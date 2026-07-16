@@ -1,11 +1,11 @@
-4) Setup Isaac ROS Visual SLAM
+4) Setup NVIDIA\ |reg| Isaac\ |tm| ROS Visual SLAM
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 4.1) Clone **isaac_ros_common**
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. warning:: 
-    This step is required only if camera is of RealSense type.
+    This step is required only if camera is of Intel\ |reg| RealSense\ |tm| type.
     It should not be run for other types of cameras.
 
 .. code-block:: bash
@@ -13,7 +13,7 @@
     cd $ISAAC_ROS_WS/src
     git clone -b release-3.2 https://github.com/NVIDIA-ISAAC-ROS/isaac_ros_common.git isaac_ros_common
 
-Configure the container to include RealSense packages.
+Configure the container to include RealSense\ |tm| packages.
 
 .. code-block:: bash
     
@@ -139,7 +139,7 @@ List the content of CDI:
     Depending on the network speed, this step may take up to one or two hours.
     The download is performed only once, so all next docker launches will take a few seconds, only sanity checks will take place.
 
-**Install the VSLAM package**
+**Install the** **NVIDIA**\ |reg| **Isaac**\ |tm| **ROS Visual SLAM package**
 
 .. code-block:: bash
     

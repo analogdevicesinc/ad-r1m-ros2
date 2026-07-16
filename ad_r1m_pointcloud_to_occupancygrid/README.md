@@ -113,7 +113,7 @@ ros2 launch ad_r1m_pointcloud_to_occupancygrid build_occupancy_grid.launch.py to
 
 ## Initial Map Loading
 
-When using cuVSLAM (or any SLAM system) across multiple sessions, the occupancy grid
+When using NVIDIA® Isaac™ ROS Visual SLAM (or any SLAM system) across multiple sessions, the occupancy grid
 normally starts from a blank state and must be rebuilt from scratch. The initial map
 loading feature allows the node to start with a previously saved occupancy grid as its
 baseline, so new landmark observations blend into the existing map via the normal
@@ -186,7 +186,7 @@ ros2 run nav2_map_server map_saver_cli -f /ros_data/cuvslam_map_grid -t intensit
 
 ## Post-Processing Saved Maps from Visual SLAM
 
-When building occupancy grids from visual SLAM pointclouds (e.g. cuVSLAM landmarks), the saved map files may need adjustments before use with Nav2:
+When building occupancy grids from visual SLAM pointclouds (e.g. Isaac ROS Visual SLAM landmarks), the saved map files may need adjustments before use with Nav2:
 
 **PGM rotation:** The `.pgm` file is rotated by approximately 180 degrees. Rotate it before use:
 
@@ -205,8 +205,8 @@ convert /ros_data/cuvslam_map_grid.pgm -rotate 180 /ros_data/cuvslam_map_grid.pg
 
 To resume mapping across sessions — loading a previously saved map and updating it with new observations:
 
-1. Save the cuVSLAM map (`.mdb` database) and the occupancy grid (`.pgm` + `.yaml`)
-2. On the next session, start cuVSLAM with `load_map_folder_path` pointing to the saved `.mdb` map
+1. Save the Isaac ROS Visual SLAM map (`.mdb` database) and the occupancy grid (`.pgm` + `.yaml`)
+2. On the next session, start Isaac ROS Visual SLAM with `load_map_folder_path` pointing to the saved `.mdb` map
 3. Start the occupancy grid node with the saved grid as the initial map:
 
 ```bash
