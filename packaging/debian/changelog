@@ -1,4 +1,4 @@
-ad-r1m-system (0.1.0) UNRELEASED; urgency=low
+ad-r1m-system (1.0.0-1) UNRELEASED; urgency=low
 
   * Initial debian packaging infrastructure
 
