@@ -1,11 +1,11 @@
-5) VSLAM and RealSense setup and usage on AGX Orin
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5) NVIDIA\ |reg| Isaac\ |tm| ROS Visual SLAM and Intel\ |reg| RealSense\ |tm| setup and usage on NVIDIA Jetson\ |tm| AGX Orin
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Connect the camera to any USB-A connector on the AGX Orin (USB-A 3.2 are recommended).
 
 
 5.1) Intel RealSense cameras
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Check how the camera is detected**
 
@@ -99,7 +99,7 @@ Select the 2D view mode and enable the Motion Module.  Rotate the camera module 
     :align: center
     :width: 600px
 
-**Test the VSLAM ROS nodes**
+**Test the Isaac ROS Visual SLAM nodes**
 
 In the existing terminal run:
 
@@ -133,7 +133,7 @@ Start a quick VSLAM demo:
 The RViz scene, displaying the point cloud, should look similar to:
 
 .. figure:: figures/RViz2_pointcloud_docker.png
-    :alt: cuVSLAM demo run
+    :alt: Isaac ROS Visual SLAM demo run
     :align: center
     :width: 600px
 

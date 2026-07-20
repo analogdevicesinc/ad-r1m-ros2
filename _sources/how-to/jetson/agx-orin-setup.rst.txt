@@ -1,5 +1,5 @@
-1) Linux installation on Jetson AGX Orin
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+1) Linux installation on NVIDIA\ |reg| Jetson\ |tm| AGX Orin
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This section describes the required steps for having a bootable device, with latest L4T and required toolkits. The Jetson AGX Orin DevKit supports the following three types of mass storage:
     * NVMe (fastest access)
     * onboard 64GB eMMC
@@ -15,16 +15,23 @@ The following steps imply the usage of a NVMe as install target and bootable mas
 
 Table below contains the requirements for the notebook or desktop computer.
 
-+--------------------+-------------------+------------------------------+
-| Component          | Version           | Remarks                      |
-+====================+===================+==============================+
-| OS                 | Ubuntu 22.04 LTS  | X86_64                       |
-+--------------------+-------------------+------------------------------+
-| NVIDIA SDK Manager | > 2.3.0           | Should Support JetPack 6.2.1 |
-+--------------------+-------------------+------------------------------+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 20 40
 
-1.2) Jetson AGX Orin DevKit preparation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   * - Component
+     - Version
+     - Remarks
+   * - OS
+     - Ubuntu 22.04 LTS
+     - X86_64
+   * - NVIDIA SDK Manager
+     - > 2.3.0
+     - Should Support NVIDIA\ |reg| JetPack\ |tm| 6.2.1
+
+
+1.2) NVIDIA Jetson AGX Orin DevKit preparation
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
     * Remove the power supply and disconnect all cables from the device.
     * If a uSDHC is inserted, it can be now removed.
@@ -34,8 +41,8 @@ Table below contains the requirements for the notebook or desktop computer.
     * Connect the power supply.
 
 1.3) Installation procedure with NVIDIA SDK Manager
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-**On AGX Orin:**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+**On** **NVIDIA** **Jetson** **AGX Orin:**
     * start the device in Forced Recovery mode
 **On the Linux host:**
     * Launch NVIDIA SDK Manager
@@ -46,7 +53,7 @@ Table below contains the requirements for the notebook or desktop computer.
         :align: center
         :width: 600px
     
-    * select **Jetson AGX Orin [64GB developer kit version]**
+    * select **Jetson** **AGX Orin [64GB developer kit version]**
     * before continuing to STEP 02, make sure selections are like in the screenshot below
         * Product Category: **Jetson**
         * SDK Version: **JetPack 6.2.1**
@@ -105,8 +112,8 @@ Table below contains the requirements for the notebook or desktop computer.
     * disconnect the USB cable between the host computer and the AGX Orin
     * upcoming steps are targeting the Jetson AGX Orin only
 
-1.4) Jetson AGX Orin Setup
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+1.4) NVIDIA Jetson AGX Orin Setup
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Rebot the device from terminal:
 
@@ -151,7 +158,7 @@ The Jetson L4T (36.4.4) and timestamp (20250616) correspond to the one displayed
 **NVIDIA Prerequisites**
 
 
-Check the installed CUDA version
+Check the installed NVIDIA\ |reg| CUDA\ |tm| version
 
 .. code-block:: bash
 

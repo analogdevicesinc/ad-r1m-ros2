@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="This simulation also includes a RealSense D435i gazebo plugin which is mounted in front of the AD-R1M platform." name="description" />
+<meta content="This simulation also includes a Intel® RealSense™ D435i gazebo plugin which is mounted in front of the AD-R1M platform." name="description" />
 
     <title>10) AD-R1M Gazebo simulation &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8e8a900e" />
@@ -138,14 +138,14 @@ Content on this topic
 </ul>
 </li>
 <li class="toctree-l2 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2" checked=""/><div class="collapse"><a class="reference internal" href="index.html">Set up NVIDIA Jetson AGX Orin</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="agx-orin-setup.html">1) Linux installation on Jetson AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="setup-req-pkg-agx-orin.html">2) Setup required packages on AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="setup-isaac-ros-agx-orin.html">3) Setup Isaac ROS on AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="setup-isaac-ros-vslam.html">4) Setup Isaac ROS Visual SLAM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="vslam-setup-and-usage.html">5) VSLAM and RealSense setup and usage on AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and Jetson AGX Orin: hardware setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-cuvslam-setup.html">7) AD-R1M and cuVSLAM setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA cuVSLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="agx-orin-setup.html">1) Linux installation on NVIDIA® Jetson™ AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup-req-pkg-agx-orin.html">2) Setup required packages on NVIDIA® Jetson™ AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup-isaac-ros-agx-orin.html">3) Setup NVIDIA® Isaac™ ROS on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup-isaac-ros-vslam.html">4) Setup NVIDIA® Isaac™ ROS Visual SLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vslam-setup-and-usage.html">5) NVIDIA® Isaac™ ROS Visual SLAM and Intel® RealSense™ setup and usage on NVIDIA Jetson™ AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and NVIDIA® Jetson™ AGX Orin: hardware setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-cuvslam-setup.html">7) AD-R1M and NVIDIA® Isaac™ ROS Visual SLAM setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA® Isaac™ ROS Visual SLAM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="map-building-for-nav2.html">9) Map building for NAV2</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">10) AD-R1M Gazebo simulation</a></li>
 </ul>
@@ -174,13 +174,13 @@ Content on this topic
       <div class="documentwrapper">
         <div class="bodywrapper" id="top-anchor">
           <div class="body-header">
-  <nav class="breadcrumb"><ol><li><a href="../index.html">How-to guides</a></li><li><a href="index.html">NVIDIA AGX Orin and cuVSLAM Integration</a></li></ol></nav>
+  <nav class="breadcrumb"><ol><li><a href="../index.html">How-to guides</a></li><li><a href="index.html">NVIDIA® Jetson™ AGX Orin and NVIDIA® Isaac™ ROS Visual SLAM Integration</a></li></ol></nav>
 </div>
           <div class="body" role="main">
             
   <section id="ad-r1m-gazebo-simulation">
 <h1>10) AD-R1M Gazebo simulation<a class="headerlink" href="#ad-r1m-gazebo-simulation" title="Link to this heading"></a></h1>
-<p>This simulation also includes a RealSense D435i gazebo plugin which is mounted in front of the AD-R1M platform.</p>
+<p>This simulation also includes a Intel® RealSense™ D435i gazebo plugin which is mounted in front of the AD-R1M platform.</p>
 <p><strong>Running gazebo simulation</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_cuvslam<span class="w"> </span>robot_realsense_sim.launch.py<span class="w"> </span>local_models_path:<span class="o">=</span>&lt;path_to_your_models&gt;<span class="w"> </span><span class="nv">world_name</span><span class="o">=</span>&lt;your_world_name.world&gt;
 </pre></div>
@@ -189,20 +189,20 @@ Content on this topic
 “Unable to find uri[model://some_model]” by adding the  repository’s <cite>models/</cite> folder to GAZEBO_MODEL_PATH.</p>
 <p>You can find plenty of worlds and models at <a class="icon link reference external" href="https://github.com/leonhartyao/gazebo_models_worlds_collection" target="_blank">https://github.com/leonhartyao/gazebo_models_worlds_collection</a>. Just download the repository
 inside your workspace and load any of the available worlds.</p>
-<p>The gazebo simulation can be run on any PC while the cuVSLAM can be run only on a NVIDIA Isaac ROS compliant setup.</p>
-<p>On NVIDIA AGX Orin run the docker container in a new terminal:</p>
+<p>The gazebo simulation can be run on any PC while the NVIDIA® Isaac™ ROS Visual SLAM can be run only on a NVIDIA Isaac ROS compliant setup.</p>
+<p>On NVIDIA® Jetson™ AGX Orin run the docker container in a new terminal:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span><span class="nv">$ISAAC_ROS_WS</span>/src/isaac_ros_common
 ./scripts/run_dev.sh<span class="w"> </span>-i<span class="w"> </span>ros2_humble.realsense.visualslam
 </pre></div>
 </div>
-<p>Inside the Docker container launch cuVSLAM:</p>
+<p>Inside the Docker container launch Isaac ROS Visual SLAM:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>install/setup.sh
 ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_cuvslam<span class="w"> </span>vslam_single_realsense.launch.py
 </pre></div>
 </div>
-<p>Bellow is an example of cuVSLAM running with the AD-R1M + RealSense D435i Gazebo simulation:</p>
+<p>Bellow is an example of Isaac ROS Visual SLAM running with the AD-R1M + Intel RealSense D435i Gazebo simulation:</p>
 <figure class="align-center">
-<a class="reference internal image-reference" href="../../_images/simulation_demo.gif"><img alt="AD-R1M and cuVSLAM demo" src="../../_images/simulation_demo.gif" style="width: 800px;" />
+<a class="reference internal image-reference" href="../../_images/simulation_demo.gif"><img alt="AD-R1M and Isaac ROS Visual SLAM demo" src="../../_images/simulation_demo.gif" style="width: 800px;" />
 </a>
 </figure>
 </section>

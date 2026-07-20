@@ -4,15 +4,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="This section covers integration of the AD-R1M robot with NVIDIA Jetson AGX Orin and Isaac ROS cuVSLAM for advanced visual SLAM capabilities." name="description" />
+<meta content="This section covers integration of the AD-R1M robot with NVIDIA Jetson AGX Orin and Isaac™ ROS Visual SLAM for advanced localization and mapping capabilities." name="description" />
 
-    <title>NVIDIA AGX Orin and cuVSLAM Integration &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
+    <title>NVIDIA® Jetson™ AGX Orin and NVIDIA® Isaac™ ROS Visual SLAM Integration &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8e8a900e" />
     <link rel="stylesheet" type="text/css" href="../../_static/app.min.css?v=d3f78147" />
     <script async="async" src="../../_static/app.umd.js?v=26d0298f"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="1) Linux installation on Jetson AGX Orin" href="agx-orin-setup.html" />
+    <link rel="next" title="1) Linux installation on NVIDIA® Jetson™ AGX Orin" href="agx-orin-setup.html" />
     <link rel="prev" title="2. How to set up the AD-R1M internal computer" href="../build-from-scratch/setup-rpi.html" />
    
   
@@ -94,7 +94,7 @@
         </div>
         <nav>
           <ul>
-<li><a class="reference internal" href="#">NVIDIA AGX Orin and cuVSLAM Integration</a><ul>
+<li><a class="reference internal" href="#">NVIDIA® Jetson™ AGX Orin and NVIDIA® Isaac™ ROS Visual SLAM Integration</a><ul>
 <li><a class="reference internal" href="#overview">Overview</a></li>
 <li><a class="reference internal" href="#requirements">Requirements</a></li>
 <li><a class="reference internal" href="#getting-started">Getting Started</a></li>
@@ -143,14 +143,14 @@ Content on this topic
 </ul>
 </li>
 <li class="toctree-l2 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2" checked=""/><div class="collapse"><a class="current reference internal" href="#">Set up NVIDIA Jetson AGX Orin</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul>
-<li class="toctree-l3"><a class="reference internal" href="agx-orin-setup.html">1) Linux installation on Jetson AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="setup-req-pkg-agx-orin.html">2) Setup required packages on AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="setup-isaac-ros-agx-orin.html">3) Setup Isaac ROS on AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="setup-isaac-ros-vslam.html">4) Setup Isaac ROS Visual SLAM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="vslam-setup-and-usage.html">5) VSLAM and RealSense setup and usage on AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and Jetson AGX Orin: hardware setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-cuvslam-setup.html">7) AD-R1M and cuVSLAM setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA cuVSLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="agx-orin-setup.html">1) Linux installation on NVIDIA® Jetson™ AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup-req-pkg-agx-orin.html">2) Setup required packages on NVIDIA® Jetson™ AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup-isaac-ros-agx-orin.html">3) Setup NVIDIA® Isaac™ ROS on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="setup-isaac-ros-vslam.html">4) Setup NVIDIA® Isaac™ ROS Visual SLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vslam-setup-and-usage.html">5) NVIDIA® Isaac™ ROS Visual SLAM and Intel® RealSense™ setup and usage on NVIDIA Jetson™ AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and NVIDIA® Jetson™ AGX Orin: hardware setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-cuvslam-setup.html">7) AD-R1M and NVIDIA® Isaac™ ROS Visual SLAM setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA® Isaac™ ROS Visual SLAM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="map-building-for-nav2.html">9) Map building for NAV2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ad-r1m-realsense-gazebo.html">10) AD-R1M Gazebo simulation</a></li>
 </ul>
@@ -183,14 +183,14 @@ Content on this topic
 </div>
           <div class="body" role="main">
             
-  <section id="nvidia-agx-orin-and-cuvslam-integration">
-<h1>NVIDIA AGX Orin and cuVSLAM Integration<a class="headerlink" href="#nvidia-agx-orin-and-cuvslam-integration" title="Link to this heading"></a></h1>
+  <section id="nvidiareg-jetsontm-agx-orin-and-nvidiareg-isaactm-ros-visual-slam-integration">
+<h1>NVIDIA® Jetson™ AGX Orin and NVIDIA® Isaac™ ROS Visual SLAM Integration<a class="headerlink" href="#nvidiareg-jetsontm-agx-orin-and-nvidiareg-isaactm-ros-visual-slam-integration" title="Link to this heading"></a></h1>
 <p>This section covers integration of the AD-R1M robot with NVIDIA Jetson AGX Orin
-and Isaac ROS cuVSLAM for advanced visual SLAM capabilities.</p>
+and Isaac™ ROS Visual SLAM for advanced localization and mapping capabilities.</p>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
 <p>The NVIDIA Jetson AGX Orin integration extends the AD-R1M platform with GPU-accelerated
-visual SLAM capabilities using Isaac ROS cuVSLAM. This enables:</p>
+visual SLAM capabilities using Isaac ROS Visual SLAM. This enables:</p>
 <ul class="simple">
 <li><p>Real-time visual-inertial odometry</p></li>
 <li><p>GPU-accelerated point cloud processing</p></li>
@@ -201,9 +201,9 @@ visual SLAM capabilities using Isaac ROS cuVSLAM. This enables:</p>
 <section id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>NVIDIA Jetson AGX Orin Developer Kit</p></li>
-<li><p>JetPack 6.2.1 or later</p></li>
-<li><p>Intel RealSense D455 Camera</p></li>
+<li><p>NVIDIA® Jetson™ AGX Orin Developer Kit</p></li>
+<li><p>NVIDIA® JetPack™ 6.2.1 or later</p></li>
+<li><p>Intel® RealSense™ D455 Camera</p></li>
 <li><p>AD-R1M Robot Platform</p></li>
 </ul>
 </section>
@@ -212,14 +212,14 @@ visual SLAM capabilities using Isaac ROS cuVSLAM. This enables:</p>
 <p>Follow the setup guides in order:</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="agx-orin-setup.html">1) Linux installation on Jetson AGX Orin</a></li>
-<li class="toctree-l1"><a class="reference internal" href="setup-req-pkg-agx-orin.html">2) Setup required packages on AGX Orin</a></li>
-<li class="toctree-l1"><a class="reference internal" href="setup-isaac-ros-agx-orin.html">3) Setup Isaac ROS on AGX Orin</a></li>
-<li class="toctree-l1"><a class="reference internal" href="setup-isaac-ros-vslam.html">4) Setup Isaac ROS Visual SLAM</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vslam-setup-and-usage.html">5) VSLAM and RealSense setup and usage on AGX Orin</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and Jetson AGX Orin: hardware setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ad-r1m-cuvslam-setup.html">7) AD-R1M and cuVSLAM setup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA cuVSLAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="agx-orin-setup.html">1) Linux installation on NVIDIA® Jetson™ AGX Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup-req-pkg-agx-orin.html">2) Setup required packages on NVIDIA® Jetson™ AGX Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup-isaac-ros-agx-orin.html">3) Setup NVIDIA® Isaac™ ROS on AGX Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="setup-isaac-ros-vslam.html">4) Setup NVIDIA® Isaac™ ROS Visual SLAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vslam-setup-and-usage.html">5) NVIDIA® Isaac™ ROS Visual SLAM and Intel® RealSense™ setup and usage on NVIDIA Jetson™ AGX Orin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and NVIDIA® Jetson™ AGX Orin: hardware setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ad-r1m-cuvslam-setup.html">7) AD-R1M and NVIDIA® Isaac™ ROS Visual SLAM setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA® Isaac™ ROS Visual SLAM</a></li>
 <li class="toctree-l1"><a class="reference internal" href="map-building-for-nav2.html">9) Map building for NAV2</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ad-r1m-realsense-gazebo.html">10) AD-R1M Gazebo simulation</a></li>
 </ul>
@@ -232,7 +232,7 @@ visual SLAM capabilities using Isaac ROS cuVSLAM. This enables:</p>
               <div class="related">
                 &nbsp;
     <a href="../build-from-scratch/setup-rpi.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev"><span class="section-number">2. </span>How to set up the AD-R1M internal computer</a>
-    <a href="agx-orin-setup.html" title="Next document (Alt+Shift+RightArrow)" class="next">1) Linux installation on Jetson AGX Orin</a>
+    <a href="agx-orin-setup.html" title="Next document (Alt+Shift+RightArrow)" class="next">1) Linux installation on NVIDIA® Jetson™ AGX Orin</a>
               </div>
           
         </div>

@@ -99,7 +99,7 @@
 <li><a class="reference internal" href="#slam">SLAM</a></li>
 <li><a class="reference internal" href="#navigation">Navigation</a></li>
 <li><a class="reference internal" href="#multi-robot-fleet">Multi-robot fleet</a></li>
-<li><a class="reference internal" href="#nvidia-cuvslam">NVIDIA cuVSLAM</a></li>
+<li><a class="reference internal" href="#nvidiareg-isaactm-ros">NVIDIA® Isaac™ ROS</a></li>
 <li><a class="reference internal" href="#gmsl-camera-integration-and-image-processing">GMSL Camera integration and image processing</a><ul>
 <li><a class="reference internal" href="#floor-segmentation">Floor segmentation</a></li>
 <li><a class="reference internal" href="#object-detection">Object Detection</a></li>
@@ -158,14 +158,14 @@ Content on this topic
 </ul>
 </li>
 <li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2"/><div class="collapse"><a class="reference internal" href="how-to/jetson/index.html">Set up NVIDIA Jetson AGX Orin</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul>
-<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/agx-orin-setup.html">1) Linux installation on Jetson AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/setup-req-pkg-agx-orin.html">2) Setup required packages on AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/setup-isaac-ros-agx-orin.html">3) Setup Isaac ROS on AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/setup-isaac-ros-vslam.html">4) Setup Isaac ROS Visual SLAM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/vslam-setup-and-usage.html">5) VSLAM and RealSense setup and usage on AGX Orin</a></li>
-<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and Jetson AGX Orin: hardware setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/ad-r1m-cuvslam-setup.html">7) AD-R1M and cuVSLAM setup</a></li>
-<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA cuVSLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/agx-orin-setup.html">1) Linux installation on NVIDIA® Jetson™ AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/setup-req-pkg-agx-orin.html">2) Setup required packages on NVIDIA® Jetson™ AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/setup-isaac-ros-agx-orin.html">3) Setup NVIDIA® Isaac™ ROS on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/setup-isaac-ros-vslam.html">4) Setup NVIDIA® Isaac™ ROS Visual SLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/vslam-setup-and-usage.html">5) NVIDIA® Isaac™ ROS Visual SLAM and Intel® RealSense™ setup and usage on NVIDIA Jetson™ AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and NVIDIA® Jetson™ AGX Orin: hardware setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/ad-r1m-cuvslam-setup.html">7) AD-R1M and NVIDIA® Isaac™ ROS Visual SLAM setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="how-to/jetson/ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA® Isaac™ ROS Visual SLAM</a></li>
 <li class="toctree-l3"><a class="reference internal" href="how-to/jetson/map-building-for-nav2.html">9) Map building for NAV2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="how-to/jetson/ad-r1m-realsense-gazebo.html">10) AD-R1M Gazebo simulation</a></li>
 </ul>
@@ -237,8 +237,8 @@ Content on this topic
 <a class="reference internal image-reference" href="_images/amr_multi_robot.gif"><img alt="_images/amr_multi_robot.gif" src="_images/amr_multi_robot.gif" style="width: 600px;" />
 </a>
 </section>
-<section id="nvidia-cuvslam">
-<h3>NVIDIA cuVSLAM<a class="headerlink" href="#nvidia-cuvslam" title="Link to this heading"></a></h3>
+<section id="nvidiareg-isaactm-ros">
+<h3>NVIDIA® Isaac™ ROS<a class="headerlink" href="#nvidiareg-isaactm-ros" title="Link to this heading"></a></h3>
 <a class="reference internal image-reference" href="_images/ad_r1m_and_cuvslam_demo.gif"><img alt="_images/ad_r1m_and_cuvslam_demo.gif" src="_images/ad_r1m_and_cuvslam_demo.gif" style="width: 600px;" />
 </a>
 </section>
@@ -262,7 +262,7 @@ Content on this topic
 <li><p>Open-source hardware and software design</p></li>
 <li><p>Support for ROS 2 Humble, Jazzy</p></li>
 <li><p>Differential drive mobile base with encoder feedback</p></li>
-<li><p>Support for NVIDIA Jetson AGX Orin for GPU-accelerated workloads</p></li>
+<li><p>Support for NVIDIA® Jetson™ AGX Orin for GPU-accelerated workloads</p></li>
 <li><p>Gazebo simulation environment included</p></li>
 </ul>
 </section>
@@ -293,10 +293,10 @@ Content on this topic
 <h2>System Architecture<a class="headerlink" href="#system-architecture" title="Link to this heading"></a></h2>
 <p>The AD-R1M platform consists of the following major subsystems:</p>
 <ul class="simple">
-<li><p><strong>Processing Unit</strong>: Raspberry Pi 5 (base) or NVIDIA Jetson AGX Orin (advanced)</p></li>
+<li><p><strong>Processing Unit</strong>: Raspberry Pi 5 (base) or NVIDIA® Jetson™ AGX Orin (advanced)</p></li>
 <li><p><strong>Motion Control</strong>: Dual ADRD3161 motor driver boards with CAN interface</p></li>
 <li><p><strong>Power Management</strong>: ADRD5161 BMS board (3S or 12S battery variants)</p></li>
-<li><p><strong>Sensors</strong>: ADIS16470 IMU, ADTF3175D ToF camera, optional Intel RealSense</p></li>
+<li><p><strong>Sensors</strong>: ADIS16470 IMU, ADTF3175D ToF camera, optional Intel® RealSense™</p></li>
 <li><p><strong>Connectivity</strong>: CAN bus, USB, Ethernet, Wi-Fi, CRSF radio</p></li>
 </ul>
 </section>
