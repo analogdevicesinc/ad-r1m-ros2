@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="This document semi-formally explains the versioning scheme and process used for the components and resulting binaries of the ad_r1m_ros2 repo. Extra care is needed because this one repo generates multiple kinds of packages, with slightly diverging versioning conventions. This has been designed on a best-effort basis SHOULD be revised if deemed unsuitable, to eliminate any need to bypass it." name="description" />
+
+    <title>Versioning and release &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=d3f78147" />
+    <script async="async" src="../_static/app.umd.js?v=26d0298f"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="AD-R1M software system architecture" href="software-system-architecture.html" />
+   
+  
+  
+  
+  <meta name="repository" content="ad-r1m-ros2">
+  <meta name="version" content="14/merge">
+  
+    <meta name="page_source_suffix" content=".rst">
+  
+  
+  
+
+
+<style>
+  body {
+    
+  }
+
+  body.dark {
+    
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body:not(.light) {
+      
+    }
+  }
+</style>
+  </head>
+  
+    <body>
+  
+  <input type="checkbox" id="input-show-toc">
+  <input type="checkbox" id="input-show-localtoc">
+  <input type="checkbox" id="input-show-repotoc">
+
+  
+  <div class="search-area">
+    <form action="" method="get">
+      <input type="text" name="q" aria-labelledby="search-documentation" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" role="search" placeholder="Search"/>
+      <button class="icon"></button>
+    </form>
+  </div>
+  
+
+  <header>
+    <div id="left">
+      <label id="show-sidebar" class="icon" for="input-show-toc" title="Show/hide index"></label>
+    </div>
+    <div id="right">
+      <span>
+        <a id="logo-org" href="https://analog.com" aria-label="Analog Devices Inc. landing page"></a>
+        <div class="vertical-divider"></div>
+        
+        <label id="show-repotoc" for="input-show-repotoc" title="Show/hide docs">Docs</label>
+        
+        <a id="logo" href="../index.html">
+          <div>AD-R1M ROS2</div>
+        </a>
+      </span>
+      <span class="reverse">
+        <label id="show-localtoc" class="icon" for="input-show-localtoc" title="Show/hide contents"></label>
+      </span>
+    </div>
+  </header>
+
+
+  <div class="repotoc-tree overlay">
+    <root>
+  <a href="../index.html" class="current">AD-R1M ROS2</a>
+</root>
+
+  </div>
+    <div class="localtoc">
+      <div class="tocwrapper">
+        <div class="header localtoc-header">
+          <a id="scroll-up" href="#top-anchor" title="Back to top"></a>
+        </div>
+        <nav>
+          <ul>
+<li><a class="reference internal" href="#">Versioning and release</a><ul>
+<li><a class="reference internal" href="#kinds-of-deliverables">Kinds of deliverables</a></li>
+<li><a class="reference internal" href="#version-increment-process">Version increment process</a></li>
+</ul>
+</li>
+</ul>
+
+        </nav>
+      </div>
+    </div>
+
+  
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+    <a id="no-logo" href="../index.html">
+      AD-R1M Robot Platform
+    </a><input id="input-switch-toc" type="checkbox">
+<label id="show-repotoc" for="input-switch-toc">
+All content
+</label>
+<label id="show-toc" for="input-switch-toc">
+Content on this topic
+</label>
+<div class="repotoc-tree">
+  <root>
+  <a href="../index.html" class="current">AD-R1M ROS2</a>
+</root>
+
+</div>
+<div class="toc-tree">
+  <ul class="current">
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-1" id="toctree-collapse-1"/><div class="collapse"><a class="reference internal" href="../tutorial/index.html">Tutorials</a><label for="toctree-collapse-1"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/getting-started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/system-setup.html">System setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../software-guide.html">Software guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/manage-configurations.html">Manage runtime configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/ros2-writing-your-own-nodes.html">Write your own ROS 2 nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/ros2-examples.html">AD-R1M ROS2 Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/ros2-getting-started.html">AD-R1M ROS 2 Getting Started</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2" id="toctree-collapse-2"/><div class="collapse"><a class="reference internal" href="../how-to/index.html">How-to guides</a><label for="toctree-collapse-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-1" id="toctree-collapse-2-1"/><div class="collapse"><a class="reference internal" href="../how-to/build-from-scratch/index.html">Build an AD-R1M from scratch</a><label for="toctree-collapse-2-1"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/build-from-scratch/assemble-hardware.html">1. Assemble the hardware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/build-from-scratch/setup-rpi.html">2. Set up the internal computer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2"/><div class="collapse"><a class="reference internal" href="../how-to/jetson/index.html">Set up NVIDIA Jetson AGX Orin</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/agx-orin-setup.html">1) Linux installation on Jetson AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/setup-req-pkg-agx-orin.html">2) Setup required packages on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/setup-isaac-ros-agx-orin.html">3) Setup Isaac ROS on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/setup-isaac-ros-vslam.html">4) Setup Isaac ROS Visual SLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/vslam-setup-and-usage.html">5) VSLAM and RealSense setup and usage on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and Jetson AGX Orin: hardware setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-cuvslam-setup.html">7) AD-R1M and cuVSLAM setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA cuVSLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/map-building-for-nav2.html">9) Map building for NAV2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-realsense-gazebo.html">10) AD-R1M Gazebo simulation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/use-cases.html">AD-R1M use-cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-3" id="toctree-collapse-3"/><div class="collapse"><a class="reference internal" href="../reference/index.html">Reference</a><label for="toctree-collapse-3"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/specs.html">AD-R1M Specifications</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-4" id="toctree-collapse-4" checked=""/><div class="collapse"><a class="reference internal" href="index.html">Explanation</a><label for="toctree-collapse-4"><div class="icon"></div></label></div><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ros2-architecture.html">AD-R1M ROS2 Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-system-architecture.html">AD-R1M software system architecture</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Versioning and release</a></li>
+</ul>
+</li>
+</ul>
+
+
+</div>
+        </div>
+      </div>
+
+  <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper" id="top-anchor">
+          <div class="body-header">
+  <nav class="breadcrumb"><ol><li><a href="index.html">Explanation</a></li></ol></nav>
+</div>
+          <div class="body" role="main">
+            
+  <section id="versioning-and-release">
+<h1>Versioning and release<a class="headerlink" href="#versioning-and-release" title="Link to this heading"></a></h1>
+<p>This document semi-formally explains the versioning scheme and process used for the components and resulting binaries of the <code class="docutils literal notranslate"><span class="pre">ad_r1m_ros2</span></code> repo. Extra care is needed because this one repo generates multiple kinds of packages, with slightly diverging versioning conventions. This has been designed on a best-effort basis SHOULD be revised if deemed unsuitable, to eliminate any need to bypass it.</p>
+<p>All components’ versions MUST be kept in sync at each release, even if some components don’t change between versions.</p>
+<p>Release <code class="docutils literal notranslate"><span class="pre">X.Y.Z(-W)</span></code> MUST directly map to git tag <code class="docutils literal notranslate"><span class="pre">X.Y.Z(-W)</span></code>, in which all components’ sources MUST reflect version <code class="docutils literal notranslate"><span class="pre">X.Y.Z(-W)</span></code> (optionally truncated to <code class="docutils literal notranslate"><span class="pre">X.Y.Z</span></code> where no suffix is allowed).</p>
+<p>In between releases, CI runs nightly builds, useful for development and evaluation. One of the main challenges this document addresses is sanely representing the intermediate version state in nightly builds without clashing with main releases. Disambiguating between intermediate versions SHOULD be automated based on the git history (see <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">describe</span></code>). Some components types can’t represent intermediate versions properly.</p>
+<section id="kinds-of-deliverables">
+<h2>Kinds of deliverables<a class="headerlink" href="#kinds-of-deliverables" title="Link to this heading"></a></h2>
+<p>This repo has sources that result in multiple kinds of deliverables:</p>
+<div class="table-wrapper docutils container" id="id1">
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Version schema by deliverable kind</span><a class="headerlink" href="#id1" title="Link to this table"></a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Deliverable kind; released as</p></th>
+<th class="head"><p>Sources location</p></th>
+<th class="head"><p>Version for release 1.2.3</p></th>
+<th class="head"><p>Version for nightly after 1.2.3</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ROS packages; not packaged individually</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ad_r1m*</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.2.3</span></code></p>
+<p>(<a class="icon link reference external" href="https://www.ros.org/reps/rep-0127.html#version" target="_blank">REP 127</a>)</p>
+</td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.2.3</span></code>
+(silently stale)</p></td>
+</tr>
+<tr class="row-odd"><td><p>HTML Documentation; GitHub pages deployment</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ad_r1m/doc</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.2.3</span></code></p></td>
+<td><p>Git ref name (e.g. <code class="docutils literal notranslate"><span class="pre">main</span></code>)</p></td>
+</tr>
+<tr class="row-even"><td><p>System configuration and user tools; Debian packages</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">system</span></code> + <code class="docutils literal notranslate"><span class="pre">packaging/debian</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.2.3-1</span></code></p>
+<p>(<a class="icon link reference external" href="https://www.debian.org/doc/debian-policy/ch-controlfields.html#version" target="_blank">Debian Policy 5.6.12 Version</a>)</p>
+</td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.2.4~git{date}{timeHHMM}.{hash}-1</span></code></p>
+<p>(<a class="icon link reference external" href="https://wiki.debian.org/Versioning" target="_blank">Debian Versioning in Nightly and Prerelease Binaries</a> with an extra HHMM timestamp)</p>
+</td>
+</tr>
+<tr class="row-odd"><td><p>Runtime; Docker images</p></td>
+<td><p>ROS packages + <code class="docutils literal notranslate"><span class="pre">docker</span></code></p></td>
+<td><p>tags <code class="docutils literal notranslate"><span class="pre">1.2.3</span></code>, <code class="docutils literal notranslate"><span class="pre">1.2</span></code>, <code class="docutils literal notranslate"><span class="pre">1</span></code></p></td>
+<td><p>tags <code class="docutils literal notranslate"><span class="pre">1.2.3-next</span></code>, <code class="docutils literal notranslate"><span class="pre">1.2-next</span></code>, <code class="docutils literal notranslate"><span class="pre">1-next</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="version-increment-process">
+<h2>Version increment process<a class="headerlink" href="#version-increment-process" title="Link to this heading"></a></h2>
+<p>Implementing a single source of truth repo-wide would require at least some form of a templating system (at the very least for the ROS package.xml files) which we deem counterproductive. Therefore, the diff for a version increment touches a number of files, while making sure to keep them all in sync.</p>
+<p>For the following examples, say we are incrementing from version 1.2.3 to 1.2.4 on 2026-12-25.</p>
+<p><strong>Increment ROS versions:</strong></p>
+<ol class="arabic">
+<li><p>In all ROS <code class="docutils literal notranslate"><span class="pre">package.xml</span></code> files, increment <code class="docutils literal notranslate"><span class="pre">&lt;version&gt;</span></code> tag to 1.2.4</p></li>
+<li><p>In all ROS <code class="docutils literal notranslate"><span class="pre">CHANGELOG.rst</span></code> files, rename the “Forthcoming” header to “1.2.4 (2026-12-25)” and prepend an empty section with a new “Forthcoming” header, e.g.:</p>
+<div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="w"> </span> Forthcoming
+<span class="w"> </span> -----------
+<span class="gi">+</span>
+<span class="gi">+ 1.2.3 (2026-12-25)</span>
+<span class="gi">+ ------------------</span>
+
+<span class="w"> </span> * Ho Ho Ho
+<span class="w"> </span> * Happy Holidays!
+</pre></div>
+</div>
+</li>
+</ol>
+<p><strong>Increment Debian package version:</strong> In <code class="docutils literal notranslate"><span class="pre">packaging/debian</span></code>, use <code class="docutils literal notranslate"><span class="pre">dch</span></code> to automatically edit the changelog file, e.g.:</p>
+<div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/ad-r1m-ros2/$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>packaging
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/ad-r1m-ros2/packaging$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">DEBFULLNAME</span><span class="o">=</span><span class="s2">&quot;Santa Claus&quot;</span>
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/ad-r1m-ros2/packaging$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">DEBEMAIL</span><span class="o">=</span><span class="s2">&quot;santa.claus@lapland.com&quot;</span>
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/ad-r1m-ros2/packaging$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>dch<span class="w"> </span>--release<span class="w"> </span>--distro<span class="w"> </span>trixie
+</pre></div>
+</div>
+<div class="clear-left"></div></div></div><p><strong>Commit, tag, push new version:</strong></p>
+<div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/ad-r1m-ros2/$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>add<span class="w"> </span>.
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/ad-r1m-ros2/$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>commit<span class="w"> </span>-sm<span class="w"> </span><span class="s1">&#39;Release 1.2.3&#39;</span>
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/ad-r1m-ros2/$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>tag<span class="w"> </span><span class="m">1</span>.2.3
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/ad-r1m-ros2/$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>push
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/ad-r1m-ros2/$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>push<span class="w"> </span>--tags
+</pre></div>
+</div>
+<div class="clear-left"></div></div></div></section>
+</section>
+
+
+          </div>
+              <div class="related">
+                &nbsp;
+    <a href="software-system-architecture.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev">AD-R1M software system architecture</a>
+    <div></div>
+              </div>
+          
+        </div>
+      </div>
+  </div>
+
+  <label id="cancel-area-show-toc" for="input-show-toc"></label>
+  <label id="cancel-area-show-localtoc" for="input-show-localtoc"></label>
+    <footer>
+      &#169;2026, Analog Devices, Inc.
+      
+      |
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+      &amp; <a href="https://github.com/analogdevicesinc/doctools">Doctools</a>
+      
+    </footer>
+  </body>
+</html>

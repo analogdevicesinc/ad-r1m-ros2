@@ -1,0 +1,95 @@
+Versioning and release
+======================
+
+This document semi-formally explains the versioning scheme and process used for the components and resulting binaries of the ``ad_r1m_ros2`` repo. Extra care is needed because this one repo generates multiple kinds of packages, with slightly diverging versioning conventions. This has been designed on a best-effort basis SHOULD be revised if deemed unsuitable, to eliminate any need to bypass it.
+
+All components' versions MUST be kept in sync at each release, even if some components don't change between versions.
+
+Release ``X.Y.Z(-W)`` MUST directly map to git tag ``X.Y.Z(-W)``, in which all components' sources MUST reflect version ``X.Y.Z(-W)`` (optionally truncated to ``X.Y.Z`` where no suffix is allowed).
+
+In between releases, CI runs nightly builds, useful for development and evaluation. One of the main challenges this document addresses is sanely representing the intermediate version state in nightly builds without clashing with main releases. Disambiguating between intermediate versions SHOULD be automated based on the git history (see ``git describe``). Some components types can't represent intermediate versions properly.
+
+Kinds of deliverables
+---------------------
+
+This repo has sources that result in multiple kinds of deliverables:
+
+.. list-table:: Version schema by deliverable kind
+    :header-rows: 1
+    
+    * - Deliverable kind; released as
+      - Sources location
+      - Version for release 1.2.3
+      - Version for nightly after 1.2.3
+    
+    * - ROS packages; not packaged individually
+      - ``ad_r1m*``
+      - ``1.2.3``
+
+        (`REP 127 <https://www.ros.org/reps/rep-0127.html#version>`__)
+      - ``1.2.3``
+        (silently stale)
+
+    * - HTML Documentation; GitHub pages deployment
+      - ``ad_r1m/doc``
+      - ``1.2.3``
+      - Git ref name (e.g. ``main``)
+    
+    * - System configuration and user tools; Debian packages
+      - ``system`` + ``packaging/debian``
+      - ``1.2.3-1``
+
+        (`Debian Policy 5.6.12 Version <https://www.debian.org/doc/debian-policy/ch-controlfields.html#version>`__)
+      - ``1.2.4~git{date}{timeHHMM}.{hash}-1``
+      
+        (`Debian Versioning in Nightly and Prerelease Binaries <https://wiki.debian.org/Versioning>`__ with an extra HHMM timestamp)
+
+    * - Runtime; Docker images
+      - ROS packages + ``docker``
+      - tags ``1.2.3``, ``1.2``, ``1``
+      - tags ``1.2.3-next``, ``1.2-next``, ``1-next``
+
+Version increment process
+-------------------------
+
+Implementing a single source of truth repo-wide would require at least some form of a templating system (at the very least for the ROS package.xml files) which we deem counterproductive. Therefore, the diff for a version increment touches a number of files, while making sure to keep them all in sync.
+
+For the following examples, say we are incrementing from version 1.2.3 to 1.2.4 on 2026-12-25.
+
+**Increment ROS versions:**
+
+#. In all ROS ``package.xml`` files, increment ``<version>`` tag to 1.2.4
+#. In all ROS ``CHANGELOG.rst`` files, rename the "Forthcoming" header to "1.2.4 (2026-12-25)" and prepend an empty section with a new "Forthcoming" header, e.g.:
+
+   .. code-block:: diff
+
+        Forthcoming
+        -----------
+      +
+      + 1.2.3 (2026-12-25)
+      + ------------------
+      
+        * Ho Ho Ho
+        * Happy Holidays!
+
+**Increment Debian package version:** In ``packaging/debian``, use ``dch`` to automatically edit the changelog file, e.g.:
+
+.. shell::
+
+    ~/ad-r1m-ros2/
+    $ cd packaging
+    $ export DEBFULLNAME="Santa Claus"
+    $ export DEBEMAIL="santa.claus@lapland.com"
+    $ dch --release --distro trixie
+
+**Commit, tag, push new version:**
+
+.. shell::
+
+   ~/ad-r1m-ros2/
+   $ git add .
+   $ git commit -sm 'Release 1.2.3'
+   $ git tag 1.2.3
+   $ git push
+   $ git push --tags
+
