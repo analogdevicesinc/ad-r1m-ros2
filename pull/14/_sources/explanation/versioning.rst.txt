@@ -66,11 +66,16 @@ For the following examples, say we are incrementing from version 1.2.3 to 1.2.4 
         Forthcoming
         -----------
       +
-      + 1.2.3 (2026-12-25)
+      + 1.2.4 (2026-12-25)
       + ------------------
       
         * Ho Ho Ho
         * Happy Holidays!
+
+        1.2.3 (2020-05-06)
+        ------------------
+
+        ...
 
 **Increment Debian package version:** In ``packaging/debian``, use ``dch`` to automatically edit the changelog file, e.g.:
 
