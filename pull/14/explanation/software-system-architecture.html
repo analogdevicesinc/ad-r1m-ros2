@@ -368,7 +368,7 @@ window.addEventListener("load", load);
 window.runMermaid = runMermaid;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Versioning and release" href="versioning.html" />
+    <link rel="next" title="Software release methodology" href="release.html" />
     <link rel="prev" title="AD-R1M ROS2 Architecture" href="ros2-architecture.html" />
    
   
@@ -525,7 +525,7 @@ Content on this topic
 <li class="toctree-l1 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-4" id="toctree-collapse-4" checked=""/><div class="collapse"><a class="reference internal" href="index.html">Explanation</a><label for="toctree-collapse-4"><div class="icon"></div></label></div><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="ros2-architecture.html">AD-R1M ROS2 Architecture</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">AD-R1M software system architecture</a></li>
-<li class="toctree-l2"><a class="reference internal" href="versioning.html">Versioning and release</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release.html">Software release methodology</a></li>
 </ul>
 </li>
 </ul>
@@ -593,12 +593,11 @@ distribution with built-in support for a large number of Analog Devices products
 └── ...
 </pre></div>
 </div>
-<p>These features are combined into debian packages by the packaging logic defined in <code class="docutils literal notranslate"><span class="pre">packaging/debian/</span></code>. For example, the <code class="docutils literal notranslate"><span class="pre">ad-r1m-system-rpi5</span></code> package, which installs all system-level files for the main AD-R1M variant, is a combination of the <code class="docutils literal notranslate"><span class="pre">common</span></code>, <code class="docutils literal notranslate"><span class="pre">rpi5</span></code> and <code class="docutils literal notranslate"><span class="pre">adrd3161</span></code> system features. These compositions are defined in <code class="docutils literal notranslate"><span class="pre">packaging/debian/&lt;package&gt;.install</span></code>, e.g.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># packaging/debian/ad-r1m-system-rpi5.install</span>
-<span class="n">VERSION</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">ad</span><span class="o">-</span><span class="n">r1m</span><span class="o">/</span>
-<span class="n">system</span><span class="o">/</span><span class="n">common</span><span class="o">/*</span> <span class="o">/</span>
-<span class="n">system</span><span class="o">/</span><span class="n">rpi5</span><span class="o">/*</span> <span class="o">/</span>
-<span class="n">system</span><span class="o">/</span><span class="n">adrd3161</span><span class="o">/*</span> <span class="o">/</span>
+<p>These features are combined into debian packages by the packaging logic defined in <code class="docutils literal notranslate"><span class="pre">system/debian/</span></code>. For example, the <code class="docutils literal notranslate"><span class="pre">ad-r1m-system-rpi5</span></code> package, which installs all system-level files for the main AD-R1M variant, is a combination of the <code class="docutils literal notranslate"><span class="pre">common</span></code>, <code class="docutils literal notranslate"><span class="pre">rpi5</span></code> and <code class="docutils literal notranslate"><span class="pre">adrd3161</span></code> system features. These compositions are defined in <code class="docutils literal notranslate"><span class="pre">system/debian/&lt;package&gt;.install</span></code>, e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># system/debian/ad-r1m-system-rpi5.install</span>
+<span class="n">common</span><span class="o">/*</span> <span class="o">/</span>
+<span class="n">rpi5</span><span class="o">/*</span> <span class="o">/</span>
+<span class="n">adrd3161</span><span class="o">/*</span> <span class="o">/</span>
 </pre></div>
 </div>
 <section id="bringup-at-boot">
@@ -793,7 +792,7 @@ end
               <div class="related">
                 &nbsp;
     <a href="ros2-architecture.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev">AD-R1M ROS2 Architecture</a>
-    <a href="versioning.html" title="Next document (Alt+Shift+RightArrow)" class="next">Versioning and release</a>
+    <a href="release.html" title="Next document (Alt+Shift+RightArrow)" class="next">Software release methodology</a>
               </div>
           
         </div>

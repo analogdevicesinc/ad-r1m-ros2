@@ -55,15 +55,14 @@ Each of these gets a folder in ``system/`` which contains a rootfs "overlay" pro
    └── ...
 
 
-These features are combined into debian packages by the packaging logic defined in ``packaging/debian/``. For example, the ``ad-r1m-system-rpi5`` package, which installs all system-level files for the main AD-R1M variant, is a combination of the ``common``, ``rpi5`` and ``adrd3161`` system features. These compositions are defined in ``packaging/debian/<package>.install``, e.g.:
+These features are combined into debian packages by the packaging logic defined in ``system/debian/``. For example, the ``ad-r1m-system-rpi5`` package, which installs all system-level files for the main AD-R1M variant, is a combination of the ``common``, ``rpi5`` and ``adrd3161`` system features. These compositions are defined in ``system/debian/<package>.install``, e.g.:
 
 .. code-block::
 
-    # packaging/debian/ad-r1m-system-rpi5.install
-    VERSION /usr/lib/ad-r1m/
-    system/common/* /
-    system/rpi5/* /
-    system/adrd3161/* /
+    # system/debian/ad-r1m-system-rpi5.install
+    common/* /
+    rpi5/* /
+    adrd3161/* /
 
 Bringup at boot
 ^^^^^^^^^^^^^^^
