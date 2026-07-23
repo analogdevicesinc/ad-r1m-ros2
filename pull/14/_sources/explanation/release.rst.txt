@@ -33,7 +33,7 @@ Components within the ``ad-r1m-ros2`` repo fall into the following categories of
      * Cloudsmith ADI repo
 
    - * Host system configuration package
-     * ``system``
+     * ``system``, ``packaging``
      * Debhelper
      * Debian packages
      * Cloudsmith ADI repo
@@ -42,6 +42,7 @@ Versioning
 ----------
 
 * This project uses semantic versioning.
+
 * Release versions SHOULD be either final "general availability" releases (``X.Y.Z``) or release candidates (``X.Y.Z-rcW``).
 
   * Not all component kinds can express the latter form. For example, the ROS 2 package.xml spec (`REP 127 <https://www.ros.org/reps/rep-0127.html#version>`_) strictly specifies numeric-only versions. In such cases, truncate the version accordingly.
@@ -119,8 +120,7 @@ Versioning scheme
      
        (Assuming ``1.2.4`` entry in changelog)
      * ``1.2.4-rc2~git20261225.2359.a1b2c3d-1``
-       
-       
+
        (Assuming ``1.2.4-rc2`` entry in changelog)
 
 Software Bill Of Materials (SBOMs)
@@ -192,7 +192,7 @@ The following example describes the steps for releasing version 1.2.4 on 2025-12
    .. shell::
  
        ~/ad-r1m-ros2/
-       $ cd system
+       $ cd packaging
        $ export DEBFULLNAME="Santa Claus"
        $ export DEBEMAIL="santa.claus@example.com"
        $ dch --newversion 1.2.4-1
