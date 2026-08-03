@@ -26,6 +26,7 @@ def launch_setup(context, *args, **kwargs):
         output='screen',
         parameters=[{
             'robot_description': robot_description,
+            'use_sim_time': True,
         }]
     )
 
