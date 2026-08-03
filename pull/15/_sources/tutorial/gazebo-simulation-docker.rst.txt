@@ -84,7 +84,7 @@ Requires Cloudsmith credentials. Log in first:
 .. code-block:: bash
 
    docker login docker.cloudsmith.io
-   docker pull docker.cloudsmith.io/analog-devices/ad-r1m-ros2/ad-r1m:sim-humble
+   docker pull docker.cloudsmith.io/adi/adrd-common/ad-r1m:sim-humble-nightly
 
 **Option B: Build locally**
 
@@ -121,7 +121,7 @@ Run the simulation
 .. code-block:: bash
 
    # If using Cloudsmith image:
-   IMAGE=docker.cloudsmith.io/analog-devices/ad-r1m-ros2/ad-r1m:sim-humble
+   IMAGE=docker.cloudsmith.io/adi/adrd-common/ad-r1m:sim-humble-nightly
    # If built locally with xterm:
    IMAGE=ad-r1m:sim-humble
 
