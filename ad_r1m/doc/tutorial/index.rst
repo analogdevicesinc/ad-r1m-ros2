@@ -13,3 +13,4 @@ Tutorials
    Write your own ROS 2 nodes <ros2-writing-your-own-nodes>
    ros2-examples
    ros2-getting-started
+   Gazebo simulation with Docker <gazebo-simulation-docker>
