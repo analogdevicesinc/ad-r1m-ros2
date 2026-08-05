@@ -12,7 +12,7 @@ Panels:
         - /Map2/Update Topic1
         - /Image1/Topic1
       Splitter Ratio: 0.5027777552604675
-    Tree Height: 865
+    Tree Height: 315
   - Class: rviz_common/Selection
     Name: Selection
   - Class: rviz_common/Tool Properties
@@ -508,9 +508,29 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Scale: 267.49932861328125
+      Scale: 120.67578887939453
       Target Frame: <Fixed Frame>
       Value: TopDownOrtho (rviz_default_plugins)
       X: 0.3507169485092163
       Y: -0.25512242317199707
     Saved: ~
+Window Geometry:
+  Displays:
+    collapsed: false
+  Height: 999
+  Hide Left Dock: false
+  Hide Right Dock: true
+  Image:
+    collapsed: false
+  Navigation 2:
+    collapsed: false
+  QMainWindow State: 000000ff00000000fd00000002000000000000015600000391fc0200000005fb000000100044006900730070006c006100790073010000003b00000176000000c700fffffffb0000000a0049006d00610067006501000001b7000000ec0000002800fffffffb0000001200530065006c0065006300740069006f006e00000001380000005d0000005c00fffffffb0000001e0054006f006f006c002000500072006f00700065007200740069006500730000000156000000690000005c00fffffffb00000018004e0061007600690067006100740069006f006e0020003201000002a9000001230000012300ffffff000000010000019b00000391fc0200000001fb0000000a00560069006500770073000000003b00000391000000a000ffffff000006180000039100000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Selection:
+    collapsed: false
+  Tool Properties:
+    collapsed: false
+  Views:
+    collapsed: true
+  Width: 1908
+  X: -32
+  Y: -32
