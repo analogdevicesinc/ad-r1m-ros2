@@ -48,8 +48,8 @@ amcl:
       x: 0.0
       y: 0.0
       z: 0.0
-      #yaw: 0.0
-      yaw: -1.5708    
+      yaw: 0.0
+      #yaw: -1.5708
 
 #-----------------------------------------------------------------------------
 # Map server parameters
@@ -57,7 +57,7 @@ amcl:
 map_server:
   ros__parameters:
     use_sim_time: False
-    yaml_filename: "/ros_data/maps/map.yaml"
+    yaml_filename: "/ros_data/maps/world.yaml"
 
 
 #-----------------------------------------------------------------------------

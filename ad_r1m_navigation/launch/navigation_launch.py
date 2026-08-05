@@ -12,12 +12,19 @@ def launch_setup(context, *args, **kwargs):
     namespace = LaunchConfiguration('namespace')
     use_sim_time = LaunchConfiguration('use_sim_time')
     autostart = LaunchConfiguration('autostart')
-    params_file = LaunchConfiguration('params_file')
     use_composition = LaunchConfiguration('use_composition')
     container_name = LaunchConfiguration('container_name')
     container_name_full = (namespace, '/', container_name)
     use_respawn = LaunchConfiguration('use_respawn')
     log_level = LaunchConfiguration('log_level')
+    params_file_arg = LaunchConfiguration('params_file').perform(context)
+
+    if params_file_arg:
+        params_file = params_file_arg
+    elif use_sim_time.perform(context).lower() == 'true':
+        params_file = PathJoinSubstitution([FindPackageShare('ad_r1m_navigation'), 'config', 'nav2_params_sim.yaml'])
+    else:
+        params_file = PathJoinSubstitution([FindPackageShare('ad_r1m_navigation'), 'config', 'navigation_params.yaml'])
 
     lifecycle_nodes = ['controller_server',
                        # 'smoother_server',
@@ -49,8 +56,10 @@ def launch_setup(context, *args, **kwargs):
     else:
         remappings.append(('map', '/map'))
 
+    
+
     configured_params = RewrittenYaml(
-        source_file=params_file,
+        source_file=params_file,  # type: ignore[arg-type]
         root_key=namespace,
         param_rewrites=param_substitutions,
         convert_types=True
@@ -227,9 +236,8 @@ def generate_launch_description():
 
     declare_params_file_cmd = DeclareLaunchArgument(
         'params_file',
-        default_value=PathJoinSubstitution(
-            [ad_r1m_navigation, 'config', 'navigation_params.yaml']),
-        description='Full path to the ROS2 parameters file to use for all launched nodes')
+        default_value='',
+        description='Full path to the ROS2 parameters file to use for all launched nodes (auto-selected based on use_sim_time if not set)')
 
     declare_autostart_cmd = DeclareLaunchArgument(
         'autostart', default_value='true',
