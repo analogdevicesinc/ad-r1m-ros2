@@ -19,14 +19,14 @@
         <collision>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <box size="0.02 0.065 0.07"/>
+                <box size="0.065 0.075 0.05"/>
             </geometry>
         </collision>
 
         <visual>
             <origin xyz="0 0 0" rpy="0 0 0"/>
             <geometry>
-                <box size="0.02 0.065 0.07"/>
+                <box size="0.065 0.075 0.05"/>
             </geometry>
             <material name="black"/>
         </visual>
