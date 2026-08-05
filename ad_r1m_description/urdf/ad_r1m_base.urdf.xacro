@@ -8,12 +8,13 @@
 
 <xacro:macro name="ad_r1m_base" params="prefix">
 
-    <xacro:property name="chassis_length" value="0.585"/>
+    <xacro:property name="chassis_length" value="0.59"/>
     <xacro:property name="chassis_width" value="0.36"/>
-    <xacro:property name="chassis_height" value="0.15"/>
+    <xacro:property name="chassis_height" value="0.12"/>
     <xacro:property name="base_width" value="0.22"/>
     <xacro:property name="wheel_separation" value="0.29"/>
-    <xacro:property name="chassis_zoff" value="0.08"/>
+    <xacro:property name="chassis_clearance_ground" value="0.010"/>
+    <xacro:property name="chassis_zoff" value="${(chassis_clearance_ground + chassis_height/2) / 2}"/>
     <xacro:property name="chassis_mass" value="1.0"/>
 
     <xacro:property name="wheel_radius" value="0.05"/>
@@ -22,15 +23,21 @@
 
     <xacro:property name="caster_wheel_radius" value="0.025"/>
     <xacro:property name="caster_wheel_mass" value="0.01"/>
-    <xacro:property name="caster_wheel_zoff" value="${caster_wheel_radius + 0.005}"/>
+    <xacro:property name="caster_wheel_zoff" value="${caster_wheel_radius}"/>
 
-    <material name="cyan"><color rgba="0 1.0 1.0 1.0"/></material>
-    <material name="gray"><color rgba="0.5 0.5 0.5 1.0"/></material>
-    <material name="white"><color rgba="1 1 1 1"/></material>
-    <material name="orange"><color rgba="1 0.3 0.1 1"/></material>
-    <material name="blue"><color rgba="0.2 0.2 1 1"/></material>
-    <material name="black"><color rgba="0 0 0 1"/></material>
-    <material name="red"><color rgba="1 0 0 1"/></material>
+    <xacro:property name="bumper_thickness" value="0.005"/>
+    <xacro:property name="bumper_length" value="0.05"/>
+    <xacro:property name="bumper_height" value="${chassis_height}"/>
+
+    <xacro:property name="camera_length" value="0.065"/>
+    <xacro:property name="camera_height" value="0.05"/>
+    <xacro:property name="camera_offset_above_chassis" value="0.025"/>
+    <xacro:property name="camera_overhang" value="0.013"/>
+
+    <material name="white"><color rgba="1.0 1.0 1.0 1.0"/></material>
+    <material name="adi_blue"><color rgba="0.0 0.32 0.65 1.0"/></material>
+    <material name="gray"><color rgba="0.65 0.65 0.65 1.0"/></material>
+    <material name="black"><color rgba="0.1 0.1 0.1 1.0"/></material>
 
     <!-- BASE LINK -->
 
@@ -43,11 +50,11 @@
     </xacro:imu_adis16470>
 
     <xacro:tof_adtf3175d prefix="${prefix}" parent="${prefix}base_link">
-        <origin xyz="${chassis_length / 2}  0 0.055" rpy="0 0 0" />
+        <origin xyz="${chassis_length/2 + camera_overhang - camera_length/2} 0 ${chassis_clearance_ground + camera_offset_above_chassis + camera_height/2}" rpy="0 0 0" />
     </xacro:tof_adtf3175d>
 
     <xacro:lidar prefix="${prefix}" parent="${prefix}base_link">
-        <origin xyz="${chassis_length/2} 0 0.055" rpy="0 0 0" /> 
+        <origin xyz="${chassis_length/2 + camera_overhang - camera_length/2} 0 ${chassis_clearance_ground + camera_offset_above_chassis + camera_height/2}" rpy="0 0 0" />
     </xacro:lidar>
 
 
@@ -75,7 +82,7 @@
             <geometry>
                 <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
             </geometry>
-            <material name="cyan"/>
+            <material name="white"/>
         </visual>
         <collision>
             <origin xyz="0 0 ${chassis_zoff}"/>
@@ -89,8 +96,56 @@
     </link>
 
     <gazebo reference="${prefix}chassis">
-        <material>Gazebo/Gray</material>
+        <material>Gazebo/White</material>
     </gazebo>
+
+    <!-- CORNER BUMPERS (L-shaped: lateral + front/rear sections) -->
+    <xacro:macro name="corner_bumper" params="name x_reflect y_reflect">
+        <!-- Lateral section (along Y, on the side) -->
+        <joint name="${prefix}${name}_bumper_lat_joint" type="fixed">
+            <parent link="${prefix}chassis"/>
+            <child link="${prefix}${name}_bumper_lat"/>
+            <origin xyz="${x_reflect*(chassis_length/2 - bumper_length/2)} ${y_reflect*(chassis_width/2 + bumper_thickness/2)} ${chassis_zoff}" rpy="0 0 0"/>
+        </joint>
+
+        <link name="${prefix}${name}_bumper_lat">
+            <visual>
+                <geometry>
+                    <box size="${bumper_length} ${bumper_thickness} ${bumper_height}"/>
+                </geometry>
+                <material name="adi_blue"/>
+            </visual>
+        </link>
+
+        <gazebo reference="${prefix}${name}_bumper_lat">
+            <material>Gazebo/Blue</material>
+        </gazebo>
+
+        <!-- Front/rear section (along X, on the front/back) -->
+        <joint name="${prefix}${name}_bumper_front_joint" type="fixed">
+            <parent link="${prefix}chassis"/>
+            <child link="${prefix}${name}_bumper_front"/>
+            <origin xyz="${x_reflect*(chassis_length/2 + bumper_thickness/2)} ${y_reflect*(chassis_width/2 - bumper_length/2 + bumper_thickness/2)} ${chassis_zoff}" rpy="0 0 0"/>
+        </joint>
+
+        <link name="${prefix}${name}_bumper_front">
+            <visual>
+                <geometry>
+                    <box size="${bumper_thickness} ${bumper_length + bumper_thickness} ${bumper_height}"/>
+                </geometry>
+                <material name="adi_blue"/>
+            </visual>
+        </link>
+
+        <gazebo reference="${prefix}${name}_bumper_front">
+            <material>Gazebo/Blue</material>
+        </gazebo>
+    </xacro:macro>
+
+    <xacro:corner_bumper name="front_left" x_reflect="1" y_reflect="1"/>
+    <xacro:corner_bumper name="front_right" x_reflect="1" y_reflect="-1"/>
+    <xacro:corner_bumper name="rear_left" x_reflect="-1" y_reflect="1"/>
+    <xacro:corner_bumper name="rear_right" x_reflect="-1" y_reflect="-1"/>
 
     <!-- LEFT WHEEL LINK -->
 
@@ -106,7 +161,7 @@
             <geometry>
                 <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
             </geometry>
-            <material name="blue"/>
+            <material name="gray"/>
         </visual>
         <collision>
             <geometry>
@@ -119,7 +174,7 @@
     </link>
 
     <gazebo reference="${prefix}left_wheel">
-        <material>Gazebo/Black</material>
+        <material>Gazebo/Grey</material>
         <mu1>1.5</mu1> <!-- SLIP_FIX was 2.5 -->
         <mu2>1.5</mu2> <!-- SLIP_FIX was 2.5 -->
         <kp>1000000</kp> <!-- SLIP_FIX -->
@@ -142,7 +197,7 @@
             <geometry>
                 <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
             </geometry>
-            <material name="blue"/>
+            <material name="gray"/>
         </visual>
         <collision>
             <geometry>
@@ -155,7 +210,7 @@
     </link>
 
     <gazebo reference="${prefix}right_wheel">
-        <material>Gazebo/Black</material>
+        <material>Gazebo/Grey</material>
         <mu1>1.5</mu1> <!-- SLIP_FIX was 2.5 -->
         <mu2>1.5</mu2> <!-- SLIP_FIX was 2.5 -->
         <kp>1000000</kp> <!-- SLIP_FIX -->
@@ -171,7 +226,7 @@
                 <geometry>
                     <sphere radius="${caster_wheel_radius}"/>
                 </geometry>
-                <material name="cyan"/>
+                <material name="gray"/>
             </visual>
             <collision>
                 <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -191,7 +246,7 @@
         </joint>
 
         <gazebo reference="${prefix}_link">
-            <material>Gazebo/Blue</material>
+            <material>Gazebo/Grey</material>
             <mu1 value="0.001"/>
             <mu2 value="0.001"/>
             <kp>1000000</kp> <!-- SLIP_FIX -->

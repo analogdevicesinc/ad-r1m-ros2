@@ -28,7 +28,9 @@
             <geometry>
                 <box size="0.015 0.01 0.01"/>
             </geometry>
-            <material name="white" />
+            <material name="white">
+                <color rgba="1 1 1 1"/>
+            </material>
         </visual>
     </link>
 
