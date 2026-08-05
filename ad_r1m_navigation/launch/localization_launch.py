@@ -11,8 +11,15 @@ def launch_setup(context, *args, **kwargs):
     map_yaml_file = LaunchConfiguration('map')
     use_sim_time = LaunchConfiguration('use_sim_time')
     autostart = LaunchConfiguration('autostart')
-    params_file = LaunchConfiguration('params_file')
     use_amcl = LaunchConfiguration('amcl').perform(context).lower() == 'true'
+    params_file_arg = LaunchConfiguration('params_file').perform(context)
+
+    if params_file_arg:
+        params_file = params_file_arg
+    elif use_sim_time.perform(context).lower() == 'true':
+        params_file = PathJoinSubstitution([FindPackageShare('ad_r1m_navigation'), 'config', 'nav2_params_sim.yaml'])
+    else:
+        params_file = PathJoinSubstitution([FindPackageShare('ad_r1m_navigation'), 'config', 'navigation_params.yaml'])
 
     lifecycle_nodes = ['map_server']
     if use_amcl:
@@ -33,7 +40,7 @@ def launch_setup(context, *args, **kwargs):
         param_substitutions['amcl.ros__parameters.base_frame_id'] = f'{namespace_str}/base_link'
 
     configured_params = RewrittenYaml(
-        source_file=params_file,
+        source_file=params_file,  # type: ignore[arg-type]
         root_key=namespace,
         param_rewrites=param_substitutions,
         convert_types=True)
@@ -99,9 +106,8 @@ def generate_launch_description():
 
         DeclareLaunchArgument(
             'params_file',
-            default_value=PathJoinSubstitution(
-                [pkg_dir, 'config', 'nav2_params_sim.yaml']),
-            description='Full path to the ROS2 parameters file to use'),
+            default_value='',
+            description='Full path to the ROS2 parameters file to use (auto-selected based on use_sim_time if not set)'),
 
         DeclareLaunchArgument(
             'amcl', default_value='true',

@@ -166,6 +166,6 @@ def generate_launch_description():
         spawn_entity,
         diff_drive_spawner,
         joint_broad_spawner,
-        # robot_localization_node,
+        robot_localization_node,
         # rviz,
     ])
