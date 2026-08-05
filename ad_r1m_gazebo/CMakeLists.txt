@@ -19,7 +19,7 @@ endif()
 
 # Install directories
 install(
-  DIRECTORY config launch urdf worlds
+  DIRECTORY config launch urdf worlds models
   DESTINATION share/${PROJECT_NAME}
 )
  

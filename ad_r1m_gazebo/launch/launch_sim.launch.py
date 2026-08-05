@@ -1,5 +1,7 @@
+import os
+
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, OpaqueFunction
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, OpaqueFunction, SetEnvironmentVariable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Command
 from launch_ros.substitutions import FindPackageShare
@@ -13,6 +15,15 @@ def launch_setup(context, *args, **kwargs):
     namespace = LaunchConfiguration('namespace')
     namespace_str = namespace.perform(context)
     world = LaunchConfiguration('world')
+
+    ad_r1m_gazebo_models = os.path.join(
+        ad_r1m_gazebo.perform(context), 'models')
+    existing_model_path = os.environ.get('GAZEBO_MODEL_PATH', '')
+    gazebo_model_path = SetEnvironmentVariable(
+        'GAZEBO_MODEL_PATH',
+        ad_r1m_gazebo_models + os.pathsep + existing_model_path
+        if existing_model_path else ad_r1m_gazebo_models
+    )
 
     robot_description = Command([
         'xacro ', PathJoinSubstitution([
@@ -64,7 +75,8 @@ def launch_setup(context, *args, **kwargs):
 
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                         arguments=['-topic', robot_description_topic,
-                                   '-entity', 'ad_r1m'],
+                                   '-entity', 'ad_r1m',
+                                   '-timeout', '120'],
                         output='screen')
     print('Gazebo has started')
 
@@ -110,6 +122,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     return [
+        gazebo_model_path,
         rsp,
         twist_mux,
         teleop_twist_keyboard,
