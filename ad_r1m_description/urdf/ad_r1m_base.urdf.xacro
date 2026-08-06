@@ -14,7 +14,7 @@
     <xacro:property name="base_width" value="0.22"/>
     <xacro:property name="wheel_separation" value="0.29"/>
     <xacro:property name="chassis_clearance_ground" value="0.010"/>
-    <xacro:property name="chassis_zoff" value="${(chassis_clearance_ground + chassis_height/2) / 2}"/>
+    <xacro:property name="chassis_zoff" value="${(chassis_clearance_ground + chassis_height/2)}"/>
     <xacro:property name="chassis_mass" value="1.0"/>
 
     <xacro:property name="wheel_radius" value="0.05"/>
@@ -78,20 +78,18 @@
 
     <link name="${prefix}chassis">
         <visual>
-            <origin xyz="0 0 ${chassis_zoff}"/>
             <geometry>
                 <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
             </geometry>
             <material name="white"/>
         </visual>
         <collision>
-            <origin xyz="0 0 ${chassis_zoff}"/>
             <geometry>
                 <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
             </geometry>
         </collision>
         <xacro:inertial_box mass="10.0" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}">
-            <origin xyz="0 0 ${chassis_zoff}" rpy="0 0 0"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
         </xacro:inertial_box>
     </link>
 
@@ -105,7 +103,7 @@
         <joint name="${prefix}${name}_bumper_lat_joint" type="fixed">
             <parent link="${prefix}chassis"/>
             <child link="${prefix}${name}_bumper_lat"/>
-            <origin xyz="${x_reflect*(chassis_length/2 - bumper_length/2)} ${y_reflect*(chassis_width/2 + bumper_thickness/2)} ${chassis_zoff}" rpy="0 0 0"/>
+	    <origin xyz="${x_reflect*(chassis_length/2 - bumper_length/2)} ${y_reflect*(chassis_width/2 + bumper_thickness/2)} 0" rpy="0 0 0"/>
         </joint>
 
         <link name="${prefix}${name}_bumper_lat">
@@ -125,7 +123,7 @@
         <joint name="${prefix}${name}_bumper_front_joint" type="fixed">
             <parent link="${prefix}chassis"/>
             <child link="${prefix}${name}_bumper_front"/>
-            <origin xyz="${x_reflect*(chassis_length/2 + bumper_thickness/2)} ${y_reflect*(chassis_width/2 - bumper_length/2 + bumper_thickness/2)} ${chassis_zoff}" rpy="0 0 0"/>
+	    <origin xyz="${x_reflect*(chassis_length/2 + bumper_thickness/2)} ${y_reflect*(chassis_width/2 - bumper_length/2 + bumper_thickness/2)} 0" rpy="0 0 0"/>
         </joint>
 
         <link name="${prefix}${name}_bumper_front">
