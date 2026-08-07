@@ -1,0 +1,16 @@
+worlds:
+  empty:
+    x: 0.0
+    y: 0.0
+
+  obstacles:
+    x: 0.0
+    y: 0.0
+
+  factory:
+    x: 10.0
+    y: -2.5
+
+  aws_office:
+    x: 0.0
+    y: 15.0
