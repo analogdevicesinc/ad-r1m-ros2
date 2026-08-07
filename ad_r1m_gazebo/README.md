@@ -66,16 +66,24 @@ ros2 run nav2_map_server map_saver_cli -f ~/my_map --ros-args -p use_sim_time:=t
 
 ## Localization
 
-Use RTAB-Map in localization mode with an existing map:
+### Using AMCL (recommended for navigation)
+
+Use AMCL localization with a pre-built map. The factory map was built with the robot starting at odom origin (0, 0), so initial pose should be (0, 0):
 
 ```bash
 # Terminal 1: Start simulation
 ros2 launch ad_r1m_gazebo launch_sim.launch.py \
   world:=$(ros2 pkg prefix ad_r1m_gazebo)/share/ad_r1m_gazebo/worlds/factory.world
 
-# Terminal 2: Start RTAB-Map in localization mode
-ros2 launch ad_r1m_gazebo rtabmap_slam.launch.py localization:=true
+# Terminal 2: Start AMCL localization (initial pose at map origin)
+ros2 launch ad_r1m_navigation localization_launch.py \
+  use_sim_time:=true \
+  map:=$(ros2 pkg prefix ad_r1m_navigation)/share/ad_r1m_navigation/maps/factory_map.yaml \
+  initial_pose_x:=0.0 \
+  initial_pose_y:=0.0
 ```
+
+Note: The map is built in the odom frame, so the initial pose is relative to where the robot spawned, not the world origin.
 
 ## Navigation (Factory World)
 
@@ -86,16 +94,23 @@ Run autonomous navigation with Nav2 using the pre-built factory map:
 ros2 launch ad_r1m_gazebo launch_sim.launch.py \
   world:=$(ros2 pkg prefix ad_r1m_gazebo)/share/ad_r1m_gazebo/worlds/factory.world
 
-# Terminal 2: Start localization
-ros2 launch ad_r1m_gazebo rtabmap_slam.launch.py localization:=true
-
-# Terminal 3: Start Nav2 navigation
-ros2 launch ad_r1m_navigation navigation_launch.py \
+# Terminal 2: Start AMCL localization
+ros2 launch ad_r1m_navigation localization_launch.py \
   use_sim_time:=true \
-  map:=$(ros2 pkg prefix ad_r1m_navigation)/share/ad_r1m_navigation/maps/factory_map.yaml
+  map:=$(ros2 pkg prefix ad_r1m_navigation)/share/ad_r1m_navigation/maps/factory_map.yaml \
+  initial_pose_x:=0.0 \
+  initial_pose_y:=0.0
 ```
 
-Set initial pose in RViz using "2D Pose Estimate", then use "2D Goal Pose" to send navigation goals.
+**Note:** After launching localization, change RViz Global Options Fixed Frame from `odom` to `map`.
+
+```bash
+# Terminal 3: Start Nav2 navigation
+ros2 launch ad_r1m_navigation navigation_launch.py \
+  use_sim_time:=true
+```
+
+Use "2D Goal Pose" in RViz to send navigation goals.
 
 ## Launch Arguments
 
