@@ -1,9 +1,29 @@
+import os
+import yaml
+
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, OpaqueFunction
+from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument, OpaqueFunction, SetEnvironmentVariable
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Command
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
+
+
+def get_world_spawn_position(world_path):
+    """Get spawn position from worlds.yaml based on world file name."""
+    worlds_config_path = os.path.join(
+        get_package_share_directory('ad_r1m_gazebo'), 'config', 'worlds.yaml')
+    world_name = os.path.splitext(os.path.basename(world_path))[0]
+    try:
+        with open(worlds_config_path, 'r') as f:
+            config = yaml.safe_load(f)
+            worlds = config.get('worlds', {})
+            if world_name in worlds:
+                return worlds[world_name]
+    except (FileNotFoundError, yaml.YAMLError):
+        pass
+    return {'x': 0.0, 'y': 0.0, 'z': 0.0, 'R': 0.0, 'P': 0.0, 'Y': 0.0}
 
 
 def launch_setup(context, *args, **kwargs):
@@ -13,6 +33,15 @@ def launch_setup(context, *args, **kwargs):
     namespace = LaunchConfiguration('namespace')
     namespace_str = namespace.perform(context)
     world = LaunchConfiguration('world')
+
+    ad_r1m_gazebo_models = os.path.join(
+        ad_r1m_gazebo.perform(context), 'models')
+    existing_model_path = os.environ.get('GAZEBO_MODEL_PATH', '')
+    gazebo_model_path = SetEnvironmentVariable(
+        'GAZEBO_MODEL_PATH',
+        ad_r1m_gazebo_models + os.pathsep + existing_model_path
+        if existing_model_path else ad_r1m_gazebo_models
+    )
 
     robot_description = Command([
         'xacro ', PathJoinSubstitution([
@@ -62,9 +91,26 @@ def launch_setup(context, *args, **kwargs):
 
     robot_description_topic = f'/{namespace_str}/robot_description' if namespace_str else 'robot_description'
 
+    # Get spawn position from config
+    world_path = world.perform(context)
+    spawn_pos = get_world_spawn_position(world_path)
+    robot_x = str(spawn_pos.get('x', 0.0))
+    robot_y = str(spawn_pos.get('y', 0.0))
+    robot_z = str(spawn_pos.get('z', 0.0))
+    robot_R = str(spawn_pos.get('R', 0.0))
+    robot_P = str(spawn_pos.get('P', 0.0))
+    robot_Y = str(spawn_pos.get('Y', 0.0))
+
     spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
                         arguments=['-topic', robot_description_topic,
-                                   '-entity', 'ad_r1m'],
+                                   '-entity', 'ad_r1m',
+                                   '-x', robot_x,
+                                   '-y', robot_y,
+                                   '-z', robot_z,
+                                   '-R', robot_R,
+                                   '-P', robot_P,
+                                   '-Y', robot_Y,
+                                   '-timeout', '120'],
                         output='screen')
     print('Gazebo has started')
 
@@ -110,6 +156,7 @@ def launch_setup(context, *args, **kwargs):
     )
 
     return [
+        gazebo_model_path,
         rsp,
         twist_mux,
         teleop_twist_keyboard,
