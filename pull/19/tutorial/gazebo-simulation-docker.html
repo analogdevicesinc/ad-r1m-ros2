@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Run the AD-R1M Gazebo Classic simulation in a container on Linux or Windows." name="description" />
+
+    <title>AD-R1M Gazebo Simulation with Docker &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=cae2157c" />
+    <script async="async" src="../_static/app.umd.js?v=26d0298f"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="How-to guides" href="../how-to/index.html" />
+    <link rel="prev" title="AD-R1M ROS 2 Getting Started" href="ros2-getting-started.html" />
+   
+  
+  
+  
+  <meta name="repository" content="ad-r1m-ros2">
+  <meta name="version" content="19/merge">
+  
+    <meta name="page_source_suffix" content=".rst">
+  
+  
+  
+
+
+<style>
+  body {
+    
+  }
+
+  body.dark {
+    
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body:not(.light) {
+      
+    }
+  }
+</style>
+  </head>
+  
+    <body>
+  
+  <input type="checkbox" id="input-show-toc">
+  <input type="checkbox" id="input-show-localtoc">
+  <input type="checkbox" id="input-show-repotoc">
+
+  
+  <div class="search-area">
+    <form action="" method="get">
+      <input type="text" name="q" aria-labelledby="search-documentation" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" role="search" placeholder="Search"/>
+      <button class="icon"></button>
+    </form>
+  </div>
+  
+
+  <header>
+    <div id="left">
+      <label id="show-sidebar" class="icon" for="input-show-toc" title="Show/hide index"></label>
+    </div>
+    <div id="right">
+      <span>
+        <a id="logo-org" href="https://developer.analog.com/" aria-label="Analog Devices Inc. landing page"></a>
+        <div class="vertical-divider"></div>
+        
+        <label id="show-repotoc" for="input-show-repotoc" title="Show/hide docs">Documentation</label>
+        
+        <a id="logo" href="../index.html">
+          <div>AD-R1M ROS2</div>
+        </a>
+      </span>
+      <span class="reverse">
+        <label id="show-localtoc" class="icon" for="input-show-localtoc" title="Show/hide contents"></label>
+      </span>
+    </div>
+  </header>
+
+
+  <div class="repotoc-tree overlay">
+    <root>
+  <a href="../index.html" class="current">AD-R1M ROS2</a>
+</root>
+
+  </div>
+    <div class="localtoc">
+      <div class="tocwrapper">
+        <div class="header localtoc-header">
+          <a id="scroll-up" href="#top-anchor" title="Back to top"></a>
+        </div>
+        <nav>
+          <ul>
+<li><a class="reference internal" href="#">AD-R1M Gazebo Simulation with Docker</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#get-the-image">Get the image</a></li>
+<li><a class="reference internal" href="#run-the-simulation">Run the simulation</a></li>
+<li><a class="reference internal" href="#troubleshooting">Troubleshooting</a></li>
+<li><a class="reference internal" href="#see-also">See also</a></li>
+</ul>
+</li>
+</ul>
+
+        </nav>
+      </div>
+    </div>
+
+  
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+    <a id="no-logo" href="../index.html">
+      AD-R1M Robot Platform
+    </a><input id="input-switch-toc" type="checkbox">
+<label id="show-repotoc" for="input-switch-toc">
+All content
+</label>
+<label id="show-toc" for="input-switch-toc">
+Content on this topic
+</label>
+<div class="repotoc-tree">
+  <root>
+  <a href="../index.html" class="current">AD-R1M ROS2</a>
+</root>
+
+</div>
+<div class="toc-tree">
+  <ul class="current">
+<li class="toctree-l1 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-1" id="toctree-collapse-1" checked=""/><div class="collapse"><a class="reference internal" href="index.html">Tutorials</a><label for="toctree-collapse-1"><div class="icon"></div></label></div><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getting-started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system-setup.html">System setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../software-guide.html">Software guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="manage-configurations.html">Manage runtime configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ros2-writing-your-own-nodes.html">Write your own ROS 2 nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ros2-examples.html">AD-R1M ROS2 Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ros2-getting-started.html">AD-R1M ROS 2 Getting Started</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Gazebo simulation with Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2" id="toctree-collapse-2"/><div class="collapse"><a class="reference internal" href="../how-to/index.html">How-to guides</a><label for="toctree-collapse-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-1" id="toctree-collapse-2-1"/><div class="collapse"><a class="reference internal" href="../how-to/build-from-scratch/index.html">Build an AD-R1M from scratch</a><label for="toctree-collapse-2-1"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/build-from-scratch/assemble-hardware.html">1. Assemble the hardware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/build-from-scratch/setup-rpi.html">2. Set up the internal computer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2"/><div class="collapse"><a class="reference internal" href="../how-to/jetson/index.html">Set up NVIDIA Jetson AGX Orin</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/agx-orin-setup.html">1) Linux installation on NVIDIA® Jetson™ AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/setup-req-pkg-agx-orin.html">2) Setup required packages on NVIDIA® Jetson™ AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/setup-isaac-ros-agx-orin.html">3) Setup NVIDIA® Isaac™ ROS on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/setup-isaac-ros-vslam.html">4) Setup NVIDIA® Isaac™ ROS Visual SLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/vslam-setup-and-usage.html">5) NVIDIA® Isaac™ ROS Visual SLAM and Intel® RealSense™ setup and usage on NVIDIA Jetson™ AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and NVIDIA® Jetson™ AGX Orin: hardware setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-cuvslam-setup.html">7) AD-R1M and NVIDIA® Isaac™ ROS Visual SLAM setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA® Isaac™ ROS Visual SLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/map-building-for-nav2.html">9) Map building for NAV2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-realsense-gazebo.html">10) AD-R1M Gazebo simulation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/use-cases.html">AD-R1M use-cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/troubleshooting.html">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-3" id="toctree-collapse-3"/><div class="collapse"><a class="reference internal" href="../reference/index.html">Reference</a><label for="toctree-collapse-3"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/specs.html">AD-R1M Specifications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-4" id="toctree-collapse-4"/><div class="collapse"><a class="reference internal" href="../explanation/index.html">Explanation</a><label for="toctree-collapse-4"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/ros2-architecture.html">AD-R1M ROS2 Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/software-system-architecture.html">AD-R1M software system architecture</a></li>
+</ul>
+</li>
+</ul>
+
+
+</div>
+        </div>
+      </div>
+
+  <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper" id="top-anchor">
+          <div class="body-header">
+  <nav class="breadcrumb"><ol><li><a href="index.html">Tutorials</a></li></ol></nav>
+</div>
+          <div class="body" role="main">
+            
+  <section id="ad-r1m-gazebo-simulation-with-docker">
+<span id="gazebo-simulation-docker"></span><h1>AD-R1M Gazebo Simulation with Docker<a class="headerlink" href="#ad-r1m-gazebo-simulation-with-docker" title="Link to this heading"></a></h1>
+<p>Run the AD-R1M Gazebo Classic simulation in a container on Linux or Windows.</p>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#prerequisites" id="id1">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#get-the-image" id="id2">Get the image</a></p></li>
+<li><p><a class="reference internal" href="#run-the-simulation" id="id3">Run the simulation</a></p></li>
+<li><p><a class="reference internal" href="#troubleshooting" id="id4">Troubleshooting</a></p></li>
+<li><p><a class="reference internal" href="#see-also" id="id5">See also</a></p></li>
+</ul>
+</nav>
+<section id="prerequisites">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Prerequisites</a><a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<div class="tab-set docutils"><input checked="checked" id="tab-item-21febd923dc23c139b3c271bd75abb7f7d53237b-0" name="tab-set-21febd923dc23c139b3c271bd75abb7f7d53237b" type="radio"></input><label class="tab-label" for="tab-item-21febd923dc23c139b3c271bd75abb7f7d53237b-0">Linux (Ubuntu 22.04+)</label><div class="tab-content docutils"><p>Install Docker Engine and Buildx:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add Docker&#39;s official GPG key and repository</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>ca-certificates<span class="w"> </span>curl
+sudo<span class="w"> </span>install<span class="w"> </span>-m<span class="w"> </span><span class="m">0755</span><span class="w"> </span>-d<span class="w"> </span>/etc/apt/keyrings
+sudo<span class="w"> </span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://download.docker.com/linux/ubuntu/gpg<span class="w"> </span>-o<span class="w"> </span>/etc/apt/keyrings/docker.asc
+sudo<span class="w"> </span>chmod<span class="w"> </span>a+r<span class="w"> </span>/etc/apt/keyrings/docker.asc
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;deb [arch=</span><span class="k">$(</span>dpkg<span class="w"> </span>--print-architecture<span class="k">)</span><span class="s2"> signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu </span><span class="k">$(</span>.<span class="w"> </span>/etc/os-release<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$VERSION_CODENAME</span><span class="k">)</span><span class="s2"> stable&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/docker.list<span class="w"> </span>&gt;<span class="w"> </span>/dev/null
+
+<span class="c1"># Install Docker Engine, CLI, container runtime, Buildx, and Compose</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>docker-ce<span class="w"> </span>docker-ce-cli<span class="w"> </span>containerd.io<span class="w"> </span>docker-buildx-plugin<span class="w"> </span>docker-compose-plugin
+
+<span class="c1"># Allow running Docker without sudo</span>
+sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
+</pre></div>
+</div>
+<p>Log out and back in, then verify with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">buildx</span> <span class="pre">version</span></code>.</p>
+</div><input id="tab-item-21febd923dc23c139b3c271bd75abb7f7d53237b-1" name="tab-set-21febd923dc23c139b3c271bd75abb7f7d53237b" type="radio"></input><label class="tab-label" for="tab-item-21febd923dc23c139b3c271bd75abb7f7d53237b-1">Windows (WSL 2 + Ubuntu 22.04+)</label><div class="tab-content docutils"><p>Windows 11 required for WSLg (auto GUI forwarding).</p>
+<ol class="arabic">
+<li><p>Install WSL 2 from PowerShell as Administrator: <code class="docutils literal notranslate"><span class="pre">wsl</span> <span class="pre">--install</span></code></p></li>
+<li><p>Reboot, create a Linux user on first launch</p></li>
+<li><p>Enable systemd inside WSL:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/wsl.conf<span class="w"> </span>&gt;<span class="w"> </span>/dev/null<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+<span class="s">[boot]</span>
+<span class="s">systemd=true</span>
+<span class="s">EOF</span>
+</pre></div>
+</div>
+</li>
+<li><p>From PowerShell: <code class="docutils literal notranslate"><span class="pre">wsl</span> <span class="pre">--shutdown</span></code>, then reopen <code class="docutils literal notranslate"><span class="pre">wsl</span></code></p></li>
+<li><p>Install Docker Engine and Buildx:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add Docker&#39;s official GPG key and repository</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>ca-certificates<span class="w"> </span>curl
+sudo<span class="w"> </span>install<span class="w"> </span>-m<span class="w"> </span><span class="m">0755</span><span class="w"> </span>-d<span class="w"> </span>/etc/apt/keyrings
+sudo<span class="w"> </span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://download.docker.com/linux/ubuntu/gpg<span class="w"> </span>-o<span class="w"> </span>/etc/apt/keyrings/docker.asc
+sudo<span class="w"> </span>chmod<span class="w"> </span>a+r<span class="w"> </span>/etc/apt/keyrings/docker.asc
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;deb [arch=</span><span class="k">$(</span>dpkg<span class="w"> </span>--print-architecture<span class="k">)</span><span class="s2"> signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu </span><span class="k">$(</span>.<span class="w"> </span>/etc/os-release<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$VERSION_CODENAME</span><span class="k">)</span><span class="s2"> stable&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/docker.list<span class="w"> </span>&gt;<span class="w"> </span>/dev/null
+
+<span class="c1"># Install Docker Engine, CLI, container runtime, Buildx, and Compose</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>update
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>docker-ce<span class="w"> </span>docker-ce-cli<span class="w"> </span>containerd.io<span class="w"> </span>docker-buildx-plugin<span class="w"> </span>docker-compose-plugin
+
+<span class="c1"># Allow running Docker without sudo</span>
+sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
+</pre></div>
+</div>
+</li>
+<li><p>Log out and back in, then verify: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">buildx</span> <span class="pre">version</span> <span class="pre">&amp;&amp;</span> <span class="pre">echo</span> <span class="pre">$DISPLAY</span></code></p></li>
+</ol>
+</div></div></section>
+<section id="get-the-image">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Get the image</a><a class="headerlink" href="#get-the-image" title="Link to this heading"></a></h2>
+<p><strong>Option A: Pull from Cloudsmith</strong></p>
+<p>Requires Cloudsmith credentials. Log in first:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>login<span class="w"> </span>docker.cloudsmith.io
+docker<span class="w"> </span>pull<span class="w"> </span>docker.cloudsmith.io/adi/adrd-common/ad-r1m:sim-humble-nightly
+</pre></div>
+</div>
+<p><strong>Option B: Build locally</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/analogdevicesinc/ad-r1m-ros2.git
+<span class="nb">cd</span><span class="w"> </span>ad-r1m-ros2
+docker<span class="w"> </span>buildx<span class="w"> </span>build<span class="w"> </span>.<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-f<span class="w"> </span>docker/Dockerfile<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--target<span class="w"> </span>dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--build-arg<span class="w"> </span><span class="nv">BUILD_PACKAGES</span><span class="o">=</span>ad_r1m_sim<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-t<span class="w"> </span>ad-r1m:sim-humble-base
+</pre></div>
+</div>
+<p>Add <code class="docutils literal notranslate"><span class="pre">xterm</span></code> for the integrated teleop window:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;FROM ad-r1m:sim-humble-base&#39;</span><span class="w"> </span>&gt;<span class="w"> </span>docker/Dockerfile.xterm
+<span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;RUN apt-get update &amp;&amp; apt-get install -y --no-install-recommends xterm &amp;&amp; rm -rf /var/lib/apt/lists/*&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>docker/Dockerfile.xterm
+docker<span class="w"> </span>buildx<span class="w"> </span>build<span class="w"> </span>.<span class="w"> </span>-f<span class="w"> </span>docker/Dockerfile.xterm<span class="w"> </span>-t<span class="w"> </span>ad-r1m:sim-humble
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>On Windows, clone under <code class="docutils literal notranslate"><span class="pre">~/</span></code> inside WSL — <code class="docutils literal notranslate"><span class="pre">/mnt/c/</span></code> is much
+slower for Docker I/O.</p>
+</div>
+</section>
+<section id="run-the-simulation">
+<span id="docker-sim-run"></span><h2><a class="toc-backref" href="#id3" role="doc-backlink">Run the simulation</a><a class="headerlink" href="#run-the-simulation" title="Link to this heading"></a></h2>
+<p><strong>Step 1: Set image variable</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># If using Cloudsmith image:</span>
+<span class="nv">IMAGE</span><span class="o">=</span>docker.cloudsmith.io/adi/adrd-common/ad-r1m:sim-humble-nightly
+<span class="c1"># If built locally with xterm:</span>
+<span class="nv">IMAGE</span><span class="o">=</span>ad-r1m:sim-humble
+</pre></div>
+</div>
+<p><strong>Step 2: Allow X11 access (Linux only, skip on WSL)</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>xhost<span class="w"> </span>+local:docker
+</pre></div>
+</div>
+<p><strong>Step 3: Launch Gazebo</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-e<span class="w"> </span>DISPLAY<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--net<span class="o">=</span>host<span class="w"> </span>--ipc<span class="o">=</span>host<span class="w"> </span>--pid<span class="o">=</span>host<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span>/tmp/.X11-unix:/tmp/.X11-unix:ro<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span>/dev/shm:/dev/shm<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="nv">$IMAGE</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_gazebo<span class="w"> </span>launch_sim.launch.py
+</pre></div>
+</div>
+<p>Gazebo and RViz open. If using the locally built image with xterm, a teleop
+window also opens.</p>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/ad-r1m-launch-sim.gif"><img alt="../_images/ad-r1m-launch-sim.gif" src="../_images/ad-r1m-launch-sim.gif" style="width: 80%;" />
+</a>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If using the Cloudsmith image or the base image without xterm, launch
+teleop in a separate terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>--net<span class="o">=</span>host<span class="w"> </span>--ipc<span class="o">=</span>host<span class="w"> </span>--pid<span class="o">=</span>host<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="nv">$IMAGE</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>ros2<span class="w"> </span>run<span class="w"> </span>teleop_twist_keyboard<span class="w"> </span>teleop_twist_keyboard
+</pre></div>
+</div>
+</div>
+<p>Teleop keys:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>   u    i    o
+   j    k    l
+   m    ,    .
+
+q/z : increase/decrease max speeds by 10%
+</pre></div>
+</div>
+<p><strong>Step 4: Launch localization</strong> (new terminal)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>--net<span class="o">=</span>host<span class="w"> </span>--ipc<span class="o">=</span>host<span class="w"> </span>--pid<span class="o">=</span>host<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/ad_r1m_navigation:/ros2_ws/ros_data:ro<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="nv">$IMAGE</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_navigation<span class="w"> </span>localization_launch.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>use_sim_time:<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>params_file:<span class="o">=</span>/ros2_ws/ros_data/config/nav2_params_sim.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>map:<span class="o">=</span>/ros2_ws/ros_data/maps/world.yaml
+</pre></div>
+</div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/ad-r1m-loc-sim.gif"><img alt="../_images/ad-r1m-loc-sim.gif" src="../_images/ad-r1m-loc-sim.gif" style="width: 80%;" />
+</a>
+</figure>
+<p><strong>Step 5: Launch navigation</strong> (new terminal)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>--net<span class="o">=</span>host<span class="w"> </span>--ipc<span class="o">=</span>host<span class="w"> </span>--pid<span class="o">=</span>host<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/ad_r1m_navigation:/ros2_ws/ros_data:ro<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="nv">$IMAGE</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_navigation<span class="w"> </span>navigation_launch.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>use_sim_time:<span class="o">=</span><span class="nb">true</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>params_file:<span class="o">=</span>/ros2_ws/ros_data/config/nav2_params_sim.yaml
+</pre></div>
+</div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="../_images/ad-r1m-nav-sim.gif"><img alt="../_images/ad-r1m-nav-sim.gif" src="../_images/ad-r1m-nav-sim.gif" style="width: 80%;" />
+</a>
+</figure>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Mounting the config directory lets you edit parameters locally and
+restart the container without rebuilding.</p>
+</div>
+</section>
+<section id="troubleshooting">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Troubleshooting</a><a class="headerlink" href="#troubleshooting" title="Link to this heading"></a></h2>
+<dl class="simple">
+<dt><strong>“BuildKit is enabled but the buildx component is missing”</strong></dt><dd><p>You have <code class="docutils literal notranslate"><span class="pre">docker.io</span></code> instead of <code class="docutils literal notranslate"><span class="pre">docker-ce</span></code>. Reinstall from the
+official Docker repository.</p>
+</dd>
+<dt><strong>Gazebo/RViz blank or “Copy mode” (Windows/WSL)</strong></dt><dd><p>Run <code class="docutils literal notranslate"><span class="pre">wsl</span> <span class="pre">--update</span> <span class="pre">&amp;&amp;</span> <span class="pre">wsl</span> <span class="pre">--shutdown</span></code> from PowerShell, then retry.
+If still broken, add <code class="docutils literal notranslate"><span class="pre">-e</span> <span class="pre">LIBGL_ALWAYS_SOFTWARE=1</span></code> to docker run.</p>
+</dd>
+<dt><strong>“cannot open display”</strong></dt><dd><p>Run <code class="docutils literal notranslate"><span class="pre">xhost</span> <span class="pre">+local:docker</span></code> (Linux) or verify <code class="docutils literal notranslate"><span class="pre">$DISPLAY</span></code> is <code class="docutils literal notranslate"><span class="pre">:0</span></code> (WSL).</p>
+</dd>
+<dt><strong>Containers can’t see each other</strong></dt><dd><p>All containers must use <code class="docutils literal notranslate"><span class="pre">--net=host</span> <span class="pre">--ipc=host</span> <span class="pre">--pid=host</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="see-also">
+<h2><a class="toc-backref" href="#id5" role="doc-backlink">See also</a><a class="headerlink" href="#see-also" title="Link to this heading"></a></h2>
+<ul>
+<li><p><a class="reference internal" href="../how-to/jetson/ad-r1m-realsense-gazebo.html"><span class="doc">10) AD-R1M Gazebo simulation</span></a> — NVIDIA® Jetson™ AGX Orin Gazebo simulation
+(requires <a class="reference internal" href="../how-to/jetson/index.html"><span class="doc">NVIDIA® Jetson™ AGX Orin and NVIDIA® Isaac™ ROS Visual SLAM Integration</span></a>)</p>
+<blockquote>
+<div><figure class="align-center">
+<a class="reference internal image-reference" href="../_images/simulation_demo.gif"><img alt="../_images/simulation_demo.gif" src="../_images/simulation_demo.gif" style="width: 80%;" />
+</a>
+</figure>
+</div></blockquote>
+</li>
+<li><p><a class="icon link reference external" href="https://analogdevicesinc.github.io/ad-r1m-ros2/" target="_blank">AD-R1M ROS2 Documentation</a></p></li>
+<li><p><a class="icon link reference external" href="https://github.com/analogdevicesinc/ad-r1m-ros2" target="_blank">AD-R1M ROS2 GitHub Repository</a></p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+              <div class="related">
+                &nbsp;
+    <a href="ros2-getting-started.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev">AD-R1M ROS 2 Getting Started</a>
+    <a href="../how-to/index.html" title="Next document (Alt+Shift+RightArrow)" class="next">How-to guides</a>
+              </div>
+          
+        </div>
+      </div>
+  </div>
+
+  <label id="cancel-area-show-toc" for="input-show-toc"></label>
+  <label id="cancel-area-show-localtoc" for="input-show-localtoc"></label>
+    <footer>
+      &#169;2026, Analog Devices, Inc.
+      
+      |
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+      &amp; <a href="https://github.com/analogdevicesinc/doctools">Doctools</a>
+      
+    </footer>
+  </body>
+</html>
