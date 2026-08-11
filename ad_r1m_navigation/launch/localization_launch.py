@@ -13,6 +13,9 @@ def launch_setup(context, *args, **kwargs):
     autostart = LaunchConfiguration('autostart')
     use_amcl = LaunchConfiguration('amcl').perform(context).lower() == 'true'
     params_file_arg = LaunchConfiguration('params_file').perform(context)
+    initial_pose_x = LaunchConfiguration('initial_pose_x').perform(context)
+    initial_pose_y = LaunchConfiguration('initial_pose_y').perform(context)
+    initial_pose_yaw = LaunchConfiguration('initial_pose_yaw').perform(context)
 
     if params_file_arg:
         params_file = params_file_arg
@@ -34,6 +37,14 @@ def launch_setup(context, *args, **kwargs):
     param_substitutions = {
         'use_sim_time': use_sim_time,
         'yaml_filename': map_yaml_file}
+
+    # Set initial pose for AMCL if provided
+    if initial_pose_x:
+        param_substitutions['amcl.ros__parameters.initial_pose.x'] = initial_pose_x
+    if initial_pose_y:
+        param_substitutions['amcl.ros__parameters.initial_pose.y'] = initial_pose_y
+    if initial_pose_yaw:
+        param_substitutions['amcl.ros__parameters.initial_pose.yaw'] = initial_pose_yaw
 
     if namespace_str != '':
         param_substitutions['amcl.ros__parameters.odom_frame_id'] = f'{namespace_str}/odom'
@@ -112,6 +123,18 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'amcl', default_value='true',
             description='Launch AMCL for localization'),
+
+        DeclareLaunchArgument(
+            'initial_pose_x', default_value='',
+            description='Initial pose X (from worlds.yaml spawn position)'),
+
+        DeclareLaunchArgument(
+            'initial_pose_y', default_value='',
+            description='Initial pose Y (from worlds.yaml spawn position)'),
+
+        DeclareLaunchArgument(
+            'initial_pose_yaw', default_value='0.0',
+            description='Initial pose yaw'),
 
         OpaqueFunction(function=launch_setup)
     ])
