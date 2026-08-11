@@ -11,7 +11,7 @@
 
     <!-- Instantiate base robot model -->
     <xacro:include filename="$(find ad_r1m_description)/urdf/ad_r1m_base.urdf.xacro" />
-    <xacro:ad_r1m_base prefix="${prefix}" />
+    <xacro:ad_r1m_base prefix="${prefix}" use_sim="true" />
 
     <!-- Bind gazebo_ros2_control to previously defined joints (e.g. left_wheel_joint) -->
     <ros2_control name="GazeboSystem" type="system">

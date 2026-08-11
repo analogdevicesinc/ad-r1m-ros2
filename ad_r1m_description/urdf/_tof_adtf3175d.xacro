@@ -1,7 +1,18 @@
 <?xml version="1.0"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" >
+<!--
+  ADTF3175D ToF Camera
 
-<xacro:macro name="tof_adtf3175d" params="prefix parent *origin">
+  Simulation vs Real Hardware differences:
+    - depth_image: 32FC1 in meters (real: 16UC1 in mm)
+    - point_cloud: XYZRGB fields (real: XYZ only)
+    - optical_frame: sim uses -pi/2 (Gazebo), real uses pi/2 (driver flips image)
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:macro name="tof_adtf3175d" params="prefix parent use_sim:=false *origin">
+
+    <!-- Optical frame rotation differs: real driver flips image internally -->
+    <xacro:property name="optical_sign" value="${-1 if use_sim else 1}"/>
 
     <joint name="cam1_adtf31xx_joint" type="fixed">
         <parent link="${parent}"/>
@@ -32,27 +43,24 @@
         </visual>
     </link>
 
-
     <joint name="cam1_adtf31xx_optical_joint" type="fixed">
         <parent link="${prefix}cam1_adtf31xx"/>
         <child link="${prefix}cam1_adtf31xx_optical"/>
-        <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+        <origin xyz="0 0 0" rpy="${optical_sign * pi/2} 0 ${optical_sign * pi/2}"/>
     </joint>
-
     <link name="${prefix}cam1_adtf31xx_optical"></link>
 
     <joint name="cam1_scan_joint" type="fixed">
-	    <parent link="${prefix}cam1_adtf31xx"/>
-	    <child link="${prefix}cam1_scan"/>
-		<origin xyz="0 0 0" rpy="${pi} 0 0" />
-	</joint>
-	<link name="${prefix}cam1_scan"></link>
-
+        <parent link="${prefix}cam1_adtf31xx"/>
+        <child link="${prefix}cam1_scan"/>
+        <origin xyz="0 0 0" rpy="${pi} 0 0"/>
+    </joint>
+    <link name="${prefix}cam1_scan"></link>
 
     <gazebo reference="${prefix}cam1_adtf31xx">
         <material>Gazebo/Black</material>
 
-        <!-- ADTF3175D ToF Camera - 75deg FOV, 512x512, 0.3-5.0m range -->
+        <!-- 75deg FOV, 512x512, 0.3-5.0m range -->
         <sensor name="cam1_depth" type="depth">
             <pose>0 0 0 0 0 0</pose>
             <visualize>true</visualize>
@@ -78,8 +86,8 @@
             <plugin name="depth_camera_controller" filename="libgazebo_ros_camera.so">
                 <camera_name>cam1</camera_name>
                 <frame_name>${prefix}cam1_adtf31xx_optical</frame_name>
-                <min_depth>0.1</min_depth>
-                <max_depth>10.0</max_depth>
+                <min_depth>0.3</min_depth>
+                <max_depth>5.0</max_depth>
                 <ros>
                     <remapping>cam1/image_raw:=cam1/ab_image</remapping>
                     <remapping>cam1/depth/image_raw:=cam1/depth_image</remapping>
