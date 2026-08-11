@@ -1,0 +1,2 @@
+ad_r1m_gazebo/worlds/aws_office.world filter=lfs diff=lfs merge=lfs -text
+ad_r1m_gazebo/worlds/factory.world filter=lfs diff=lfs merge=lfs -text

@@ -1,0 +1,8 @@
+# All models are downloaded via ./download_models.sh
+# See script header for sources and licenses
+
+# Ignore all model directories
+*/
+
+# Keep this gitignore
+!.gitignore
