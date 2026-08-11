@@ -6,7 +6,7 @@
 <xacro:include filename="_tof_adtf3175d.xacro" />
 <xacro:include filename="_imu_adis16470.xacro" />
 
-<xacro:macro name="ad_r1m_base" params="prefix">
+<xacro:macro name="ad_r1m_base" params="prefix use_sim:=false">
 
     <xacro:property name="chassis_length" value="0.59"/>
     <xacro:property name="chassis_width" value="0.36"/>
@@ -49,7 +49,7 @@
         <origin xyz="0.180 0 ${wheel_radius}" rpy="${pi} 0 ${-pi/2}"/>
     </xacro:imu_adis16470>
 
-    <xacro:tof_adtf3175d prefix="${prefix}" parent="${prefix}base_link">
+    <xacro:tof_adtf3175d prefix="${prefix}" parent="${prefix}base_link" use_sim="${use_sim}">
         <origin xyz="${chassis_length/2 + camera_overhang - camera_length/2} 0 ${chassis_clearance_ground + camera_offset_above_chassis + camera_height/2}" rpy="0 0 0" />
     </xacro:tof_adtf3175d>
 
