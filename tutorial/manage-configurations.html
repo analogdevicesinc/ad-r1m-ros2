@@ -8,7 +8,7 @@
 
     <title>Manage AD-R1M runtime configurations &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
-    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=cae2157c" />
+    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=fb8972a4" />
     <script async="async" src="../_static/app.umd.js?v=26d0298f"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -257,8 +257,8 @@ We will remove <code class="docutils literal notranslate"><span class="pre">tele
 <span class="w"> </span>    image: $DOCKER_IMAGE
 <span class="w"> </span>    command: &gt;
 <span class="gd">-      ros2 launch ad_r1m_bringup teleop_crsf.launch.py</span>
-<span class="gd">-        namespace:=&quot;${ROBOT_NAMESPACE:-/}&quot;</span>
-<span class="gd">-        params_file:=&quot;/ros_data/teleop_parameters.yaml&quot;</span>
+<span class="gd">-        namespace:="${ROBOT_NAMESPACE:-/}"</span>
+<span class="gd">-        params_file:="/ros_data/teleop_parameters.yaml"</span>
 <span class="gi">+      ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args</span>
 <span class="gi">+        --remap cmd_vel:=/cmd_vel_keyboard</span>
 
@@ -276,7 +276,7 @@ We will remove <code class="docutils literal notranslate"><span class="pre">tele
 <span class="w"> </span>       - RMW_IMPLEMENTATION
 <span class="w"> </span>    depends_on:
 <span class="w"> </span>      zenoh_router:
-<span class="w"> </span>        condition: &quot;service_started&quot;
+<span class="w"> </span>        condition: "service_started"
 <span class="w"> </span>        required: false
 </pre></div>
 </div>
@@ -430,7 +430,7 @@ We will remove <code class="docutils literal notranslate"><span class="pre">tele
    max_vel: 1.0
    max_rot: 1.0
    stamped: false
-   frame_id: &#39;&#39;
+   frame_id: ''
 </pre></div>
 </div>
 <div class="clear-left"></div></div></div><p>The file will be present inside the containers at <code class="docutils literal notranslate"><span class="pre">/ros_data/teleop_params.yaml</span></code>. We must now also edit the command in the compose file to use this:</p>

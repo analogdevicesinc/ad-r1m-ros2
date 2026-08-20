@@ -8,7 +8,7 @@
 
     <title>7) AD-R1M and NVIDIA® Isaac™ ROS Visual SLAM setup &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8e8a900e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/app.min.css?v=cae2157c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/app.min.css?v=fb8972a4" />
     <script async="async" src="../../_static/app.umd.js?v=26d0298f"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -204,7 +204,7 @@ low-latency link.</p>
 <p><strong>Wireless (WLAN)</strong></p>
 <p>If both devices are connected to the same wireless network, no additional network
 configuration is needed. Zenoh can discover the robot using mDNS:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>-e<span class="w"> </span><span class="nv">ZENOH_CONFIG_OVERRIDE</span><span class="o">=</span><span class="s1">&#39;connect/endpoints=[&quot;tcp/ad-r1m-0.local:7447&quot;];mode=&quot;client&quot;&#39;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>-e<span class="w"> </span><span class="nv">ZENOH_CONFIG_OVERRIDE</span><span class="o">=</span><span class="s1">'connect/endpoints=["tcp/ad-r1m-0.local:7447"];mode="client"'</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -262,7 +262,7 @@ sudo<span class="w"> </span>nmcli<span class="w"> </span>connection<span class="
 <p>When using Ethernet, configure the Docker container to connect using the RPi’s
 static IP address instead of the mDNS hostname to ensure traffic flows over the
 wired link:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>-e<span class="w"> </span><span class="nv">ZENOH_CONFIG_OVERRIDE</span><span class="o">=</span><span class="s1">&#39;connect/endpoints=[&quot;tcp/192.168.71.1:7447&quot;];mode=&quot;client&quot;&#39;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>-e<span class="w"> </span><span class="nv">ZENOH_CONFIG_OVERRIDE</span><span class="o">=</span><span class="s1">'connect/endpoints=["tcp/192.168.71.1:7447"];mode="client"'</span>
 </pre></div>
 </div>
 <div class="admonition note">
@@ -279,14 +279,14 @@ routing traffic over WiFi. Using the static IP directly guarantees the wired pat
 <dt>Modify the <strong>run_dev.sh</strong> script from <strong>$ISAAC_ROS_WS/src/isaac_ros_common</strong> as follows:</dt><dd><ul class="simple">
 <li><p>Look for the following lines of code</p></li>
 </ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">BASE_NAME</span><span class="o">=</span><span class="s2">&quot;isaac_ros_dev-</span><span class="nv">$PLATFORM</span><span class="s2">&quot;</span>
-<span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>!<span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CONFIG_CONTAINER_NAME_SUFFIX</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
-<span class="w">    </span><span class="nv">BASE_NAME</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$BASE_NAME</span><span class="s2">-</span><span class="nv">$CONFIG_CONTAINER_NAME_SUFFIX</span><span class="s2">&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">BASE_NAME</span><span class="o">=</span><span class="s2">"isaac_ros_dev-</span><span class="nv">$PLATFORM</span><span class="s2">"</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>!<span class="w"> </span>-z<span class="w"> </span><span class="s2">"</span><span class="nv">$CONFIG_CONTAINER_NAME_SUFFIX</span><span class="s2">"</span><span class="w"> </span><span class="o">]]</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nv">BASE_NAME</span><span class="o">=</span><span class="s2">"</span><span class="nv">$BASE_NAME</span><span class="s2">-</span><span class="nv">$CONFIG_CONTAINER_NAME_SUFFIX</span><span class="s2">"</span>
 <span class="k">fi</span>
-<span class="nv">CONTAINER_NAME</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$BASE_NAME</span><span class="s2">-container&quot;</span>
+<span class="nv">CONTAINER_NAME</span><span class="o">=</span><span class="s2">"</span><span class="nv">$BASE_NAME</span><span class="s2">-container"</span>
 
 <span class="c1"># Remove any exited containers.</span>
-<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>docker<span class="w"> </span>ps<span class="w"> </span>-a<span class="w"> </span>--quiet<span class="w"> </span>--filter<span class="w"> </span><span class="nv">status</span><span class="o">=</span>exited<span class="w"> </span>--filter<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="nv">$CONTAINER_NAME</span><span class="k">)</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">"</span><span class="k">$(</span>docker<span class="w"> </span>ps<span class="w"> </span>-a<span class="w"> </span>--quiet<span class="w"> </span>--filter<span class="w"> </span><span class="nv">status</span><span class="o">=</span>exited<span class="w"> </span>--filter<span class="w"> </span><span class="nv">name</span><span class="o">=</span><span class="nv">$CONTAINER_NAME</span><span class="k">)</span><span class="s2">"</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
 <span class="w">    </span>docker<span class="w"> </span>rm<span class="w"> </span><span class="nv">$CONTAINER_NAME</span><span class="w"> </span>&gt;<span class="w"> </span>/dev/null
 <span class="k">fi</span>
 </pre></div>
@@ -294,9 +294,9 @@ routing traffic over WiFi. Using the static IP directly guarantees the wired pat
 <ul class="simple">
 <li><p>Insert the following lines after BASE_NAME=”isaac_ros_dev-$PLATFORM”. This ensures that intermediate images are not left unnamed and that each image is tagged based on the Dockerfiles used in the build process:</p></li>
 </ul>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>!<span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$IMAGE_KEY</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$IMAGE_KEY</span><span class="s2">&quot;</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="s2">&quot;ros2_humble&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
-<span class="nv">IMAGE_KEY_SAFE</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">IMAGE_KEY</span><span class="p">//./-</span><span class="si">}</span><span class="s2">&quot;</span><span class="w">   </span><span class="c1"># replace dots with dashes</span>
-<span class="nv">BASE_NAME</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">BASE_NAME</span><span class="si">}</span><span class="s2">-</span><span class="si">${</span><span class="nv">IMAGE_KEY_SAFE</span><span class="si">}</span><span class="s2">&quot;</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>!<span class="w"> </span>-z<span class="w"> </span><span class="s2">"</span><span class="nv">$IMAGE_KEY</span><span class="s2">"</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="s2">"</span><span class="nv">$IMAGE_KEY</span><span class="s2">"</span><span class="w"> </span>!<span class="o">=</span><span class="w"> </span><span class="s2">"ros2_humble"</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="nv">IMAGE_KEY_SAFE</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">IMAGE_KEY</span><span class="p">//./-</span><span class="si">}</span><span class="s2">"</span><span class="w">   </span><span class="c1"># replace dots with dashes</span>
+<span class="nv">BASE_NAME</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">BASE_NAME</span><span class="si">}</span><span class="s2">-</span><span class="si">${</span><span class="nv">IMAGE_KEY_SAFE</span><span class="si">}</span><span class="s2">"</span>
 <span class="k">fi</span>
 </pre></div>
 </div>
@@ -307,18 +307,18 @@ routing traffic over WiFi. Using the static IP directly guarantees the wired pat
 <span class="w">    </span>-e<span class="w"> </span><span class="nv">ROS_NAMESPACE</span><span class="o">=</span>ad_r1m_0<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>-e<span class="w"> </span><span class="nv">RMW_IMPLEMENTATION</span><span class="o">=</span>rmw_zenoh_cpp<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>-e<span class="w"> </span><span class="nv">ROBOT_TCP_NAME</span><span class="o">=</span>ad-r1m-0<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-e<span class="w"> </span><span class="nv">ZENOH_CONFIG_OVERRIDE</span><span class="o">=</span><span class="s2">&quot;connect/endpoints=[\&quot;tcp/ad-r1m-0.local:7447\&quot;];mode=\&quot;client\&quot;&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-e<span class="w"> </span><span class="nv">ZENOH_CONFIG_OVERRIDE</span><span class="o">=</span><span class="s2">"connect/endpoints=[\"tcp/ad-r1m-0.local:7447\"];mode=\"client\""</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--privileged<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--network<span class="w"> </span>host<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--ipc<span class="o">=</span>host<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">DOCKER_ARGS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>-v<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$ISAAC_ROS_DEV_DIR</span><span class="s2">&quot;</span>:/workspaces/isaac_ros-dev<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="s2">"</span><span class="si">${</span><span class="nv">DOCKER_ARGS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$ISAAC_ROS_DEV_DIR</span><span class="s2">"</span>:/workspaces/isaac_ros-dev<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>-v<span class="w"> </span>/etc/localtime:/etc/localtime:ro<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--name<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$CONTAINER_NAME</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--name<span class="w"> </span><span class="s2">"</span><span class="nv">$CONTAINER_NAME</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--runtime<span class="w"> </span>nvidia<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--entrypoint<span class="w"> </span>/usr/local/bin/scripts/workspace-entrypoint.sh<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--workdir<span class="w"> </span>/workspaces/isaac_ros-dev<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span><span class="s2">&quot;</span><span class="nv">$BASE_NAME</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span><span class="s2">"</span><span class="nv">$BASE_NAME</span><span class="s2">"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>/bin/bash
 </pre></div>
 </div>

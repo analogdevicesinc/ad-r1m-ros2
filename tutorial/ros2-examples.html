@@ -8,7 +8,7 @@
 
     <title>AD-R1M ROS2 Examples &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
-    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=cae2157c" />
+    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=fb8972a4" />
     <script async="async" src="../_static/app.umd.js?v=26d0298f"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -498,11 +498,11 @@ ros2<span class="w"> </span>topic<span class="w"> </span>hz<span class="w"> </sp
 </pre></div>
 </div>
 <p>For detailed architecture information, see <a class="reference internal" href="../explanation/ros2-architecture.html"><span class="doc">AD-R1M ROS2 Architecture</span></a>.</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;root</span><span class="w"> </span><span class="na">main_tree_to_execute=</span><span class="s">&quot;MainTree&quot;</span><span class="nt">&gt;</span>
-<span class="w">  </span><span class="nt">&lt;BehaviorTree</span><span class="w"> </span><span class="na">ID=</span><span class="s">&quot;MainTree&quot;</span><span class="nt">&gt;</span>
-<span class="w">    </span><span class="nt">&lt;Sequence</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;navigate_sequence&quot;</span><span class="nt">&gt;</span>
-<span class="w">      </span><span class="nt">&lt;ComputePathToPose</span><span class="w"> </span><span class="na">goal=</span><span class="s">&quot;{goal}&quot;</span><span class="w"> </span><span class="na">path=</span><span class="s">&quot;{path}&quot;</span><span class="w"> </span><span class="na">planner_id=</span><span class="s">&quot;GridBased&quot;</span><span class="nt">/&gt;</span>
-<span class="w">      </span><span class="nt">&lt;FollowPath</span><span class="w"> </span><span class="na">path=</span><span class="s">&quot;{path}&quot;</span><span class="w"> </span><span class="na">controller_id=</span><span class="s">&quot;FollowPath&quot;</span><span class="nt">/&gt;</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;root</span><span class="w"> </span><span class="na">main_tree_to_execute=</span><span class="s">"MainTree"</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;BehaviorTree</span><span class="w"> </span><span class="na">ID=</span><span class="s">"MainTree"</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Sequence</span><span class="w"> </span><span class="na">name=</span><span class="s">"navigate_sequence"</span><span class="nt">&gt;</span>
+<span class="w">      </span><span class="nt">&lt;ComputePathToPose</span><span class="w"> </span><span class="na">goal=</span><span class="s">"{goal}"</span><span class="w"> </span><span class="na">path=</span><span class="s">"{path}"</span><span class="w"> </span><span class="na">planner_id=</span><span class="s">"GridBased"</span><span class="nt">/&gt;</span>
+<span class="w">      </span><span class="nt">&lt;FollowPath</span><span class="w"> </span><span class="na">path=</span><span class="s">"{path}"</span><span class="w"> </span><span class="na">controller_id=</span><span class="s">"FollowPath"</span><span class="nt">/&gt;</span>
 <span class="w">    </span><span class="nt">&lt;/Sequence&gt;</span>
 <span class="w">  </span><span class="nt">&lt;/BehaviorTree&gt;</span>
 <span class="nt">&lt;/root&gt;</span>
@@ -511,7 +511,7 @@ ros2<span class="w"> </span>topic<span class="w"> </span>hz<span class="w"> </sp
 <p>Load custom behavior trees via the Nav2 parameters:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">bt_navigator</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">default_bt_xml_filename</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/path/to/custom_bt.xml&quot;</span>
+<span class="w">    </span><span class="nt">default_bt_xml_filename</span><span class="p">:</span><span class="w"> </span><span class="s">"/path/to/custom_bt.xml"</span>
 </pre></div>
 </div>
 </section>
@@ -529,14 +529,14 @@ ros2<span class="w"> </span>topic<span class="w"> </span>hz<span class="w"> </sp
 <span class="n">waypoints</span> <span class="o">=</span> <span class="p">[]</span>
 
 <span class="n">waypoint1</span> <span class="o">=</span> <span class="n">PoseStamped</span><span class="p">()</span>
-<span class="n">waypoint1</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s1">&#39;map&#39;</span>
+<span class="n">waypoint1</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s1">'map'</span>
 <span class="n">waypoint1</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">1.0</span>
 <span class="n">waypoint1</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span>
 <span class="n">waypoint1</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="mf">1.0</span>
 <span class="n">waypoints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">waypoint1</span><span class="p">)</span>
 
 <span class="n">waypoint2</span> <span class="o">=</span> <span class="n">PoseStamped</span><span class="p">()</span>
-<span class="n">waypoint2</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s1">&#39;map&#39;</span>
+<span class="n">waypoint2</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s1">'map'</span>
 <span class="n">waypoint2</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">2.0</span>
 <span class="n">waypoint2</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span>
 <span class="n">waypoint2</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="mf">1.0</span>
@@ -547,10 +547,10 @@ ros2<span class="w"> </span>topic<span class="w"> </span>hz<span class="w"> </sp
 
 <span class="k">while</span> <span class="ow">not</span> <span class="n">navigator</span><span class="o">.</span><span class="n">isTaskComplete</span><span class="p">():</span>
     <span class="n">feedback</span> <span class="o">=</span> <span class="n">navigator</span><span class="o">.</span><span class="n">getFeedback</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Current waypoint: </span><span class="si">{</span><span class="n">feedback</span><span class="o">.</span><span class="n">current_waypoint</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Current waypoint: </span><span class="si">{</span><span class="n">feedback</span><span class="o">.</span><span class="n">current_waypoint</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 
 <span class="n">result</span> <span class="o">=</span> <span class="n">navigator</span><span class="o">.</span><span class="n">getResult</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Navigation result: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Navigation result: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -558,7 +558,7 @@ ros2<span class="w"> </span>topic<span class="w"> </span>hz<span class="w"> </sp
 <h3><a class="toc-backref" href="#id23" role="doc-backlink">Command Line Waypoint Navigation</a><a class="headerlink" href="#command-line-waypoint-navigation" title="Link to this heading"></a></h3>
 <p>Send a single goal via command line:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>action<span class="w"> </span>send_goal<span class="w"> </span>/navigate_to_pose<span class="w"> </span>nav2_msgs/action/NavigateToPose<span class="w"> </span><span class="se">\</span>
-<span class="w">  </span><span class="s2">&quot;{pose: {header: {frame_id: &#39;map&#39;}, pose: {position: {x: 1.0, y: 0.0, z: 0.0}, orientation: {w: 1.0}}}}&quot;</span>
+<span class="w">  </span><span class="s2">"{pose: {header: {frame_id: 'map'}, pose: {position: {x: 1.0, y: 0.0, z: 0.0}, orientation: {w: 1.0}}}}"</span>
 </pre></div>
 </div>
 </section>
@@ -568,7 +568,7 @@ ros2<span class="w"> </span>topic<span class="w"> </span>hz<span class="w"> </sp
 <p>Create custom Nav2 action plugins for specialized behaviors.</p>
 <section id="custom-action-plugin-structure">
 <h3><a class="toc-backref" href="#id25" role="doc-backlink">Custom Action Plugin Structure</a><a class="headerlink" href="#custom-action-plugin-structure" title="Link to this heading"></a></h3>
-<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;nav2_behavior_tree/bt_action_node.hpp&quot;</span>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span><span class="w"> </span><span class="cpf">"nav2_behavior_tree/bt_action_node.hpp"</span>
 
 <span class="k">class</span><span class="w"> </span><span class="nc">MyCustomAction</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">nav2_behavior_tree</span><span class="o">::</span><span class="n">BtActionNode</span><span class="o">&lt;</span><span class="n">my_msgs</span><span class="o">::</span><span class="n">action</span><span class="o">::</span><span class="n">MyAction</span><span class="o">&gt;</span>
 <span class="p">{</span>
@@ -583,7 +583,7 @@ ros2<span class="w"> </span>topic<span class="w"> </span>hz<span class="w"> </sp
 <span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="n">on_tick</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
 <span class="w">  </span><span class="p">{</span>
 <span class="w">    </span><span class="c1">// Set action goal</span>
-<span class="w">    </span><span class="n">goal_</span><span class="p">.</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getInput</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;target&quot;</span><span class="p">).</span><span class="n">value</span><span class="p">();</span>
+<span class="w">    </span><span class="n">goal_</span><span class="p">.</span><span class="n">target</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">getInput</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="s">"target"</span><span class="p">).</span><span class="n">value</span><span class="p">();</span>
 <span class="w">  </span><span class="p">}</span>
 
 <span class="w">  </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="w"> </span><span class="n">on_success</span><span class="p">()</span><span class="w"> </span><span class="k">override</span>
@@ -604,16 +604,16 @@ ros2<span class="w"> </span>topic<span class="w"> </span>hz<span class="w"> </sp
 
 <span class="k">class</span><span class="w"> </span><span class="nc">LiftController</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;lift_controller&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_client</span><span class="p">(</span><span class="n">LiftGPIO</span><span class="p">,</span> <span class="s1">&#39;/elevator_to_robot&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">'lift_controller'</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_client</span><span class="p">(</span><span class="n">LiftGPIO</span><span class="p">,</span> <span class="s1">'/elevator_to_robot'</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">send_lift_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""</span>
 <span class="sd">        Commands:</span>
 <span class="sd">          0 = Hold</span>
 <span class="sd">          1 = Lift up</span>
 <span class="sd">          2 = Lift down</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">request</span> <span class="o">=</span> <span class="n">LiftGPIO</span><span class="o">.</span><span class="n">Request</span><span class="p">()</span>
         <span class="n">request</span><span class="o">.</span><span class="n">command</span> <span class="o">=</span> <span class="n">command</span>
         <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">call_async</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>

@@ -8,7 +8,7 @@
 
     <title>9) Map building for NAV2 &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8e8a900e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/app.min.css?v=cae2157c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/app.min.css?v=fb8972a4" />
     <script async="async" src="../../_static/app.umd.js?v=26d0298f"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -194,22 +194,22 @@ Content on this topic
 <p>The pointcloud resulted as an output from the Isaac ROS Visual SLAM can be noisy or include ground points which, for a reliable navigation
 map, should be filtered. To enable pointcloud filtering before map building set the <em>filter_enable</em> parameter in <strong>build_occupancy_grid.launch.py</strong>.
 You can also enable/disable each individual filter to achieve an accurate occupancy grid, depending on the available pointcloud:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;filter_enable&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="c1"># Global filtering enable</span>
-<span class="p">{</span><span class="s1">&#39;ror_enable&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="c1"># Radius outlier removal enable</span>
-<span class="p">{</span><span class="s1">&#39;sor_enable&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="c1"># Statistical outlier removal</span>
-<span class="p">{</span><span class="s1">&#39;pass_enable&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="c1"># Pass through filter (z-band)</span>
-<span class="p">{</span><span class="s1">&#39;voxel_enable&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="c1"># Voxel grid enable</span>
-<span class="p">{</span><span class="s1">&#39;cluster_enable&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="c1"># Filtering using clusters</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">'filter_enable'</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="c1"># Global filtering enable</span>
+<span class="p">{</span><span class="s1">'ror_enable'</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="c1"># Radius outlier removal enable</span>
+<span class="p">{</span><span class="s1">'sor_enable'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="c1"># Statistical outlier removal</span>
+<span class="p">{</span><span class="s1">'pass_enable'</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="c1"># Pass through filter (z-band)</span>
+<span class="p">{</span><span class="s1">'voxel_enable'</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span> <span class="c1"># Voxel grid enable</span>
+<span class="p">{</span><span class="s1">'cluster_enable'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span> <span class="c1"># Filtering using clusters</span>
 </pre></div>
 </div>
 <p>This package allows optional averaging of consecutive grid maps to improve map quality when using noisy or incomplete
 point clouds, such as visual SLAM landmarks. By averaging multiple frames, random sensor noise is reduced, persistent structures
 become clearer, and short-lived or unstable points are suppressed.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span> <span class="c1"># Normal mean averaging of maps</span>
-<span class="p">{</span><span class="s1">&#39;normal_averaging_enable&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
+<span class="p">{</span><span class="s1">'normal_averaging_enable'</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
 <span class="c1"># Moving average parameters</span>
-<span class="p">{</span><span class="s1">&#39;moving_average_enable&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
-<span class="p">{</span><span class="s1">&#39;ma_alpha&#39;</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+<span class="p">{</span><span class="s1">'moving_average_enable'</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+<span class="p">{</span><span class="s1">'ma_alpha'</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
 </pre></div>
 </div>
 <div class="admonition warning">
@@ -222,8 +222,8 @@ become clearer, and short-lived or unstable points are suppressed.</p>
 Set the Gaussian mean to roughly the robot’s mid-height and the standard deviation to about half the robot’s height. Points
 within this band receive higher weight, while very low or very high points are suppressed, helping reduce vertical noise and emphasize
 likely obstacles.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;gaussian_mean&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">},</span>
-<span class="p">{</span><span class="s1">&#39;gaussian_stddev&#39;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">},</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">'gaussian_mean'</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">},</span>
+<span class="p">{</span><span class="s1">'gaussian_stddev'</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">},</span>
 </pre></div>
 </div>
 </div>
@@ -258,7 +258,7 @@ likely obstacles.</p>
 <section id="key-parameters-for-isaac-ros-visual-slam-based-maps">
 <h2>Key parameters for Isaac ROS Visual SLAM-based maps<a class="headerlink" href="#key-parameters-for-isaac-ros-visual-slam-based-maps" title="Link to this heading"></a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">intensity_factor</span></code> parameter is critical when building occupancy grids from Isaac ROS Visual SLAM landmarks. A lower value (e.g. 0.3) prevents the sparse pointcloud from saturating the grid with noisy points, while a higher value (e.g. 1.0) is more appropriate for dense LiDAR data.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;intensity_factor&#39;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">},</span>  <span class="c1"># lower for sparse Isaac ROS Visual SLAM pointclouds</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">'intensity_factor'</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">},</span>  <span class="c1"># lower for sparse Isaac ROS Visual SLAM pointclouds</span>
 </pre></div>
 </div>
 <p>For a complete list of parameters and configuration options, see the <a class="icon link reference external" href="https://github.com/analogdevicesinc/ad-r1m-ros2/tree/main/ad_r1m_pointcloud_to_occupancygrid" target="_blank">ad_r1m_pointcloud_to_occupancygrid README</a>.</p>
