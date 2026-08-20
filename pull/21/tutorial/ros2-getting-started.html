@@ -8,7 +8,7 @@
 
     <title>AD-R1M ROS 2 Getting Started &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
-    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=cae2157c" />
+    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=fb8972a4" />
     <script async="async" src="../_static/app.umd.js?v=26d0298f"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -269,8 +269,8 @@ sudo<span class="w"> </span>add-apt-repository<span class="w"> </span>universe
 
 <span class="c1"># Add ROS 2 apt repository</span>
 sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>curl<span class="w"> </span>-y
-<span class="nb">export</span><span class="w"> </span><span class="nv">ROS_APT_SOURCE_VERSION</span><span class="o">=</span><span class="k">$(</span>curl<span class="w"> </span>-s<span class="w"> </span>https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-F<span class="w"> </span><span class="s2">&quot;tag_name&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span>-F<span class="se">\&quot;</span><span class="w"> </span><span class="s1">&#39;{print $4}&#39;</span><span class="k">)</span>
-curl<span class="w"> </span>-L<span class="w"> </span>-o<span class="w"> </span>/tmp/ros2-apt-source.deb<span class="w"> </span><span class="s2">&quot;https://github.com/ros-infrastructure/ros-apt-source/releases/download/</span><span class="si">${</span><span class="nv">ROS_APT_SOURCE_VERSION</span><span class="si">}</span><span class="s2">/ros2-apt-source_</span><span class="si">${</span><span class="nv">ROS_APT_SOURCE_VERSION</span><span class="si">}</span><span class="s2">.</span><span class="k">$(</span>.<span class="w"> </span>/etc/os-release<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="si">${</span><span class="nv">UBUNTU_CODENAME</span><span class="k">:-</span><span class="si">${</span><span class="nv">VERSION_CODENAME</span><span class="si">}}</span><span class="k">)</span><span class="s2">_all.deb&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROS_APT_SOURCE_VERSION</span><span class="o">=</span><span class="k">$(</span>curl<span class="w"> </span>-s<span class="w"> </span>https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-F<span class="w"> </span><span class="s2">"tag_name"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span>-F<span class="se">\"</span><span class="w"> </span><span class="s1">'{print $4}'</span><span class="k">)</span>
+curl<span class="w"> </span>-L<span class="w"> </span>-o<span class="w"> </span>/tmp/ros2-apt-source.deb<span class="w"> </span><span class="s2">"https://github.com/ros-infrastructure/ros-apt-source/releases/download/</span><span class="si">${</span><span class="nv">ROS_APT_SOURCE_VERSION</span><span class="si">}</span><span class="s2">/ros2-apt-source_</span><span class="si">${</span><span class="nv">ROS_APT_SOURCE_VERSION</span><span class="si">}</span><span class="s2">.</span><span class="k">$(</span>.<span class="w"> </span>/etc/os-release<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="si">${</span><span class="nv">UBUNTU_CODENAME</span><span class="k">:-</span><span class="si">${</span><span class="nv">VERSION_CODENAME</span><span class="si">}}</span><span class="k">)</span><span class="s2">_all.deb"</span>
 sudo<span class="w"> </span>dpkg<span class="w"> </span>-i<span class="w"> </span>/tmp/ros2-apt-source.deb
 </pre></div>
 </div>
@@ -285,7 +285,7 @@ sudo<span class="w"> </span>apt<span class="w"> </span>upgrade
 sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>ros-humble-desktop
 
 <span class="c1"># Source ROS 2</span>
-<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;source /opt/ros/humble/setup.bash&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"source /opt/ros/humble/setup.bash"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.bashrc
 <span class="nb">source</span><span class="w"> </span>~/.bashrc
 </pre></div>
 </div>
@@ -328,7 +328,7 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 
 <span class="c1"># Configure Zenoh to connect to robot (replace with actual IP)</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">ROBOT_IP</span><span class="o">=</span>&lt;robot-ip-address&gt;
-<span class="nb">export</span><span class="w"> </span><span class="nv">ZENOH_CONFIG_OVERRIDE</span><span class="o">=</span><span class="s1">&#39;connect/endpoints=[&quot;tcp/${ROBOT_IP}:7447&quot;];mode=&quot;client&quot;&#39;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ZENOH_CONFIG_OVERRIDE</span><span class="o">=</span><span class="s1">'connect/endpoints=["tcp/${ROBOT_IP}:7447"];mode="client"'</span>
 </pre></div>
 </div>
 </section>
@@ -393,7 +393,7 @@ ros2<span class="w"> </span>topic<span class="w"> </span>list
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set environment (replace IP)</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">RMW_IMPLEMENTATION</span><span class="o">=</span>rmw_zenoh_cpp
 <span class="nb">export</span><span class="w"> </span><span class="nv">ROBOT_IP</span><span class="o">=</span><span class="m">192</span>.168.1.100
-<span class="nb">export</span><span class="w"> </span><span class="nv">ZENOH_CONFIG_OVERRIDE</span><span class="o">=</span><span class="s1">&#39;connect/endpoints=[&quot;tcp/${ROBOT_IP}:7447&quot;];mode=&quot;client&quot;&#39;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ZENOH_CONFIG_OVERRIDE</span><span class="o">=</span><span class="s1">'connect/endpoints=["tcp/${ROBOT_IP}:7447"];mode="client"'</span>
 
 <span class="c1"># Launch RViz</span>
 ros2<span class="w"> </span>run<span class="w"> </span>rviz2<span class="w"> </span>rviz2
@@ -485,9 +485,9 @@ docker<span class="w"> </span>compose<span class="w"> </span>ps<span class="w"> 
 connect_robot<span class="o">()</span><span class="w"> </span><span class="o">{</span>
 <span class="w">    </span><span class="nb">local</span><span class="w"> </span><span class="nv">robot_num</span><span class="o">=</span><span class="si">${</span><span class="nv">1</span><span class="k">:-</span><span class="nv">0</span><span class="si">}</span>
 <span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">RMW_IMPLEMENTATION</span><span class="o">=</span>rmw_zenoh_cpp
-<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">ROBOT_IP</span><span class="o">=</span><span class="s2">&quot;ad-r1m-</span><span class="si">${</span><span class="nv">robot_num</span><span class="si">}</span><span class="s2">.local&quot;</span>
-<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">ZENOH_CONFIG_OVERRIDE</span><span class="o">=</span><span class="s1">&#39;connect/endpoints=[&quot;tcp/${ROBOT_IP}:7447&quot;];mode=&quot;client&quot;&#39;</span>
-<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Connected to ad-r1m-</span><span class="si">${</span><span class="nv">robot_num</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">ROBOT_IP</span><span class="o">=</span><span class="s2">"ad-r1m-</span><span class="si">${</span><span class="nv">robot_num</span><span class="si">}</span><span class="s2">.local"</span>
+<span class="w">    </span><span class="nb">export</span><span class="w"> </span><span class="nv">ZENOH_CONFIG_OVERRIDE</span><span class="o">=</span><span class="s1">'connect/endpoints=["tcp/${ROBOT_IP}:7447"];mode="client"'</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"Connected to ad-r1m-</span><span class="si">${</span><span class="nv">robot_num</span><span class="si">}</span><span class="s2">"</span>
 <span class="o">}</span>
 </pre></div>
 </div>

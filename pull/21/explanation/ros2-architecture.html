@@ -8,7 +8,7 @@
 
     <title>AD-R1M ROS2 Architecture &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
-    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=cae2157c" />
+    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=fb8972a4" />
     <script async="async" src="../_static/app.umd.js?v=26d0298f"></script>
     <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
 
@@ -714,8 +714,8 @@ ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_real<span class
 <span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">diff_drive_controller/DiffDriveController</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">publish_rate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50.0</span>
-<span class="w">    </span><span class="nt">left_wheel_names</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;left_wheel_joint&#39;</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="nt">right_wheel_names</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;right_wheel_joint&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">left_wheel_names</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">'left_wheel_joint'</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">right_wheel_names</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">'right_wheel_joint'</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">wheel_separation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
 <span class="w">    </span><span class="nt">wheel_radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0675</span>
 <span class="w">    </span><span class="nt">enable_odom_tf</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">  </span><span class="c1"># TF published by robot_localization (EKF)</span>
@@ -821,13 +821,13 @@ The EKF (Extended Kalman Filter) uses (X, Y) position, (X, Y) linear velocities,
 </ul>
 <p>A simplified example of such configuration:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">master</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ros2_canopen::MasterDriver&quot;</span>
-<span class="w">  </span><span class="nt">package</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;canopen_master_driver&quot;</span>
+<span class="w">  </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="s">"ros2_canopen::MasterDriver"</span>
+<span class="w">  </span><span class="nt">package</span><span class="p">:</span><span class="w"> </span><span class="s">"canopen_master_driver"</span>
 
 <span class="nt">defaults</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">dcf</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;adrd3161.eds&quot;</span>
-<span class="w">  </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ros2_canopen::Cia402Driver&quot;</span>
-<span class="w">  </span><span class="nt">package</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;canopen_402_driver&quot;</span>
+<span class="w">  </span><span class="nt">dcf</span><span class="p">:</span><span class="w"> </span><span class="s">"adrd3161.eds"</span>
+<span class="w">  </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="s">"ros2_canopen::Cia402Driver"</span>
+<span class="w">  </span><span class="nt">package</span><span class="p">:</span><span class="w"> </span><span class="s">"canopen_402_driver"</span>
 
 <span class="nt">nodes</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">drive_left</span><span class="p">:</span>
@@ -918,10 +918,10 @@ The node subscribes to <cite>/imu/data_raw</cite> (containing angular velocities
 See this launch file for reference: <a class="icon link reference external" href="https://github.com/analogdevicesinc/imu_ros2/blob/humble/launch/imu_with_madgwick_filter_rviz.launch.py" target="_blank">imu_with_madgwick_filter</a>.</p>
 </div>
 <p>The IMU is mounted to the robot using a fixed joint as defined in the URDF:</p>
-<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;joint</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;imu_joint&quot;</span><span class="w"> </span><span class="na">type=</span><span class="s">&quot;fixed&quot;</span><span class="nt">&gt;</span>
-<span class="w">    </span><span class="nt">&lt;parent</span><span class="w"> </span><span class="na">link=</span><span class="s">&quot;base_link&quot;</span><span class="nt">/&gt;</span>
-<span class="w">    </span><span class="nt">&lt;child</span><span class="w"> </span><span class="na">link=</span><span class="s">&quot;imu_link&quot;</span><span class="nt">/&gt;</span>
-<span class="w">    </span><span class="nt">&lt;origin</span><span class="w"> </span><span class="na">xyz=</span><span class="s">&quot;0.133 -0.01 ${wheel_radius}&quot;</span><span class="w"> </span><span class="na">rpy=</span><span class="s">&quot;0 ${pi} ${-pi/2}&quot;</span><span class="nt">/&gt;</span>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;joint</span><span class="w"> </span><span class="na">name=</span><span class="s">"imu_joint"</span><span class="w"> </span><span class="na">type=</span><span class="s">"fixed"</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;parent</span><span class="w"> </span><span class="na">link=</span><span class="s">"base_link"</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;child</span><span class="w"> </span><span class="na">link=</span><span class="s">"imu_link"</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;origin</span><span class="w"> </span><span class="na">xyz=</span><span class="s">"0.133 -0.01 ${wheel_radius}"</span><span class="w"> </span><span class="na">rpy=</span><span class="s">"0 ${pi} ${-pi/2}"</span><span class="nt">/&gt;</span>
 <span class="nt">&lt;/joint&gt;</span>
 </pre></div>
 </div>
@@ -941,17 +941,17 @@ The node captures depth frames from the sensor using the <a class="icon link ref
 <dl>
 <dt>Example Python launch code:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">adi_3dtof_node</span> <span class="o">=</span> <span class="n">IncludeLaunchDescription</span><span class="p">(</span>
     <span class="n">PythonLaunchDescriptionSource</span><span class="p">(</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pkg_3dtof_adtf31xx_dir</span><span class="p">,</span> <span class="s1">&#39;launch&#39;</span><span class="p">,</span>
-                     <span class="s1">&#39;adi_3dtof_adtf31xx_launch.py&#39;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pkg_3dtof_adtf31xx_dir</span><span class="p">,</span> <span class="s1">'launch'</span><span class="p">,</span>
+                     <span class="s1">'adi_3dtof_adtf31xx_launch.py'</span><span class="p">)</span>
     <span class="p">),</span>
     <span class="n">launch_arguments</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;arg_enable_depth_publish&quot;</span><span class="p">:</span> <span class="s2">&quot;True&quot;</span><span class="p">,</span>  <span class="c1"># Enable depth image publishing for LaserScan conversion</span>
-        <span class="s2">&quot;arg_enable_ab_publish&quot;</span><span class="p">:</span> <span class="s2">&quot;False&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;arg_enable_conf_publish&quot;</span><span class="p">:</span> <span class="s2">&quot;False&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;arg_enable_point_cloud_publish&quot;</span><span class="p">:</span> <span class="s2">&quot;False&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;arg_input_sensor_mode&quot;</span><span class="p">:</span> <span class="s2">&quot;0&quot;</span><span class="p">,</span>        <span class="c1"># Input mode, `0:Real Time Sensor`</span>
-        <span class="s2">&quot;arg_input_sensor_ip&quot;</span><span class="p">:</span> <span class="s2">&quot;127.0.0.1&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;arg_encoding_type&quot;</span><span class="p">:</span> <span class="s2">&quot;16UC1&quot;</span><span class="p">,</span>        <span class="c1"># Encoding types `mono16` or `16UC1`</span>
+        <span class="s2">"arg_enable_depth_publish"</span><span class="p">:</span> <span class="s2">"True"</span><span class="p">,</span>  <span class="c1"># Enable depth image publishing for LaserScan conversion</span>
+        <span class="s2">"arg_enable_ab_publish"</span><span class="p">:</span> <span class="s2">"False"</span><span class="p">,</span>
+        <span class="s2">"arg_enable_conf_publish"</span><span class="p">:</span> <span class="s2">"False"</span><span class="p">,</span>
+        <span class="s2">"arg_enable_point_cloud_publish"</span><span class="p">:</span> <span class="s2">"False"</span><span class="p">,</span>
+        <span class="s2">"arg_input_sensor_mode"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>        <span class="c1"># Input mode, `0:Real Time Sensor`</span>
+        <span class="s2">"arg_input_sensor_ip"</span><span class="p">:</span> <span class="s2">"127.0.0.1"</span><span class="p">,</span>
+        <span class="s2">"arg_encoding_type"</span><span class="p">:</span> <span class="s2">"16UC1"</span><span class="p">,</span>        <span class="c1"># Encoding types `mono16` or `16UC1`</span>
     <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span>
 <span class="p">)</span>
 </pre></div>
@@ -1008,7 +1008,7 @@ The node captures depth frames from the sensor using the <a class="icon link ref
 <span class="w">    </span><span class="nt">range_max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span>
 <span class="w">    </span><span class="nt">scan_height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">40</span><span class="w"> </span><span class="c1"># image height x width = 512 x 512</span>
 <span class="w">    </span><span class="nt">scan_offset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.539062</span>
-<span class="w">    </span><span class="nt">output_frame</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;cam1_scan&quot;</span>
+<span class="w">    </span><span class="nt">output_frame</span><span class="p">:</span><span class="w"> </span><span class="s">"cam1_scan"</span>
 </pre></div>
 </div>
 <p>The camera’s position relative to the robot base is defined in <code class="docutils literal notranslate"><span class="pre">urdf/camera.xacro</span></code>. Ensure the transform between <code class="docutils literal notranslate"><span class="pre">cam1_adtf31xx</span></code> and <code class="docutils literal notranslate"><span class="pre">base_link</span></code> frames is correctly specified for accurate sensor fusion and navigation.</p>
@@ -1022,7 +1022,7 @@ The camera is rotated by π radians around the X-axis to align the Laser Scan wi
 </figure>
 <p>The relevant URDF/Xacro snippet for the camera’s pose is:</p>
 <blockquote>
-<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;origin</span><span class="w"> </span><span class="na">xyz=</span><span class="s">&quot;${chassis_length / 2} 0 0.055&quot;</span><span class="w"> </span><span class="na">rpy=</span><span class="s">&quot;${pi} 0 0&quot;</span><span class="w"> </span><span class="nt">/&gt;</span><span class="w"> </span><span class="cm">&lt;!-- rotated for correct depthimage_to_laserscan alignment --&gt;</span>
+<div><div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;origin</span><span class="w"> </span><span class="na">xyz=</span><span class="s">"${chassis_length / 2} 0 0.055"</span><span class="w"> </span><span class="na">rpy=</span><span class="s">"${pi} 0 0"</span><span class="w"> </span><span class="nt">/&gt;</span><span class="w"> </span><span class="cm">&lt;!-- rotated for correct depthimage_to_laserscan alignment --&gt;</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -1202,7 +1202,7 @@ ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_navigation<span
 <span class="w">    </span><span class="nt">laser_likelihood_max_dist</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.01</span><span class="w"> </span><span class="c1"># 1cm bubble around obstacles</span>
 <span class="w">    </span><span class="nt">laser_max_range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span>
 <span class="w">    </span><span class="nt">laser_min_range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
-<span class="w">    </span><span class="nt">laser_model_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;likelihood_field&quot;</span>
+<span class="w">    </span><span class="nt">laser_model_type</span><span class="p">:</span><span class="w"> </span><span class="s">"likelihood_field"</span>
 <span class="w">    </span><span class="nt">max_beams</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span><span class="w">        </span><span class="c1"># number of beams/rays used in the particle filter scan</span>
 <span class="w">    </span><span class="nt">max_particles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2000</span><span class="w">   </span><span class="c1"># max number of particles for localization</span>
 <span class="w">    </span><span class="nt">min_particles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w">   </span><span class="c1"># min number of particles for localization</span>
@@ -1213,7 +1213,7 @@ ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_navigation<span
 <span class="w">    </span><span class="nt">recovery_alpha_fast</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
 <span class="w">    </span><span class="nt">recovery_alpha_slow</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0001</span>
 <span class="w">    </span><span class="nt">resample_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-<span class="w">    </span><span class="nt">robot_model_type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nav2_amcl::DifferentialMotionModel&quot;</span>
+<span class="w">    </span><span class="nt">robot_model_type</span><span class="p">:</span><span class="w"> </span><span class="s">"nav2_amcl::DifferentialMotionModel"</span>
 <span class="w">    </span><span class="nt">save_pose_rate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
 <span class="w">    </span><span class="nt">sigma_hit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.02</span><span class="w">  </span><span class="c1"># 2cm stddev on distances</span>
 <span class="w">    </span><span class="nt">tf_broadcast</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>

@@ -8,7 +8,7 @@
 
     <title>AD-R1M Use Case Examples &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
-    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=cae2157c" />
+    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=fb8972a4" />
     <script async="async" src="../_static/app.umd.js?v=26d0298f"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -303,12 +303,12 @@ ros2<span class="w"> </span>bag<span class="w"> </span>play<span class="w"> </sp
 
 <span class="k">class</span><span class="w"> </span><span class="nc">ImuLogger</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;imu_logger&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">'imu_logger'</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subscription</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span>
-            <span class="n">Imu</span><span class="p">,</span> <span class="s1">&#39;/imu&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">imu_callback</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">csv_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;imu_data.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="n">Imu</span><span class="p">,</span> <span class="s1">'/imu'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">imu_callback</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">csv_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">'imu_data.csv'</span><span class="p">,</span> <span class="s1">'w'</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">''</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">csv_file</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s1">&#39;timestamp&#39;</span><span class="p">,</span> <span class="s1">&#39;ax&#39;</span><span class="p">,</span> <span class="s1">&#39;ay&#39;</span><span class="p">,</span> <span class="s1">&#39;az&#39;</span><span class="p">,</span> <span class="s1">&#39;gx&#39;</span><span class="p">,</span> <span class="s1">&#39;gy&#39;</span><span class="p">,</span> <span class="s1">&#39;gz&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span><span class="s1">'timestamp'</span><span class="p">,</span> <span class="s1">'ax'</span><span class="p">,</span> <span class="s1">'ay'</span><span class="p">,</span> <span class="s1">'az'</span><span class="p">,</span> <span class="s1">'gx'</span><span class="p">,</span> <span class="s1">'gy'</span><span class="p">,</span> <span class="s1">'gz'</span><span class="p">])</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">imu_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">([</span>
@@ -387,7 +387,7 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
 
 <span class="k">class</span><span class="w"> </span><span class="nc">PatrolMission</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;patrol_mission&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">'patrol_mission'</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span> <span class="o">=</span> <span class="n">BasicNavigator</span><span class="p">()</span>
 
         <span class="c1"># Define patrol waypoints</span>
@@ -400,7 +400,7 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
 
     <span class="k">def</span><span class="w"> </span><span class="nf">create_pose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">yaw</span><span class="p">):</span>
         <span class="n">pose</span> <span class="o">=</span> <span class="n">PoseStamped</span><span class="p">()</span>
-        <span class="n">pose</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s1">&#39;map&#39;</span>
+        <span class="n">pose</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s1">'map'</span>
         <span class="n">pose</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_clock</span><span class="p">()</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">to_msg</span><span class="p">()</span>
         <span class="n">pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
         <span class="n">pose</span><span class="o">.</span><span class="n">pose</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
@@ -412,7 +412,7 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
         <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span><span class="o">.</span><span class="n">waitUntilNav2Active</span><span class="p">()</span>
 
         <span class="k">for</span> <span class="n">loop</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_loops</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Starting patrol loop </span><span class="si">{</span><span class="n">loop</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">num_loops</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Starting patrol loop </span><span class="si">{</span><span class="n">loop</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">num_loops</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 
             <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">waypoint</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">waypoints</span><span class="p">):</span>
                 <span class="n">waypoint</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_clock</span><span class="p">()</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">to_msg</span><span class="p">()</span>
@@ -423,9 +423,9 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
                     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
 
                 <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">navigator</span><span class="o">.</span><span class="n">getResult</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Waypoint </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1"> reached: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Waypoint </span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s1"> reached: </span><span class="si">{</span><span class="n">result</span><span class="si">}</span><span class="s1">'</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Patrol loop </span><span class="si">{</span><span class="n">loop</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1"> complete&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Patrol loop </span><span class="si">{</span><span class="n">loop</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s1"> complete'</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
     <span class="n">rclpy</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
@@ -435,7 +435,7 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
     <span class="n">patrol</span><span class="o">.</span><span class="n">destroy_node</span><span class="p">()</span>
     <span class="n">rclpy</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
 
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">'__main__'</span><span class="p">:</span>
     <span class="n">main</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -455,10 +455,10 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
 
 <span class="k">class</span><span class="w"> </span><span class="nc">FollowClosest</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;follow_closest&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">'follow_closest'</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subscription</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span>
-            <span class="n">LaserScan</span><span class="p">,</span> <span class="s1">&#39;/cam1/scan&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan_callback</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">publisher</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_publisher</span><span class="p">(</span><span class="n">Twist</span><span class="p">,</span> <span class="s1">&#39;/cmd_vel_nav&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+            <span class="n">LaserScan</span><span class="p">,</span> <span class="s1">'/cam1/scan'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan_callback</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">publisher</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_publisher</span><span class="p">(</span><span class="n">Twist</span><span class="p">,</span> <span class="s1">'/cmd_vel_nav'</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">target_distance</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># meters</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">kp_linear</span> <span class="o">=</span> <span class="mf">0.5</span>
@@ -466,7 +466,7 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
 
     <span class="k">def</span><span class="w"> </span><span class="nf">scan_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
         <span class="c1"># Find closest point</span>
-        <span class="n">min_range</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+        <span class="n">min_range</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'inf'</span><span class="p">)</span>
         <span class="n">min_angle</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">ranges</span><span class="p">):</span>
@@ -475,7 +475,7 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
                     <span class="n">min_range</span> <span class="o">=</span> <span class="n">r</span>
                     <span class="n">min_angle</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">angle_min</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">msg</span><span class="o">.</span><span class="n">angle_increment</span>
 
-        <span class="k">if</span> <span class="n">min_range</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">min_range</span> <span class="o">&lt;</span> <span class="nb">float</span><span class="p">(</span><span class="s1">'inf'</span><span class="p">):</span>
             <span class="n">cmd</span> <span class="o">=</span> <span class="n">Twist</span><span class="p">()</span>
 
             <span class="c1"># Linear velocity: move toward target distance</span>
@@ -512,16 +512,16 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
 
 <span class="k">class</span><span class="w"> </span><span class="nc">OdometryComparator</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;odom_comparator&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">'odom_comparator'</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">wheel_odom</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fused_odom</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">sub_wheel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span>
-            <span class="n">Odometry</span><span class="p">,</span> <span class="s1">&#39;/diff_drive_controller/odom&#39;</span><span class="p">,</span>
+            <span class="n">Odometry</span><span class="p">,</span> <span class="s1">'/diff_drive_controller/odom'</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">wheel_callback</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sub_fused</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span>
-            <span class="n">Odometry</span><span class="p">,</span> <span class="s1">&#39;/odometry/filtered&#39;</span><span class="p">,</span>
+            <span class="n">Odometry</span><span class="p">,</span> <span class="s1">'/odometry/filtered'</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">fused_callback</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_timer</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">compare_callback</span><span class="p">)</span>
@@ -539,8 +539,8 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
             <span class="n">distance_error</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dx</span><span class="o">*</span><span class="n">dx</span> <span class="o">+</span> <span class="n">dy</span><span class="o">*</span><span class="n">dy</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;Position difference: </span><span class="si">{</span><span class="n">distance_error</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">m &#39;</span>
-                <span class="sa">f</span><span class="s1">&#39;(dx=</span><span class="si">{</span><span class="n">dx</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">, dy=</span><span class="si">{</span><span class="n">dy</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s1">'Position difference: </span><span class="si">{</span><span class="n">distance_error</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">m '</span>
+                <span class="sa">f</span><span class="s1">'(dx=</span><span class="si">{</span><span class="n">dx</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">, dy=</span><span class="si">{</span><span class="n">dy</span><span class="si">:</span><span class="s1">.3f</span><span class="si">}</span><span class="s1">)'</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
     <span class="n">rclpy</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
@@ -562,30 +562,30 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
 <span class="c1"># Initialize motor node</span>
-<span class="n">node</span> <span class="o">=</span> <span class="n">BaseNode402</span><span class="p">(</span><span class="mh">0x16</span><span class="p">,</span> <span class="s1">&#39;ardagvmotor.eds&#39;</span><span class="p">)</span>
+<span class="n">node</span> <span class="o">=</span> <span class="n">BaseNode402</span><span class="p">(</span><span class="mh">0x16</span><span class="p">,</span> <span class="s1">'ardagvmotor.eds'</span><span class="p">)</span>
 <span class="n">network</span> <span class="o">=</span> <span class="n">canopen</span><span class="o">.</span><span class="n">Network</span><span class="p">()</span>
-<span class="n">network</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">&#39;can0&#39;</span><span class="p">,</span> <span class="n">interface</span><span class="o">=</span><span class="s1">&#39;socketcan&#39;</span><span class="p">,</span> <span class="n">bitrate</span><span class="o">=</span><span class="mi">500000</span><span class="p">)</span>
+<span class="n">network</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">channel</span><span class="o">=</span><span class="s1">'can0'</span><span class="p">,</span> <span class="n">interface</span><span class="o">=</span><span class="s1">'socketcan'</span><span class="p">,</span> <span class="n">bitrate</span><span class="o">=</span><span class="mi">500000</span><span class="p">)</span>
 <span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 
 <span class="c1"># Start sync messages</span>
 <span class="n">network</span><span class="o">.</span><span class="n">sync</span><span class="o">.</span><span class="n">start</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
 
 <span class="c1"># Configure node</span>
-<span class="n">node</span><span class="o">.</span><span class="n">nmt</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s1">&#39;RESET&#39;</span>
+<span class="n">node</span><span class="o">.</span><span class="n">nmt</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s1">'RESET'</span>
 <span class="n">node</span><span class="o">.</span><span class="n">nmt</span><span class="o">.</span><span class="n">wait_for_bootup</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 <span class="n">node</span><span class="o">.</span><span class="n">load_configuration</span><span class="p">()</span>
 <span class="n">node</span><span class="o">.</span><span class="n">setup_402_state_machine</span><span class="p">()</span>
-<span class="n">node</span><span class="o">.</span><span class="n">nmt</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s1">&#39;OPERATIONAL&#39;</span>
+<span class="n">node</span><span class="o">.</span><span class="n">nmt</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s1">'OPERATIONAL'</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">set_speed</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Set motor speed. v = -1 to 1&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Set motor speed. v = -1 to 1"""</span>
     <span class="n">v</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="mi">4000000</span><span class="p">)</span>  <span class="c1"># Convert to internal units</span>
-    <span class="n">node</span><span class="o">.</span><span class="n">rpdo</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;Controlword&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="mb">0b1111</span>
-    <span class="n">node</span><span class="o">.</span><span class="n">rpdo</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">&#39;Target velocity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">v</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">rpdo</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">'Controlword'</span><span class="p">]</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="mb">0b1111</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">rpdo</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="s1">'Target velocity'</span><span class="p">]</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">v</span>
     <span class="n">node</span><span class="o">.</span><span class="n">rpdo</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">transmit</span><span class="p">()</span>
 
 <span class="c1"># Enable motors</span>
-<span class="n">node</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s1">&#39;OPERATION ENABLED&#39;</span>
+<span class="n">node</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s1">'OPERATION ENABLED'</span>
 
 <span class="c1"># Test motion</span>
 <span class="n">set_speed</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
@@ -595,7 +595,7 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
 <span class="n">set_speed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="c1"># Disable motors</span>
-<span class="n">node</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s1">&#39;SWITCH ON DISABLED&#39;</span>
+<span class="n">node</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="s1">'SWITCH ON DISABLED'</span>
 </pre></div>
 </div>
 </section>
@@ -613,7 +613,7 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
 
 <span class="k">class</span><span class="w"> </span><span class="nc">BatteryMonitor</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;battery_monitor&#39;</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">'battery_monitor'</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">battery_voltage</span> <span class="o">=</span> <span class="mf">12.0</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">low_voltage_threshold</span> <span class="o">=</span> <span class="mf">10.0</span>
@@ -621,10 +621,10 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
 
         <span class="c1"># Subscribe to battery voltage (from CRSF telemetry)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span>
-            <span class="n">Float32</span><span class="p">,</span> <span class="s1">&#39;/battery_voltage&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">battery_callback</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+            <span class="n">Float32</span><span class="p">,</span> <span class="s1">'/battery_voltage'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">battery_callback</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
         <span class="c1"># Publisher to stop robot in emergency</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_pub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_publisher</span><span class="p">(</span><span class="n">Twist</span><span class="p">,</span> <span class="s1">&#39;/cmd_vel&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cmd_pub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_publisher</span><span class="p">(</span><span class="n">Twist</span><span class="p">,</span> <span class="s1">'/cmd_vel'</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_timer</span><span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_battery</span><span class="p">)</span>
 
@@ -634,13 +634,13 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
     <span class="k">def</span><span class="w"> </span><span class="nf">check_battery</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">battery_voltage</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">critical_voltage_threshold</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;CRITICAL: Battery at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">battery_voltage</span><span class="si">}</span><span class="s1">V! Stopping robot.&#39;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s1">'CRITICAL: Battery at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">battery_voltage</span><span class="si">}</span><span class="s1">V! Stopping robot.'</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">stop_robot</span><span class="p">()</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">battery_voltage</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">low_voltage_threshold</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s1">&#39;LOW BATTERY: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">battery_voltage</span><span class="si">}</span><span class="s1">V. Return to charger soon.&#39;</span><span class="p">)</span>
+                <span class="sa">f</span><span class="s1">'LOW BATTERY: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">battery_voltage</span><span class="si">}</span><span class="s1">V. Return to charger soon.'</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Battery: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">battery_voltage</span><span class="si">}</span><span class="s1">V&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Battery: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">battery_voltage</span><span class="si">}</span><span class="s1">V'</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">stop_robot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">cmd</span> <span class="o">=</span> <span class="n">Twist</span><span class="p">()</span>

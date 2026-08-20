@@ -8,7 +8,7 @@
 
     <title>5) NVIDIA® Isaac™ ROS Visual SLAM and Intel® RealSense™ setup and usage on NVIDIA Jetson™ AGX Orin &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8e8a900e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/app.min.css?v=cae2157c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/app.min.css?v=fb8972a4" />
     <script async="async" src="../../_static/app.umd.js?v=26d0298f"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -203,7 +203,7 @@ Content on this topic
 </pre></div>
 </div>
 <p>Add the server to the list of repositories:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>add-apt-repository<span class="w"> </span><span class="s2">&quot;deb https://librealsense.intel.com/Debian/apt-repo </span><span class="k">$(</span>lsb_release<span class="w"> </span>-cs<span class="k">)</span><span class="s2"> main&quot;</span><span class="w"> </span>-u
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>add-apt-repository<span class="w"> </span><span class="s2">"deb https://librealsense.intel.com/Debian/apt-repo </span><span class="k">$(</span>lsb_release<span class="w"> </span>-cs<span class="k">)</span><span class="s2"> main"</span><span class="w"> </span>-u
 </pre></div>
 </div>
 <p>Install the SDK:</p>
@@ -274,7 +274,7 @@ sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> <
 <p>Start a quick VSLAM demo:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>isaac_ros_examples<span class="w"> </span>isaac_ros_examples.launch.py<span class="w"> </span>launch_fragments:<span class="o">=</span>realsense_stereo_rect,visual_slam<span class="w"> </span><span class="se">\</span>
 interface_specs_file:<span class="o">=</span><span class="si">${</span><span class="nv">ISAAC_ROS_WS</span><span class="si">}</span>/isaac_ros_assets/isaac_ros_visual_slam/quickstart_interface_specs.json<span class="w"> </span><span class="se">\</span>
-base_frame:<span class="o">=</span>camera_link<span class="w"> </span>camera_optical_frames:<span class="o">=</span><span class="s2">&quot;[&#39;camera_infra1_optical_frame&#39;, &#39;camera_infra2_optical_frame&#39;]&quot;</span>
+base_frame:<span class="o">=</span>camera_link<span class="w"> </span>camera_optical_frames:<span class="o">=</span><span class="s2">"['camera_infra1_optical_frame', 'camera_infra2_optical_frame']"</span>
 </pre></div>
 </div>
 <div class="admonition warning">
