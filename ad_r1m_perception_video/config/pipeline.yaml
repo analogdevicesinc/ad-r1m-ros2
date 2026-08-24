@@ -1,0 +1,103 @@
+perception_node:
+  ros__parameters:
+    cameras:
+      camera0:
+        config:
+          type: "gstreamer"
+          name: "right"
+          sensor_id: 0
+          sensor_mode: 1
+          device: "/dev/video0"
+          framerate: 30
+          capture_width: 1640
+          capture_height: 1232
+          work_width: 820
+          work_height: 616
+        calibration:
+          calibration_width: 820
+          calibration_height: 616
+          height: 0.2670
+          pitch: 0.76
+          yaw: 266.0
+          offset: [0.112, 0.114]
+          camera_matrix: [285.393, 0.0, 408.438, 0.0, 288.664, 310.373, 0.0, 0.0, 1.0]
+          distortion_coeffs: [0.04695903, -0.01044333, 0.00587262, -0.00166141]
+
+      camera1:
+        config:
+          type: "gstreamer"
+          name: "rear"
+          sensor_id: 1
+          sensor_mode: 1
+          device: "/dev/video1"
+          framerate: 30
+          capture_width: 1640
+          capture_height: 1232
+          work_width: 820
+          work_height: 616
+        calibration:
+          calibration_width: 820
+          calibration_height: 616
+          height: 0.2624
+          pitch: 5.13
+          yaw: 180.0
+          offset: [0.0, 0.0]
+          camera_matrix: [289.204, 0.0, 421.758, 0.0, 292.375, 304.089, 0.0, 0.0, 1.0]
+          distortion_coeffs: [0.05199617, -0.02175456, 0.01621635, -0.00479072]
+
+      camera2:
+        config:
+          type: "gstreamer"
+          name: "left"
+          sensor_id: 2
+          sensor_mode: 1
+          device: "/dev/video2"
+          framerate: 30
+          capture_width: 1640
+          capture_height: 1232
+          work_width: 820
+          work_height: 616
+        calibration:
+          calibration_width: 820
+          calibration_height: 616
+          height: 0.2643
+          pitch: 3.68
+          yaw: 83.4
+          offset: [-0.097, 0.091]
+          camera_matrix: [286.603, 0.0, 397.481, 0.0, 289.713, 314.363, 0.0, 0.0, 1.0]
+          distortion_coeffs: [0.04920227, -0.0133538, 0.00750128, -0.00215671]
+
+      camera3:
+        config:
+          type: "gstreamer"
+          name: "front"
+          sensor_id: 3
+          sensor_mode: 1
+          device: "/dev/video3"
+          framerate: 30
+          capture_width: 1640
+          capture_height: 1232
+          work_width: 820
+          work_height: 616
+        calibration:
+          calibration_width: 820
+          calibration_height: 616
+          height: 0.2627
+          pitch: 3.18
+          yaw: 2.4
+          offset: [0.000, 0.103]
+          camera_matrix: [287.313, 0.0, 407.954, 0.0, 290.722, 305.619, 0.0, 0.0, 1.0]
+          distortion_coeffs: [0.05436565, -0.02862347, 0.02166409, -0.00622895]
+    bev:
+      enabled: true
+      size: 800
+      ground_range: 5.0
+      publish_topic: "/perception/bev"
+
+    floor:
+      enabled: true
+      model_path: "/ros2_ws/src/ad_r1m_perception_video/models/floor/FastSAM-s_384_384.engine"
+      confidence_threshold: 0.7
+      cameras: ["camera3"]
+      publish_topic: "/perception/floor_mask"
+

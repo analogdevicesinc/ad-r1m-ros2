@@ -1,0 +1,16 @@
+[project]
+name = "ad_r1m_perception_video"
+channels = ["https://prefix.dev/conda-forge", "https://prefix.dev/robostack-humble"]
+platforms = ["linux-aarch64"]
+
+[dependencies]
+ros-humble-rclpy = "*"
+ros-humble-sensor-msgs = "*"
+ros-humble-std-msgs = "*"
+pyyaml = "*"
+pyzmq = "*"
+
+[tasks]
+publisher = "python -m ad_r1m_perception_video.publisher"
+pipeline = { cmd = "env -u PYTHONPATH -u CONDA_PREFIX /usr/bin/python3 -m ad_r1m_perception_video.perception_video_pipeline" }
+perception_video = { cmd = "env -u PYTHONPATH -u CONDA_PREFIX /usr/bin/python3 -m ad_r1m_perception_video.perception_video_pipeline & python -m ad_r1m_perception_video.publisher" }
