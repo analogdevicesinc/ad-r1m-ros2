@@ -1,4 +1,15 @@
-ad-r1m-system (0.1.0) UNRELEASED; urgency=low
+ad-r1m-system (1.1.0-1) UNRELEASED; urgency=medium
+
+  * Remove legacy portenta variant
+  * Add chrony dependency
+  * Add chrony time sync step
+  * Replace start verb with docker compose
+  * Move all data files inside ros_data
+  * Add more default example services
+  * Add bringup and compose scripts for indiviual containers/module
+  * Various bugfixes
+
+ad-r1m-system (1.0.0-1) UNRELEASED; urgency=low
 
   * Initial debian packaging infrastructure
 

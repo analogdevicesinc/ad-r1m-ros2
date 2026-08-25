@@ -1,0 +1,209 @@
+Software release methodology
+============================
+
+The AD-R1M project is managed as a monorepo (``ad-r1m-ros2``) with multiple kinds of deliverables within. Each of these comes with its own particularities when it comes to versioning, release, SBOM generation, etc. This document explains these various quirks and informally establishes processes for release management. Any part SHOULD be revised if deemed unsuitable, instead of being bypassed.
+
+Components within the ``ad-r1m-ros2`` repo fall into the following categories of deliverables:
+
+.. list-table::
+   :header-rows: 1
+
+   - * Kind of deliverable
+     * Sources location
+     * Build system
+     * Release format
+     * Distributed via
+   
+   - * Documentation
+     * ``ad_r1m/doc``
+     * Sphinx
+     * HTML
+     * GitHub Pages
+   
+   - * ROS packages
+     * ``ad_r1m*``
+     * ROS 2 / colcon / ament_cmake / CMake
+     * Compiled binary + data package
+     * Not released individually. Included in runtime Docker image.
+   
+   - * Runtime
+     * ``ad_r1m*``, ``docker``
+     * Docker Buildx
+     * Docker images
+     * Cloudsmith ADI repo
+
+   - * Host system configuration package
+     * ``system``, ``packaging``
+     * Debhelper
+     * Debian packages
+     * Cloudsmith ADI repo
+
+Versioning
+----------
+
+* This project uses semantic versioning.
+
+* Release versions SHOULD be either final "general availability" releases (``X.Y.Z``) or release candidates (``X.Y.Z-rcW``).
+
+  * Not all component kinds can express the latter form. For example, the ROS 2 package.xml spec (`REP 127 <https://www.ros.org/reps/rep-0127.html#version>`_) strictly specifies numeric-only versions. In such cases, truncate the version accordingly.
+
+* All components' versions MUST be kept in sync at each release, even if some components don't change between versions.
+
+* Release ``X.Y.Z(-rcW)`` MUST directly map to git tag ``X.Y.Z(-rcW)``, in which all components' sources MUST reflect version ``X.Y.Z(-rcW)`` (or truncated).
+
+* Automate version determination. Scripts that need repo version info SHOULD use ``scripts/version_get.sh`` as the single point of access for version info repo-wide.
+
+In between releases
+'''''''''''''''''''
+
+We run CI builds for development and pre-release evaluation. A secondary goal of this document is to make it easy to work with these, wherever possible.
+
+Pre-release version numbers:
+
+* SHOULD express the pre-release quality level of the build
+* SHOULD NOT clash with release versions
+* MUST order before the version number of the next release
+* SHOULD order chronologically and/or by commit history depth, among themselves
+* May not match the next release version (such as if uncertain whether the next release will be a patch, minor, major)
+
+Versioning scheme
+'''''''''''''''''
+
+.. list-table::
+   :header-rows: 1
+   :widths: 1 3 3 3 3
+
+   - * Kind of deliverable
+     * Release ``1.2.3``
+     * Release ``1.2.4-rc1``
+     * Pre-release after ``1.2.3``
+     * Pre-release after ``1.2.4-rc1``
+   
+   - * Documentation
+     * ``1.2.3``
+     * ``1.2.4-rc1``
+     * ``main`` (branch name)
+     * ``main`` (branch name)
+   
+   - * ROS packages
+     * ``1.2.3``
+     * ``1.2.4``
+     * ``1.2.3``
+     * ``1.2.4``
+   
+   - * Runtime Docker image
+     * ``1.2.3``
+       
+       ``1.2``
+       
+       ``1``
+     * ``1.2.4-rc1``
+       
+       ``1.2``
+       
+       ``1``
+     * ``1.2.3-next``
+       
+       ``1.2-next``
+       
+       ``1-next``
+     * ``1.2.4-rc1-next``
+       
+       ``1.2-next``
+       
+       ``1-next``
+
+   - * Host system configuration Debian package
+     * ``1.2.3-1``
+     * ``1.2.4-rc1-1``
+     * ``1.2.4~git20261225.2359.a1b2c3d-1``
+     
+       (Assuming ``1.2.4`` entry in changelog)
+     * ``1.2.4-rc2~git20261225.2359.a1b2c3d-1``
+
+       (Assuming ``1.2.4-rc2`` entry in changelog)
+
+Software Bill Of Materials (SBOMs)
+----------------------------------
+
+Each released item MUST have a complete SBOM. These are required for tracking security vulnerabilities, asserting open source license compliance, and other legal framework compliance, such as for the CRA.
+
+SBOMs SHOULD be automatically generated.
+
+Open source license compliance
+------------------------------
+
+.. warning::
+  
+  The following bullet points are meant as guidance for developers but are not meant to be valid legalese. **Refer to the Apache-2.0 license text** and contact the maintainers if uncertain.
+
+The AD-R1M project is developed and licensed as Apache-2.0.
+
+Contributions derived from other projects:
+
+* MUST respect all original license terms
+
+  * At the very least make sure not to clobber authorship, copyright, trademarks, etc.
+
+* MUST NOT require this project or resulting binaries to be licensed under a license different to Apache-2.0
+
+  * e.g. no GPLv3
+
+* MUST add provenance info to the relevant notice files: the top-level ``NOTICE`` file, (if applicable) the Debian ``copyright`` file, (if applicable) manually tracked SBOMs, etc. Even if not strictly required by original license.
+
+Example: `compatibility of BSD-3-Clause code brought to an Apache-2.0 project <https://interoperable-europe.ec.europa.eu/licence/compatibility-check/BSD-3-Clause/Apache-2.0>`__
+
+Maintainers' release checklist
+------------------------------
+
+This is a brief checklist for preparing, committing and tagging a release.
+
+The following example describes the steps for releasing version 1.2.4 on 2025-12-25.
+
+#. **Increment ROS package versions:** In all ROS ``package.xml`` files, increment ``<version>`` tag to 1.2.4:
+
+   .. code-block:: diff
+
+      -<version>1.2.3</version>
+      +<version>1.2.4</version>
+
+#. **Increment ROS package versions:** In all ROS ``CHANGELOG.rst`` files, rename the "Forthcoming" header to "1.2.4 (2026-12-25)" and prepend an empty section with a new "Forthcoming" header, e.g.:
+
+   .. code-block:: diff
+
+       Forthcoming
+       -----------
+      +
+      +1.2.4 (2026-12-25)
+      +------------------
+      
+        * Ho Ho Ho
+        * Happy Holidays!
+
+       1.2.3 (2000-01-01)
+       ------------------
+
+       * Fix Y2K
+
+       ...
+
+#. **Increment Debian package version:** Use ``dch`` to set the latest version to 1.2.4-1 (creates a new entry if needed) and mark it latest version as released:
+
+   .. shell::
+ 
+       ~/ad-r1m-ros2/
+       $ cd packaging
+       $ export DEBFULLNAME="Santa Claus"
+       $ export DEBEMAIL="santa.claus@example.com"
+       $ dch --newversion 1.2.4-1
+       $ dch --release --distro trixie
+
+#. **Commit, tag, push new version.** All the version increments from the previous steps should be aggregated in a single commit:
+
+   .. shell::
+ 
+     ~/ad-r1m-ros2/
+     $ git add .
+     $ git commit -s -m 'Release 1.2.4'
+     $ git tag 1.2.4
+     $ git push --tags
