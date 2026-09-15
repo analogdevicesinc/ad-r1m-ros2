@@ -30,8 +30,8 @@ jobs:
     runs-on: ${{ startsWith(matrix.platform, 'linux/arm') && 'ubuntu-24.04-arm' || 'ubuntu-latest' }}
 
     steps:
-      - uses: docker/setup-buildx-action@v3
-      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@594f3bf4285d9ea8dc53c9a0c9c4092420091003 # v4.4.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Docker annotations
         id: annotations
@@ -53,7 +53,7 @@ jobs:
 
       - name: Build and test
         id: test
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           context: .
           file: docker/Dockerfile
@@ -73,21 +73,21 @@ jobs:
           docker rm $container
 
       - name: Upload test results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: test-results-${{ inputs.name }}-${{ inputs.tag_prefix }}-${{ strategy.job-index }}
           path: /tmp/test-results/**/test_results/**/*.xml
           if-no-files-found: warn
 
       - name: Test summary
-        uses: test-summary/action@v2
+        uses: test-summary/action@37b508cfee6d4d080eedd00b5bb240a6a784a6a5 # v2.6
         with:
           paths: /tmp/test-results/**/test_results/**/*.xml
       
       - name: Cloudsmith OIDC
         id: oidc
         if: inputs.docker_push
-        uses: cloudsmith-io/cloudsmith-cli-action@v2
+        uses: cloudsmith-io/cloudsmith-cli-action@69e169e2ad9bc9a1599c2dff464061a00fe9f8ba # v3.1.1
         with:
           oidc-namespace: adi
           oidc-service-slug: ${{ secrets.CLOUDSMITH_SERVICE_SLUG }}
@@ -95,7 +95,7 @@ jobs:
       - name: Docker login
         id: login
         if: inputs.docker_push && steps.oidc.outcome == 'success'
-        uses: docker/login-action@v3
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.CLOUDSMITH_SERVICE_SLUG }}
@@ -104,7 +104,7 @@ jobs:
       - name: Build final image (${{ inputs.docker_target }})
         id: build
         if: inputs.docker_push && steps.login.outcome == 'success'
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           context: .
           file: docker/Dockerfile
@@ -125,7 +125,7 @@ jobs:
 
       - name: Upload digest
         if: inputs.docker_push && steps.login.outcome == 'success'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: digests-${{ inputs.name }}-${{ inputs.tag_prefix }}-${{ strategy.job-index }}
           path: /tmp/digests/*
@@ -143,10 +143,10 @@ jobs:
     environment: nightly
     runs-on: ubuntu-latest
     steps:
-      - uses: docker/setup-buildx-action@v3
+      - uses: docker/setup-buildx-action@594f3bf4285d9ea8dc53c9a0c9c4092420091003 # v4.4.0
 
       - name: Download digests
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           path: /tmp/digests
           pattern: digests-${{ inputs.name }}-${{ inputs.tag_prefix }}-*
@@ -161,13 +161,13 @@ jobs:
           fi
 
       - name: Cloudsmith OIDC
-        uses: cloudsmith-io/cloudsmith-cli-action@v2
+        uses: cloudsmith-io/cloudsmith-cli-action@69e169e2ad9bc9a1599c2dff464061a00fe9f8ba # v3.1.1
         with:
           oidc-namespace: adi
           oidc-service-slug: ${{ secrets.CLOUDSMITH_SERVICE_SLUG }}
 
       - name: Docker login
-        uses: docker/login-action@v3
+        uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4.6.0
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.CLOUDSMITH_SERVICE_SLUG }}
