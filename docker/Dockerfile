@@ -80,12 +80,9 @@ for type in "${!types[@]}"; do
 done
 EOF
 
-# Add a few extra exec dependencies that are currently not brought by rosdep (rmws "just to be sure")
+# Add exec dependencies that are not brought by rosdep
 RUN cat <<EOF >>/tmp/exec_apt.txt
 gpiod
-ros-$ROS_DISTRO-rmw-fastrtps-cpp
-ros-$ROS_DISTRO-rmw-cyclonedds-cpp
-ros-$ROS_DISTRO-rmw-zenoh-cpp
 EOF
 RUN sort -u -o /tmp/exec_apt.txt /tmp/exec_apt.txt
 
