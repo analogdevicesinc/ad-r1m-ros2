@@ -1,0 +1,6 @@
+repositories:
+  depthimage_to_laserscan:
+    type: git
+    url: https://github.com/laurent-19/depthimage_to_laserscan.git
+    version: "nav-offset-distort"
+

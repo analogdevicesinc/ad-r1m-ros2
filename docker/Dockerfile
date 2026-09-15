@@ -53,8 +53,8 @@ RUN mkdir -p src/ad_r1m_ros2/
 
 # First clone external sources -- keep this as separate as possible from the other sources,
 # so we don't trigger a clone in every build
-COPY repos.vcs src/ad_r1m_ros2/
-RUN vcs import src < src/ad_r1m_ros2/repos.vcs
+COPY repos.${ROS_DISTRO}.vcs src/ad_r1m_ros2/
+RUN vcs import src < src/ad_r1m_ros2/repos.${ROS_DISTRO}.vcs
 
 # ...then copy everything else
 COPY ./ src/ad_r1m_ros2/
