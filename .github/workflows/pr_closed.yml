@@ -11,7 +11,7 @@ jobs:
       contents: write
 
     steps:
-    - uses: analogdevicesinc/doctools/gh-pages-rm-path@action
+    - uses: analogdevicesinc/doctools/gh-pages-rm-path@9f2ae9d124e9af79026d3d7096bcfae93538499b
       with:
         path: pull/${{ github.event.number }}
 
