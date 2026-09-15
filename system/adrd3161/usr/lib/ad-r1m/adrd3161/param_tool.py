@@ -23,6 +23,7 @@ write = sp.add_parser('write', help='Write and persist TMC9660 RWE parameters')
 write.add_argument('file', type=str, help='INI file with new parameter values. Missing parameters will keep their previous values.')
 
 reset = sp.add_parser('reset', help='Delete all stored RWE parameters, restoring defaults')
+store = sp.add_parser('store', help='Persist TMC9660 RWE parameters')
 
 args = parser.parse_args()
 
@@ -75,6 +76,10 @@ match args.subcommand:
                 print(param, ini[param])
                 node.sdo[param].raw = ini[param]
         
+        # Persist to flash
+        node.store(4)
+
+    case 'store':
         # Persist to flash
         node.store(4)
 
