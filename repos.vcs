@@ -4,3 +4,9 @@ repositories:
     url: https://github.com/laurent-19/depthimage_to_laserscan.git
     version: "nav-offset-distort"
 
+  # 2026-09-15: temporarily build rmw_zenoh from source. Pin release containing ros2/rmw_zenoh#1041 which fixes ros2/rmw_zenoh#1032. TODO: Remove this when >=0.1.10 is available via ros distro.
+  rmw_zenoh:
+    type: git
+    url: https://github.com/ros2/rmw_zenoh.git
+    version: 0.1.10
+
