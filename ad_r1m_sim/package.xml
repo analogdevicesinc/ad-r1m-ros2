@@ -13,6 +13,10 @@
   <exec_depend>ad_r1m_gazebo</exec_depend>
   <exec_depend>ad_r1m_navigation</exec_depend>
 
+  <exec_depend>rmw_fastrtps_cpp</exec_depend>
+  <exec_depend>rmw_cyclonedds_cpp</exec_depend>
+  <exec_depend>rmw_zenoh_cpp</exec_depend>
+
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <test_depend>ament_lint_auto</test_depend>
