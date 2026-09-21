@@ -1,0 +1,8 @@
+Standard Documents
+==================
+
+.. toctree::
+   :maxdepth: 1
+
+   __PACKAGE
+
