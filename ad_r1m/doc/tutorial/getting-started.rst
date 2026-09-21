@@ -11,9 +11,9 @@ This guide will help you power on, connect to, and operate the AD-R1M robot for 
 
    **First-Time Setup Required?**
    
-   If your SD card is not pre-flashed or you need to configure the robot for the first time, complete these steps first:
+   All robots built by Analog Devices come with their SD cards already prepared with the robot software, and you don't need to flash anything. If you are building an AD-R1M yourself or want to reinitialize your robot software from scratch, complete these steps first:
    
-   - :ref:`sd-card-setup` - Flash the ADI Kuiper2 image to your SD card
+   - :ref:`sd-card-setup` - Flash the ADI Kuiper Linux image to your SD card
    - :ref:`first-boot-configuration` - Configure hostname, WiFi, firmware, and motor tuning
    
    See the :doc:`software-guide` for complete installation instructions.
@@ -32,30 +32,8 @@ Power On
 2. **Press and hold the gray momentary button** (~1s) to start the robot electronics
 3. **Wait for the LED ring** to turn solid green (~60 seconds)
 
-.. list-table:: LED Status Codes
-   :header-rows: 1
-   :widths: 20 25 55
-
-   * - Time
-     - Pattern
-     - Meaning
-   * - ~5s
-     - ▄ ▄▄▄ ▄ ▄
-     - Linux boot started
-   * - ~45s
-     - ▄ ▄ ▄▄▄ ▄
-     - Bringup script starting
-   * - ~60s
-     - Solid green
-     - System ready
-
-.. note::
-
-   On boot, the robot automatically starts the motors, sensors, and RC teleop nodes. 
-   Once the LED turns solid green, you can immediately control the robot using the RC handset.
-
-Remote Control (RC)
--------------------
+Remote Control
+--------------
 
 .. figure:: /figures/rc.png
    :alt: RC Interface
@@ -106,120 +84,168 @@ For initial RC setup and binding the receiver, see :ref:`first-boot-configuratio
 
 For RC troubleshooting, see :ref:`rc-troubleshooting`.
 
-Connect via SSH
----------------
+Connect to the robot using SSH
+------------------------------
 
-For advanced usage, debugging, or running different operational modes, connect to the robot via SSH.
+Connecting to the robot using SSH allows you to:
 
-1. **SSH into the robot**:
+- Configure a WiFi connection
+- Reconfigure ROS 2 runtime
+- Debug and troubleshoot robot software
+- Deploy your own code to the robot
 
-   .. code-block:: bash
+If you haven't yet configured WiFi, you must connect to the AD-R1M through the wired Ethernet port in the back. Once you configure WiFi, you may disconnect the Ethernet cable, to let your robot roam free.
 
-      ssh analog@ad-r1m-0.local
+.. note::
 
-   - **Hostname**: Replace ``ad-r1m-0`` with your robot's hostname
-   - **Credentials**: ``analog`` / ``analog``
+   In the following sections, ``ad-r1m-123`` represents the hostname of your robot and the ``123`` should be replaced with your actual number, e.g. ``ad-r1m-6``, ``ad-r1m-42``, ...
 
-2. **View running services** (optional):
+Run:
 
-   .. code-block:: bash
+.. shell::
 
-      docker compose ps
+  $ ssh analog@ad-r1m-123.local
 
-.. _bringup-scripts-table:
+Username: ``analog``
 
-Alternative Bringup Scripts
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Password: ``analog``
 
-The default boot configuration starts radio teleop mode. To use different modes, stop the current stack and start a different one:
+Connect the robot to your WiFi network
+--------------------------------------
 
-.. code-block:: bash
+#. Connect to the AD-R1M using SSH
+#. Run ``sudo nmtui`` (password ``analog``)
+#. Enter the "Activate a connection" menu
+#. Select your WiFi network from the list
+#. Enter the WiFi password
+#. Verify the connection -- does your network have an ``*`` (asterisk) next to it?
+#. Press :kbd:`Escape` 3 times to exit ``nmtui``
 
-   # Stop current services
-   docker compose down
+Prepare software on your computer
+---------------------------------
 
-   # Start a different mode
-   ./bringup_mapping.sh
+The robot stack runs standalone and doesn't depend on any external software. You may install extra software on your computer for:
 
-.. list-table::
-   :header-rows: 1
-   :widths: 25 15 60
+* Remotely visualizing the robot's perceived environment
+* Sending commands to the autonomous navigation function
+* Running ROS 2 code that communicates with the robot
 
-   * - Script
-     - Control Mode
-     - Description
-   * - ``./bringup_radio.sh``
-     - Radio
-     - Manual teleoperation with RC handset (default)
-   * - ``./bringup_keyboard.sh`` + ``./teleop.sh``
-     - Keyboard
-     - Development/testing without radio
-   * - ``./bringup_mapping.sh``
-     - Radio + SLAM
-     - Create maps of new environments
-   * - ``./bringup_amcl.sh``
-     - Radio + Nav2
-     - Autonomous navigation in mapped environment
-   * - ``./bringup_blind.sh``
-     - Radio + Nav2
-     - Autonomous navigation without pre-existing map
+Our recommended mechanism for this is to use `Pixi <https://pixi.prefix.dev/latest/>`__. First install Pixi by following their `installation guide <https://pixi.prefix.dev/latest/installation/>`__, i.e.:
 
-For detailed bringup configuration options, see :doc:`software-guide`.
+   .. tab-set::
 
-Keyboard Control
-----------------
+      .. tab-item:: Linux & Max
 
-For development without the RC handset:
+         In a terminal window, run:
 
-1. Start core services: ``./bringup_keyboard.sh``
-2. In a new terminal: ``./teleop.sh``
-3. Press ``p`` to arm, then use keyboard to drive
+         .. shell::
 
-.. code-block:: text
+            $ curl -fsSL https://pixi.sh/install.sh | sh
+         
+         Close and reopen the terminal window, or run ``source ~/.bashrc`` (or the rc of your shell of choice).
 
-   Controls:  u i o     q/z: speed ±10%
-              j k l     p: arm | r: disarm
-              m , .     CTRL-C: quit
+      .. tab-item:: Windows
 
-Visualize with RViz
--------------------
+         In a powershell window, run:
 
-View robot data from your host PC. For complete setup instructions including ROS 2 installation, see :doc:`software-guide/ros2-getting-started`.
+         .. shell::
 
-**Quick Start** (if ROS 2 and Zenoh RMW are already installed):
+            $ powershell -ExecutionPolicy Bypass -c "irm -useb https://pixi.sh/install.ps1 | iex"
+         
+         Close and reopen the powershell window.
 
-.. code-block:: bash
+Then create a Pixi workspace:
 
-   cd platform/common/scripts
-   ./start_rviz.sh 0
+   .. shell::
 
-.. figure:: /figures/rviz_view.png
-   :alt: RViz Visualization
+      $ pixi init pixiws -c robostack-humble -c conda-forge
+      $ cd pixiws
+
+   .. tip::
+
+      You may change ``pixiws`` in these first two commands to something else -- it is just a folder name.
+
+   .. shell::
+
+      ~/pixiws
+      $ pixi add ros-humble-desktop ros-humble-rmw-zenoh-cpp
+      $ pixi workspace activation env set RMW_IMPLEMENTATION="rmw_zenoh_cpp"
+      $ pixi workspace activation env set ZENOH_CONFIG_OVERRIDE="connect/endpoints=['tcp/ad-r1m-123.local:7447'];mode='client'"
+
+
+   .. note::
+
+      Be careful to change the ``ad-r1m-123`` in the last command to your ``ad-r1m-...`` number. You may run these commands multiple times, to overwrite previous settings.
+
+Visualize the robot using Rviz
+------------------------------
+
+Rviz is the standard ROS tool for listening to live data from a robot and displaying it in a 3D environment.
+
+In the Pixi workspace folder, run:
+
+.. shell::
+
+   ~/pixiws
+   pixi run rviz2
+
+Out of the box, rviz doesn't display much:
+
+.. figure:: /figures/rviz_empty.png
+   :alt: RViz with default empty configuration
    :align: center
    :width: 800px
 
-   RViz visualization of AD-R1M robot
+You may build visualizations by adding display items using the "Add" button in the bottom left. Alternatively, you can download our :download:`ready made rviz configuration file <../../../ad_r1m_description/rviz/main.rviz>` and open it from the Rviz ``File`` > ``Open Config`` menu, which should look something like this:
+
+.. figure:: /figures/rviz_example.png
+   :alt: RViz with an example configuration showing the robot 3D model and its camera views
+   :align: center
+   :width: 800px
+
+Note that the ToF preview will always be upside down because of the sensor's position. The robot model encodes this orientation information, so all ROS nodes that use ToF data know to "untwist" it -- this is just a visualization quirk.
+
+Control the robot using a keyboard
+----------------------------------
+
+In development, it is often useful to quickly teleoperate the robot without using the physical remote control, for which you can use ROS' ``teleop_twist_keyboard``. In the Pixi workspace folder, run:
+
+.. shell::
+
+   ~/pixiws
+   $ pixi run ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap cmd_vel:=cmd_vel_joy
+
+   Moving around:
+      u    i    o
+      j    k    l
+      m    ,    .
 
 Next Steps
 ----------
 
 Now that your robot is operational, explore these capabilities:
 
-.. list-table::
-   :widths: 50 50
-   :class: borderless
+.. grid::
+   :columns: 2
 
-   * - .. figure:: /figures/do_mapping.gif
+   .. card::
+      :ref: mapping-with-slam
+
+      **Mapping** -- Create maps of your environment
+
+      .. figure:: /figures/do_mapping.gif
           :align: center
           :width: 100%
 
-          **Mapping** - Create maps of your environment
+   .. card::
+      :ref: autonomous-navigation
+      
+      **Navigation** -- Autonomous navigation to goals
 
-     - .. figure:: /figures/navigate.gif
+      .. figure:: /figures/navigate.gif
           :align: center
           :width: 100%
 
-          **Navigation** - Autonomous navigation to goals
 
 - **Create a map**: See :ref:`mapping-with-slam`
 - **Navigate autonomously**: See :ref:`autonomous-navigation`
