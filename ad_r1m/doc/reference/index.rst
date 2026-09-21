@@ -7,3 +7,4 @@ Reference
    :titlesonly:
 
    specs
+   Software guide <software-guide>

@@ -10,5 +10,6 @@ Step-by-step guides for specific tasks:
 
    Build an AD-R1M from scratch <build-from-scratch/index>
    Set up NVIDIA Jetson AGX Orin <jetson/index>
+   System setup <system-setup>
    AD-R1M use-cases <use-cases>
    Troubleshooting <troubleshooting>
