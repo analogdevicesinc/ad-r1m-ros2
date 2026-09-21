@@ -52,7 +52,7 @@ Installation
 SD Card Setup
 ~~~~~~~~~~~~~
 
-For instructions on setting up the SD card and installing the AD-R1M system software, see :doc:`how-to/build-from-scratch/setup-rpi`.
+For instructions on setting up the SD card and installing the AD-R1M system software, see :doc:`/how-to/build-from-scratch/setup-rpi`.
 
 .. _first-boot-configuration:
 
@@ -147,7 +147,7 @@ Pull the latest AD-R1M container:
 Software Operation
 ------------------
 
-For basic operation (power on, SSH, bringup), see the :doc:`quick-start-guide`.
+For basic operation (power on, SSH, bringup), see the :doc:`/tutorial/getting-started`.
 
 .. _bringup-configuration:
 
@@ -347,7 +347,7 @@ IMU (ADIS16470)
 - **Interface**: IIO (Industrial I/O)
 - **Frequency**: 200 Hz (default), configurable up to 2000 Hz
 
-.. figure:: figures/imu_link.png
+.. figure:: /figures/imu_link.png
    :alt: IMU Link Position
    :align: center
    :width: 400px
@@ -361,7 +361,7 @@ ToF Camera (ADTF3175D)
 - **Interface**: USB via ADI ToF SDK
 - **Function**: Depth images converted to 2D LaserScan for navigation
 
-.. figure:: figures/fig_tof_tf.png
+.. figure:: /figures/fig_tof_tf.png
    :alt: ToF Camera Transform
    :align: center
    :width: 400px
