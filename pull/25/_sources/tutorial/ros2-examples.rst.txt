@@ -51,14 +51,14 @@ Mapping Process
 
 4. **Drive the robot around** using the right stick on the remote control
 
-.. figure:: ../figures/do_mapping.png
+.. figure:: /res/do_mapping.png
    :alt: Mapping in RViz
    :align: center
    :width: 800px
 
    RViz mapping view - change Fixed Frame to "map"
 
-.. figure:: ../figures/do_mapping.gif
+.. figure:: /res/do_mapping.gif
    :align: center
    :width: 800px
    
@@ -128,7 +128,7 @@ In RViz:
 2. Click on the map where the robot is located
 3. Drag to set the orientation (direction robot is facing)
 
-.. figure:: ../figures/locate.gif
+.. figure:: /res/locate.gif
    :align: center
    :width: 800px
 
@@ -177,14 +177,14 @@ In RViz:
 3. Drag to set the goal orientation
 4. The robot will plan a path and navigate autonomously
 
-.. figure:: ../figures/nav_view.png
+.. figure:: /res/nav_view.png
    :alt: Navigation View
    :align: center
    :width: 800px
 
    RViz navigation view showing global path and costmaps
 
-.. figure:: ../figures/navigate.gif
+.. figure:: /res/navigate.gif
    :align: center
    :width: 800px
    
