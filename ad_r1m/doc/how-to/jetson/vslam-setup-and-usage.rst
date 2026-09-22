@@ -1,11 +1,11 @@
 5) NVIDIA\ |reg| Isaac\ |tm| ROS Visual SLAM and Intel\ |reg| RealSense\ |tm| setup and usage on NVIDIA Jetson\ |tm| AGX Orin
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Connect the camera to any USB-A connector on the AGX Orin (USB-A 3.2 are recommended).
 
 
 5.1) Intel RealSense cameras
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Check how the camera is detected**
 

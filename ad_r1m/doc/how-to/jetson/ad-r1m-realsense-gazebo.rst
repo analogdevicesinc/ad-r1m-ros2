@@ -1,5 +1,5 @@
 10) AD-R1M Gazebo simulation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This simulation also includes a Intel\ |reg| RealSense\ |tm| D435i gazebo plugin which is mounted in front of the AD-R1M platform.
 
