@@ -1,8 +1,8 @@
 3) Setup NVIDIA\ |reg| Isaac\ |tm| ROS on AGX Orin
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 3.1) Set locale 
-^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
 
 Check the locale settings:
 
@@ -22,14 +22,14 @@ Set the UTF-8 locale:
 
 
 3.2) Add the **universe** repository
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
     
     sudo add-apt-repository universe
 
 3.3) Setup ROS2 source
-^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
         
@@ -41,7 +41,7 @@ Set the UTF-8 locale:
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
 
 3.4) Install ROS2 packages
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
     
@@ -61,7 +61,7 @@ Set the UTF-8 locale:
     sudo apt install python3-colcon-clean
 
 3.5) Check apt sources list
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If the steps given in these sections are run multiple times, it may happen to have at the end of  /etc/apt/sources.list  the next two lines
 
@@ -74,7 +74,7 @@ If the steps given in these sections are run multiple times, it may happen to ha
     If it is the case, comment only the line containing the universe component, save the file, then run apt update again.
 
 3.6) Configure **nvidia-container-toolkit**
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Verify that nvidia-container-toolkit has been installed:
 
@@ -110,7 +110,7 @@ Check that docker can run a minimal application (make sure Docker is installed):
     sudo docker run hello-world
 
 3.7) Install Large File Storage for **git**
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
@@ -118,7 +118,7 @@ Check that docker can run a minimal application (make sure Docker is installed):
     git lfs install --skip-repo
 
 3.8) Create a Isaac ROS workspace
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
    
@@ -127,7 +127,7 @@ Check that docker can run a minimal application (make sure Docker is installed):
     source ~/.bashrc
 
 3.9) Setup the Isaac ROS workspace
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
@@ -223,7 +223,7 @@ The output should be:
         source install/local_setup.bash
 
 3.10) Build the Isaac ROS workspace
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: bash
     
     source /opt/ros/humble/setup.bash
@@ -232,7 +232,7 @@ The output should be:
     colcon build
 
 3.11) Cleanup
-^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^
 
 .. warning::
     It is recommended to use **colcon clean** command to clean workspace/packages. Manually deleting generated ROS folders - such as builds, installs, and logs - may break dependencies!

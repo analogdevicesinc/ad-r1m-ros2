@@ -1,5 +1,6 @@
 1) Linux installation on NVIDIA\ |reg| Jetson\ |tm| AGX Orin
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 This section describes the required steps for having a bootable device, with latest L4T and required toolkits. The Jetson AGX Orin DevKit supports the following three types of mass storage:
     * NVMe (fastest access)
     * onboard 64GB eMMC
@@ -11,7 +12,7 @@ The following steps imply the usage of a NVMe as install target and bootable mas
     It is highly advised to have two identical NVMes if you intent to use the backup-restore tools from NVIDIA.
 
 1.1) Linux host preparation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Table below contains the requirements for the notebook or desktop computer.
 
@@ -31,7 +32,7 @@ Table below contains the requirements for the notebook or desktop computer.
 
 
 1.2) NVIDIA Jetson AGX Orin DevKit preparation
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
     * Remove the power supply and disconnect all cables from the device.
     * If a uSDHC is inserted, it can be now removed.
@@ -41,7 +42,7 @@ Table below contains the requirements for the notebook or desktop computer.
     * Connect the power supply.
 
 1.3) Installation procedure with NVIDIA SDK Manager
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 **On** **NVIDIA** **Jetson** **AGX Orin:**
     * start the device in Forced Recovery mode
 **On the Linux host:**
@@ -113,7 +114,7 @@ Table below contains the requirements for the notebook or desktop computer.
     * upcoming steps are targeting the Jetson AGX Orin only
 
 1.4) NVIDIA Jetson AGX Orin Setup
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Rebot the device from terminal:
 

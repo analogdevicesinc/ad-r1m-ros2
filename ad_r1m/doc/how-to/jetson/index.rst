@@ -1,5 +1,5 @@
 NVIDIA\ |reg| Jetson\ |tm| AGX Orin and NVIDIA\ |reg| Isaac\ |tm| ROS Visual SLAM Integration
-========================================
+=============================================================================================
 
 This section covers integration of the AD-R1M robot with NVIDIA Jetson AGX Orin
 and Isaac\ |tm| ROS Visual SLAM for advanced localization and mapping capabilities.

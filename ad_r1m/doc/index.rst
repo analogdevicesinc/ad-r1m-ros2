@@ -64,7 +64,7 @@ Multi-robot fleet
   :width: 600px
 
 NVIDIA\ |reg| Isaac\ |tm| ROS
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. image:: figures/ad_r1m_and_cuvslam_demo.gif
   :width: 600px

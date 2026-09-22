@@ -1,8 +1,8 @@
 4) Setup NVIDIA\ |reg| Isaac\ |tm| ROS Visual SLAM
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 4.1) Clone **isaac_ros_common**
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. warning:: 
     This step is required only if camera is of Intel\ |reg| RealSense\ |tm| type.
@@ -22,7 +22,7 @@ Configure the container to include RealSense\ |tm| packages.
     echo CONFIG_IMAGE_KEY=ros2_humble.realsense > .isaac_ros_common-config
 
 4.2) Download quickstart data from NGC (NVIDIA GPU Cloud)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: bash
 
@@ -65,7 +65,7 @@ Download the asset from NGC
     fi
 
 4.3) Build **isaac_ros_visual_slam**
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **Check the CDI (Container Device Interface)**
 

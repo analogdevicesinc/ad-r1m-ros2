@@ -487,7 +487,7 @@ Node parameters (configured in ``ad_r1m_real/config/crsf.yaml``):
 - **Switch SA**: Killswitch (positive = run, negative = kill)
 
 Command Multiplexer
-~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
 
 The command multiplexer node (`twist_mux`) combines multiple velocity command sources into a single output. It subscribes to:
 
@@ -969,7 +969,7 @@ Launch arguments:
 This launches the standard ``teleop_twist_keyboard`` node in an xterm window, remapped to ``cmd_vel_keyboard``.
 
 Reference Code and Documentation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 See the next ROS2 Examples section for more details on how to interact with the system, refer to the `ROS2 Examples <ros2-examples.html>`__ documentation, which provides examples of how to interact with the robot using the available commander nodes and other ROS2 features.
 For more information on the AD-R1M ROS2 architecture, refer to the `AD-R1M ROS2 GitHub repository <https://github.com/analogdevicesinc/ad-r1m-ros2>`__.
