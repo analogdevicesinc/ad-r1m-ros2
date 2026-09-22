@@ -1,6 +1,10 @@
 AD-R1M Software Guide
 =====================
 
+.. warning::
+
+    This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed.
+
 This guide covers software installation, configuration, and operation for the AD-R1M Open Mobile Robot Platform.
 
 .. contents:: Table of Contents
