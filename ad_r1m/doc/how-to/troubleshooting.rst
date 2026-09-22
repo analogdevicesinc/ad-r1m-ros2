@@ -1,6 +1,10 @@
 AD-R1M Troubleshooting
 ======================
 
+.. warning::
+
+    This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed.
+
 .. contents:: Table of Contents
    :depth: 2
    :local:

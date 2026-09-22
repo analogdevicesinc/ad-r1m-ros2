@@ -1,6 +1,10 @@
 8) Launching AD-R1M and NVIDIA\ |reg| Isaac\ |tm| ROS Visual SLAM
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. warning::
+
+    This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed.
+
 Configure **robot_localization** to use Isaac ROS Visual SLAM odometry feedback. 
 
 Open a new terminal and connect to the AD-R1M robot via SSH:
