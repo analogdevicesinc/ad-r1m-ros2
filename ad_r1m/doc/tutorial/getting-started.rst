@@ -23,7 +23,7 @@ This guide will help you power on, connect to, and operate the AD-R1M robot for 
 Power On
 --------
 
-.. figure:: /figures/robot-buttons.png
+.. figure:: /res/robot-buttons.png
    :alt: Robot side panel
    :align: center
    :width: 500px
@@ -37,7 +37,7 @@ Power On
 Remote Control
 --------------
 
-.. figure:: /figures/rc.png
+.. figure:: /res/rc.png
    :alt: RC Interface
    :align: center
    :width: 600px
@@ -48,7 +48,7 @@ Remote Control
 
 Press **[RTN]** to return to the home screen. Look for the wireless "bars" icon indicating connection.
 
-.. figure:: /figures/radio_connect.png
+.. figure:: /res/radio_connect.png
    :alt: RC Connection Status
    :align: center
    :width: 500px
@@ -67,7 +67,7 @@ Press **[TELE]** to view the telemetry screen. RxBt should display the battery v
 
 Move the **arm switch (SA)** to the "ARMED" (down) position. The robot should shake slightly to confirm.
 
-.. figure:: /figures/killswitch.png
+.. figure:: /res/killswitch.png
    :alt: Killswitch Position
    :align: center
    :width: 400px
@@ -193,14 +193,14 @@ In the Pixi workspace folder, run:
 
 Out of the box, rviz doesn't display much:
 
-.. figure:: /figures/rviz_empty.png
+.. figure:: /res/rviz_empty.png
    :alt: RViz with default empty configuration
    :align: center
    :width: 800px
 
 You may build visualizations by adding display items using the "Add" button in the bottom left. Alternatively, you can download our :download:`ready made rviz configuration file <../../../ad_r1m_description/rviz/main.rviz>` and open it from the Rviz ``File`` > ``Open Config`` menu, which should look something like this:
 
-.. figure:: /figures/rviz_example.png
+.. figure:: /res/rviz_example.png
    :alt: RViz with an example configuration showing the robot 3D model and its camera views
    :align: center
    :width: 800px
@@ -235,7 +235,7 @@ Now that your robot is operational, explore these capabilities:
 
       **Mapping** -- Create maps of your environment
 
-      .. figure:: /figures/do_mapping.gif
+      .. figure:: /res/do_mapping.gif
           :align: center
           :width: 100%
 
@@ -244,7 +244,7 @@ Now that your robot is operational, explore these capabilities:
       
       **Navigation** -- Autonomous navigation to goals
 
-      .. figure:: /figures/navigate.gif
+      .. figure:: /res/navigate.gif
           :align: center
           :width: 100%
 

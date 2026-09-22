@@ -353,7 +353,7 @@ IMU (ADIS16470)
 - **Interface**: IIO (Industrial I/O)
 - **Frequency**: 200 Hz (default), configurable up to 2000 Hz
 
-.. figure:: /figures/imu_link.png
+.. figure:: /res/imu_link.png
    :alt: IMU Link Position
    :align: center
    :width: 400px
@@ -367,7 +367,7 @@ ToF Camera (ADTF3175D)
 - **Interface**: USB via ADI ToF SDK
 - **Function**: Depth images converted to 2D LaserScan for navigation
 
-.. figure:: /figures/fig_tof_tf.png
+.. figure:: /res/fig_tof_tf.png
    :alt: ToF Camera Transform
    :align: center
    :width: 400px
