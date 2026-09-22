@@ -3,6 +3,8 @@
 Tutorials
 =========
 
+Hands-on introduction materials for new users of the AD-R1M.
+
 .. toctree::
    :titlesonly:
 
