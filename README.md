@@ -2,7 +2,7 @@
 
 The AD-R1M robot platform runs on ROS 2. This repository is home to a number of ROS 2 packages, as well as CI, platform-specific setup scripts, and other miscellaneous small bits of adjacent software.
 
-<img align="right" src="ad_r1m/doc/figures/ad-r1m.png" alt="3D render of AD-R1M: a white box with a camera up front, and a side panel with buttons and indicator lights" style="width: 20em" />
+<img align="right" src="ad_r1m/doc/res/ad-r1m.png" alt="3D render of AD-R1M: a white box with a camera up front, and a side panel with buttons and indicator lights" style="width: 20em" />
 
 ## ROS 2 packages
 

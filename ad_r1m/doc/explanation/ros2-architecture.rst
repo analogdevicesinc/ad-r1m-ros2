@@ -312,7 +312,7 @@ The IMU is mounted to the robot using a fixed joint as defined in the URDF:
 
 This means the IMU is positioned 0.133 m forward, -0.01 m to the left, and at the height of the wheel radius from the *base_link* (robot center at ground-level), with a rotation of (0, π, -π/2) radians.
 
-.. figure:: ../figures/imu_link.png
+.. figure:: /res/imu_link.png
     :alt: IMU coordinate frame visualization
     :align: center
     :width: 400px
@@ -401,7 +401,7 @@ Current parameters used ``ad_r1m_real/config/depth_to_laser_params.yaml``:
 
 The camera's position relative to the robot base is defined in ``urdf/camera.xacro``. Ensure the transform between ``cam1_adtf31xx`` and ``base_link`` frames is correctly specified for accurate sensor fusion and navigation.
 
-.. figure:: ../figures/fig_tof_tf.png
+.. figure:: /res/fig_tof_tf.png
     :alt: ToF Camera coordinate frame visualization
     :align: center
     :width: 400px
@@ -556,7 +556,7 @@ Launch arguments:
     # Multi-robot example with custom map
     ros2 launch ad_r1m_navigation localization_launch.py namespace:=robot1 map:=/path/to/map.yaml
 
-.. figure:: ../figures/locate.gif
+.. figure:: /res/locate.gif
     :alt: Live AMCL localization process visualization
     :align: center
     :width: 600px
@@ -780,7 +780,7 @@ To use DWB controller:
 - ``/plan``: Global path visualization
 - ``/local_plan``: Local trajectory visualization
 
-.. figure:: ../figures/navigate.gif
+.. figure:: /res/navigate.gif
     :alt: Live Navigation visualization
     :align: center
     :width: 600px

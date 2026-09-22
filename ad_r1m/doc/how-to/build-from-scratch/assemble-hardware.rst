@@ -46,21 +46,21 @@ Bill of Materials
      - :adi:`QSH5718-51-28-101-10K <qsh5718>`
      - NEMA 23 stepper motor 55Ncm, 2.8A
        
-       .. image:: /figures/qsh5718-51-28-101-10k.jpg
+       .. image:: /res/qsh5718-51-28-101-10k.jpg
           :width: 8rem
    * - ADI2
      - 1
      - :adi:`EVAL-ADTF3175D-NXZ`
      - Time-of-Flight depth camera for perception
       
-       .. image:: /figures/eval_adtf3175.png
+       .. image:: /res/eval_adtf3175.png
           :width: 8rem
    * - ADI3
      - 2
      - :adi:`ADRD3161-01Z`
      - Motor Control PCB
 
-       .. image:: /figures/adrd3161.jpg
+       .. image:: /res/adrd3161.jpg
           :width: 8rem
 
    * - ADI4
@@ -68,7 +68,7 @@ Bill of Materials
      - :adi:`ADRD5161-01Z`
      - BMS
        
-       .. image:: /figures/adrd5161.png
+       .. image:: /res/adrd5161.png
           :width: 8rem
 
    * - ADI5
@@ -76,7 +76,7 @@ Bill of Materials
      - :adi:`ADRD4161-01Z`
      - Compute Carrier
      
-       .. image:: /figures/adrd4161_board.jpg
+       .. image:: /res/adrd4161_board.jpg
           :width: 8rem
        
    * - ADI6
