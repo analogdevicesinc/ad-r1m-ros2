@@ -192,4 +192,5 @@ html_static_path = []
 rst_prolog = """
 .. |reg| unicode:: U+00AE
 .. |tm| unicode:: U+2122
+.. |deg| unicode:: U+00B0
 """
