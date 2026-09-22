@@ -1,3 +1,5 @@
+.. _software-guide:
+
 AD-R1M Software Guide
 =====================
 
@@ -56,7 +58,7 @@ Installation
 SD Card Setup
 ~~~~~~~~~~~~~
 
-For instructions on setting up the SD card and installing the AD-R1M system software, see :doc:`/how-to/build-from-scratch/setup-rpi`.
+For instructions on setting up the SD card and installing the AD-R1M system software, see :ref:`setup-rpi`.
 
 .. _first-boot-configuration:
 
@@ -151,7 +153,7 @@ Pull the latest AD-R1M container:
 Software Operation
 ------------------
 
-For basic operation (power on, SSH, bringup), see the :doc:`/tutorial/getting-started`.
+For basic operation (power on, SSH, bringup), see the :ref:`getting-started`.
 
 .. _bringup-configuration:
 
@@ -342,7 +344,7 @@ Configuration and map data stored on host:
 ROS 2 Components
 ----------------
 
-For detailed ROS 2 architecture documentation, see :doc:`software-guide/ros2-architecture`.
+For detailed ROS 2 architecture documentation, see :ref:`ros2-architecture`.
 
 IMU (ADIS16470)
 ~~~~~~~~~~~~~~~
@@ -422,14 +424,14 @@ Interactive Container
    # Access running container
    docker exec -it ad-r1m-motors-1 bash
 
-For troubleshooting common issues, see :doc:`how-to/troubleshooting`.
+For troubleshooting common issues, see :ref:`troubleshooting`.
 
 Detailed Guides
 ---------------
 
 .. seealso::
 
-   - :doc:`tutorial/ros2-getting-started` - Getting started with ROS 2 on the AD-R1M
-   - :doc:`tutorial/ros2-examples` - ROS 2 example applications
-   - :doc:`explanation/ros2-architecture` - ROS 2 software architecture
+   - :ref:`ros2-getting-started` - Getting started with ROS 2 on the AD-R1M
+   - :ref:`ros2-examples` - ROS 2 example applications
+   - :ref:`ros2-architecture` - ROS 2 software architecture
 

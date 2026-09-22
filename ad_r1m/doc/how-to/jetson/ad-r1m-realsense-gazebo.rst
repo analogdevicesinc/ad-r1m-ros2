@@ -1,3 +1,5 @@
+.. _ad-r1m-realsense-gazebo:
+
 10) AD-R1M Gazebo simulation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
