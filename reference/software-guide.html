@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="This guide covers software installation, configuration, and operation for the AD-R1M Open Mobile Robot Platform." name="description" />
+<meta content="This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed." name="description" />
 
     <title>AD-R1M Software Guide &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
@@ -172,12 +172,14 @@ Content on this topic
 </ul>
 </li>
 <li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2" id="toctree-collapse-2"/><div class="collapse"><a class="reference internal" href="../how-to/index.html">How-to guides</a><label for="toctree-collapse-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/use-cases.html">AD-R1M use-cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-1" id="toctree-collapse-2-1"/><div class="collapse"><a class="reference internal" href="../how-to/build-from-scratch/index.html">Build an AD-R1M from scratch</a><label for="toctree-collapse-2-1"><div class="icon"></div></label></div><ul>
 <li class="toctree-l3"><a class="reference internal" href="../how-to/build-from-scratch/assemble-hardware.html">1. Assemble the hardware</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../how-to/build-from-scratch/setup-rpi.html">2. Set up the internal computer</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2"/><div class="collapse"><a class="reference internal" href="../how-to/jetson/index.html">Set up NVIDIA Jetson AGX Orin</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2"/><div class="collapse"><a class="reference internal" href="../how-to/jetson/index.html">NVIDIA® Jetson™ AGX Orin and NVIDIA® Isaac™ ROS Visual SLAM Integration</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul>
 <li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/agx-orin-setup.html">1) Linux installation on NVIDIA® Jetson™ AGX Orin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/setup-req-pkg-agx-orin.html">2) Setup required packages on NVIDIA® Jetson™ AGX Orin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/setup-isaac-ros-agx-orin.html">3) Setup NVIDIA® Isaac™ ROS on AGX Orin</a></li>
@@ -190,9 +192,6 @@ Content on this topic
 <li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-realsense-gazebo.html">10) AD-R1M Gazebo simulation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../how-to/system-setup.html">System setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../how-to/use-cases.html">AD-R1M use-cases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../how-to/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-3" id="toctree-collapse-3" checked=""/><div class="collapse"><a class="reference internal" href="index.html">Reference</a><label for="toctree-collapse-3"><div class="icon"></div></label></div><ul class="current">
@@ -221,7 +220,11 @@ Content on this topic
           <div class="body" role="main">
             
   <section id="ad-r1m-software-guide">
-<h1>AD-R1M Software Guide<a class="headerlink" href="#ad-r1m-software-guide" title="Link to this heading"></a></h1>
+<span id="software-guide"></span><h1>AD-R1M Software Guide<a class="headerlink" href="#ad-r1m-software-guide" title="Link to this heading"></a></h1>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed.</p>
+</div>
 <p>This guide covers software installation, configuration, and operation for the AD-R1M Open Mobile Robot Platform.</p>
 <nav class="contents local" id="table-of-contents">
 <p class="topic-title">Table of Contents</p>
@@ -313,7 +316,7 @@ Content on this topic
 <h2><a class="toc-backref" href="#id12" role="doc-backlink">Installation</a><a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
 <section id="sd-card-setup">
 <span id="id1"></span><h3><a class="toc-backref" href="#id13" role="doc-backlink">SD Card Setup</a><a class="headerlink" href="#sd-card-setup" title="Link to this heading"></a></h3>
-<p>For instructions on setting up the SD card and installing the AD-R1M system software, see <a class="reference internal" href="../how-to/build-from-scratch/setup-rpi.html"><span class="doc">How to set up the AD-R1M internal computer</span></a>.</p>
+<p>For instructions on setting up the SD card and installing the AD-R1M system software, see <a class="reference internal" href="../how-to/build-from-scratch/setup-rpi.html#setup-rpi"><span class="std std-ref">How to set up the AD-R1M internal computer</span></a>.</p>
 </section>
 <section id="first-boot-configuration">
 <span id="id2"></span><h3><a class="toc-backref" href="#id14" role="doc-backlink">First Boot Configuration</a><a class="headerlink" href="#first-boot-configuration" title="Link to this heading"></a></h3>
@@ -397,7 +400,7 @@ docker<span class="w"> </span>tag<span class="w"> </span><span class="nv">$IMAGE
 </section>
 <section id="software-operation">
 <h2><a class="toc-backref" href="#id16" role="doc-backlink">Software Operation</a><a class="headerlink" href="#software-operation" title="Link to this heading"></a></h2>
-<p>For basic operation (power on, SSH, bringup), see the <a class="reference internal" href="../tutorial/getting-started.html"><span class="doc">AD-R1M Quick Start Guide</span></a>.</p>
+<p>For basic operation (power on, SSH, bringup), see the <a class="reference internal" href="../tutorial/getting-started.html#getting-started"><span class="std std-ref">AD-R1M Quick Start Guide</span></a>.</p>
 <section id="bringup-configuration">
 <span id="id4"></span><h3><a class="toc-backref" href="#id17" role="doc-backlink">Bringup Configuration</a><a class="headerlink" href="#bringup-configuration" title="Link to this heading"></a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">bringup.sh</span></code> script accepts environment variables to configure the robot stack:</p>
@@ -611,7 +614,7 @@ docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> 
 </section>
 <section id="ros-2-components">
 <h2><a class="toc-backref" href="#id25" role="doc-backlink">ROS 2 Components</a><a class="headerlink" href="#ros-2-components" title="Link to this heading"></a></h2>
-<p>For detailed ROS 2 architecture documentation, see <span class="xref std std-doc">software-guide/ros2-architecture</span>.</p>
+<p>For detailed ROS 2 architecture documentation, see <a class="reference internal" href="../explanation/ros2-architecture.html#ros2-architecture"><span class="std std-ref">AD-R1M ROS2 Architecture</span></a>.</p>
 <section id="imu-adis16470">
 <h3><a class="toc-backref" href="#id26" role="doc-backlink">IMU (ADIS16470)</a><a class="headerlink" href="#imu-adis16470" title="Link to this heading"></a></h3>
 <ul class="simple">
@@ -690,7 +693,7 @@ docker<span class="w"> </span>compose<span class="w"> </span>run<span class="w">
 docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ad-r1m-motors-1<span class="w"> </span>bash
 </pre></div>
 </div>
-<p>For troubleshooting common issues, see <span class="xref std std-doc">how-to/troubleshooting</span>.</p>
+<p>For troubleshooting common issues, see <a class="reference internal" href="../how-to/troubleshooting.html#troubleshooting"><span class="std std-ref">AD-R1M Troubleshooting</span></a>.</p>
 </section>
 </section>
 <section id="detailed-guides">
@@ -698,9 +701,9 @@ docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </spa
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><span class="xref std std-doc">tutorial/ros2-getting-started</span> - Getting started with ROS 2 on the AD-R1M</p></li>
-<li><p><span class="xref std std-doc">tutorial/ros2-examples</span> - ROS 2 example applications</p></li>
-<li><p><span class="xref std std-doc">explanation/ros2-architecture</span> - ROS 2 software architecture</p></li>
+<li><p><a class="reference internal" href="../tutorial/ros2-getting-started.html#ros2-getting-started"><span class="std std-ref">AD-R1M ROS 2 Getting Started</span></a> - Getting started with ROS 2 on the AD-R1M</p></li>
+<li><p><a class="reference internal" href="../tutorial/ros2-examples.html#ros2-examples"><span class="std std-ref">AD-R1M ROS2 Examples</span></a> - ROS 2 example applications</p></li>
+<li><p><a class="reference internal" href="../explanation/ros2-architecture.html#ros2-architecture"><span class="std std-ref">AD-R1M ROS2 Architecture</span></a> - ROS 2 software architecture</p></li>
 </ul>
 </div>
 </section>

@@ -146,7 +146,7 @@ Run the simulation
 Gazebo and RViz open. If using the locally built image with xterm, a teleop
 window also opens.
 
-.. figure:: ../figures/ad-r1m-launch-sim.gif
+.. figure:: /res/ad-r1m-launch-sim.gif
    :align: center
    :width: 80%
 
@@ -183,7 +183,7 @@ Teleop keys:
        params_file:=/ros2_ws/ros_data/config/nav2_params_sim.yaml \
        map:=/ros2_ws/ros_data/maps/world.yaml
 
-.. figure:: ../figures/ad-r1m-loc-sim.gif
+.. figure:: /res/ad-r1m-loc-sim.gif
    :align: center
    :width: 80%
 
@@ -198,7 +198,7 @@ Teleop keys:
        use_sim_time:=true \
        params_file:=/ros2_ws/ros_data/config/nav2_params_sim.yaml
 
-.. figure:: ../figures/ad-r1m-nav-sim.gif
+.. figure:: /res/ad-r1m-nav-sim.gif
    :align: center
    :width: 80%
 
@@ -227,8 +227,8 @@ Troubleshooting
 See also
 --------
 
-* :doc:`../how-to/jetson/ad-r1m-realsense-gazebo` — NVIDIA\ |reg| Jetson\ |tm| AGX Orin Gazebo simulation
-  (requires :doc:`../how-to/jetson/index`)
+* :ref:`ad-r1m-realsense-gazebo` — NVIDIA\ |reg| Jetson\ |tm| AGX Orin Gazebo simulation
+  (requires :ref:`jetson-index`)
 
    .. figure:: ../how-to/jetson/figures/simulation_demo.gif
       :align: center

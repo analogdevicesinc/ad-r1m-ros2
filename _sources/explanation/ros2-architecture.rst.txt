@@ -1,5 +1,11 @@
+.. _ros2-architecture:
+
 AD-R1M ROS2 Architecture
 ========================
+
+.. warning::
+
+    This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed.
 
 .. contents:: Table of Contents
    :depth: 2
@@ -306,7 +312,7 @@ The IMU is mounted to the robot using a fixed joint as defined in the URDF:
 
 This means the IMU is positioned 0.133 m forward, -0.01 m to the left, and at the height of the wheel radius from the *base_link* (robot center at ground-level), with a rotation of (0, π, -π/2) radians.
 
-.. figure:: ../figures/imu_link.png
+.. figure:: /res/imu_link.png
     :alt: IMU coordinate frame visualization
     :align: center
     :width: 400px
@@ -395,7 +401,7 @@ Current parameters used ``ad_r1m_real/config/depth_to_laser_params.yaml``:
 
 The camera's position relative to the robot base is defined in ``urdf/camera.xacro``. Ensure the transform between ``cam1_adtf31xx`` and ``base_link`` frames is correctly specified for accurate sensor fusion and navigation.
 
-.. figure:: ../figures/fig_tof_tf.png
+.. figure:: /res/fig_tof_tf.png
     :alt: ToF Camera coordinate frame visualization
     :align: center
     :width: 400px
@@ -483,7 +489,7 @@ Node parameters (configured in ``ad_r1m_real/config/crsf.yaml``):
 - **Switch SA**: Killswitch (positive = run, negative = kill)
 
 Command Multiplexer
-~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
 
 The command multiplexer node (`twist_mux`) combines multiple velocity command sources into a single output. It subscribes to:
 
@@ -550,7 +556,7 @@ Launch arguments:
     # Multi-robot example with custom map
     ros2 launch ad_r1m_navigation localization_launch.py namespace:=robot1 map:=/path/to/map.yaml
 
-.. figure:: ../figures/locate.gif
+.. figure:: /res/locate.gif
     :alt: Live AMCL localization process visualization
     :align: center
     :width: 600px
@@ -774,7 +780,7 @@ To use DWB controller:
 - ``/plan``: Global path visualization
 - ``/local_plan``: Local trajectory visualization
 
-.. figure:: ../figures/navigate.gif
+.. figure:: /res/navigate.gif
     :alt: Live Navigation visualization
     :align: center
     :width: 600px
@@ -965,7 +971,7 @@ Launch arguments:
 This launches the standard ``teleop_twist_keyboard`` node in an xterm window, remapped to ``cmd_vel_keyboard``.
 
 Reference Code and Documentation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 See the next ROS2 Examples section for more details on how to interact with the system, refer to the `ROS2 Examples <ros2-examples.html>`__ documentation, which provides examples of how to interact with the robot using the available commander nodes and other ROS2 features.
 For more information on the AD-R1M ROS2 architecture, refer to the `AD-R1M ROS2 GitHub repository <https://github.com/analogdevicesinc/ad-r1m-ros2>`__.

@@ -1,7 +1,7 @@
 AD-R1M Robot Platform
 =====================
 
-.. figure:: figures/ad-r1m.png
+.. figure:: /res/ad-r1m.png
    :align: right
    :alt: AD-R1M Robot Platform
 
@@ -13,7 +13,7 @@ This reference design integrates key hardware and software components, including
 
 Whether you're building a research prototype, an educational robot, or a commercial-grade autonomous system, this platform provides the flexibility and scalability needed to meet diverse application requirements. It is designed to be compatible with popular development tools, middleware (such as ROS 2), and embedded systems, making it ideal for both academic and industrial use.
 
-.. clear-content:: both
+.. clear-content::
 
 In this documentation
 ---------------------
@@ -48,25 +48,25 @@ Applications showcase
 SLAM
 ^^^^
 
-.. image:: figures/do_mapping.gif
+.. image:: /res/do_mapping.gif
   :width: 600px
 
 Navigation
 ^^^^^^^^^^
 
-.. image:: figures/navigate.gif
+.. image:: /res/navigate.gif
   :width: 600px
 
 Multi-robot fleet
 ^^^^^^^^^^^^^^^^^
 
-.. image:: figures/amr_multi_robot.gif
+.. image:: /res/amr_multi_robot.gif
   :width: 600px
 
 NVIDIA\ |reg| Isaac\ |tm| ROS
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. image:: figures/ad_r1m_and_cuvslam_demo.gif
+.. image:: /res/ad_r1m_and_cuvslam_demo.gif
   :width: 600px
 
 GMSL Camera integration and image processing
@@ -75,13 +75,13 @@ GMSL Camera integration and image processing
 Floor segmentation
 ''''''''''''''''''
 
-.. image:: figures/segmentation_result.gif
+.. image:: /res/segmentation_result.gif
   :width: 600px
 
 Object Detection
 ''''''''''''''''
 
-.. image:: figures/detection_result.gif
+.. image:: /res/detection_result.gif
   :width: 600px
 
 Features

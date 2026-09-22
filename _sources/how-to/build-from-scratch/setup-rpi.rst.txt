@@ -1,3 +1,5 @@
+.. _setup-rpi:
+
 How to set up the AD-R1M internal computer
 ==========================================
 

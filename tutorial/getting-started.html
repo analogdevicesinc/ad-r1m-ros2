@@ -141,12 +141,14 @@ Content on this topic
 </ul>
 </li>
 <li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2" id="toctree-collapse-2"/><div class="collapse"><a class="reference internal" href="../how-to/index.html">How-to guides</a><label for="toctree-collapse-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/use-cases.html">AD-R1M use-cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-1" id="toctree-collapse-2-1"/><div class="collapse"><a class="reference internal" href="../how-to/build-from-scratch/index.html">Build an AD-R1M from scratch</a><label for="toctree-collapse-2-1"><div class="icon"></div></label></div><ul>
 <li class="toctree-l3"><a class="reference internal" href="../how-to/build-from-scratch/assemble-hardware.html">1. Assemble the hardware</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../how-to/build-from-scratch/setup-rpi.html">2. Set up the internal computer</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2"/><div class="collapse"><a class="reference internal" href="../how-to/jetson/index.html">Set up NVIDIA Jetson AGX Orin</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2"/><div class="collapse"><a class="reference internal" href="../how-to/jetson/index.html">NVIDIA® Jetson™ AGX Orin and NVIDIA® Isaac™ ROS Visual SLAM Integration</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul>
 <li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/agx-orin-setup.html">1) Linux installation on NVIDIA® Jetson™ AGX Orin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/setup-req-pkg-agx-orin.html">2) Setup required packages on NVIDIA® Jetson™ AGX Orin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/setup-isaac-ros-agx-orin.html">3) Setup NVIDIA® Isaac™ ROS on AGX Orin</a></li>
@@ -159,9 +161,6 @@ Content on this topic
 <li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-realsense-gazebo.html">10) AD-R1M Gazebo simulation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../how-to/system-setup.html">System setup</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../how-to/use-cases.html">AD-R1M use-cases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../how-to/troubleshooting.html">Troubleshooting</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-3" id="toctree-collapse-3"/><div class="collapse"><a class="reference internal" href="../reference/index.html">Reference</a><label for="toctree-collapse-3"><div class="icon"></div></label></div><ul>
@@ -190,7 +189,7 @@ Content on this topic
           <div class="body" role="main">
             
   <section id="ad-r1m-quick-start-guide">
-<h1>AD-R1M Quick Start Guide<a class="headerlink" href="#ad-r1m-quick-start-guide" title="Link to this heading"></a></h1>
+<span id="getting-started"></span><h1>AD-R1M Quick Start Guide<a class="headerlink" href="#ad-r1m-quick-start-guide" title="Link to this heading"></a></h1>
 <p>This guide will help you power on, connect to, and operate the AD-R1M robot for the first time.</p>
 <nav class="contents local" id="table-of-contents">
 <p class="topic-title">Table of Contents</p>
@@ -213,7 +212,7 @@ Content on this topic
 <li><p><a class="reference internal" href="../reference/software-guide.html#sd-card-setup"><span class="std std-ref">SD Card Setup</span></a> - Flash the ADI Kuiper Linux image to your SD card</p></li>
 <li><p><a class="reference internal" href="../reference/software-guide.html#first-boot-configuration"><span class="std std-ref">First Boot Configuration</span></a> - Configure hostname, WiFi, firmware, and motor tuning</p></li>
 </ul>
-<p>See the <span class="xref std std-doc">software-guide</span> for complete installation instructions.</p>
+<p>See the <a class="reference internal" href="../reference/software-guide.html#software-guide"><span class="std std-ref">AD-R1M Software Guide</span></a> for complete installation instructions.</p>
 </div>
 <section id="power-on">
 <h2><a class="toc-backref" href="#id5" role="doc-backlink">Power On</a><a class="headerlink" href="#power-on" title="Link to this heading"></a></h2>
@@ -390,7 +389,7 @@ Content on this topic
 <a class="reference internal image-reference" href="../_images/rviz_empty.png"><img alt="RViz with default empty configuration" src="../_images/rviz_empty.png" style="width: 800px;" />
 </a>
 </figure>
-<p>You may build visualizations by adding display items using the “Add” button in the bottom left. Alternatively, you can download our <code class="xref download docutils literal notranslate"><span class="pre">ready</span> <span class="pre">made</span> <span class="pre">rviz</span> <span class="pre">configuration</span> <span class="pre">file</span></code> and open it from the Rviz <code class="docutils literal notranslate"><span class="pre">File</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Config</span></code> menu, which should look something like this:</p>
+<p>You may build visualizations by adding display items using the “Add” button in the bottom left. Alternatively, you can download a ready made rviz configuration file: <a class="icon link reference external" href="https://github.com/analogdevicesinc/ad-r1m-ros2/blob/main/ad_r1m_description/rviz/main.rviz" target="_blank">ad_r1m_description/rviz/main.rviz</a> and open it from the Rviz <code class="docutils literal notranslate"><span class="pre">File</span></code> &gt; <code class="docutils literal notranslate"><span class="pre">Open</span> <span class="pre">Config</span></code> menu, which should look something like this:</p>
 <figure class="align-center">
 <a class="reference internal image-reference" href="../_images/rviz_example.png"><img alt="RViz with an example configuration showing the robot 3D model and its camera views" src="../_images/rviz_example.png" style="width: 800px;" />
 </a>
@@ -434,8 +433,8 @@ Content on this topic
 <span class="link-overlay"><a class="icon link reference internal" href="ros2-examples.html#autonomous-navigation"><span class="std std-ref">Read more</span></a></span></div></div><ul class="simple">
 <li><p><strong>Create a map</strong>: See <a class="reference internal" href="ros2-examples.html#mapping-with-slam"><span class="std std-ref">Mapping with SLAM Toolbox</span></a></p></li>
 <li><p><strong>Navigate autonomously</strong>: See <a class="reference internal" href="ros2-examples.html#autonomous-navigation"><span class="std std-ref">Autonomous Navigation with Nav2</span></a></p></li>
-<li><p><strong>Understand the architecture</strong>: See <span class="xref std std-doc">software-guide/ros2-architecture</span></p></li>
-<li><p><strong>Troubleshoot issues</strong>: See <span class="xref std std-doc">troubleshooting</span></p></li>
+<li><p><strong>Understand the architecture</strong>: See <a class="reference internal" href="../explanation/ros2-architecture.html#ros2-architecture"><span class="std std-ref">AD-R1M ROS2 Architecture</span></a></p></li>
+<li><p><strong>Troubleshoot issues</strong>: See <a class="reference internal" href="../how-to/troubleshooting.html#troubleshooting"><span class="std std-ref">AD-R1M Troubleshooting</span></a></p></li>
 </ul>
 </section>
 </section>

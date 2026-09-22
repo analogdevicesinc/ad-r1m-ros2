@@ -1,5 +1,11 @@
+.. _ros2-examples:
+
 AD-R1M ROS2 Examples
 ====================
+
+.. warning::
+
+    This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed.
 
 .. contents:: Table of Contents
    :depth: 2
@@ -32,7 +38,7 @@ Starting the Mapping Session
 Mapping Process
 ~~~~~~~~~~~~~~~
 
-1. **Start RViz** on your host computer (see :doc:`ros2-getting-started`):
+1. **Start RViz** on your host computer (see :ref:`ros2-getting-started`):
 
    .. code-block:: bash
 
@@ -45,14 +51,14 @@ Mapping Process
 
 4. **Drive the robot around** using the right stick on the remote control
 
-.. figure:: ../figures/do_mapping.png
+.. figure:: /res/do_mapping.png
    :alt: Mapping in RViz
    :align: center
    :width: 800px
 
    RViz mapping view - change Fixed Frame to "map"
 
-.. figure:: ../figures/do_mapping.gif
+.. figure:: /res/do_mapping.gif
    :align: center
    :width: 800px
    
@@ -122,7 +128,7 @@ In RViz:
 2. Click on the map where the robot is located
 3. Drag to set the orientation (direction robot is facing)
 
-.. figure:: ../figures/locate.gif
+.. figure:: /res/locate.gif
    :align: center
    :width: 800px
 
@@ -171,14 +177,14 @@ In RViz:
 3. Drag to set the goal orientation
 4. The robot will plan a path and navigate autonomously
 
-.. figure:: ../figures/nav_view.png
+.. figure:: /res/nav_view.png
    :alt: Navigation View
    :align: center
    :width: 800px
 
    RViz navigation view showing global path and costmaps
 
-.. figure:: ../figures/navigate.gif
+.. figure:: /res/navigate.gif
    :align: center
    :width: 800px
    
@@ -258,7 +264,7 @@ Core sensor and control topics used by the AD-R1M:
    # Check topic frequency
    ros2 topic hz /cam1/scan
 
-For detailed architecture information, see :doc:`/explanation/ros2-architecture`.
+For detailed architecture information, see :ref:`ros2-architecture`.
 
 .. code-block:: xml
 

@@ -1,5 +1,11 @@
+.. _software-guide:
+
 AD-R1M Software Guide
 =====================
+
+.. warning::
+
+    This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed.
 
 This guide covers software installation, configuration, and operation for the AD-R1M Open Mobile Robot Platform.
 
@@ -52,7 +58,7 @@ Installation
 SD Card Setup
 ~~~~~~~~~~~~~
 
-For instructions on setting up the SD card and installing the AD-R1M system software, see :doc:`/how-to/build-from-scratch/setup-rpi`.
+For instructions on setting up the SD card and installing the AD-R1M system software, see :ref:`setup-rpi`.
 
 .. _first-boot-configuration:
 
@@ -147,7 +153,7 @@ Pull the latest AD-R1M container:
 Software Operation
 ------------------
 
-For basic operation (power on, SSH, bringup), see the :doc:`/tutorial/getting-started`.
+For basic operation (power on, SSH, bringup), see the :ref:`getting-started`.
 
 .. _bringup-configuration:
 
@@ -338,7 +344,7 @@ Configuration and map data stored on host:
 ROS 2 Components
 ----------------
 
-For detailed ROS 2 architecture documentation, see :doc:`software-guide/ros2-architecture`.
+For detailed ROS 2 architecture documentation, see :ref:`ros2-architecture`.
 
 IMU (ADIS16470)
 ~~~~~~~~~~~~~~~
@@ -347,7 +353,7 @@ IMU (ADIS16470)
 - **Interface**: IIO (Industrial I/O)
 - **Frequency**: 200 Hz (default), configurable up to 2000 Hz
 
-.. figure:: /figures/imu_link.png
+.. figure:: /res/imu_link.png
    :alt: IMU Link Position
    :align: center
    :width: 400px
@@ -361,7 +367,7 @@ ToF Camera (ADTF3175D)
 - **Interface**: USB via ADI ToF SDK
 - **Function**: Depth images converted to 2D LaserScan for navigation
 
-.. figure:: /figures/fig_tof_tf.png
+.. figure:: /res/fig_tof_tf.png
    :alt: ToF Camera Transform
    :align: center
    :width: 400px
@@ -418,14 +424,14 @@ Interactive Container
    # Access running container
    docker exec -it ad-r1m-motors-1 bash
 
-For troubleshooting common issues, see :doc:`how-to/troubleshooting`.
+For troubleshooting common issues, see :ref:`troubleshooting`.
 
 Detailed Guides
 ---------------
 
 .. seealso::
 
-   - :doc:`tutorial/ros2-getting-started` - Getting started with ROS 2 on the AD-R1M
-   - :doc:`tutorial/ros2-examples` - ROS 2 example applications
-   - :doc:`explanation/ros2-architecture` - ROS 2 software architecture
+   - :ref:`ros2-getting-started` - Getting started with ROS 2 on the AD-R1M
+   - :ref:`ros2-examples` - ROS 2 example applications
+   - :ref:`ros2-architecture` - ROS 2 software architecture
 

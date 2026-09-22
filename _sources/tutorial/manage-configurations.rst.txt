@@ -1,3 +1,5 @@
+.. _manage-configurations:
+
 Manage AD-R1M runtime configurations
 ====================================
 
