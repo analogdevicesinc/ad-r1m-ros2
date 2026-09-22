@@ -1,3 +1,5 @@
+.. _ros2-examples:
+
 AD-R1M ROS2 Examples
 ====================
 
@@ -36,7 +38,7 @@ Starting the Mapping Session
 Mapping Process
 ~~~~~~~~~~~~~~~
 
-1. **Start RViz** on your host computer (see :doc:`ros2-getting-started`):
+1. **Start RViz** on your host computer (see :ref:`ros2-getting-started`):
 
    .. code-block:: bash
 
@@ -262,7 +264,7 @@ Core sensor and control topics used by the AD-R1M:
    # Check topic frequency
    ros2 topic hz /cam1/scan
 
-For detailed architecture information, see :doc:`/explanation/ros2-architecture`.
+For detailed architecture information, see :ref:`ros2-architecture`.
 
 .. code-block:: xml
 

@@ -9,7 +9,7 @@ This page provides practical use case examples for the AD-R1M robot platform.
 
 .. seealso::
 
-   For mapping, localization, and navigation tutorials, see :doc:`software-guide/ros2-examples`.
+   For mapping, localization, and navigation tutorials, see :ref:`ros2-examples`.
 
 IMU Data Logging
 ----------------

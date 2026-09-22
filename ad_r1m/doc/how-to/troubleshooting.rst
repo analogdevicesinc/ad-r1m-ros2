@@ -1,3 +1,5 @@
+.. _troubleshooting:
+
 AD-R1M Troubleshooting
 ======================
 

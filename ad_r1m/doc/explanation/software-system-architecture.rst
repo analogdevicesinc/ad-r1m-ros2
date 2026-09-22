@@ -131,7 +131,7 @@ Behind the curtain, this adds an override for ``ad-r1m-bringup.service`` that ch
 
 .. seealso::
 
-    The :doc:`/tutorial/manage-configurations` tutorial contains more practical examples of the functionality described above.
+    The :ref:`manage-configurations` tutorial contains more practical examples of the functionality described above.
 
 
 

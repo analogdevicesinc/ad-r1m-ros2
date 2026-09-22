@@ -1,3 +1,5 @@
+.. _ros2-architecture:
+
 AD-R1M ROS2 Architecture
 ========================
 

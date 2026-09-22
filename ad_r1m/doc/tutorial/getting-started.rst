@@ -1,3 +1,5 @@
+.. _getting-started:
+
 AD-R1M Quick Start Guide
 ========================
 
@@ -16,7 +18,7 @@ This guide will help you power on, connect to, and operate the AD-R1M robot for 
    - :ref:`sd-card-setup` - Flash the ADI Kuiper Linux image to your SD card
    - :ref:`first-boot-configuration` - Configure hostname, WiFi, firmware, and motor tuning
    
-   See the :doc:`software-guide` for complete installation instructions.
+   See the :ref:`software-guide` for complete installation instructions.
 
 Power On
 --------
@@ -249,5 +251,5 @@ Now that your robot is operational, explore these capabilities:
 
 - **Create a map**: See :ref:`mapping-with-slam`
 - **Navigate autonomously**: See :ref:`autonomous-navigation`
-- **Understand the architecture**: See :doc:`software-guide/ros2-architecture`
-- **Troubleshoot issues**: See :doc:`troubleshooting`
+- **Understand the architecture**: See :ref:`ros2-architecture`
+- **Troubleshoot issues**: See :ref:`troubleshooting`
