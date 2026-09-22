@@ -1,3 +1,5 @@
+.. _ros2-getting-started:
+
 AD-R1M ROS 2 Getting Started
 ============================
 
@@ -275,7 +277,7 @@ If topics are not visible:
 
       export ROBOT_IP=192.168.1.100  # Use actual IP
 
-For more troubleshooting, see :doc:`/how-to/troubleshooting`.
+For more troubleshooting, see :ref:`troubleshooting`.
 
 Common Environment Setup
 ~~~~~~~~~~~~~~~~~~~~~~~~

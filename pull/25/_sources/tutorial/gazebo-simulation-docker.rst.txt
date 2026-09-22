@@ -227,8 +227,8 @@ Troubleshooting
 See also
 --------
 
-* :doc:`../how-to/jetson/ad-r1m-realsense-gazebo` — NVIDIA\ |reg| Jetson\ |tm| AGX Orin Gazebo simulation
-  (requires :doc:`../how-to/jetson/index`)
+* :ref:`ad-r1m-realsense-gazebo` — NVIDIA\ |reg| Jetson\ |tm| AGX Orin Gazebo simulation
+  (requires :ref:`jetson-index`)
 
    .. figure:: ../how-to/jetson/figures/simulation_demo.gif
       :align: center

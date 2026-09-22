@@ -1,5 +1,5 @@
 2) Setup required packages on NVIDIA\ |reg| Jetson\ |tm| AGX Orin
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This section deals with prerequisites for accessing and building applications on target.
 
