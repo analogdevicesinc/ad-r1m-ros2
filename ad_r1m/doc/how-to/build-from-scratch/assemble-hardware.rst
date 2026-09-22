@@ -1,6 +1,11 @@
 How to assemble the AD-R1M hardware
 ===================================
 
+Robot 3D model (STEP)
+---------------------
+
+You can download a complete robot assembly STEP model: :download:`/res/ad_r1m_assembly.step`.
+
 Bill of Materials
 -----------------
 
