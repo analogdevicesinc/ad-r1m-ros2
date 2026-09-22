@@ -198,7 +198,7 @@ Out of the box, rviz doesn't display much:
    :align: center
    :width: 800px
 
-You may build visualizations by adding display items using the "Add" button in the bottom left. Alternatively, you can download our :download:`ready made rviz configuration file <../../../ad_r1m_description/rviz/main.rviz>` and open it from the Rviz ``File`` > ``Open Config`` menu, which should look something like this:
+You may build visualizations by adding display items using the "Add" button in the bottom left. Alternatively, you can download a ready made rviz configuration file: `ad_r1m_description/rviz/main.rviz <https://github.com/analogdevicesinc/ad-r1m-ros2/blob/main/ad_r1m_description/rviz/main.rviz>`__ and open it from the Rviz ``File`` > ``Open Config`` menu, which should look something like this:
 
 .. figure:: /res/rviz_example.png
    :alt: RViz with an example configuration showing the robot 3D model and its camera views
