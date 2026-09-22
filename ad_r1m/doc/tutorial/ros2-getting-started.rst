@@ -1,6 +1,10 @@
 AD-R1M ROS 2 Getting Started
 ============================
 
+.. warning::
+
+    This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed.
+
 This guide covers setting up ROS 2 on your development PC to communicate with and visualize the AD-R1M robot.
 
 .. contents:: Table of Contents
