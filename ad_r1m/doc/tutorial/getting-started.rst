@@ -136,60 +136,57 @@ Our recommended mechanism for this is to use `Pixi <https://pixi.prefix.dev/late
 
    .. tab-set::
 
-      .. tab-item:: Linux & Max
+      .. tab-item:: Linux & macOS
 
          In a terminal window, run:
 
          .. shell::
 
             $ curl -fsSL https://pixi.sh/install.sh | sh
-         
+
          Close and reopen the terminal window, or run ``source ~/.bashrc`` (or the rc of your shell of choice).
 
       .. tab-item:: Windows
 
-         In a powershell window, run:
+         In a PowerShell window, run:
 
          .. shell::
 
             $ powershell -ExecutionPolicy Bypass -c "irm -useb https://pixi.sh/install.ps1 | iex"
-         
-         Close and reopen the powershell window.
+
+         Close and reopen the PowerShell window.
 
 Then create a Pixi workspace:
 
    .. shell::
 
-      $ pixi init pixiws -c robostack-humble -c conda-forge
-      $ cd pixiws
+      $ mkdir pixiws && cd pixiws
+      $ pixi init -c robostack-humble -c conda-forge
+      $ pixi add ros-humble-desktop ros-humble-rmw-zenoh-cpp ros-humble-teleop-twist-keyboard
 
-   .. tip::
-
-      You may change ``pixiws`` in these first two commands to something else -- it is just a folder name.
+Configure the connection to your robot:
 
    .. shell::
 
       ~/pixiws
-      $ pixi add ros-humble-desktop ros-humble-rmw-zenoh-cpp
       $ pixi workspace activation env set RMW_IMPLEMENTATION="rmw_zenoh_cpp"
       $ pixi workspace activation env set ZENOH_CONFIG_OVERRIDE="connect/endpoints=['tcp/ad-r1m-123.local:7447'];mode='client'"
 
-
    .. note::
 
-      Be careful to change the ``ad-r1m-123`` in the last command to your ``ad-r1m-...`` number. You may run these commands multiple times, to overwrite previous settings.
+      Replace ``ad-r1m-123`` with your robot's hostname. You may run these commands again to switch robots.
 
 Visualize the robot using Rviz
 ------------------------------
 
 Rviz is the standard ROS tool for listening to live data from a robot and displaying it in a 3D environment.
 
-In the Pixi workspace folder, run:
+In the AD-R1M repository folder, run:
 
 .. shell::
 
    ~/pixiws
-   pixi run rviz2
+   $ pixi run rviz2
 
 Out of the box, rviz doesn't display much:
 
@@ -210,17 +207,39 @@ Note that the ToF preview will always be upside down because of the sensor's pos
 Control the robot using a keyboard
 ----------------------------------
 
-In development, it is often useful to quickly teleoperate the robot without using the physical remote control, for which you can use ROS' ``teleop_twist_keyboard``. In the Pixi workspace folder, run:
+In development, it is often useful to quickly teleoperate the robot without using the physical remote control.
+
+First, deactivate the killswitch and initialize the motors:
 
 .. shell::
 
    ~/pixiws
-   $ pixi run ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap cmd_vel:=cmd_vel_joy
+   $ pixi run ros2 topic pub --once /killswitch std_msgs/msg/Bool "{data: false}"
+   $ pixi run ros2 service call /drive_left/init std_srvs/srv/Trigger
+   $ pixi run ros2 service call /drive_right/init std_srvs/srv/Trigger
+
+.. note::
+
+   You should hear a sound from the motor drives and see a brief shaky movement when the motors initialize. This confirms the motors are ready. If not, re-run the service call commands.
+
+Then run the keyboard teleop:
+
+.. shell::
+
+   ~/pixiws
+   $ pixi run ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap cmd_vel:=cmd_vel_keyboard
 
    Moving around:
       u    i    o
       j    k    l
       m    ,    .
+
+To stop the motors (activate killswitch):
+
+.. shell::
+
+   ~/pixiws
+   $ pixi run ros2 topic pub --once /killswitch std_msgs/msg/Bool "{data: true}"
 
 Next Steps
 ----------
