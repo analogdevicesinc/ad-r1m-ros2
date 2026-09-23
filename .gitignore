@@ -35,3 +35,6 @@ qtcreator-*
 COLCON_IGNORE
 AMENT_IGNORE
 
+# pixi environments
+.pixi/*
+!.pixi/config.toml
