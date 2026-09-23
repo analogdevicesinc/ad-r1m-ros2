@@ -3,10 +3,6 @@
 AD-R1M ROS2 Examples
 ====================
 
-.. warning::
-
-    This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed.
-
 .. contents:: Table of Contents
    :depth: 2
    :local:
@@ -23,17 +19,36 @@ Create a map of your environment using SLAM Toolbox for real-time mapping.
 Starting the Mapping Session
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+On the robot (via SSH), generate the SLAM configuration and start the services:
+
 .. code-block:: bash
 
-   # On the robot (via SSH)
-   ~/bringup_mapping.sh
+   ad-r1m mkconfig slam
+   cd slam
+
+   # Check if base services are running
+   docker ps
+
+   # If not running, start base services (robot, tof, teleop, zenoh)
+   docker compose up -d
+
+   # Start the SLAM node for mapping
+   docker compose up slam -d
+
+See :ref:`manage-configurations` for more details on ``ad-r1m mkconfig``.
 
 **Active Docker Compose Services**:
 
-- ``motors``, ``imu``, ``tof``, ``tof_republish`` (core sensors/actuators)
-- ``mapping`` (SLAM Toolbox)
-- ``teleop_radio`` (radio control for driving)
-- ``rmw_zenoh_router`` (middleware)
+Base services (started with ``docker compose up -d``):
+
+- ``zenoh_router`` - Zenoh middleware router
+- ``robot`` - motors, IMU, odometry, sensor fusion
+- ``tof`` - ToF camera and depth-to-laserscan
+- ``teleop_crsf`` - radio control for driving
+
+Profile service (started with ``docker compose up slam -d``):
+
+- ``slam`` - SLAM Toolbox for mapping
 
 Mapping Process
 ~~~~~~~~~~~~~~~
@@ -42,8 +57,8 @@ Mapping Process
 
    .. code-block:: bash
 
-      cd platform/common/scripts
-      ./start_rviz.sh 0 false
+      cd pixiws
+      pixi run rviz2
 
 2. **Change the Fixed Frame** in RViz to ``map``
 
@@ -77,13 +92,9 @@ After mapping is complete, save the map:
 
 .. code-block:: bash
 
-   # Use the convenience script
-   ~/save_map.sh
+   docker compose run save_map
 
-   # Or manually
-   ros2 run nav2_map_server map_saver_cli -f /ros_data/maps/map
-
-This creates two files in ``/home/analog/ros_data/maps/``:
+This creates two files in ``ros_data/`` with a timestamped filename:
 
 - ``map.pgm`` - Grayscale image (white=free, black=occupied, gray=unknown)
 - ``map.yaml`` - Map metadata (resolution, origin, thresholds)
@@ -103,26 +114,51 @@ Key parameters:
        max_laser_range: 5.0        # Maximum laser range to use
        minimum_travel_distance: 0.3  # Min distance before adding scan
 
-Localization with AMCL
-----------------------
+Localization
+------------
 
-Once you have a map, use AMCL (Adaptive Monte Carlo Localization) to localize the robot.
+The robot supports two localization modes: AMCL (using a saved map) or blind/dead-reckoning (no map required).
 
 Starting Localization
 ~~~~~~~~~~~~~~~~~~~~~
 
+On the robot (via SSH), generate the navigation configuration and start the services:
+
 .. code-block:: bash
 
-   # Start with AMCL localization and Nav2
-   ~/bringup_amcl.sh
+   ad-r1m mkconfig nav
+   cd nav
 
-   # Or with explicit environment variables
-   LOCALIZATION=amcl NAVIGATION=nav2 TELEOP=radio ~/bringup.sh
+   # Check if base services are running
+   docker ps
 
-Setting Initial Pose
-~~~~~~~~~~~~~~~~~~~~
+   # If not running, start base services
+   docker compose up -d
 
-In RViz:
+Choose one of the localization modes:
+
+**Option 1: AMCL Localization (requires saved map)**
+
+.. code-block:: bash
+
+   docker compose --profile loc_amcl up -d
+
+Uses AMCL (Adaptive Monte Carlo Localization) with a saved map from ``ros_data/map.yaml``.
+
+**Option 2: Blind/Dead-Reckoning Localization (no map required)**
+
+.. code-block:: bash
+
+   docker compose --profile loc_blind up -d
+
+Uses odometry-only localization with an empty map. Useful for testing navigation without a pre-built map. Starts both ``localization_blind`` and ``map_server`` services.
+
+See :ref:`manage-configurations` for more details.
+
+Setting Initial Pose (AMCL only)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When using AMCL localization, set the robot's initial pose in RViz:
 
 1. Click **2D Pose Estimate** in the toolbar
 2. Click on the map where the robot is located
@@ -147,7 +183,7 @@ AMCL Topics
 
 - Publishes: ``/amcl_pose`` (geometry_msgs/PoseWithCovarianceStamped)
 - Publishes: TF transform (``map`` → ``odom``)
-- Subscribes: ``/cam1/scan`` (laser scan)
+- Subscribes: ``/scan`` (laser scan)
 - Subscribes: ``/odom`` (odometry)
 
 .. _autonomous-navigation:
@@ -160,12 +196,30 @@ Use the Nav2 navigation stack for autonomous point-to-point navigation.
 Starting Navigation
 ~~~~~~~~~~~~~~~~~~~
 
+Navigation requires localization to be running. Start localization first (see above), then add the navigation service:
+
 .. code-block:: bash
 
-   # Start full navigation stack
-   ~/bringup_amcl.sh
+   # Start Nav2 navigation (requires localization to be running)
+   docker compose --profile nav up -d
 
-**Note**: ``bringup_amcl.sh`` enables both AMCL localization and Nav2 navigation.
+**Example: Full navigation stack with AMCL**
+
+.. code-block:: bash
+
+   cd nav
+   docker compose up -d                       # Base services
+   docker compose --profile loc_amcl up -d    # AMCL localization
+   docker compose --profile nav up -d         # Nav2 navigation
+
+**Example: Navigation with dead-reckoning**
+
+.. code-block:: bash
+
+   cd nav
+   docker compose up -d                       # Base services
+   docker compose --profile loc_blind up -d   # Dead-reckoning localization
+   docker compose --profile nav up -d         # Nav2 navigation
 
 Sending Navigation Goals
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -231,7 +285,7 @@ Core sensor and control topics used by the AD-R1M:
 
 **Sensor Data**
 
-- ``/cam1/scan`` - 2D laser scan (from ToF depth-to-laserscan)
+- ``/scan`` - 2D laser scan (from ToF depth-to-laserscan)
 - ``/cam1/depth_image`` - Raw depth image from ToF camera
 - ``/imu`` - IMU data (angular velocities, linear accelerations)
 
@@ -262,7 +316,7 @@ Core sensor and control topics used by the AD-R1M:
    ros2 topic echo /imu --once
 
    # Check topic frequency
-   ros2 topic hz /cam1/scan
+   ros2 topic hz /scan
 
 For detailed architecture information, see :ref:`ros2-architecture`.
 
@@ -409,23 +463,11 @@ For multi-robot scenarios, use namespaces to separate robot topics and frames.
 Launching Multiple Robots
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: bash
-
-   # Robot 1
-   ROBOT_NAMESPACE=ad_r1m_0 ./bringup.sh
-
-   # Robot 2 (on different Raspberry Pi)
-   ROBOT_NAMESPACE=ad_r1m_1 ./bringup.sh
+Each robot should have a unique namespace configured. See :ref:`manage-configurations` for details on setting up robot namespaces.
 
 RViz for Multiple Robots
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: bash
-
-   # View robot 0
-   ./start_rviz.sh 0
-
-   # View robot 1
-   ./start_rviz.sh 1
+Configure the Zenoh connection to each robot by updating the ``ZENOH_CONFIG_OVERRIDE`` environment variable with the appropriate robot hostname.
 
 Each robot's topics will be prefixed with its namespace (e.g., ``/ad_r1m_0/cmd_vel``, ``/ad_r1m_1/cmd_vel``).
