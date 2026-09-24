@@ -3,10 +3,6 @@
 AD-R1M Troubleshooting
 ======================
 
-.. warning::
-
-    This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed.
-
 .. contents:: Table of Contents
    :depth: 2
    :local:
@@ -28,13 +24,13 @@ Radio Connection Problems
    * - Problem
      - Solution
    * - No bars on RC screen
-     - Check robot is powered on and ``bringup_radio.sh`` is running
+     - Check robot is powered on and services are running: ``docker ps``
    * - "NO DATA" on telemetry
      - Verify CRSF transceiver power (GPIO 24), check ``/dev/ttyCRSF`` device
    * - RxBt blinking
      - Wait for ROS2 stack to fully initialize (~30 seconds)
    * - Robot doesn't move when armed
-     - Check killswitch position, verify motor service is running: ``docker compose logs motors``
+     - Check killswitch position, verify robot service is running: ``docker logs ad-r1m-robot-1``
 
 Telemetry Status Interpretation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -67,14 +63,14 @@ If motor control fails, check the CAN interface:
 
 .. code-block:: bash
 
-   ip link show slcan0
-   candump slcan0
+   ip link show can0
+   candump can0
 
-Reset CAN interface (handled by bringup script):
+Reset CAN interface:
 
 .. code-block:: bash
 
-   sudo ~/recan.sh
+   sudo systemctl restart ad-r1m-slcan.service
 
 Common CAN Error Messages
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -85,12 +81,12 @@ Common CAN Error Messages
 
    * - Error
      - Solution
-   * - ``slcan0: link is not ready``
-     - Run ``sudo ~/recan.sh`` to reinitialize CAN interface
+   * - ``can0: link is not ready``
+     - Run ``sudo systemctl restart ad-r1m-slcan.service`` to reinitialize CAN interface
    * - ``No CAN devices found``
      - Check USB-CAN adapter connection, verify ``slcand`` service is running
    * - CANopen initialization timeout
-     - Restart the motors service: ``docker compose restart motors``
+     - Restart the robot service: ``docker compose --env-file ad-r1m.env restart robot``
 
 IMU Issues
 ----------
@@ -138,11 +134,11 @@ Ensure media configuration script has run:
 
    sudo systemctl status media-config.service
 
-Check depth image topic:
+Check depth image topic (from inside a container):
 
 .. code-block:: bash
 
-   docker exec -it adrd_demo_ros2-tof-1 bash -c "source /ros2_ws/install/setup.bash && ros2 topic hz /cam1/depth_image"
+   docker exec -it ad-r1m-tof-1 bash -c "ros2 topic hz /cam1/depth_image"
 
 Common Camera Issues
 ~~~~~~~~~~~~~~~~~~~~
@@ -159,8 +155,8 @@ Common Camera Issues
      - Check USB connection, verify camera is powered
    * - Low frame rate
      - Check CPU usage, reduce resolution if needed
-   * - ``/cam1/scan`` empty
-     - Verify ``depthimage_to_laserscan`` node is running
+   * - ``/scan`` empty
+     - Verify ``depthimage_to_laserscan`` node is running: ``docker logs ad-r1m-tof-1``
 
 Docker Container Issues
 -----------------------
@@ -172,13 +168,13 @@ Check container logs:
 
 .. code-block:: bash
 
-   docker compose logs motors
+   docker logs ad-r1m-robot-1
 
-Verify profiles are enabled:
+Verify services are running:
 
 .. code-block:: bash
 
-   echo $COMPOSE_PROFILES
+   docker ps
 
 Common Docker Issues
 ~~~~~~~~~~~~~~~~~~~~
@@ -204,10 +200,13 @@ Restart Services
 .. code-block:: bash
 
    # Restart specific service
-   docker compose restart motors
+   docker compose --env-file ad-r1m.env restart robot
 
    # Restart all services
-   docker compose down && docker compose up -d
+   docker compose --env-file ad-r1m.env down && docker compose --env-file ad-r1m.env up -d
+
+   # Stop all containers
+   docker stop $(docker ps -q)
 
    # Full system restart
    sudo reboot
@@ -218,23 +217,23 @@ Navigation Issues
 Navigation Not Working
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Verify map is loaded:
+Verify map is loaded (from inside a container):
 
 .. code-block:: bash
 
-   ros2 topic echo --once /${ROBOT_NAMESPACE}/map
+   docker exec -it ad-r1m-nav-1 ros2 topic echo --once /map
 
 Check AMCL pose estimate:
 
 .. code-block:: bash
 
-   ros2 topic echo /${ROBOT_NAMESPACE}/amcl_pose
+   docker exec -it ad-r1m-nav-1 ros2 topic echo /amcl_pose
 
 Ensure costmaps are being published:
 
 .. code-block:: bash
 
-   ros2 topic list | grep costmap
+   docker exec -it ad-r1m-nav-1 ros2 topic list | grep costmap
 
 Common Navigation Problems
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -274,9 +273,13 @@ Check TF Tree
 
 .. code-block:: bash
 
-   ros2 run tf2_tools view_frames
+   docker exec -it ad-r1m-robot-1 ros2 run tf2_tools view_frames
 
-This generates a PDF showing the complete transform tree.
+This generates a PDF showing the complete transform tree. Copy it from the container:
+
+.. code-block:: bash
+
+   docker cp ad-r1m-robot-1:/ros2_ws/frames.pdf .
 
 Common TF Errors
 ~~~~~~~~~~~~~~~~
@@ -312,7 +315,7 @@ RViz Can't Connect to Robot
 
    .. code-block:: bash
 
-      docker compose logs rmw_zenoh_router
+      docker logs ad-r1m-zenoh_router-1
 
 3. **Check RMW implementation**:
 
@@ -323,16 +326,18 @@ RViz Can't Connect to Robot
 Topics Not Visible
 ~~~~~~~~~~~~~~~~~~
 
+Run ROS2 commands from inside a container on the robot:
+
 .. code-block:: bash
 
    # List all topics
-   ros2 topic list
+   docker exec -it ad-r1m-robot-1 ros2 topic list
 
    # Check if node is publishing
-   ros2 topic info /topic_name
+   docker exec -it ad-r1m-robot-1 ros2 topic info /topic_name
 
    # Check topic frequency
-   ros2 topic hz /topic_name
+   docker exec -it ad-r1m-robot-1 ros2 topic hz /topic_name
 
 Power and Battery Issues
 ------------------------
@@ -393,13 +398,13 @@ If you cannot resolve an issue:
 
    .. code-block:: bash
 
-      docker compose logs > robot_logs.txt
+      docker compose --env-file ad-r1m.env logs > robot_logs.txt
 
 2. **Capture system state**:
 
    .. code-block:: bash
 
-      ros2 topic list > topics.txt
-      ros2 node list > nodes.txt
+      docker exec -it ad-r1m-robot-1 ros2 topic list > topics.txt
+      docker exec -it ad-r1m-robot-1 ros2 node list > nodes.txt
 
 3. **Post on Engineer Zone**: Visit the `ADI Engineer Zone <https://ez.analog.com/>`__ with your logs and a description of the issue
