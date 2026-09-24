@@ -207,39 +207,56 @@ Note that the ToF preview will always be upside down because of the sensor's pos
 Control the robot using a keyboard
 ----------------------------------
 
-In development, it is often useful to quickly teleoperate the robot without using the physical remote control.
+In development, it is often useful to quickly teleoperate the robot without using the physical remote control. The best practice is to use two terminals: one SSH'd into the robot for teleop, and one on your host for visualization.
 
-First, deactivate the killswitch and initialize the motors:
+.. tab-set::
 
-.. shell::
+   .. tab-item:: Robot Terminal (SSH)
 
-   ~/pixiws
-   $ pixi run ros2 topic pub --once /killswitch std_msgs/msg/Bool "{data: false}"
-   $ pixi run ros2 service call /drive_left/init std_srvs/srv/Trigger
-   $ pixi run ros2 service call /drive_right/init std_srvs/srv/Trigger
+      SSH into the robot and run the keyboard teleop:
 
-.. note::
+      .. shell::
 
-   You should hear a sound from the motor drives and see a brief shaky movement when the motors initialize. This confirms the motors are ready. If not, re-run the service call commands.
+         $ ssh analog@ad-r1m-123.local
+         $ ad-r1m mkconfig teleop
+         $ cd teleop
+         $ docker compose run --rm teleop_keyboard
 
-Then run the keyboard teleop:
+      The teleop includes built-in killswitch control:
 
-.. shell::
+      .. code-block:: text
 
-   ~/pixiws
-   $ pixi run ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap cmd_vel:=cmd_vel_keyboard
+         Moving around:
+            u    i    o
+            j    k    l
+            m    ,    .
 
-   Moving around:
-      u    i    o
-      j    k    l
-      m    ,    .
+         i/,   : forward/backward
+         j/l   : turn left/right
+         u/o/m/. : combined movements
 
-To stop the motors (activate killswitch):
+         anything else : stop
 
-.. shell::
+         q/z : increase/decrease max speeds by 10%
+         w/x : increase/decrease only linear speed by 10%
+         e/c : increase/decrease only angular speed by 10%
 
-   ~/pixiws
-   $ pixi run ros2 topic pub --once /killswitch std_msgs/msg/Bool "{data: true}"
+         p/r : activate/reset killswitch
+
+         CTRL-C to quit
+
+      .. note::
+
+         Press ``r`` to reset the killswitch and enable the motors. You should hear a sound from the motor drives and see a brief shaky movement. Press ``p`` to activate the killswitch and stop the motors.
+
+   .. tab-item:: Host Terminal (Pixi)
+
+      On your host computer, run RViz to visualize the robot:
+
+      .. shell::
+
+         ~/pixiws
+         $ pixi run rviz2
 
 Next Steps
 ----------
