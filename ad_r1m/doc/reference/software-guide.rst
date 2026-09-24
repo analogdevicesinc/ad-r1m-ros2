@@ -3,10 +3,6 @@
 AD-R1M Software Guide
 =====================
 
-.. warning::
-
-    This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed.
-
 This guide covers software installation, configuration, and operation for the AD-R1M Open Mobile Robot Platform.
 
 .. contents:: Table of Contents
@@ -65,64 +61,32 @@ For instructions on setting up the SD card and installing the AD-R1M system soft
 First Boot Configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-The AD-R1M includes an interactive setup script to configure the robot on first boot.
+The AD-R1M robot is pre-configured and starts automatically on boot.
 
-1. Connect a monitor and keyboard to the Raspberry Pi (or use serial console)
-
-2. Login with default credentials:
+1. Login with default credentials:
 
    - Username: ``analog``
    - Password: ``analog``
 
-3. Run the interactive setup script:
+2. The robot automatically initializes hardware via systemd services:
+
+   - ``ad-r1m-slcan.service`` - CAN adapter initialization
+   - ``ad-r1m-crsf.service`` - CRSF radio receiver initialization
+   - ``ad-r1m-imu.service`` - IMU sampling frequency configuration
+   - ``ad-r1m-tof.service`` - ToF camera reset
+   - ``ad-r1m-bringup.service`` - Docker Compose startup
+
+3. Configure WiFi (optional):
 
    .. code-block:: bash
 
-      ~/setup.sh
+      sudo nmtui
 
-   The script provides a menu-driven interface:
-
-   .. code-block:: text
-
-      ╔════════════════════════════════════════════════════════════════╗
-      ║              AD-R1M First Boot Setup Menu                      ║
-      ╠════════════════════════════════════════════════════════════════╣
-      ║  1) Change hostname                                            ║
-      ║     Set a unique hostname for the robot                        ║
-      ║     (recommended for multi-robot setups)                       ║
-      ║                                                                ║
-      ║  2) Connect to WiFi                                            ║
-      ║     Opens nmtui for network configuration                      ║
-      ║                                                                ║
-      ║  3) Download latest docker image                               ║
-      ║     Pulls the latest AD-R1M container from Cloudsmith          ║
-      ║                                                                ║
-      ║  4) Write CAN adapter firmware                                 ║
-      ║     Uploads firmware to the ADRD4161 CAN adapter board         ║
-      ║                                                                ║
-      ║  5) Write default motor tuning                                 ║
-      ║     Writes PID parameters to motor controllers (ADRD3161)      ║
-      ║                                                                ║
-      ║  6) Bind radio receiver                                        ║
-      ║     Puts the ELRS receiver into bind mode                      ║
-      ║                                                                ║
-      ║  0) Exit                                                       ║
-      ╚════════════════════════════════════════════════════════════════╝
-
-4. Complete the recommended setup steps in order:
-
-   - **a) Change hostname** (e.g., ``ad-r1m-0``, ``ad-r1m-1``)
-   - **b) Connect to WiFi** and note the IP address shown after connection
-   - **c) Download latest docker image** (requires Cloudsmith login)
-   - **d) Write CAN adapter firmware** (required for motor control)
-   - **e) Write default motor tuning** (required for proper motor operation)
-   - **f) Bind radio receiver** (optional, only if using RC control)
-
-5. Verify SSH access from your host PC:
+4. Verify SSH access from your host PC:
 
    .. code-block:: bash
 
-      ssh analog@<robot-ip-address>
+      ssh analog@ad-r1m-<number>.local
 
 .. _docker-setup:
 
@@ -142,13 +106,7 @@ Pull the latest AD-R1M container:
 
 .. code-block:: bash
 
-    # Option 1: Use the recreate script (recommended)
-    ~/recreate_container.sh
-    
-    # Option 2: Manual pull and tag
-    IMAGE=docker.cloudsmith.io/adi/adrd-common/ad-r1m:rpi5-ftc2025
-    docker pull $IMAGE
-    docker tag $IMAGE working
+    docker pull docker.cloudsmith.io/adi/adrd-common/ad-r1m:robot-humble-nightly
 
 Software Operation
 ------------------
@@ -157,75 +115,96 @@ For basic operation (power on, SSH, bringup), see the :ref:`getting-started`.
 
 .. _bringup-configuration:
 
-Bringup Configuration
-~~~~~~~~~~~~~~~~~~~~~
+AD-R1M CLI
+~~~~~~~~~~
 
-The ``bringup.sh`` script accepts environment variables to configure the robot stack:
+The ``ad-r1m`` command-line tool manages robot configurations:
 
-.. list-table::
-   :header-rows: 1
-   :widths: 25 20 55
+**ad-r1m mkconfig <folder>**
 
-   * - Variable
-     - Default
-     - Options
-   * - ``RMW_IMPLEMENTATION``
-     - ``rmw_zenoh_cpp``
-     - ``rmw_zenoh_cpp`` (recommended), ``rmw_fastdds_cpp``
-   * - ``TELEOP``
-     - ``radio``
-     - ``radio``, ``keyboard``, ``autonomous``
-   * - ``LOCALIZATION``
-     - ``blind``
-     - ``blind`` (dead reckoning), ``amcl`` (map-based)
-   * - ``NAVIGATION``
-     - *(none)*
-     - *(empty)* or ``nav2``
-   * - ``ROBOT_NAMESPACE``
-     - hostname-based
-     - e.g., ``ad_r1m_0``, ``ad_r1m_1``
-
-Example configurations:
+Creates a new configuration folder from the default template:
 
 .. code-block:: bash
 
-   # Manual radio control (default)
-   ~/bringup_radio.sh
-   # Equivalent to: TELEOP=radio LOCALIZATION=blind ~/bringup.sh
+   ad-r1m mkconfig nav
+   cd nav
+   ls
+   # ad-r1m.env  compose.yaml  ros_data/
 
-   # Autonomous navigation with AMCL
-   ~/bringup_amcl.sh
-   # Equivalent to: TELEOP=radio LOCALIZATION=amcl NAVIGATION=nav2 ~/bringup.sh
+**ad-r1m enable <folder>**
 
-   # Custom configuration
-   TELEOP=keyboard LOCALIZATION=amcl NAVIGATION=nav2 ~/bringup.sh
+Sets a configuration folder to auto-start at boot:
 
-For the complete list of bringup scripts, see :ref:`bringup-scripts-table` in the Quick Start Guide.
+.. code-block:: bash
+
+   ad-r1m enable ~/nav
+   # Requires sudo, edits systemd service
+
+**Environment Variables**
+
+Configuration is controlled via ``ad-r1m.env``:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 25 50
+
+   * - Variable
+     - Default
+     - Description
+   * - ``RMW_IMPLEMENTATION``
+     - ``rmw_zenoh_cpp``
+     - ROS 2 middleware (rmw_zenoh_cpp, rmw_fastrtps_cpp)
+   * - ``DOCKER_IMAGE``
+     - ``docker.cloudsmith.io/adi/adrd-common/ad-r1m:robot-humble-nightly``
+     - Docker image for ROS 2 containers
+   * - ``ROBOT_NAMESPACE``
+     - ``/``
+     - Robot namespace for multi-robot setups
+   * - ``COMPOSE_PROJECT_NAME``
+     - ``ad-r1m``
+     - Docker Compose project name
 
 Starting Services Manually
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Start specific Docker Compose profiles:
+Use ``ad-r1m mkconfig`` to generate a configuration folder, then start services with Docker Compose:
 
 .. code-block:: bash
 
-   cd ~/ros2_ws
-   
-   # Basic robot with radio control
-   docker compose --profile rmw_zenoh --profile teleop_radio --profile localization_blind up
-   
-   # With navigation
-   docker compose --profile rmw_zenoh --profile teleop_radio --profile localization_amcl --profile navigation_nav2 up
-   
-   # Mapping mode
-   docker compose --profile rmw_zenoh --profile teleop_radio --profile mapping up
+   # Generate configuration
+   ad-r1m mkconfig nav
+   cd nav
 
-Start individual services:
+   # Start base services (robot, tof, teleop, zenoh)
+   docker compose --env-file ad-r1m.env up -d
+
+   # Start SLAM for mapping
+   docker compose --env-file ad-r1m.env up -d slam
+
+   # Start localization (AMCL with map)
+   docker compose --env-file ad-r1m.env up -d localization_amcl
+
+   # Start localization (blind/dead-reckoning)
+   docker compose --env-file ad-r1m.env up -d localization_blind map_server
+
+   # Start navigation
+   docker compose --env-file ad-r1m.env up -d nav
+
+   # Save map after mapping
+   docker compose --env-file ad-r1m.env run save_map
+
+   # Keyboard teleop (interactive)
+   docker compose --env-file ad-r1m.env run --rm teleop_keyboard
+
+Start individual development services:
 
 .. code-block:: bash
 
-   docker compose up motors        # Just motors
-   docker compose up motors imu    # Motors and IMU
+   # Motors only (with sensor_fusion)
+   docker compose --env-file ad-r1m.env up -d motors sensor_fusion
+
+   # IMU only
+   docker compose --env-file ad-r1m.env up -d imu
 
 Verifying Operation
 ~~~~~~~~~~~~~~~~~~~
@@ -267,12 +246,12 @@ For RViz setup on your host PC, see :ref:`ros2-visualization`.
 Docker Compose Architecture
 ---------------------------
 
-The system uses Docker Compose with profiles for modular service management.
+The system uses Docker Compose with services and profiles for modular service management.
 
-Always-On Services
-~~~~~~~~~~~~~~~~~~
+Base Services (No Profile)
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-These services start with every bringup configuration:
+These services start with ``docker compose --env-file ad-r1m.env up -d``:
 
 .. list-table::
    :header-rows: 1
@@ -281,21 +260,23 @@ These services start with every bringup configuration:
    * - Service
      - Function
      - Key Details
-   * - ``motors``
-     - Motor control via CANopen
-     - Requires ``NET_ADMIN`` capability
-   * - ``imu``
-     - ADIS16470 IMU sensor
-     - Requires ``privileged: true``
+   * - ``zenoh_router``
+     - Zenoh middleware router
+     - Profile: ``rmw_zenoh_cpp``
+   * - ``robot``
+     - Motor control, IMU, odometry, sensor fusion
+     - Launches ``bringup.launch.py``
    * - ``tof``
-     - ADTF3175D ToF camera
-     - Depth image publisher
-   * - ``tof_republish``
-     - Topic relay
-     - Republishes to namespaced topics
+     - Depth to LaserScan conversion
+     - Receives depth from ToF camera module
+   * - ``teleop_crsf``
+     - CRSF/ELRS radio control
+     - Requires ``/dev/ttyCRSF``
 
 Profile-Based Services
 ~~~~~~~~~~~~~~~~~~~~~~
+
+Start with ``docker compose --env-file ad-r1m.env up -d <service>``:
 
 .. list-table::
    :header-rows: 1
@@ -304,42 +285,60 @@ Profile-Based Services
    * - Service
      - Profile
      - Function
-   * - ``rmw_zenoh_router``
-     - ``rmw_zenoh``
-     - Zenoh middleware router
-   * - ``rmw_fastdds_ds``
-     - ``rmw_fastdds``
-     - Fast-DDS discovery server
-   * - ``teleop_radio``
-     - ``teleop_radio``
-     - CRSF/ELRS radio control
-   * - ``teleop_autonomous``
-     - ``teleop_autonomous``
-     - Keyboard teleop
-   * - ``mapping``
-     - ``mapping``
-     - SLAM Toolbox
-   * - ``loc_blind``
-     - ``localization_blind``
+   * - ``slam``
+     - ``slam``
+     - SLAM Toolbox for mapping
+   * - ``localization_amcl``
+     - ``loc_amcl``
+     - AMCL localization (requires map)
+   * - ``localization_blind``
+     - ``loc_blind``
      - Dead reckoning (static TF)
-   * - ``loc_amcl``
-     - ``localization_amcl``
-     - AMCL localization
    * - ``map_server``
-     - ``map_server``
-     - Serves static maps
-   * - ``nav2``
-     - ``navigation_nav2``
+     - ``loc_blind``
+     - Serves empty map for blind localization
+   * - ``nav``
+     - ``nav``
      - Nav2 navigation stack
+   * - ``motors``
+     - ``motors``
+     - Motor control only (development)
+   * - ``sensor_fusion``
+     - ``motors``
+     - EKF sensor fusion (development)
+   * - ``imu``
+     - ``imu``
+     - IMU only (development)
+
+One-Off Services
+~~~~~~~~~~~~~~~~
+
+Run with ``docker compose --env-file ad-r1m.env run <service>``:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 75
+
+   * - Service
+     - Function
+   * - ``teleop_keyboard``
+     - Interactive keyboard teleop with killswitch control
+   * - ``save_map``
+     - Save current map to ``ros_data/maps/``
+   * - ``shell``
+     - Interactive shell inside container
 
 Volume Mounts
 ~~~~~~~~~~~~~
 
-Configuration and map data stored on host:
+Configuration and data stored in ``ros_data/``:
 
-- ``/home/analog/ros_data:/ros_data``
-- Maps: ``/ros_data/maps/``
-- Parameters: ``/ros_data/navigation_params.yaml``, ``/ros_data/mapping_params.yaml``
+- ``ros_data/maps/`` - Saved maps
+- ``ros_data/navigation_params.yaml`` - Nav2 parameters
+- ``ros_data/mapper_params_online_async.yaml`` - SLAM parameters
+- ``ros_data/teleop_parameters.yaml`` - Teleop parameters
+- ``ros_data/ekf.yaml`` - EKF sensor fusion parameters
+- ``ros_data/log/`` - ROS 2 logs
 
 ROS 2 Components
 ----------------
@@ -363,9 +362,9 @@ IMU (ADIS16470)
 ToF Camera (ADTF3175D)
 ~~~~~~~~~~~~~~~~~~~~~~
 
-- **Topics**: ``/cam1/depth_image`` (16UC1), ``/${NAMESPACE}/cam1/scan`` (LaserScan)
-- **Interface**: USB via ADI ToF SDK
-- **Function**: Depth images converted to 2D LaserScan for navigation
+- **Topics**: ``/cam1/depth_image`` (16UC1), ``/scan`` (LaserScan)
+- **Interface**: Runs on dedicated ToF compute module, communicates via Zenoh
+- **Function**: Depth images converted to 2D LaserScan on robot for navigation
 
 .. figure:: /res/fig_tof_tf.png
    :alt: ToF Camera Transform
@@ -397,32 +396,46 @@ Viewing Logs
 .. code-block:: bash
 
    # All services
-   docker compose logs -f
+   docker compose --env-file ad-r1m.env logs -f
 
    # Specific service
-   docker compose logs -f motors
+   docker compose --env-file ad-r1m.env logs -f robot
 
    # With timestamps
-   docker compose logs -f --timestamps motors
+   docker compose --env-file ad-r1m.env logs -f --timestamps robot
+
+   # Docker logs directly
+   docker logs ad-r1m-robot-1
 
 Restart Services
 ~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
-   docker compose restart motors
-   docker compose restart imu tof
+   docker compose --env-file ad-r1m.env restart robot
+   docker compose --env-file ad-r1m.env restart tof
+
+Stop All Services
+~~~~~~~~~~~~~~~~~
+
+.. code-block:: bash
+
+   # Stop compose services
+   docker compose --env-file ad-r1m.env down
+
+   # Stop all running containers
+   docker stop $(docker ps -q)
 
 Interactive Container
 ~~~~~~~~~~~~~~~~~~~~~
 
 .. code-block:: bash
 
-   # Start interactive session
-   docker compose run --rm motors bash
+   # Start interactive shell
+   docker compose --env-file ad-r1m.env run --rm shell bash
 
    # Access running container
-   docker exec -it ad-r1m-motors-1 bash
+   docker exec -it ad-r1m-robot-1 bash
 
 For troubleshooting common issues, see :ref:`troubleshooting`.
 
