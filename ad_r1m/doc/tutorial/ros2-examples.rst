@@ -30,23 +30,23 @@ On the robot (via SSH), generate the SLAM configuration and start the services:
    docker ps
 
    # If not running, start base services (robot, tof, teleop, zenoh)
-   docker compose up -d
+   docker compose --env-file ad-r1m.env up -d
 
    # Start the SLAM node for mapping
-   docker compose up slam -d
+   docker compose --env-file ad-r1m.env up slam -d
 
 See :ref:`manage-configurations` for more details on ``ad-r1m mkconfig``.
 
 **Active Docker Compose Services**:
 
-Base services (started with ``docker compose up -d``):
+Base services (started with ``docker compose --env-file ad-r1m.env up -d``):
 
 - ``zenoh_router`` - Zenoh middleware router
 - ``robot`` - motors, IMU, odometry, sensor fusion
 - ``tof`` - ToF camera and depth-to-laserscan
 - ``teleop_crsf`` - radio control for driving
 
-Profile service (started with ``docker compose up slam -d``):
+Profile service (started with ``docker compose --env-file ad-r1m.env up slam -d``):
 
 - ``slam`` - SLAM Toolbox for mapping
 
@@ -62,9 +62,10 @@ Mapping Process
 
 2. **Change the Fixed Frame** in RViz to ``map``
 
-3. **Arm the robot** using the killswitch on the RC handset (switch SA to "ARMED")
+3. **Drive the robot around** using one of these methods:
 
-4. **Drive the robot around** using the right stick on the remote control
+   - **Remote Control**: Arm the robot using the killswitch on the RC handset (switch SA to "ARMED"), then drive using the right stick. See :ref:`remote-control` for details.
+   - **Keyboard Teleop**: Use keyboard control from your host or via SSH. See :ref:`keyboard-teleop` for setup instructions.
 
 .. figure:: /res/do_mapping.png
    :alt: Mapping in RViz
@@ -92,17 +93,24 @@ After mapping is complete, save the map:
 
 .. code-block:: bash
 
-   docker compose run save_map
+   docker compose --env-file ad-r1m.env run save_map
 
-This creates two files in ``ros_data/`` with a timestamped filename:
+This creates two files in ``ros_data/maps/`` with a timestamped filename (e.g., ``map_2024-01-15T10:30:00+00:00``):
 
-- ``map.pgm`` - Grayscale image (white=free, black=occupied, gray=unknown)
-- ``map.yaml`` - Map metadata (resolution, origin, thresholds)
+- ``map_<timestamp>.png`` - Grayscale image (white=free, black=occupied, gray=unknown)
+- ``map_<timestamp>.yaml`` - Map metadata (resolution, origin, thresholds)
+
+.. note::
+
+   To use the saved map with AMCL localization, either:
+
+   - Rename the files to ``map.png`` and ``map.yaml`` and move to ``ros_data/``, or
+   - Update the map path in the ``localization_amcl`` service command in ``compose.yaml``
 
 SLAM Configuration
 ~~~~~~~~~~~~~~~~~~
 
-SLAM Toolbox parameters: ``/ros_data/mapping_params.yaml``
+SLAM Toolbox parameters: ``/ros_data/mapper_params_online_async.yaml``
 
 Key parameters:
 
@@ -133,25 +141,29 @@ On the robot (via SSH), generate the navigation configuration and start the serv
    docker ps
 
    # If not running, start base services
-   docker compose up -d
+   docker compose --env-file ad-r1m.env up -d
 
 Choose one of the localization modes:
 
 **Option 1: AMCL Localization (requires saved map)**
 
+.. warning::
+
+   AMCL requires a map file at ``ros_data/map.yaml``. You must first create a map using :ref:`mapping-with-slam` and save it before using AMCL localization.
+
 .. code-block:: bash
 
-   docker compose --profile loc_amcl up -d
+   docker compose --env-file ad-r1m.env up -d localization_amcl
 
-Uses AMCL (Adaptive Monte Carlo Localization) with a saved map from ``ros_data/map.yaml``.
+Uses AMCL (Adaptive Monte Carlo Localization) with the saved map from ``ros_data/map.yaml``.
 
 **Option 2: Blind/Dead-Reckoning Localization (no map required)**
 
 .. code-block:: bash
 
-   docker compose --profile loc_blind up -d
+   docker compose --env-file ad-r1m.env up -d localization_blind map_server
 
-Uses odometry-only localization with an empty map. Useful for testing navigation without a pre-built map. Starts both ``localization_blind`` and ``map_server`` services.
+Uses odometry-only localization with an empty map. Useful for testing navigation without a pre-built map.
 
 See :ref:`manage-configurations` for more details.
 
@@ -201,25 +213,7 @@ Navigation requires localization to be running. Start localization first (see ab
 .. code-block:: bash
 
    # Start Nav2 navigation (requires localization to be running)
-   docker compose --profile nav up -d
-
-**Example: Full navigation stack with AMCL**
-
-.. code-block:: bash
-
-   cd nav
-   docker compose up -d                       # Base services
-   docker compose --profile loc_amcl up -d    # AMCL localization
-   docker compose --profile nav up -d         # Nav2 navigation
-
-**Example: Navigation with dead-reckoning**
-
-.. code-block:: bash
-
-   cd nav
-   docker compose up -d                       # Base services
-   docker compose --profile loc_blind up -d   # Dead-reckoning localization
-   docker compose --profile nav up -d         # Nav2 navigation
+   docker compose --env-file ad-r1m.env up -d nav
 
 Sending Navigation Goals
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -277,6 +271,10 @@ Key parameters:
          yaw_goal_tolerance: 0.1 # Orientation tolerance at goal
 
 For detailed navigation tuning, see the `Nav2 documentation <https://docs.nav2.org/>`__.
+
+.. note::
+
+   If the robot creates a navigation plan but does not move, restarting the ``robot`` service may have re-activated the killswitch. See :ref:`getting-started` for killswitch control instructions.
 
 ROS 2 Topics Reference
 ----------------------
@@ -471,3 +469,24 @@ RViz for Multiple Robots
 Configure the Zenoh connection to each robot by updating the ``ZENOH_CONFIG_OVERRIDE`` environment variable with the appropriate robot hostname.
 
 Each robot's topics will be prefixed with its namespace (e.g., ``/ad_r1m_0/cmd_vel``, ``/ad_r1m_1/cmd_vel``).
+
+Stopping Services
+-----------------
+
+To stop all services in the current configuration:
+
+.. code-block:: bash
+
+   docker compose --env-file ad-r1m.env down
+
+To stop specific services:
+
+.. code-block:: bash
+
+   docker compose --env-file ad-r1m.env stop nav localization_amcl
+
+To stop all running Docker containers (regardless of compose project):
+
+.. code-block:: bash
+
+   docker stop $(docker ps -q)
