@@ -371,7 +371,7 @@ Tips and Best Practices
          .. code-block:: bash
 
             ssh analog@ad-r1m-123.local
-            docker compose ps | grep zenoh
+            docker compose --env-file ad-r1m.env ps | grep zenoh
 
       3. **Check RMW configuration**:
 
@@ -465,7 +465,7 @@ Tips and Best Practices
          .. code-block:: bash
 
             ssh analog@ad-r1m-123.local
-            docker compose ps | grep zenoh
+            docker compose --env-file ad-r1m.env ps | grep zenoh
 
       3. **Check RMW configuration**:
 

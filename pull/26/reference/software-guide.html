@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed." name="description" />
+<meta content="This guide covers software installation, configuration, and operation for the AD-R1M Open Mobile Robot Platform." name="description" />
 
     <title>AD-R1M Software Guide &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
@@ -108,15 +108,16 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#software-operation">Software Operation</a><ul>
-<li><a class="reference internal" href="#bringup-configuration">Bringup Configuration</a></li>
+<li><a class="reference internal" href="#ad-r1m-cli">AD-R1M CLI</a></li>
 <li><a class="reference internal" href="#starting-services-manually">Starting Services Manually</a></li>
 <li><a class="reference internal" href="#verifying-operation">Verifying Operation</a></li>
 <li><a class="reference internal" href="#rviz-visualization">RViz Visualization</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#docker-compose-architecture">Docker Compose Architecture</a><ul>
-<li><a class="reference internal" href="#always-on-services">Always-On Services</a></li>
+<li><a class="reference internal" href="#base-services-no-profile">Base Services (No Profile)</a></li>
 <li><a class="reference internal" href="#profile-based-services">Profile-Based Services</a></li>
+<li><a class="reference internal" href="#one-off-services">One-Off Services</a></li>
 <li><a class="reference internal" href="#volume-mounts">Volume Mounts</a></li>
 </ul>
 </li>
@@ -130,6 +131,7 @@
 <li><a class="reference internal" href="#development-and-debugging">Development and Debugging</a><ul>
 <li><a class="reference internal" href="#viewing-logs">Viewing Logs</a></li>
 <li><a class="reference internal" href="#restart-services">Restart Services</a></li>
+<li><a class="reference internal" href="#stop-all-services">Stop All Services</a></li>
 <li><a class="reference internal" href="#interactive-container">Interactive Container</a></li>
 </ul>
 </li>
@@ -221,40 +223,37 @@ Content on this topic
             
   <section id="ad-r1m-software-guide">
 <span id="software-guide"></span><h1>AD-R1M Software Guide<a class="headerlink" href="#ad-r1m-software-guide" title="Link to this heading"></a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed.</p>
-</div>
 <p>This guide covers software installation, configuration, and operation for the AD-R1M Open Mobile Robot Platform.</p>
 <nav class="contents local" id="table-of-contents">
 <p class="topic-title">Table of Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#overview" id="id8">Overview</a></p></li>
-<li><p><a class="reference internal" href="#software-downloads" id="id9">Software Downloads</a></p>
+<li><p><a class="reference internal" href="#overview" id="id7">Overview</a></p></li>
+<li><p><a class="reference internal" href="#software-downloads" id="id8">Software Downloads</a></p>
 <ul>
-<li><p><a class="reference internal" href="#ad-r1m-software-package" id="id10">AD-R1M Software Package</a></p></li>
-<li><p><a class="reference internal" href="#prerequisites" id="id11">Prerequisites</a></p></li>
+<li><p><a class="reference internal" href="#ad-r1m-software-package" id="id9">AD-R1M Software Package</a></p></li>
+<li><p><a class="reference internal" href="#prerequisites" id="id10">Prerequisites</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#installation" id="id12">Installation</a></p>
+<li><p><a class="reference internal" href="#installation" id="id11">Installation</a></p>
 <ul>
-<li><p><a class="reference internal" href="#sd-card-setup" id="id13">SD Card Setup</a></p></li>
-<li><p><a class="reference internal" href="#first-boot-configuration" id="id14">First Boot Configuration</a></p></li>
-<li><p><a class="reference internal" href="#docker-setup" id="id15">Docker Setup</a></p></li>
+<li><p><a class="reference internal" href="#sd-card-setup" id="id12">SD Card Setup</a></p></li>
+<li><p><a class="reference internal" href="#first-boot-configuration" id="id13">First Boot Configuration</a></p></li>
+<li><p><a class="reference internal" href="#docker-setup" id="id14">Docker Setup</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#software-operation" id="id16">Software Operation</a></p>
+<li><p><a class="reference internal" href="#software-operation" id="id15">Software Operation</a></p>
 <ul>
-<li><p><a class="reference internal" href="#bringup-configuration" id="id17">Bringup Configuration</a></p></li>
-<li><p><a class="reference internal" href="#starting-services-manually" id="id18">Starting Services Manually</a></p></li>
-<li><p><a class="reference internal" href="#verifying-operation" id="id19">Verifying Operation</a></p></li>
-<li><p><a class="reference internal" href="#rviz-visualization" id="id20">RViz Visualization</a></p></li>
+<li><p><a class="reference internal" href="#ad-r1m-cli" id="id16">AD-R1M CLI</a></p></li>
+<li><p><a class="reference internal" href="#starting-services-manually" id="id17">Starting Services Manually</a></p></li>
+<li><p><a class="reference internal" href="#verifying-operation" id="id18">Verifying Operation</a></p></li>
+<li><p><a class="reference internal" href="#rviz-visualization" id="id19">RViz Visualization</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#docker-compose-architecture" id="id21">Docker Compose Architecture</a></p>
+<li><p><a class="reference internal" href="#docker-compose-architecture" id="id20">Docker Compose Architecture</a></p>
 <ul>
-<li><p><a class="reference internal" href="#always-on-services" id="id22">Always-On Services</a></p></li>
-<li><p><a class="reference internal" href="#profile-based-services" id="id23">Profile-Based Services</a></p></li>
+<li><p><a class="reference internal" href="#base-services-no-profile" id="id21">Base Services (No Profile)</a></p></li>
+<li><p><a class="reference internal" href="#profile-based-services" id="id22">Profile-Based Services</a></p></li>
+<li><p><a class="reference internal" href="#one-off-services" id="id23">One-Off Services</a></p></li>
 <li><p><a class="reference internal" href="#volume-mounts" id="id24">Volume Mounts</a></p></li>
 </ul>
 </li>
@@ -270,14 +269,15 @@ Content on this topic
 <ul>
 <li><p><a class="reference internal" href="#viewing-logs" id="id31">Viewing Logs</a></p></li>
 <li><p><a class="reference internal" href="#restart-services" id="id32">Restart Services</a></p></li>
-<li><p><a class="reference internal" href="#interactive-container" id="id33">Interactive Container</a></p></li>
+<li><p><a class="reference internal" href="#stop-all-services" id="id33">Stop All Services</a></p></li>
+<li><p><a class="reference internal" href="#interactive-container" id="id34">Interactive Container</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#detailed-guides" id="id34">Detailed Guides</a></p></li>
+<li><p><a class="reference internal" href="#detailed-guides" id="id35">Detailed Guides</a></p></li>
 </ul>
 </nav>
 <section id="overview">
-<h2><a class="toc-backref" href="#id8" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Overview</a><a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
 <p>The AD-R1M software stack is built on <strong>ROS 2 Humble</strong> running on ADI Kuiper2 Linux. The architecture includes:</p>
 <ul class="simple">
 <li><p><strong>ROS 2 Nodes</strong> for motor control, sensor integration, localization, and navigation</p></li>
@@ -287,16 +287,16 @@ Content on this topic
 </ul>
 </section>
 <section id="software-downloads">
-<h2><a class="toc-backref" href="#id9" role="doc-backlink">Software Downloads</a><a class="headerlink" href="#software-downloads" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Software Downloads</a><a class="headerlink" href="#software-downloads" title="Link to this heading"></a></h2>
 <section id="ad-r1m-software-package">
-<h3><a class="toc-backref" href="#id10" role="doc-backlink">AD-R1M Software Package</a><a class="headerlink" href="#ad-r1m-software-package" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">AD-R1M Software Package</a><a class="headerlink" href="#ad-r1m-software-package" title="Link to this heading"></a></h3>
 <p>The AD-R1M ROS 2 packages are available on GitHub:</p>
 <ul class="simple">
 <li><p><a class="icon link reference external" href="https://github.com/analogdevicesinc/ad-r1m-ros2" target="_blank">ad-r1m-ros2</a></p></li>
 </ul>
 </section>
 <section id="prerequisites">
-<h3><a class="toc-backref" href="#id11" role="doc-backlink">Prerequisites</a><a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id10" role="doc-backlink">Prerequisites</a><a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h3>
 <p><strong>On the Robot (Raspberry Pi 5):</strong></p>
 <ul class="simple">
 <li><p>ADI Kuiper2 Linux (pre-installed on SD card)</p></li>
@@ -313,73 +313,44 @@ Content on this topic
 </section>
 </section>
 <section id="installation">
-<h2><a class="toc-backref" href="#id12" role="doc-backlink">Installation</a><a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Installation</a><a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
 <section id="sd-card-setup">
-<span id="id1"></span><h3><a class="toc-backref" href="#id13" role="doc-backlink">SD Card Setup</a><a class="headerlink" href="#sd-card-setup" title="Link to this heading"></a></h3>
+<span id="id1"></span><h3><a class="toc-backref" href="#id12" role="doc-backlink">SD Card Setup</a><a class="headerlink" href="#sd-card-setup" title="Link to this heading"></a></h3>
 <p>For instructions on setting up the SD card and installing the AD-R1M system software, see <a class="reference internal" href="../how-to/build-from-scratch/setup-rpi.html#setup-rpi"><span class="std std-ref">How to set up the AD-R1M internal computer</span></a>.</p>
 </section>
 <section id="first-boot-configuration">
-<span id="id2"></span><h3><a class="toc-backref" href="#id14" role="doc-backlink">First Boot Configuration</a><a class="headerlink" href="#first-boot-configuration" title="Link to this heading"></a></h3>
-<p>The AD-R1M includes an interactive setup script to configure the robot on first boot.</p>
+<span id="id2"></span><h3><a class="toc-backref" href="#id13" role="doc-backlink">First Boot Configuration</a><a class="headerlink" href="#first-boot-configuration" title="Link to this heading"></a></h3>
+<p>The AD-R1M robot is pre-configured and starts automatically on boot.</p>
 <ol class="arabic">
-<li><p>Connect a monitor and keyboard to the Raspberry Pi (or use serial console)</p></li>
 <li><p>Login with default credentials:</p>
 <ul class="simple">
 <li><p>Username: <code class="docutils literal notranslate"><span class="pre">analog</span></code></p></li>
 <li><p>Password: <code class="docutils literal notranslate"><span class="pre">analog</span></code></p></li>
 </ul>
 </li>
-<li><p>Run the interactive setup script:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>~/setup.sh
-</pre></div>
-</div>
-<p>The script provides a menu-driven interface:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>╔════════════════════════════════════════════════════════════════╗
-║              AD-R1M First Boot Setup Menu                      ║
-╠════════════════════════════════════════════════════════════════╣
-║  1) Change hostname                                            ║
-║     Set a unique hostname for the robot                        ║
-║     (recommended for multi-robot setups)                       ║
-║                                                                ║
-║  2) Connect to WiFi                                            ║
-║     Opens nmtui for network configuration                      ║
-║                                                                ║
-║  3) Download latest docker image                               ║
-║     Pulls the latest AD-R1M container from Cloudsmith          ║
-║                                                                ║
-║  4) Write CAN adapter firmware                                 ║
-║     Uploads firmware to the ADRD4161 CAN adapter board         ║
-║                                                                ║
-║  5) Write default motor tuning                                 ║
-║     Writes PID parameters to motor controllers (ADRD3161)      ║
-║                                                                ║
-║  6) Bind radio receiver                                        ║
-║     Puts the ELRS receiver into bind mode                      ║
-║                                                                ║
-║  0) Exit                                                       ║
-╚════════════════════════════════════════════════════════════════╝
-</pre></div>
-</div>
-</li>
-<li><p>Complete the recommended setup steps in order:</p>
+<li><p>The robot automatically initializes hardware via systemd services:</p>
 <ul class="simple">
-<li><p><strong>a) Change hostname</strong> (e.g., <code class="docutils literal notranslate"><span class="pre">ad-r1m-0</span></code>, <code class="docutils literal notranslate"><span class="pre">ad-r1m-1</span></code>)</p></li>
-<li><p><strong>b) Connect to WiFi</strong> and note the IP address shown after connection</p></li>
-<li><p><strong>c) Download latest docker image</strong> (requires Cloudsmith login)</p></li>
-<li><p><strong>d) Write CAN adapter firmware</strong> (required for motor control)</p></li>
-<li><p><strong>e) Write default motor tuning</strong> (required for proper motor operation)</p></li>
-<li><p><strong>f) Bind radio receiver</strong> (optional, only if using RC control)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ad-r1m-slcan.service</span></code> - CAN adapter initialization</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ad-r1m-crsf.service</span></code> - CRSF radio receiver initialization</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ad-r1m-imu.service</span></code> - IMU sampling frequency configuration</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ad-r1m-tof.service</span></code> - ToF camera reset</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ad-r1m-bringup.service</span></code> - Docker Compose startup</p></li>
 </ul>
 </li>
+<li><p>Configure WiFi (optional):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>nmtui
+</pre></div>
+</div>
+</li>
 <li><p>Verify SSH access from your host PC:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh<span class="w"> </span>analog@&lt;robot-ip-address&gt;
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh<span class="w"> </span>analog@ad-r1m-&lt;number&gt;.local
 </pre></div>
 </div>
 </li>
 </ol>
 </section>
 <section id="docker-setup">
-<span id="id3"></span><h3><a class="toc-backref" href="#id15" role="doc-backlink">Docker Setup</a><a class="headerlink" href="#docker-setup" title="Link to this heading"></a></h3>
+<span id="id3"></span><h3><a class="toc-backref" href="#id14" role="doc-backlink">Docker Setup</a><a class="headerlink" href="#docker-setup" title="Link to this heading"></a></h3>
 <p>The AD-R1M software runs in Docker containers for isolation and reproducibility.</p>
 <p>Verify Docker is running:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>docker
@@ -387,98 +358,107 @@ docker<span class="w"> </span>ps
 </pre></div>
 </div>
 <p>Pull the latest AD-R1M container:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Option 1: Use the recreate script (recommended)</span>
-~/recreate_container.sh
-
-<span class="c1"># Option 2: Manual pull and tag</span>
-<span class="nv">IMAGE</span><span class="o">=</span>docker.cloudsmith.io/adi/adrd-common/ad-r1m:rpi5-ftc2025
-docker<span class="w"> </span>pull<span class="w"> </span><span class="nv">$IMAGE</span>
-docker<span class="w"> </span>tag<span class="w"> </span><span class="nv">$IMAGE</span><span class="w"> </span>working
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>pull<span class="w"> </span>docker.cloudsmith.io/adi/adrd-common/ad-r1m:robot-humble-nightly
 </pre></div>
 </div>
 </section>
 </section>
 <section id="software-operation">
-<h2><a class="toc-backref" href="#id16" role="doc-backlink">Software Operation</a><a class="headerlink" href="#software-operation" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id15" role="doc-backlink">Software Operation</a><a class="headerlink" href="#software-operation" title="Link to this heading"></a></h2>
 <p>For basic operation (power on, SSH, bringup), see the <a class="reference internal" href="../tutorial/getting-started.html#getting-started"><span class="std std-ref">AD-R1M Quick Start Guide</span></a>.</p>
-<section id="bringup-configuration">
-<span id="id4"></span><h3><a class="toc-backref" href="#id17" role="doc-backlink">Bringup Configuration</a><a class="headerlink" href="#bringup-configuration" title="Link to this heading"></a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">bringup.sh</span></code> script accepts environment variables to configure the robot stack:</p>
+<section id="ad-r1m-cli">
+<span id="bringup-configuration"></span><h3><a class="toc-backref" href="#id16" role="doc-backlink">AD-R1M CLI</a><a class="headerlink" href="#ad-r1m-cli" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">ad-r1m</span></code> command-line tool manages robot configurations:</p>
+<p><strong>ad-r1m mkconfig &lt;folder&gt;</strong></p>
+<p>Creates a new configuration folder from the default template:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ad-r1m<span class="w"> </span>mkconfig<span class="w"> </span>nav
+<span class="nb">cd</span><span class="w"> </span>nav
+ls
+<span class="c1"># ad-r1m.env  compose.yaml  ros_data/</span>
+</pre></div>
+</div>
+<p><strong>ad-r1m enable &lt;folder&gt;</strong></p>
+<p>Sets a configuration folder to auto-start at boot:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ad-r1m<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>~/nav
+<span class="c1"># Requires sudo, edits systemd service</span>
+</pre></div>
+</div>
+<p><strong>Environment Variables</strong></p>
+<p>Configuration is controlled via <code class="docutils literal notranslate"><span class="pre">ad-r1m.env</span></code>:</p>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 25.0%" />
-<col style="width: 20.0%" />
-<col style="width: 55.0%" />
+<col style="width: 25.0%" />
+<col style="width: 50.0%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Variable</p></th>
 <th class="head"><p>Default</p></th>
-<th class="head"><p>Options</p></th>
+<th class="head"><p>Description</p></th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">RMW_IMPLEMENTATION</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">rmw_zenoh_cpp</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">rmw_zenoh_cpp</span></code> (recommended), <code class="docutils literal notranslate"><span class="pre">rmw_fastdds_cpp</span></code></p></td>
+<td><p>ROS 2 middleware (rmw_zenoh_cpp, rmw_fastrtps_cpp)</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">TELEOP</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">radio</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">radio</span></code>, <code class="docutils literal notranslate"><span class="pre">keyboard</span></code>, <code class="docutils literal notranslate"><span class="pre">autonomous</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">LOCALIZATION</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">blind</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">blind</span></code> (dead reckoning), <code class="docutils literal notranslate"><span class="pre">amcl</span></code> (map-based)</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">NAVIGATION</span></code></p></td>
-<td><p><em>(none)</em></p></td>
-<td><p><em>(empty)</em> or <code class="docutils literal notranslate"><span class="pre">nav2</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DOCKER_IMAGE</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">docker.cloudsmith.io/adi/adrd-common/ad-r1m:robot-humble-nightly</span></code></p></td>
+<td><p>Docker image for ROS 2 containers</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ROBOT_NAMESPACE</span></code></p></td>
-<td><p>hostname-based</p></td>
-<td><p>e.g., <code class="docutils literal notranslate"><span class="pre">ad_r1m_0</span></code>, <code class="docutils literal notranslate"><span class="pre">ad_r1m_1</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/</span></code></p></td>
+<td><p>Robot namespace for multi-robot setups</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">COMPOSE_PROJECT_NAME</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ad-r1m</span></code></p></td>
+<td><p>Docker Compose project name</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Example configurations:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Manual radio control (default)</span>
-~/bringup_radio.sh
-<span class="c1"># Equivalent to: TELEOP=radio LOCALIZATION=blind ~/bringup.sh</span>
-
-<span class="c1"># Autonomous navigation with AMCL</span>
-~/bringup_amcl.sh
-<span class="c1"># Equivalent to: TELEOP=radio LOCALIZATION=amcl NAVIGATION=nav2 ~/bringup.sh</span>
-
-<span class="c1"># Custom configuration</span>
-<span class="nv">TELEOP</span><span class="o">=</span>keyboard<span class="w"> </span><span class="nv">LOCALIZATION</span><span class="o">=</span>amcl<span class="w"> </span><span class="nv">NAVIGATION</span><span class="o">=</span>nav2<span class="w"> </span>~/bringup.sh
-</pre></div>
-</div>
-<p>For the complete list of bringup scripts, see <span class="xref std std-ref">bringup-scripts-table</span> in the Quick Start Guide.</p>
 </section>
 <section id="starting-services-manually">
-<h3><a class="toc-backref" href="#id18" role="doc-backlink">Starting Services Manually</a><a class="headerlink" href="#starting-services-manually" title="Link to this heading"></a></h3>
-<p>Start specific Docker Compose profiles:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>~/ros2_ws
+<h3><a class="toc-backref" href="#id17" role="doc-backlink">Starting Services Manually</a><a class="headerlink" href="#starting-services-manually" title="Link to this heading"></a></h3>
+<p>Use <code class="docutils literal notranslate"><span class="pre">ad-r1m</span> <span class="pre">mkconfig</span></code> to generate a configuration folder, then start services with Docker Compose:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate configuration</span>
+ad-r1m<span class="w"> </span>mkconfig<span class="w"> </span>nav
+<span class="nb">cd</span><span class="w"> </span>nav
 
-<span class="c1"># Basic robot with radio control</span>
-docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span>rmw_zenoh<span class="w"> </span>--profile<span class="w"> </span>teleop_radio<span class="w"> </span>--profile<span class="w"> </span>localization_blind<span class="w"> </span>up
+<span class="c1"># Start base services (robot, tof, teleop, zenoh)</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>up<span class="w"> </span>-d
 
-<span class="c1"># With navigation</span>
-docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span>rmw_zenoh<span class="w"> </span>--profile<span class="w"> </span>teleop_radio<span class="w"> </span>--profile<span class="w"> </span>localization_amcl<span class="w"> </span>--profile<span class="w"> </span>navigation_nav2<span class="w"> </span>up
+<span class="c1"># Start SLAM for mapping</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>slam
 
-<span class="c1"># Mapping mode</span>
-docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span>rmw_zenoh<span class="w"> </span>--profile<span class="w"> </span>teleop_radio<span class="w"> </span>--profile<span class="w"> </span>mapping<span class="w"> </span>up
+<span class="c1"># Start localization (AMCL with map)</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>localization_amcl
+
+<span class="c1"># Start localization (blind/dead-reckoning)</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>localization_blind<span class="w"> </span>map_server
+
+<span class="c1"># Start navigation</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>nav
+
+<span class="c1"># Save map after mapping</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>run<span class="w"> </span>save_map
+
+<span class="c1"># Keyboard teleop (interactive)</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>teleop_keyboard
 </pre></div>
 </div>
-<p>Start individual services:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>motors<span class="w">        </span><span class="c1"># Just motors</span>
-docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>motors<span class="w"> </span>imu<span class="w">    </span><span class="c1"># Motors and IMU</span>
+<p>Start individual development services:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Motors only (with sensor_fusion)</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>motors<span class="w"> </span>sensor_fusion
+
+<span class="c1"># IMU only</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>imu
 </pre></div>
 </div>
 </section>
 <section id="verifying-operation">
-<h3><a class="toc-backref" href="#id19" role="doc-backlink">Verifying Operation</a><a class="headerlink" href="#verifying-operation" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id18" role="doc-backlink">Verifying Operation</a><a class="headerlink" href="#verifying-operation" title="Link to this heading"></a></h3>
 <p>Check running containers:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>ps
 </pre></div>
@@ -502,16 +482,16 @@ docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> 
 </ul>
 </section>
 <section id="rviz-visualization">
-<h3><a class="toc-backref" href="#id20" role="doc-backlink">RViz Visualization</a><a class="headerlink" href="#rviz-visualization" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id19" role="doc-backlink">RViz Visualization</a><a class="headerlink" href="#rviz-visualization" title="Link to this heading"></a></h3>
 <p>For RViz setup on your host PC, see <a class="reference internal" href="../tutorial/ros2-getting-started.html#ros2-visualization"><span class="std std-ref">RViz Visualization</span></a>.</p>
 </section>
 </section>
 <section id="docker-compose-architecture">
-<span id="id5"></span><h2><a class="toc-backref" href="#id21" role="doc-backlink">Docker Compose Architecture</a><a class="headerlink" href="#docker-compose-architecture" title="Link to this heading"></a></h2>
-<p>The system uses Docker Compose with profiles for modular service management.</p>
-<section id="always-on-services">
-<h3><a class="toc-backref" href="#id22" role="doc-backlink">Always-On Services</a><a class="headerlink" href="#always-on-services" title="Link to this heading"></a></h3>
-<p>These services start with every bringup configuration:</p>
+<span id="id4"></span><h2><a class="toc-backref" href="#id20" role="doc-backlink">Docker Compose Architecture</a><a class="headerlink" href="#docker-compose-architecture" title="Link to this heading"></a></h2>
+<p>The system uses Docker Compose with services and profiles for modular service management.</p>
+<section id="base-services-no-profile">
+<h3><a class="toc-backref" href="#id21" role="doc-backlink">Base Services (No Profile)</a><a class="headerlink" href="#base-services-no-profile" title="Link to this heading"></a></h3>
+<p>These services start with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">--env-file</span> <span class="pre">ad-r1m.env</span> <span class="pre">up</span> <span class="pre">-d</span></code>:</p>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
 <colgroup>
@@ -526,28 +506,29 @@ docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> 
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">motors</span></code></p></td>
-<td><p>Motor control via CANopen</p></td>
-<td><p>Requires <code class="docutils literal notranslate"><span class="pre">NET_ADMIN</span></code> capability</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">zenoh_router</span></code></p></td>
+<td><p>Zenoh middleware router</p></td>
+<td><p>Profile: <code class="docutils literal notranslate"><span class="pre">rmw_zenoh_cpp</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">imu</span></code></p></td>
-<td><p>ADIS16470 IMU sensor</p></td>
-<td><p>Requires <code class="docutils literal notranslate"><span class="pre">privileged:</span> <span class="pre">true</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">robot</span></code></p></td>
+<td><p>Motor control, IMU, odometry, sensor fusion</p></td>
+<td><p>Launches <code class="docutils literal notranslate"><span class="pre">bringup.launch.py</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">tof</span></code></p></td>
-<td><p>ADTF3175D ToF camera</p></td>
-<td><p>Depth image publisher</p></td>
+<td><p>Depth to LaserScan conversion</p></td>
+<td><p>Receives depth from ToF camera module</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">tof_republish</span></code></p></td>
-<td><p>Topic relay</p></td>
-<td><p>Republishes to namespaced topics</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">teleop_crsf</span></code></p></td>
+<td><p>CRSF/ELRS radio control</p></td>
+<td><p>Requires <code class="docutils literal notranslate"><span class="pre">/dev/ttyCRSF</span></code></p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </section>
 <section id="profile-based-services">
-<h3><a class="toc-backref" href="#id23" role="doc-backlink">Profile-Based Services</a><a class="headerlink" href="#profile-based-services" title="Link to this heading"></a></h3>
+<h3><a class="toc-backref" href="#id22" role="doc-backlink">Profile-Based Services</a><a class="headerlink" href="#profile-based-services" title="Link to this heading"></a></h3>
+<p>Start with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">--env-file</span> <span class="pre">ad-r1m.env</span> <span class="pre">up</span> <span class="pre">-d</span> <span class="pre">&lt;service&gt;</span></code>:</p>
 <div class="table-wrapper colwidths-given docutils container">
 <table class="docutils align-default">
 <colgroup>
@@ -562,41 +543,65 @@ docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> 
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rmw_zenoh_router</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">rmw_zenoh</span></code></p></td>
-<td><p>Zenoh middleware router</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">slam</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">slam</span></code></p></td>
+<td><p>SLAM Toolbox for mapping</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rmw_fastdds_ds</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">rmw_fastdds</span></code></p></td>
-<td><p>Fast-DDS discovery server</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">localization_amcl</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">loc_amcl</span></code></p></td>
+<td><p>AMCL localization (requires map)</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">teleop_radio</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">teleop_radio</span></code></p></td>
-<td><p>CRSF/ELRS radio control</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">teleop_autonomous</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">teleop_autonomous</span></code></p></td>
-<td><p>Keyboard teleop</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mapping</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">mapping</span></code></p></td>
-<td><p>SLAM Toolbox</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">loc_blind</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">localization_blind</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">localization_blind</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">loc_blind</span></code></p></td>
 <td><p>Dead reckoning (static TF)</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">loc_amcl</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">localization_amcl</span></code></p></td>
-<td><p>AMCL localization</p></td>
-</tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">map_server</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">map_server</span></code></p></td>
-<td><p>Serves static maps</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">loc_blind</span></code></p></td>
+<td><p>Serves empty map for blind localization</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nav2</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">navigation_nav2</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">nav</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">nav</span></code></p></td>
 <td><p>Nav2 navigation stack</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">motors</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">motors</span></code></p></td>
+<td><p>Motor control only (development)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sensor_fusion</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">motors</span></code></p></td>
+<td><p>EKF sensor fusion (development)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">imu</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">imu</span></code></p></td>
+<td><p>IMU only (development)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="one-off-services">
+<h3><a class="toc-backref" href="#id23" role="doc-backlink">One-Off Services</a><a class="headerlink" href="#one-off-services" title="Link to this heading"></a></h3>
+<p>Run with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">--env-file</span> <span class="pre">ad-r1m.env</span> <span class="pre">run</span> <span class="pre">&lt;service&gt;</span></code>:</p>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 25.0%" />
+<col style="width: 75.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Service</p></th>
+<th class="head"><p>Function</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">teleop_keyboard</span></code></p></td>
+<td><p>Interactive keyboard teleop with killswitch control</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">save_map</span></code></p></td>
+<td><p>Save current map to <code class="docutils literal notranslate"><span class="pre">ros_data/maps/</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">shell</span></code></p></td>
+<td><p>Interactive shell inside container</p></td>
 </tr>
 </tbody>
 </table>
@@ -604,11 +609,14 @@ docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> 
 </section>
 <section id="volume-mounts">
 <h3><a class="toc-backref" href="#id24" role="doc-backlink">Volume Mounts</a><a class="headerlink" href="#volume-mounts" title="Link to this heading"></a></h3>
-<p>Configuration and map data stored on host:</p>
+<p>Configuration and data stored in <code class="docutils literal notranslate"><span class="pre">ros_data/</span></code>:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">/home/analog/ros_data:/ros_data</span></code></p></li>
-<li><p>Maps: <code class="docutils literal notranslate"><span class="pre">/ros_data/maps/</span></code></p></li>
-<li><p>Parameters: <code class="docutils literal notranslate"><span class="pre">/ros_data/navigation_params.yaml</span></code>, <code class="docutils literal notranslate"><span class="pre">/ros_data/mapping_params.yaml</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ros_data/maps/</span></code> - Saved maps</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ros_data/navigation_params.yaml</span></code> - Nav2 parameters</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ros_data/mapper_params_online_async.yaml</span></code> - SLAM parameters</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ros_data/teleop_parameters.yaml</span></code> - Teleop parameters</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ros_data/ekf.yaml</span></code> - EKF sensor fusion parameters</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ros_data/log/</span></code> - ROS 2 logs</p></li>
 </ul>
 </section>
 </section>
@@ -622,26 +630,26 @@ docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> 
 <li><p><strong>Interface</strong>: IIO (Industrial I/O)</p></li>
 <li><p><strong>Frequency</strong>: 200 Hz (default), configurable up to 2000 Hz</p></li>
 </ul>
-<figure class="align-center" id="id6">
+<figure class="align-center" id="id5">
 <a class="reference internal image-reference" href="../_images/imu_link.png"><img alt="IMU Link Position" src="../_images/imu_link.png" style="width: 400px;" />
 </a>
 <figcaption>
-<p><span class="caption-text">IMU coordinate frame on the robot</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+<p><span class="caption-text">IMU coordinate frame on the robot</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
 <section id="tof-camera-adtf3175d">
 <h3><a class="toc-backref" href="#id27" role="doc-backlink">ToF Camera (ADTF3175D)</a><a class="headerlink" href="#tof-camera-adtf3175d" title="Link to this heading"></a></h3>
 <ul class="simple">
-<li><p><strong>Topics</strong>: <code class="docutils literal notranslate"><span class="pre">/cam1/depth_image</span></code> (16UC1), <code class="docutils literal notranslate"><span class="pre">/${NAMESPACE}/cam1/scan</span></code> (LaserScan)</p></li>
-<li><p><strong>Interface</strong>: USB via ADI ToF SDK</p></li>
-<li><p><strong>Function</strong>: Depth images converted to 2D LaserScan for navigation</p></li>
+<li><p><strong>Topics</strong>: <code class="docutils literal notranslate"><span class="pre">/cam1/depth_image</span></code> (16UC1), <code class="docutils literal notranslate"><span class="pre">/scan</span></code> (LaserScan)</p></li>
+<li><p><strong>Interface</strong>: Runs on dedicated ToF compute module, communicates via Zenoh</p></li>
+<li><p><strong>Function</strong>: Depth images converted to 2D LaserScan on robot for navigation</p></li>
 </ul>
-<figure class="align-center" id="id7">
+<figure class="align-center" id="id6">
 <a class="reference internal image-reference" href="../_images/fig_tof_tf.png"><img alt="ToF Camera Transform" src="../_images/fig_tof_tf.png" style="width: 400px;" />
 </a>
 <figcaption>
-<p><span class="caption-text">ToF camera coordinate frame</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+<p><span class="caption-text">ToF camera coordinate frame</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 </section>
@@ -667,37 +675,50 @@ docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> 
 <section id="viewing-logs">
 <h3><a class="toc-backref" href="#id31" role="doc-backlink">Viewing Logs</a><a class="headerlink" href="#viewing-logs" title="Link to this heading"></a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># All services</span>
-docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>logs<span class="w"> </span>-f
 
 <span class="c1"># Specific service</span>
-docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>motors
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>robot
 
 <span class="c1"># With timestamps</span>
-docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>--timestamps<span class="w"> </span>motors
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>--timestamps<span class="w"> </span>robot
+
+<span class="c1"># Docker logs directly</span>
+docker<span class="w"> </span>logs<span class="w"> </span>ad-r1m-robot-1
 </pre></div>
 </div>
 </section>
 <section id="restart-services">
 <h3><a class="toc-backref" href="#id32" role="doc-backlink">Restart Services</a><a class="headerlink" href="#restart-services" title="Link to this heading"></a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>motors
-docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>imu<span class="w"> </span>tof
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>restart<span class="w"> </span>robot
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>restart<span class="w"> </span>tof
+</pre></div>
+</div>
+</section>
+<section id="stop-all-services">
+<h3><a class="toc-backref" href="#id33" role="doc-backlink">Stop All Services</a><a class="headerlink" href="#stop-all-services" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stop compose services</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>down
+
+<span class="c1"># Stop all running containers</span>
+docker<span class="w"> </span>stop<span class="w"> </span><span class="k">$(</span>docker<span class="w"> </span>ps<span class="w"> </span>-q<span class="k">)</span>
 </pre></div>
 </div>
 </section>
 <section id="interactive-container">
-<h3><a class="toc-backref" href="#id33" role="doc-backlink">Interactive Container</a><a class="headerlink" href="#interactive-container" title="Link to this heading"></a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start interactive session</span>
-docker<span class="w"> </span>compose<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>motors<span class="w"> </span>bash
+<h3><a class="toc-backref" href="#id34" role="doc-backlink">Interactive Container</a><a class="headerlink" href="#interactive-container" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start interactive shell</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>shell<span class="w"> </span>bash
 
 <span class="c1"># Access running container</span>
-docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ad-r1m-motors-1<span class="w"> </span>bash
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ad-r1m-robot-1<span class="w"> </span>bash
 </pre></div>
 </div>
 <p>For troubleshooting common issues, see <a class="reference internal" href="../how-to/troubleshooting.html#troubleshooting"><span class="std std-ref">AD-R1M Troubleshooting</span></a>.</p>
 </section>
 </section>
 <section id="detailed-guides">
-<h2><a class="toc-backref" href="#id34" role="doc-backlink">Detailed Guides</a><a class="headerlink" href="#detailed-guides" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id35" role="doc-backlink">Detailed Guides</a><a class="headerlink" href="#detailed-guides" title="Link to this heading"></a></h2>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">

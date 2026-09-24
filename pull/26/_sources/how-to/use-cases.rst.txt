@@ -30,7 +30,7 @@ Record IMU data to a ROS2 bag file:
    ros2 bag record /imu -o imu_$(date +%Y%m%d_%H%M%S)
 
    # Record multiple topics
-   ros2 bag record /imu /odom /cam1/scan -o sensor_data
+   ros2 bag record /imu /odom /scan -o sensor_data
 
 Playback and Analysis
 ~~~~~~~~~~~~~~~~~~~~~
@@ -108,10 +108,10 @@ Recording LaserScan Data
 .. code-block:: bash
 
    # Record converted laser scan
-   ros2 bag record /cam1/scan -o laserscan_recording
+   ros2 bag record /scan -o laserscan_recording
 
    # Record all camera-related topics
-   ros2 bag record /cam1/depth_image /cam1/scan /cam1/camera_info -o camera_full
+   ros2 bag record /cam1/depth_image /scan /cam1/camera_info -o camera_full
 
 Multi-Sensor Synchronized Recording
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -122,7 +122,7 @@ Multi-Sensor Synchronized Recording
    ros2 bag record \
        /imu \
        /cam1/depth_image \
-       /cam1/scan \
+       /scan \
        /cam1/camera_info \
        /odom \
        /tf \
@@ -220,7 +220,7 @@ Follow Point Example
        def __init__(self):
            super().__init__('follow_closest')
            self.subscription = self.create_subscription(
-               LaserScan, '/cam1/scan', self.scan_callback, 10)
+               LaserScan, '/scan', self.scan_callback, 10)
            self.publisher = self.create_publisher(Twist, '/cmd_vel_nav', 10)
            
            self.target_distance = 1.0  # meters

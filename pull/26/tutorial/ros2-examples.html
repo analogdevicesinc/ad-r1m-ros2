@@ -131,6 +131,7 @@
 <li><a class="reference internal" href="#rviz-for-multiple-robots">RViz for Multiple Robots</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#stopping-services">Stopping Services</a></li>
 </ul>
 </li>
 </ul>
@@ -263,6 +264,7 @@ Content on this topic
 <li><p><a class="reference internal" href="#rviz-for-multiple-robots" id="id29">RViz for Multiple Robots</a></p></li>
 </ul>
 </li>
+<li><p><a class="reference internal" href="#stopping-services" id="id30">Stopping Services</a></p></li>
 </ul>
 </nav>
 <p>This page provides practical examples for using the AD-R1M robot with ROS2, including mapping, localization, and autonomous navigation.</p>
@@ -279,22 +281,22 @@ Content on this topic
 docker<span class="w"> </span>ps
 
 <span class="c1"># If not running, start base services (robot, tof, teleop, zenoh)</span>
-docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>up<span class="w"> </span>-d
 
 <span class="c1"># Start the SLAM node for mapping</span>
-docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>slam<span class="w"> </span>-d
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>up<span class="w"> </span>slam<span class="w"> </span>-d
 </pre></div>
 </div>
 <p>See <a class="reference internal" href="manage-configurations.html#manage-configurations"><span class="std std-ref">Manage AD-R1M runtime configurations</span></a> for more details on <code class="docutils literal notranslate"><span class="pre">ad-r1m</span> <span class="pre">mkconfig</span></code>.</p>
 <p><strong>Active Docker Compose Services</strong>:</p>
-<p>Base services (started with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">up</span> <span class="pre">-d</span></code>):</p>
+<p>Base services (started with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">--env-file</span> <span class="pre">ad-r1m.env</span> <span class="pre">up</span> <span class="pre">-d</span></code>):</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">zenoh_router</span></code> - Zenoh middleware router</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">robot</span></code> - motors, IMU, odometry, sensor fusion</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">tof</span></code> - ToF camera and depth-to-laserscan</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">teleop_crsf</span></code> - radio control for driving</p></li>
 </ul>
-<p>Profile service (started with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">up</span> <span class="pre">slam</span> <span class="pre">-d</span></code>):</p>
+<p>Profile service (started with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">--env-file</span> <span class="pre">ad-r1m.env</span> <span class="pre">up</span> <span class="pre">slam</span> <span class="pre">-d</span></code>):</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">slam</span></code> - SLAM Toolbox for mapping</p></li>
 </ul>
@@ -309,8 +311,12 @@ pixi<span class="w"> </span>run<span class="w"> </span>rviz2
 </div>
 </li>
 <li><p><strong>Change the Fixed Frame</strong> in RViz to <code class="docutils literal notranslate"><span class="pre">map</span></code></p></li>
-<li><p><strong>Arm the robot</strong> using the killswitch on the RC handset (switch SA to “ARMED”)</p></li>
-<li><p><strong>Drive the robot around</strong> using the right stick on the remote control</p></li>
+<li><p><strong>Drive the robot around</strong> using one of these methods:</p>
+<ul class="simple">
+<li><p><strong>Remote Control</strong>: Arm the robot using the killswitch on the RC handset (switch SA to “ARMED”), then drive using the right stick. See <a class="reference internal" href="getting-started.html#remote-control"><span class="std std-ref">Remote Control</span></a> for details.</p></li>
+<li><p><strong>Keyboard Teleop</strong>: Use keyboard control from your host or via SSH. See <a class="reference internal" href="getting-started.html#keyboard-teleop"><span class="std std-ref">Control the robot using a keyboard</span></a> for setup instructions.</p></li>
+</ul>
+</li>
 </ol>
 <figure class="align-center" id="id1">
 <a class="reference internal image-reference" href="../_images/do_mapping.png"><img alt="Mapping in RViz" src="../_images/do_mapping.png" style="width: 800px;" />
@@ -336,18 +342,26 @@ pixi<span class="w"> </span>run<span class="w"> </span>rviz2
 <section id="saving-the-map">
 <h3><a class="toc-backref" href="#id9" role="doc-backlink">Saving the Map</a><a class="headerlink" href="#saving-the-map" title="Link to this heading"></a></h3>
 <p>After mapping is complete, save the map:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>run<span class="w"> </span>save_map
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>run<span class="w"> </span>save_map
 </pre></div>
 </div>
-<p>This creates two files in <code class="docutils literal notranslate"><span class="pre">ros_data/</span></code> with a timestamped filename:</p>
+<p>This creates two files in <code class="docutils literal notranslate"><span class="pre">ros_data/maps/</span></code> with a timestamped filename (e.g., <code class="docutils literal notranslate"><span class="pre">map_2024-01-15T10:30:00+00:00</span></code>):</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">map.pgm</span></code> - Grayscale image (white=free, black=occupied, gray=unknown)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">map.yaml</span></code> - Map metadata (resolution, origin, thresholds)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">map_&lt;timestamp&gt;.png</span></code> - Grayscale image (white=free, black=occupied, gray=unknown)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">map_&lt;timestamp&gt;.yaml</span></code> - Map metadata (resolution, origin, thresholds)</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To use the saved map with AMCL localization, either:</p>
+<ul class="simple">
+<li><p>Rename the files to <code class="docutils literal notranslate"><span class="pre">map.png</span></code> and <code class="docutils literal notranslate"><span class="pre">map.yaml</span></code> and move to <code class="docutils literal notranslate"><span class="pre">ros_data/</span></code>, or</p></li>
+<li><p>Update the map path in the <code class="docutils literal notranslate"><span class="pre">localization_amcl</span></code> service command in <code class="docutils literal notranslate"><span class="pre">compose.yaml</span></code></p></li>
+</ul>
+</div>
 </section>
 <section id="slam-configuration">
 <h3><a class="toc-backref" href="#id10" role="doc-backlink">SLAM Configuration</a><a class="headerlink" href="#slam-configuration" title="Link to this heading"></a></h3>
-<p>SLAM Toolbox parameters: <code class="docutils literal notranslate"><span class="pre">/ros_data/mapping_params.yaml</span></code></p>
+<p>SLAM Toolbox parameters: <code class="docutils literal notranslate"><span class="pre">/ros_data/mapper_params_online_async.yaml</span></code></p>
 <p>Key parameters:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">slam_toolbox</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
@@ -371,20 +385,24 @@ pixi<span class="w"> </span>run<span class="w"> </span>rviz2
 docker<span class="w"> </span>ps
 
 <span class="c1"># If not running, start base services</span>
-docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>up<span class="w"> </span>-d
 </pre></div>
 </div>
 <p>Choose one of the localization modes:</p>
 <p><strong>Option 1: AMCL Localization (requires saved map)</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span>loc_amcl<span class="w"> </span>up<span class="w"> </span>-d
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>AMCL requires a map file at <code class="docutils literal notranslate"><span class="pre">ros_data/map.yaml</span></code>. You must first create a map using <a class="reference internal" href="#mapping-with-slam"><span class="std std-ref">Mapping with SLAM Toolbox</span></a> and save it before using AMCL localization.</p>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>localization_amcl
 </pre></div>
 </div>
-<p>Uses AMCL (Adaptive Monte Carlo Localization) with a saved map from <code class="docutils literal notranslate"><span class="pre">ros_data/map.yaml</span></code>.</p>
+<p>Uses AMCL (Adaptive Monte Carlo Localization) with the saved map from <code class="docutils literal notranslate"><span class="pre">ros_data/map.yaml</span></code>.</p>
 <p><strong>Option 2: Blind/Dead-Reckoning Localization (no map required)</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span>loc_blind<span class="w"> </span>up<span class="w"> </span>-d
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>localization_blind<span class="w"> </span>map_server
 </pre></div>
 </div>
-<p>Uses odometry-only localization with an empty map. Useful for testing navigation without a pre-built map. Starts both <code class="docutils literal notranslate"><span class="pre">localization_blind</span></code> and <code class="docutils literal notranslate"><span class="pre">map_server</span></code> services.</p>
+<p>Uses odometry-only localization with an empty map. Useful for testing navigation without a pre-built map.</p>
 <p>See <a class="reference internal" href="manage-configurations.html#manage-configurations"><span class="std std-ref">Manage AD-R1M runtime configurations</span></a> for more details.</p>
 </section>
 <section id="setting-initial-pose-amcl-only">
@@ -427,21 +445,7 @@ docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> 
 <h3><a class="toc-backref" href="#id16" role="doc-backlink">Starting Navigation</a><a class="headerlink" href="#starting-navigation" title="Link to this heading"></a></h3>
 <p>Navigation requires localization to be running. Start localization first (see above), then add the navigation service:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start Nav2 navigation (requires localization to be running)</span>
-docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span>nav<span class="w"> </span>up<span class="w"> </span>-d
-</pre></div>
-</div>
-<p><strong>Example: Full navigation stack with AMCL</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>nav
-docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w">                       </span><span class="c1"># Base services</span>
-docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span>loc_amcl<span class="w"> </span>up<span class="w"> </span>-d<span class="w">    </span><span class="c1"># AMCL localization</span>
-docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span>nav<span class="w"> </span>up<span class="w"> </span>-d<span class="w">         </span><span class="c1"># Nav2 navigation</span>
-</pre></div>
-</div>
-<p><strong>Example: Navigation with dead-reckoning</strong></p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>nav
-docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w">                       </span><span class="c1"># Base services</span>
-docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span>loc_blind<span class="w"> </span>up<span class="w"> </span>-d<span class="w">   </span><span class="c1"># Dead-reckoning localization</span>
-docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span>nav<span class="w"> </span>up<span class="w"> </span>-d<span class="w">         </span><span class="c1"># Nav2 navigation</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>up<span class="w"> </span>-d<span class="w"> </span>nav
 </pre></div>
 </div>
 </section>
@@ -499,6 +503,10 @@ docker<span class="w"> </span>compose<span class="w"> </span>--profile<span clas
 </pre></div>
 </div>
 <p>For detailed navigation tuning, see the <a class="icon link reference external" href="https://docs.nav2.org/" target="_blank">Nav2 documentation</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the robot creates a navigation plan but does not move, restarting the <code class="docutils literal notranslate"><span class="pre">robot</span></code> service may have re-activated the killswitch. See <a class="reference internal" href="getting-started.html#getting-started"><span class="std std-ref">AD-R1M Quick Start Guide</span></a> for killswitch control instructions.</p>
+</div>
 </section>
 </section>
 <section id="ros-2-topics-reference">
@@ -675,6 +683,21 @@ ros2<span class="w"> </span>topic<span class="w"> </span>hz<span class="w"> </sp
 <p>Configure the Zenoh connection to each robot by updating the <code class="docutils literal notranslate"><span class="pre">ZENOH_CONFIG_OVERRIDE</span></code> environment variable with the appropriate robot hostname.</p>
 <p>Each robot’s topics will be prefixed with its namespace (e.g., <code class="docutils literal notranslate"><span class="pre">/ad_r1m_0/cmd_vel</span></code>, <code class="docutils literal notranslate"><span class="pre">/ad_r1m_1/cmd_vel</span></code>).</p>
 </section>
+</section>
+<section id="stopping-services">
+<h2><a class="toc-backref" href="#id30" role="doc-backlink">Stopping Services</a><a class="headerlink" href="#stopping-services" title="Link to this heading"></a></h2>
+<p>To stop all services in the current configuration:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>down
+</pre></div>
+</div>
+<p>To stop specific services:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>stop<span class="w"> </span>nav<span class="w"> </span>localization_amcl
+</pre></div>
+</div>
+<p>To stop all running Docker containers (regardless of compose project):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>stop<span class="w"> </span><span class="k">$(</span>docker<span class="w"> </span>ps<span class="w"> </span>-q<span class="k">)</span>
+</pre></div>
+</div>
 </section>
 </section>
 

@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed." name="description" />
+<meta content="Remote Control Issues" name="description" />
 
     <title>AD-R1M Troubleshooting &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
@@ -230,10 +230,6 @@ Content on this topic
             
   <section id="ad-r1m-troubleshooting">
 <span id="troubleshooting"></span><h1>AD-R1M Troubleshooting<a class="headerlink" href="#ad-r1m-troubleshooting" title="Link to this heading"></a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed.</p>
-</div>
 <nav class="contents local" id="table-of-contents">
 <p class="topic-title">Table of Contents</p>
 <ul class="simple">
@@ -314,7 +310,7 @@ Content on this topic
 </thead>
 <tbody>
 <tr class="row-even"><td><p>No bars on RC screen</p></td>
-<td><p>Check robot is powered on and <code class="docutils literal notranslate"><span class="pre">bringup_radio.sh</span></code> is running</p></td>
+<td><p>Check robot is powered on and services are running: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">ps</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>“NO DATA” on telemetry</p></td>
 <td><p>Verify CRSF transceiver power (GPIO 24), check <code class="docutils literal notranslate"><span class="pre">/dev/ttyCRSF</span></code> device</p></td>
@@ -323,7 +319,7 @@ Content on this topic
 <td><p>Wait for ROS2 stack to fully initialize (~30 seconds)</p></td>
 </tr>
 <tr class="row-odd"><td><p>Robot doesn’t move when armed</p></td>
-<td><p>Check killswitch position, verify motor service is running: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">logs</span> <span class="pre">motors</span></code></p></td>
+<td><p>Check killswitch position, verify robot service is running: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">logs</span> <span class="pre">ad-r1m-robot-1</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -369,12 +365,12 @@ Content on this topic
 <section id="can-interface-issues">
 <h2><a class="toc-backref" href="#id4" role="doc-backlink">CAN Interface Issues</a><a class="headerlink" href="#can-interface-issues" title="Link to this heading"></a></h2>
 <p>If motor control fails, check the CAN interface:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ip<span class="w"> </span>link<span class="w"> </span>show<span class="w"> </span>slcan0
-candump<span class="w"> </span>slcan0
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ip<span class="w"> </span>link<span class="w"> </span>show<span class="w"> </span>can0
+candump<span class="w"> </span>can0
 </pre></div>
 </div>
-<p>Reset CAN interface (handled by bringup script):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>~/recan.sh
+<p>Reset CAN interface:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>ad-r1m-slcan.service
 </pre></div>
 </div>
 <section id="common-can-error-messages">
@@ -391,14 +387,14 @@ candump<span class="w"> </span>slcan0
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">slcan0:</span> <span class="pre">link</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">ready</span></code></p></td>
-<td><p>Run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">~/recan.sh</span></code> to reinitialize CAN interface</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">can0:</span> <span class="pre">link</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">ready</span></code></p></td>
+<td><p>Run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">systemctl</span> <span class="pre">restart</span> <span class="pre">ad-r1m-slcan.service</span></code> to reinitialize CAN interface</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">No</span> <span class="pre">CAN</span> <span class="pre">devices</span> <span class="pre">found</span></code></p></td>
 <td><p>Check USB-CAN adapter connection, verify <code class="docutils literal notranslate"><span class="pre">slcand</span></code> service is running</p></td>
 </tr>
 <tr class="row-even"><td><p>CANopen initialization timeout</p></td>
-<td><p>Restart the motors service: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">restart</span> <span class="pre">motors</span></code></p></td>
+<td><p>Restart the robot service: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">--env-file</span> <span class="pre">ad-r1m.env</span> <span class="pre">restart</span> <span class="pre">robot</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -454,8 +450,8 @@ candump<span class="w"> </span>slcan0
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>media-config.service
 </pre></div>
 </div>
-<p>Check depth image topic:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>adrd_demo_ros2-tof-1<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">"source /ros2_ws/install/setup.bash &amp;&amp; ros2 topic hz /cam1/depth_image"</span>
+<p>Check depth image topic (from inside a container):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ad-r1m-tof-1<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">"ros2 topic hz /cam1/depth_image"</span>
 </pre></div>
 </div>
 </section>
@@ -482,8 +478,8 @@ candump<span class="w"> </span>slcan0
 <tr class="row-even"><td><p>Low frame rate</p></td>
 <td><p>Check CPU usage, reduce resolution if needed</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">/cam1/scan</span></code> empty</p></td>
-<td><p>Verify <code class="docutils literal notranslate"><span class="pre">depthimage_to_laserscan</span></code> node is running</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">/scan</span></code> empty</p></td>
+<td><p>Verify <code class="docutils literal notranslate"><span class="pre">depthimage_to_laserscan</span></code> node is running: <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">logs</span> <span class="pre">ad-r1m-tof-1</span></code></p></td>
 </tr>
 </tbody>
 </table>
@@ -495,11 +491,11 @@ candump<span class="w"> </span>slcan0
 <section id="container-not-starting">
 <h3><a class="toc-backref" href="#id13" role="doc-backlink">Container Not Starting</a><a class="headerlink" href="#container-not-starting" title="Link to this heading"></a></h3>
 <p>Check container logs:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>motors
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>logs<span class="w"> </span>ad-r1m-robot-1
 </pre></div>
 </div>
-<p>Verify profiles are enabled:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">echo</span><span class="w"> </span><span class="nv">$COMPOSE_PROFILES</span>
+<p>Verify services are running:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>ps
 </pre></div>
 </div>
 </section>
@@ -536,10 +532,13 @@ candump<span class="w"> </span>slcan0
 <section id="restart-services">
 <h3><a class="toc-backref" href="#id15" role="doc-backlink">Restart Services</a><a class="headerlink" href="#restart-services" title="Link to this heading"></a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Restart specific service</span>
-docker<span class="w"> </span>compose<span class="w"> </span>restart<span class="w"> </span>motors
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>restart<span class="w"> </span>robot
 
 <span class="c1"># Restart all services</span>
-docker<span class="w"> </span>compose<span class="w"> </span>down<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d
+docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>down<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>up<span class="w"> </span>-d
+
+<span class="c1"># Stop all containers</span>
+docker<span class="w"> </span>stop<span class="w"> </span><span class="k">$(</span>docker<span class="w"> </span>ps<span class="w"> </span>-q<span class="k">)</span>
 
 <span class="c1"># Full system restart</span>
 sudo<span class="w"> </span>reboot
@@ -551,16 +550,16 @@ sudo<span class="w"> </span>reboot
 <h2><a class="toc-backref" href="#id16" role="doc-backlink">Navigation Issues</a><a class="headerlink" href="#navigation-issues" title="Link to this heading"></a></h2>
 <section id="navigation-not-working">
 <h3><a class="toc-backref" href="#id17" role="doc-backlink">Navigation Not Working</a><a class="headerlink" href="#navigation-not-working" title="Link to this heading"></a></h3>
-<p>Verify map is loaded:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>--once<span class="w"> </span>/<span class="si">${</span><span class="nv">ROBOT_NAMESPACE</span><span class="si">}</span>/map
+<p>Verify map is loaded (from inside a container):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ad-r1m-nav-1<span class="w"> </span>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>--once<span class="w"> </span>/map
 </pre></div>
 </div>
 <p>Check AMCL pose estimate:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/<span class="si">${</span><span class="nv">ROBOT_NAMESPACE</span><span class="si">}</span>/amcl_pose
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ad-r1m-nav-1<span class="w"> </span>ros2<span class="w"> </span>topic<span class="w"> </span><span class="nb">echo</span><span class="w"> </span>/amcl_pose
 </pre></div>
 </div>
 <p>Ensure costmaps are being published:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>topic<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>costmap
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ad-r1m-nav-1<span class="w"> </span>ros2<span class="w"> </span>topic<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>costmap
 </pre></div>
 </div>
 </section>
@@ -612,10 +611,13 @@ sudo<span class="w"> </span>reboot
 <h2><a class="toc-backref" href="#id20" role="doc-backlink">Transform (TF) Issues</a><a class="headerlink" href="#transform-tf-issues" title="Link to this heading"></a></h2>
 <section id="check-tf-tree">
 <h3><a class="toc-backref" href="#id21" role="doc-backlink">Check TF Tree</a><a class="headerlink" href="#check-tf-tree" title="Link to this heading"></a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>run<span class="w"> </span>tf2_tools<span class="w"> </span>view_frames
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ad-r1m-robot-1<span class="w"> </span>ros2<span class="w"> </span>run<span class="w"> </span>tf2_tools<span class="w"> </span>view_frames
 </pre></div>
 </div>
-<p>This generates a PDF showing the complete transform tree.</p>
+<p>This generates a PDF showing the complete transform tree. Copy it from the container:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>cp<span class="w"> </span>ad-r1m-robot-1:/ros2_ws/frames.pdf<span class="w"> </span>.
+</pre></div>
+</div>
 </section>
 <section id="common-tf-errors">
 <h3><a class="toc-backref" href="#id22" role="doc-backlink">Common TF Errors</a><a class="headerlink" href="#common-tf-errors" title="Link to this heading"></a></h3>
@@ -659,7 +661,7 @@ sudo<span class="w"> </span>reboot
 </div>
 </li>
 <li><p><strong>Verify Zenoh router is running</strong>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>rmw_zenoh_router
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>logs<span class="w"> </span>ad-r1m-zenoh_router-1
 </pre></div>
 </div>
 </li>
@@ -672,14 +674,15 @@ sudo<span class="w"> </span>reboot
 </section>
 <section id="topics-not-visible">
 <h3><a class="toc-backref" href="#id25" role="doc-backlink">Topics Not Visible</a><a class="headerlink" href="#topics-not-visible" title="Link to this heading"></a></h3>
+<p>Run ROS2 commands from inside a container on the robot:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># List all topics</span>
-ros2<span class="w"> </span>topic<span class="w"> </span>list
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ad-r1m-robot-1<span class="w"> </span>ros2<span class="w"> </span>topic<span class="w"> </span>list
 
 <span class="c1"># Check if node is publishing</span>
-ros2<span class="w"> </span>topic<span class="w"> </span>info<span class="w"> </span>/topic_name
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ad-r1m-robot-1<span class="w"> </span>ros2<span class="w"> </span>topic<span class="w"> </span>info<span class="w"> </span>/topic_name
 
 <span class="c1"># Check topic frequency</span>
-ros2<span class="w"> </span>topic<span class="w"> </span>hz<span class="w"> </span>/topic_name
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ad-r1m-robot-1<span class="w"> </span>ros2<span class="w"> </span>topic<span class="w"> </span>hz<span class="w"> </span>/topic_name
 </pre></div>
 </div>
 </section>
@@ -752,13 +755,13 @@ sudo<span class="w"> </span>reboot
 <p>If you cannot resolve an issue:</p>
 <ol class="arabic">
 <li><p><strong>Collect logs</strong>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>&gt;<span class="w"> </span>robot_logs.txt
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>logs<span class="w"> </span>&gt;<span class="w"> </span>robot_logs.txt
 </pre></div>
 </div>
 </li>
 <li><p><strong>Capture system state</strong>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>topic<span class="w"> </span>list<span class="w"> </span>&gt;<span class="w"> </span>topics.txt
-ros2<span class="w"> </span>node<span class="w"> </span>list<span class="w"> </span>&gt;<span class="w"> </span>nodes.txt
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ad-r1m-robot-1<span class="w"> </span>ros2<span class="w"> </span>topic<span class="w"> </span>list<span class="w"> </span>&gt;<span class="w"> </span>topics.txt
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ad-r1m-robot-1<span class="w"> </span>ros2<span class="w"> </span>node<span class="w"> </span>list<span class="w"> </span>&gt;<span class="w"> </span>nodes.txt
 </pre></div>
 </div>
 </li>
