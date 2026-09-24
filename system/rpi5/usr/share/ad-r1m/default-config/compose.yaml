@@ -117,7 +117,7 @@ services:
   save_map:
     profiles: [oneoff]
     image: $DOCKER_IMAGE
-    command: bash -c "ros2 run nav2_map_server map_saver_cli -f /ros_data/map_$(date -Is -u)" --fmt png
+    command: bash -c "ros2 run nav2_map_server map_saver_cli -f /ros_data/maps/map_$(date -Is -u) --fmt png"
     network_mode: host
     ipc: host
     pid: host
@@ -193,7 +193,7 @@ services:
   nav:
     profiles: [nav]
     image: $DOCKER_IMAGE
-    command: ros2 launch ad_r1m_navigation navigation_launch.py
+    command: ros2 launch ad_r1m_navigation navigation_launch.py params_file:=/ros_data/navigation_params.yaml
     network_mode: host
     ipc: host
     pid: host
@@ -212,7 +212,7 @@ services:
   slam:
     profiles: [slam]
     image: $DOCKER_IMAGE
-    command: ros2 launch ad_r1m_navigation online_async_launch.py
+    command: ros2 launch ad_r1m_navigation online_async_launch.py params_file:=/ros_data/mapper_params_online_async.yaml
     network_mode: host
     ipc: host
     pid: host
