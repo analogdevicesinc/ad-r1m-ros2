@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="This document provides an overview of the AD-R1M’s components, capabilities, and design parameters." name="description" />
+
+    <title>AD-R1M Specifications &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
+    <link rel="stylesheet" type="text/css" href="../_static/app.min.css?v=fb8972a4" />
+    <script async="async" src="../_static/app.umd.js?v=8c78863f"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="AD-R1M Software Guide" href="software-guide.html" />
+    <link rel="prev" title="Reference" href="index.html" />
+   
+  
+  
+  
+  <meta name="repository" content="ad-r1m-ros2">
+  <meta name="version" content="26/merge">
+  
+    <meta name="page_source_suffix" content=".rst">
+  
+  
+  
+
+
+<style>
+  body {
+    
+  }
+
+  body.dark {
+    
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body:not(.light) {
+      
+    }
+  }
+</style>
+  </head>
+  
+    <body>
+  
+  <input type="checkbox" id="input-show-toc">
+  <input type="checkbox" id="input-show-localtoc">
+  <input type="checkbox" id="input-show-repotoc">
+
+  
+  <div class="search-area">
+    <form action="" method="get">
+      <input type="text" name="q" aria-labelledby="search-documentation" value="" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" role="search" placeholder="Search"/>
+      <button class="icon"></button>
+    </form>
+  </div>
+  
+
+  <header>
+    <div id="left">
+      <label id="show-sidebar" class="icon" for="input-show-toc" title="Show/hide index"></label>
+    </div>
+    <div id="right">
+      <span>
+        <a id="logo-org" href="https://developer.analog.com/" aria-label="Analog Devices Inc. landing page"></a>
+        <div class="vertical-divider"></div>
+        
+        <label id="show-repotoc" for="input-show-repotoc" title="Show/hide docs">Documentation</label>
+        
+        <a id="logo" href="../index.html">
+          <div>AD-R1M ROS2</div>
+        </a>
+      </span>
+      <span class="reverse">
+        <label id="show-localtoc" class="icon" for="input-show-localtoc" title="Show/hide contents"></label>
+      </span>
+    </div>
+  </header>
+
+
+  <div class="repotoc-tree overlay">
+    <root>
+  <a href="../index.html" class="current">AD-R1M ROS2</a>
+</root>
+
+  </div>
+    <div class="localtoc">
+      <div class="tocwrapper">
+        <div class="header localtoc-header">
+          <a id="scroll-up" href="#top-anchor" title="Back to top"></a>
+        </div>
+        <nav>
+          <ul>
+<li><a class="reference internal" href="#">AD-R1M Specifications</a><ul>
+<li><a class="reference internal" href="#hardware-components">Hardware components</a><ul>
+<li><a class="reference internal" href="#hardware-add-ons">Hardware add-ons</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#software-stack">Software stack</a></li>
+<li><a class="reference internal" href="#mechanical-specifications">Mechanical specifications</a></li>
+<li><a class="reference internal" href="#drive-system-specifications">Drive system specifications</a></li>
+<li><a class="reference internal" href="#battery-power-specifications">Battery power specifications</a></li>
+<li><a class="reference internal" href="#sensor-specifications">Sensor specifications</a></li>
+<li><a class="reference internal" href="#electrical-specifications">Electrical specifications</a></li>
+</ul>
+</li>
+</ul>
+
+        </nav>
+      </div>
+    </div>
+
+  
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+    <a id="no-logo" href="../index.html">
+      AD-R1M Robot Platform
+    </a><input id="input-switch-toc" type="checkbox">
+<label id="show-repotoc" for="input-switch-toc">
+All content
+</label>
+<label id="show-toc" for="input-switch-toc">
+Content on this topic
+</label>
+<div class="repotoc-tree">
+  <root>
+  <a href="../index.html" class="current">AD-R1M ROS2</a>
+</root>
+
+</div>
+<div class="toc-tree">
+  <ul class="current">
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-1" id="toctree-collapse-1"/><div class="collapse"><a class="reference internal" href="../tutorial/index.html">Tutorials</a><label for="toctree-collapse-1"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/getting-started.html">Getting started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/manage-configurations.html">Manage runtime configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/ros2-writing-your-own-nodes.html">Write your own ROS 2 nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/ros2-examples.html">AD-R1M ROS2 Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/ros2-getting-started.html">AD-R1M ROS 2 Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tutorial/gazebo-simulation-docker.html">Gazebo simulation with Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2" id="toctree-collapse-2"/><div class="collapse"><a class="reference internal" href="../how-to/index.html">How-to guides</a><label for="toctree-collapse-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/use-cases.html">AD-R1M use-cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../how-to/troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-1" id="toctree-collapse-2-1"/><div class="collapse"><a class="reference internal" href="../how-to/build-from-scratch/index.html">Build an AD-R1M from scratch</a><label for="toctree-collapse-2-1"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/build-from-scratch/assemble-hardware.html">1. Assemble the hardware</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/build-from-scratch/setup-rpi.html">2. Set up the internal computer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-2-2" id="toctree-collapse-2-2"/><div class="collapse"><a class="reference internal" href="../how-to/jetson/index.html">NVIDIA® Jetson™ AGX Orin and NVIDIA® Isaac™ ROS Visual SLAM Integration</a><label for="toctree-collapse-2-2"><div class="icon"></div></label></div><ul>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/agx-orin-setup.html">1) Linux installation on NVIDIA® Jetson™ AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/setup-req-pkg-agx-orin.html">2) Setup required packages on NVIDIA® Jetson™ AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/setup-isaac-ros-agx-orin.html">3) Setup NVIDIA® Isaac™ ROS on AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/setup-isaac-ros-vslam.html">4) Setup NVIDIA® Isaac™ ROS Visual SLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/vslam-setup-and-usage.html">5) NVIDIA® Isaac™ ROS Visual SLAM and Intel® RealSense™ setup and usage on NVIDIA Jetson™ AGX Orin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-jetson-orin-hardware-setup.html">6) AD-R1M and NVIDIA® Jetson™ AGX Orin: hardware setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-cuvslam-setup.html">7) AD-R1M and NVIDIA® Isaac™ ROS Visual SLAM setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-and-nvidia-cuvslam.html">8) Launching AD-R1M and NVIDIA® Isaac™ ROS Visual SLAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/map-building-for-nav2.html">9) Map building for NAV2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../how-to/jetson/ad-r1m-realsense-gazebo.html">10) AD-R1M Gazebo simulation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1 current"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-3" id="toctree-collapse-3" checked=""/><div class="collapse"><a class="reference internal" href="index.html">Reference</a><label for="toctree-collapse-3"><div class="icon"></div></label></div><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">AD-R1M Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="software-guide.html">Software guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><input class="toctree-collapse" type="checkbox" name="toctree-collapse-4" id="toctree-collapse-4"/><div class="collapse"><a class="reference internal" href="../explanation/index.html">Explanation</a><label for="toctree-collapse-4"><div class="icon"></div></label></div><ul>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/ros2-architecture.html">AD-R1M ROS2 Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../explanation/software-system-architecture.html">AD-R1M software system architecture</a></li>
+</ul>
+</li>
+</ul>
+
+
+</div>
+        </div>
+      </div>
+
+  <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper" id="top-anchor">
+          <div class="body-header">
+  <nav class="breadcrumb"><ol><li><a href="index.html">Reference</a></li></ol></nav>
+</div>
+          <div class="body" role="main">
+            
+  <section id="ad-r1m-specifications">
+<h1>AD-R1M Specifications<a class="headerlink" href="#ad-r1m-specifications" title="Link to this heading"></a></h1>
+<p>This document provides an overview of the AD-R1M’s components, capabilities, and design parameters.</p>
+<section id="hardware-components">
+<h2>Hardware components<a class="headerlink" href="#hardware-components" title="Link to this heading"></a></h2>
+<p>The base AD-R1M variant consists of:</p>
+<ul class="simple">
+<li><p>1x Raspberry Pi 5 – <strong>main compute</strong></p></li>
+<li><p>1x <a class="icon adi reference external" href="https://www.analog.com/ADRD4161-01Z" target="_blank">ADRD4161-01Z</a> robotics connectivity carrier for rpi, providing connectivity options for: ADIS IMUs, CAN bus, GPIOs</p></li>
+<li><p>1x <a class="icon adi reference external" href="https://www.analog.com/ADIS16470" target="_blank">ADIS16470</a> IMU</p></li>
+<li><p>1x <a class="icon adi reference external" href="https://www.analog.com/EVAL-ADTF3175" target="_blank">EVAL-ADTF3175</a> ToF camera</p></li>
+<li><p>1x <a class="icon adi reference external" href="https://www.analog.com/ADRD5161-01Z" target="_blank">ADRD5161-01Z</a> BMS module, on a LiPo 3S2P battery pack</p></li>
+<li><p>2x <a class="icon adi reference external" href="https://www.analog.com/ADRD3161-01Z" target="_blank">ADRD3161-01Z</a> motor drive modules</p></li>
+<li><p>2x <a class="icon adi reference external" href="https://www.analog.com/qsh5718" target="_blank">QSH5718-51-28-101-10K</a> stepper motors with high resolution encoders</p></li>
+</ul>
+<section id="hardware-add-ons">
+<h3>Hardware add-ons<a class="headerlink" href="#hardware-add-ons" title="Link to this heading"></a></h3>
+<p>The AD-R1M supports connecting extra hardware for enhanced function, via:</p>
+<ul class="simple">
+<li><p>Wired 1Gbps Ethernet – for other compute platforms with network</p></li>
+<li><p>1x USB 3.0, 2x USB 2.0 ports available on the Pi</p></li>
+<li><p>GPIOs, broken out on the carrier board</p></li>
+</ul>
+<p>We provide reference designs for the following add-on hardware combinations:</p>
+<ul class="simple">
+<li><p>NVIDIA® Jetson™ AGX Orin + one or more Intel® RealSense™ stereo cameras</p></li>
+<li><p>NVIDIA® Jetson™ Xavier NX + <a class="icon adi reference external" href="https://www.analog.com/AD-GMSL522-SL" target="_blank">AD-GMSL522-SL</a> GMSL™ Carrier Board + 4x GMSL™ cameras</p></li>
+</ul>
+</section>
+</section>
+<section id="software-stack">
+<h2>Software stack<a class="headerlink" href="#software-stack" title="Link to this heading"></a></h2>
+<p>The <strong>Raspberry Pi 5 main compute</strong> platform powering the robot runs a software stack composed of:</p>
+<ul class="simple">
+<li><p>ADI Kuiper Linux, ADI’s Debian-based distribution</p></li>
+<li><p>Docker</p></li>
+<li><p>ROS 2 Humble</p></li>
+</ul>
+<p>The default robot runtime has ROS 2 functionalities for:</p>
+<ul class="simple">
+<li><p>Motion control</p></li>
+<li><p>Full robot sensing: motor feedback, IMU, cameras</p></li>
+<li><p>Sensor fusion</p></li>
+<li><p>Manual teleoperation</p></li>
+<li><p>Autonomous operation: SLAM, navigation</p></li>
+</ul>
+<p>The robotics modules on board run open source Zephyr® firmware and communicate via CAN bus using the CANopen® protocol stack and appropriate CiA® DSPs:</p>
+<ul class="simple">
+<li><p><a class="icon link reference external" href="https://github.com/analogdevicesinc/adrd3161-fw" target="_blank">ADRD3161 firmware</a> implements a CiA® 402 device</p></li>
+<li><p><a class="icon link reference external" href="https://github.com/analogdevicesinc/adrd4161-fw" target="_blank">ADRD4161 firmware</a> implements a slcan adapter</p></li>
+<li><p><a class="icon link reference external" href="https://github.com/analogdevicesinc/adrd5161-fw" target="_blank">ADRD5161 firmware</a> implements a CiA® 419 device</p></li>
+</ul>
+</section>
+<section id="mechanical-specifications">
+<h2>Mechanical specifications<a class="headerlink" href="#mechanical-specifications" title="Link to this heading"></a></h2>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Construction</p></td>
+<td><p>T-slot Aluminium extrusion, metric 20-series</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Dimensions (L x W x H)</p></td>
+<td><p>585 x 360 x 150 mm</p></td>
+<td><p>Chassis only, without payload</p></td>
+</tr>
+<tr class="row-even"><td><p>Weight</p></td>
+<td><p>~ 10 kg</p></td>
+<td><p>Base configuration, battery included</p></td>
+</tr>
+<tr class="row-odd"><td><p>Payload capacity</p></td>
+<td><p>N/A</p></td>
+<td><p>Not rated for payload carrying. Capacity heavily influenced by drive surface, tunable motor soft limits</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="drive-system-specifications">
+<h2>Drive system specifications<a class="headerlink" href="#drive-system-specifications" title="Link to this heading"></a></h2>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Kinematics</p></td>
+<td><p>Differential drive</p></td>
+<td><p>2 driven wheels on left-right axis through geometric center</p></td>
+</tr>
+<tr class="row-odd"><td><p>Drive wheel diameter</p></td>
+<td><p>100 mm</p></td>
+<td><p>Not including wear, dynamic deformation</p></td>
+</tr>
+<tr class="row-even"><td><p>Drive wheel width</p></td>
+<td><p>25 mm</p></td>
+<td><p>Not including wear, dynamic deformation</p></td>
+</tr>
+<tr class="row-odd"><td><p>Drive wheel track (base width)</p></td>
+<td><p>220 mm</p></td>
+<td><p>Wheel contact patch center-to-center</p></td>
+</tr>
+<tr class="row-even"><td><p>Caster wheel diameter</p></td>
+<td><p>50 mm</p></td>
+<td><p>4x caster wheels</p></td>
+</tr>
+<tr class="row-odd"><td><p>Caster wheel ground clearance</p></td>
+<td><p>~ 5 mm</p></td>
+<td><p>Drive wheels maintain ground contact; Robot slightly swings around drive wheel axis</p></td>
+</tr>
+<tr class="row-even"><td><p>Motor current limit</p></td>
+<td><p>2.5 A</p></td>
+<td><p>Per motor. Soft limit. Default tuning parameters; may be tuned up.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Max speed</p></td>
+<td><p>2.0 m/s</p></td>
+<td><p>Soft limited by default motor tuning parameter set. Near system limit; needs HW upgrade to be significantly increased.</p></td>
+</tr>
+<tr class="row-even"><td><p>Default speed</p></td>
+<td><p>1.0 m/s</p></td>
+<td><p>Controlled by ROS 2 teleop and nav2 configs</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="battery-power-specifications">
+<h2>Battery power specifications<a class="headerlink" href="#battery-power-specifications" title="Link to this heading"></a></h2>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Battery cell</p></td>
+<td><p>NCR18650GA</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Battery configuration</p></td>
+<td><p>3S2P (3 series pairs of 2 parallel cells each)</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Battery voltage</p></td>
+<td><p>9.0 - 12.6 V</p></td>
+<td><p>Range</p></td>
+</tr>
+<tr class="row-odd"><td><p>Battery voltage</p></td>
+<td><p>10.8 V (3 x 3.6 V)</p></td>
+<td><p>Nominal</p></td>
+</tr>
+<tr class="row-even"><td><p>Battery capacity</p></td>
+<td><p>6600 mAh (2 x 3300 mAh)</p></td>
+<td><p>Nominal</p></td>
+</tr>
+<tr class="row-odd"><td><p>Charge time</p></td>
+<td><p>2 h</p></td>
+<td><p>Robot powered on but idle.</p></td>
+</tr>
+<tr class="row-even"><td><p>Operating time</p></td>
+<td><p>2 - 3 h</p></td>
+<td><p>Constant motion on soft terrain (e.g. soft rubber, carpet)</p></td>
+</tr>
+<tr class="row-odd"><td><p>Operating time</p></td>
+<td><p>12 h</p></td>
+<td><p>Motors idle</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="sensor-specifications">
+<h2>Sensor specifications<a class="headerlink" href="#sensor-specifications" title="Link to this heading"></a></h2>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ToF camera range</p></td>
+<td><p>0.4 - 4.0 m</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>ToF camera FOV</p></td>
+<td><p>75° horizontal / 90° diagonal</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>ToF camera resolution</p></td>
+<td><p>512 x 512 px</p></td>
+<td><p>Each pixel has: one depth value (mm from sensor origin), one infrared albedo value</p></td>
+</tr>
+<tr class="row-odd"><td><p>IMU sampling frequency</p></td>
+<td><p>200 Hz (default) / 2000 Hz (max)</p></td>
+<td><p>Configurable via libIIO</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="electrical-specifications">
+<h2>Electrical specifications<a class="headerlink" href="#electrical-specifications" title="Link to this heading"></a></h2>
+<div class="table-wrapper colwidths-given docutils container">
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 30.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CAN Bus Speed</p></td>
+<td><p>500 kbps</p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+
+          </div>
+              <div class="related">
+                &nbsp;
+    <a href="index.html" title="Previous document (Alt+Shift+LeftArrow)" class="prev">Reference</a>
+    <a href="software-guide.html" title="Next document (Alt+Shift+RightArrow)" class="next">AD-R1M Software Guide</a>
+              </div>
+          
+        </div>
+      </div>
+  </div>
+
+  <label id="cancel-area-show-toc" for="input-show-toc"></label>
+  <label id="cancel-area-show-localtoc" for="input-show-localtoc"></label>
+    <footer>
+      &#169;2026, Analog Devices, Inc.
+      
+      |
+      Made with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+      &amp; <a href="https://github.com/analogdevicesinc/doctools">Doctools</a>
+      
+    </footer>
+  </body>
+</html>
