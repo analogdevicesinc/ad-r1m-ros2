@@ -34,6 +34,8 @@ Power On
 2. **Press and hold the gray momentary button** (~1s) to start the robot electronics
 3. **Wait for the LED ring** to turn solid green (~60 seconds)
 
+.. _remote-control:
+
 Remote Control
 --------------
 
@@ -123,6 +125,8 @@ Connect the robot to your WiFi network
 #. Verify the connection -- does your network have an ``*`` (asterisk) next to it?
 #. Press :kbd:`Escape` 3 times to exit ``nmtui``
 
+.. _prepare-software:
+
 Prepare software on your computer
 ---------------------------------
 
@@ -204,6 +208,8 @@ You may build visualizations by adding display items using the "Add" button in t
 
 Note that the ToF preview will always be upside down because of the sensor's position. The robot model encodes this orientation information, so all ROS nodes that use ToF data know to "untwist" it -- this is just a visualization quirk.
 
+.. _keyboard-teleop:
+
 Control the robot using a keyboard
 ----------------------------------
 
@@ -220,7 +226,7 @@ In development, it is often useful to quickly teleoperate the robot without usin
          $ ssh analog@ad-r1m-123.local
          $ ad-r1m mkconfig teleop
          $ cd teleop
-         $ docker compose run --rm teleop_keyboard
+         $ docker compose --env-file ad-r1m.env run --rm teleop_keyboard
 
       The teleop includes built-in killswitch control:
 
@@ -251,12 +257,34 @@ In development, it is often useful to quickly teleoperate the robot without usin
 
    .. tab-item:: Host Terminal (Pixi)
 
-      On your host computer, run RViz to visualize the robot:
+      On your host computer, use the Pixi workspace created in :ref:`prepare-software`.
+
+      First, deactivate the killswitch and initialize the motors:
+
+      .. shell::
+
+         $ cd pixiws
+         $ pixi run ros2 topic pub --once /killswitch std_msgs/msg/Bool "{data: false}"
+         $ pixi run ros2 service call /drive_left/init std_srvs/srv/Trigger
+         $ pixi run ros2 service call /drive_right/init std_srvs/srv/Trigger
+
+      .. note::
+
+         You should hear a sound from the motor drives and see a brief shaky movement when the motors initialize. This confirms the motors are ready. If not, re-run the service call commands.
+
+      Then run the keyboard teleop:
 
       .. shell::
 
          ~/pixiws
-         $ pixi run rviz2
+         $ pixi run ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap cmd_vel:=cmd_vel_keyboard
+
+      To stop the motors (activate killswitch):
+
+      .. shell::
+
+         ~/pixiws
+         $ pixi run ros2 topic pub --once /killswitch std_msgs/msg/Bool "{data: true}"
 
 Next Steps
 ----------
