@@ -194,14 +194,14 @@ Content on this topic
 <nav class="contents local" id="table-of-contents">
 <p class="topic-title">Table of Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#power-on" id="id5">Power On</a></p></li>
-<li><p><a class="reference internal" href="#remote-control" id="id6">Remote Control</a></p></li>
-<li><p><a class="reference internal" href="#connect-to-the-robot-using-ssh" id="id7">Connect to the robot using SSH</a></p></li>
-<li><p><a class="reference internal" href="#connect-the-robot-to-your-wifi-network" id="id8">Connect the robot to your WiFi network</a></p></li>
-<li><p><a class="reference internal" href="#prepare-software-on-your-computer" id="id9">Prepare software on your computer</a></p></li>
-<li><p><a class="reference internal" href="#visualize-the-robot-using-rviz" id="id10">Visualize the robot using Rviz</a></p></li>
-<li><p><a class="reference internal" href="#control-the-robot-using-a-keyboard" id="id11">Control the robot using a keyboard</a></p></li>
-<li><p><a class="reference internal" href="#next-steps" id="id12">Next Steps</a></p></li>
+<li><p><a class="reference internal" href="#power-on" id="id6">Power On</a></p></li>
+<li><p><a class="reference internal" href="#remote-control" id="id7">Remote Control</a></p></li>
+<li><p><a class="reference internal" href="#connect-to-the-robot-using-ssh" id="id8">Connect to the robot using SSH</a></p></li>
+<li><p><a class="reference internal" href="#connect-the-robot-to-your-wifi-network" id="id9">Connect the robot to your WiFi network</a></p></li>
+<li><p><a class="reference internal" href="#prepare-software-on-your-computer" id="id10">Prepare software on your computer</a></p></li>
+<li><p><a class="reference internal" href="#visualize-the-robot-using-rviz" id="id11">Visualize the robot using Rviz</a></p></li>
+<li><p><a class="reference internal" href="#control-the-robot-using-a-keyboard" id="id12">Control the robot using a keyboard</a></p></li>
+<li><p><a class="reference internal" href="#next-steps" id="id13">Next Steps</a></p></li>
 </ul>
 </nav>
 <div class="admonition important">
@@ -215,12 +215,12 @@ Content on this topic
 <p>See the <a class="reference internal" href="../reference/software-guide.html#software-guide"><span class="std std-ref">AD-R1M Software Guide</span></a> for complete installation instructions.</p>
 </div>
 <section id="power-on">
-<h2><a class="toc-backref" href="#id5" role="doc-backlink">Power On</a><a class="headerlink" href="#power-on" title="Link to this heading"></a></h2>
-<figure class="align-center" id="id1">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Power On</a><a class="headerlink" href="#power-on" title="Link to this heading"></a></h2>
+<figure class="align-center" id="id2">
 <a class="reference internal image-reference" href="../_images/robot-buttons.png"><img alt="Robot side panel" src="../_images/robot-buttons.png" style="width: 500px;" />
 </a>
 <figcaption>
-<p><span class="caption-text">Robot Control Panel</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+<p><span class="caption-text">Robot Control Panel</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <ol class="arabic simple">
@@ -230,21 +230,21 @@ Content on this topic
 </ol>
 </section>
 <section id="remote-control">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">Remote Control</a><a class="headerlink" href="#remote-control" title="Link to this heading"></a></h2>
-<figure class="align-center" id="id2">
+<span id="id1"></span><h2><a class="toc-backref" href="#id7" role="doc-backlink">Remote Control</a><a class="headerlink" href="#remote-control" title="Link to this heading"></a></h2>
+<figure class="align-center" id="id3">
 <a class="reference internal image-reference" href="../_images/rc.png"><img alt="RC Interface" src="../_images/rc.png" style="width: 600px;" />
 </a>
 <figcaption>
-<p><span class="caption-text">Radio controller showing buttons, switches, and joysticks</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+<p><span class="caption-text">Radio controller showing buttons, switches, and joysticks</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p><strong>Step 1: Verify Connection</strong></p>
 <p>Press <strong>[RTN]</strong> to return to the home screen. Look for the wireless “bars” icon indicating connection.</p>
-<figure class="align-center" id="id3">
+<figure class="align-center" id="id4">
 <a class="reference internal image-reference" href="../_images/radio_connect.png"><img alt="RC Connection Status" src="../_images/radio_connect.png" style="width: 500px;" />
 </a>
 <figcaption>
-<p><span class="caption-text">Radio connection status: disconnected (left) vs connected (right)</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+<p><span class="caption-text">Radio connection status: disconnected (left) vs connected (right)</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p><strong>Step 2: Check Telemetry</strong></p>
@@ -255,11 +255,11 @@ Content on this topic
 </div>
 <p><strong>Step 3: Arm the Robot</strong></p>
 <p>Move the <strong>arm switch (SA)</strong> to the “ARMED” (down) position. The robot should shake slightly to confirm.</p>
-<figure class="align-center" id="id4">
+<figure class="align-center" id="id5">
 <a class="reference internal image-reference" href="../_images/killswitch.png"><img alt="Killswitch Position" src="../_images/killswitch.png" style="width: 400px;" />
 </a>
 <figcaption>
-<p><span class="caption-text">Arm switch positions: OFF (up) = safe, ARMED (down) = active</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+<p><span class="caption-text">Arm switch positions: OFF (up) = safe, ARMED (down) = active</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
 </figcaption>
 </figure>
 <p><strong>Step 4: Drive</strong></p>
@@ -273,7 +273,7 @@ Content on this topic
 <p>For RC troubleshooting, see <a class="reference internal" href="../how-to/troubleshooting.html#rc-troubleshooting"><span class="std std-ref">Remote Control Issues</span></a>.</p>
 </section>
 <section id="connect-to-the-robot-using-ssh">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">Connect to the robot using SSH</a><a class="headerlink" href="#connect-to-the-robot-using-ssh" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id8" role="doc-backlink">Connect to the robot using SSH</a><a class="headerlink" href="#connect-to-the-robot-using-ssh" title="Link to this heading"></a></h2>
 <p>Connecting to the robot using SSH allows you to:</p>
 <ul class="simple">
 <li><p>Configure a WiFi connection</p></li>
@@ -297,7 +297,7 @@ Content on this topic
 <p>Password: <code class="docutils literal notranslate"><span class="pre">analog</span></code></p>
 </section>
 <section id="connect-the-robot-to-your-wifi-network">
-<h2><a class="toc-backref" href="#id8" role="doc-backlink">Connect the robot to your WiFi network</a><a class="headerlink" href="#connect-the-robot-to-your-wifi-network" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id9" role="doc-backlink">Connect the robot to your WiFi network</a><a class="headerlink" href="#connect-the-robot-to-your-wifi-network" title="Link to this heading"></a></h2>
 <ol class="arabic simple">
 <li><p>Connect to the AD-R1M using SSH</p></li>
 <li><p>Run <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">nmtui</span></code> (password <code class="docutils literal notranslate"><span class="pre">analog</span></code>)</p></li>
@@ -309,7 +309,7 @@ Content on this topic
 </ol>
 </section>
 <section id="prepare-software-on-your-computer">
-<h2><a class="toc-backref" href="#id9" role="doc-backlink">Prepare software on your computer</a><a class="headerlink" href="#prepare-software-on-your-computer" title="Link to this heading"></a></h2>
+<span id="prepare-software"></span><h2><a class="toc-backref" href="#id10" role="doc-backlink">Prepare software on your computer</a><a class="headerlink" href="#prepare-software-on-your-computer" title="Link to this heading"></a></h2>
 <p>The robot stack runs standalone and doesn’t depend on any external software. You may install extra software on your computer for:</p>
 <ul class="simple">
 <li><p>Remotely visualizing the robot’s perceived environment</p></li>
@@ -318,7 +318,7 @@ Content on this topic
 </ul>
 <p>Our recommended mechanism for this is to use <a class="icon link reference external" href="https://pixi.prefix.dev/latest/" target="_blank">Pixi</a>. First install Pixi by following their <a class="icon link reference external" href="https://pixi.prefix.dev/latest/installation/" target="_blank">installation guide</a>, i.e.:</p>
 <blockquote>
-<div><div class="tab-set docutils"><input checked="checked" id="tab-item-b47c16ce351aa341e0a7437ffcdb8bda904d9750-0" name="tab-set-b47c16ce351aa341e0a7437ffcdb8bda904d9750" type="radio"></input><label class="tab-label" for="tab-item-b47c16ce351aa341e0a7437ffcdb8bda904d9750-0">Linux &amp; Max</label><div class="tab-content docutils"><p>In a terminal window, run:</p>
+<div><div class="tab-set docutils"><input checked="checked" id="tab-item-9c5aed735b1ae7a1b4fbe171b1e0bd12f22b1658-0" name="tab-set-9c5aed735b1ae7a1b4fbe171b1e0bd12f22b1658" type="radio"></input><label class="tab-label" for="tab-item-9c5aed735b1ae7a1b4fbe171b1e0bd12f22b1658-0">Linux &amp; macOS</label><div class="tab-content docutils"><p>In a terminal window, run:</p>
 <div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
 </pre></div>
 </div>
@@ -326,40 +326,39 @@ Content on this topic
 </pre></div>
 </div>
 <div class="clear-left"></div></div></div><p>Close and reopen the terminal window, or run <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">~/.bashrc</span></code> (or the rc of your shell of choice).</p>
-</div><input id="tab-item-b47c16ce351aa341e0a7437ffcdb8bda904d9750-1" name="tab-set-b47c16ce351aa341e0a7437ffcdb8bda904d9750" type="radio"></input><label class="tab-label" for="tab-item-b47c16ce351aa341e0a7437ffcdb8bda904d9750-1">Windows</label><div class="tab-content docutils"><p>In a powershell window, run:</p>
+</div><input id="tab-item-9c5aed735b1ae7a1b4fbe171b1e0bd12f22b1658-1" name="tab-set-9c5aed735b1ae7a1b4fbe171b1e0bd12f22b1658" type="radio"></input><label class="tab-label" for="tab-item-9c5aed735b1ae7a1b4fbe171b1e0bd12f22b1658-1">Windows</label><div class="tab-content docutils"><p>In a PowerShell window, run:</p>
 <div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
 </pre></div>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>powershell<span class="w"> </span>-ExecutionPolicy<span class="w"> </span>Bypass<span class="w"> </span>-c<span class="w"> </span><span class="s2">"irm -useb https://pixi.sh/install.ps1 | iex"</span>
 </pre></div>
 </div>
-<div class="clear-left"></div></div></div><p>Close and reopen the powershell window.</p>
+<div class="clear-left"></div></div></div><p>Close and reopen the PowerShell window.</p>
 </div></div></div></blockquote>
 <p>Then create a Pixi workspace:</p>
 <blockquote>
 <div><div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
 </pre></div>
 </div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>init<span class="w"> </span>pixiws<span class="w"> </span>-c<span class="w"> </span>robostack-humble<span class="w"> </span>-c<span class="w"> </span>conda-forge
-</pre></div>
-</div>
-<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>pixiws
-</pre></div>
-</div>
-<div class="clear-left"></div></div></div><div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>You may change <code class="docutils literal notranslate"><span class="pre">pixiws</span></code> in these first two commands to something else – it is just a folder name.</p>
-</div>
-<div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/pixiws$
-</pre></div>
-</div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>add<span class="w"> </span>ros-humble-desktop<span class="w"> </span>ros-humble-rmw-zenoh-cpp
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>pixiws<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>pixiws
 </pre></div>
 </div>
 <div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/pixiws$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>init<span class="w"> </span>-c<span class="w"> </span>robostack-humble<span class="w"> </span>-c<span class="w"> </span>conda-forge
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/pixiws$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>add<span class="w"> </span>ros-humble-desktop<span class="w"> </span>ros-humble-rmw-zenoh-cpp<span class="w"> </span>ros-humble-teleop-twist-keyboard
+</pre></div>
+</div>
+<div class="clear-left"></div></div></div></div></blockquote>
+<p>Configure the connection to your robot:</p>
+<blockquote>
+<div><div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/pixiws$
 </pre></div>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>workspace<span class="w"> </span>activation<span class="w"> </span>env<span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="nv">RMW_IMPLEMENTATION</span><span class="o">=</span><span class="s2">"rmw_zenoh_cpp"</span>
@@ -373,15 +372,18 @@ Content on this topic
 </div>
 <div class="clear-left"></div></div></div><div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Be careful to change the <code class="docutils literal notranslate"><span class="pre">ad-r1m-123</span></code> in the last command to your <code class="docutils literal notranslate"><span class="pre">ad-r1m-...</span></code> number. You may run these commands multiple times, to overwrite previous settings.</p>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">ad-r1m-123</span></code> with your robot’s hostname. You may run these commands again to switch robots.</p>
 </div>
 </div></blockquote>
 </section>
 <section id="visualize-the-robot-using-rviz">
-<h2><a class="toc-backref" href="#id10" role="doc-backlink">Visualize the robot using Rviz</a><a class="headerlink" href="#visualize-the-robot-using-rviz" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Visualize the robot using Rviz</a><a class="headerlink" href="#visualize-the-robot-using-rviz" title="Link to this heading"></a></h2>
 <p>Rviz is the standard ROS tool for listening to live data from a robot and displaying it in a 3D environment.</p>
-<p>In the Pixi workspace folder, run:</p>
-<div class="code-shell"><div><div class="no-select highlight-text notranslate"><div class="highlight"><pre><span></span>pixi run rviz2
+<p>In the AD-R1M repository folder, run:</p>
+<div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/pixiws$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>run<span class="w"> </span>rviz2
 </pre></div>
 </div>
 <div class="clear-left"></div></div></div><p>Out of the box, rviz doesn’t display much:</p>
@@ -397,28 +399,105 @@ Content on this topic
 <p>Note that the ToF preview will always be upside down because of the sensor’s position. The robot model encodes this orientation information, so all ROS nodes that use ToF data know to “untwist” it – this is just a visualization quirk.</p>
 </section>
 <section id="control-the-robot-using-a-keyboard">
-<h2><a class="toc-backref" href="#id11" role="doc-backlink">Control the robot using a keyboard</a><a class="headerlink" href="#control-the-robot-using-a-keyboard" title="Link to this heading"></a></h2>
-<p>In development, it is often useful to quickly teleoperate the robot without using the physical remote control, for which you can use ROS’ <code class="docutils literal notranslate"><span class="pre">teleop_twist_keyboard</span></code>. In the Pixi workspace folder, run:</p>
+<span id="keyboard-teleop"></span><h2><a class="toc-backref" href="#id12" role="doc-backlink">Control the robot using a keyboard</a><a class="headerlink" href="#control-the-robot-using-a-keyboard" title="Link to this heading"></a></h2>
+<p>In development, it is often useful to quickly teleoperate the robot without using the physical remote control. The best practice is to use two terminals: one SSH’d into the robot for teleop, and one on your host for visualization.</p>
+<div class="tab-set docutils"><input checked="checked" id="tab-item-f050a831a13ce763463a1e4a7f8bcc75227dbcd1-0" name="tab-set-f050a831a13ce763463a1e4a7f8bcc75227dbcd1" type="radio"></input><label class="tab-label" for="tab-item-f050a831a13ce763463a1e4a7f8bcc75227dbcd1-0">Robot Terminal (SSH)</label><div class="tab-content docutils"><p>SSH into the robot and run the keyboard teleop:</p>
+<div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ssh<span class="w"> </span>analog@ad-r1m-123.local
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ad-r1m<span class="w"> </span>mkconfig<span class="w"> </span>teleop
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>teleop
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/teleop$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>compose<span class="w"> </span>--env-file<span class="w"> </span>ad-r1m.env<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>teleop_keyboard
+</pre></div>
+</div>
+<div class="clear-left"></div></div></div><p>The teleop includes built-in killswitch control:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Moving around:
+   u    i    o
+   j    k    l
+   m    ,    .
+
+i/,   : forward/backward
+j/l   : turn left/right
+u/o/m/. : combined movements
+
+anything else : stop
+
+q/z : increase/decrease max speeds by 10%
+w/x : increase/decrease only linear speed by 10%
+e/c : increase/decrease only angular speed by 10%
+
+p/r : activate/reset killswitch
+
+CTRL-C to quit
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Press <code class="docutils literal notranslate"><span class="pre">r</span></code> to reset the killswitch and enable the motors. You should hear a sound from the motor drives and see a brief shaky movement. Press <code class="docutils literal notranslate"><span class="pre">p</span></code> to activate the killswitch and stop the motors.</p>
+</div>
+</div><input id="tab-item-f050a831a13ce763463a1e4a7f8bcc75227dbcd1-1" name="tab-set-f050a831a13ce763463a1e4a7f8bcc75227dbcd1" type="radio"></input><label class="tab-label" for="tab-item-f050a831a13ce763463a1e4a7f8bcc75227dbcd1-1">Host Terminal (Pixi)</label><div class="tab-content docutils"><p>On your host computer, use the Pixi workspace created in <a class="reference internal" href="#prepare-software"><span class="std std-ref">Prepare software on your computer</span></a>.</p>
+<p>First, deactivate the killswitch and initialize the motors:</p>
+<div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>pixiws
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/pixiws$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>run<span class="w"> </span>ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>--once<span class="w"> </span>/killswitch<span class="w"> </span>std_msgs/msg/Bool<span class="w"> </span><span class="s2">"{data: false}"</span>
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/pixiws$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>run<span class="w"> </span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/drive_left/init<span class="w"> </span>std_srvs/srv/Trigger
+</pre></div>
+</div>
+<div class="clear-left"></div></div><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/pixiws$
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>run<span class="w"> </span>ros2<span class="w"> </span>service<span class="w"> </span>call<span class="w"> </span>/drive_right/init<span class="w"> </span>std_srvs/srv/Trigger
+</pre></div>
+</div>
+<div class="clear-left"></div></div></div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>You should hear a sound from the motor drives and see a brief shaky movement when the motors initialize. This confirms the motors are ready. If not, re-run the service call commands.</p>
+</div>
+<p>Then run the keyboard teleop:</p>
 <div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/pixiws$
 </pre></div>
 </div>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>run<span class="w"> </span>ros2<span class="w"> </span>run<span class="w"> </span>teleop_twist_keyboard<span class="w"> </span>teleop_twist_keyboard<span class="w"> </span>--ros-args<span class="w"> </span>--remap<span class="w"> </span>cmd_vel:<span class="o">=</span>cmd_vel_joy
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>run<span class="w"> </span>ros2<span class="w"> </span>run<span class="w"> </span>teleop_twist_keyboard<span class="w"> </span>teleop_twist_keyboard<span class="w"> </span>--ros-args<span class="w"> </span>--remap<span class="w"> </span>cmd_vel:<span class="o">=</span>cmd_vel_keyboard
 </pre></div>
 </div>
-<div class="clear-left"></div></div><div><div class="no-select highlight-text notranslate"><div class="highlight"><pre><span></span>
+<div class="clear-left"></div></div></div><p>To stop the motors (activate killswitch):</p>
+<div class="code-shell"><div><div class="no-select float-left highlight-default notranslate"><div class="highlight"><pre><span></span>~/pixiws$
 </pre></div>
 </div>
-<div class="clear-left"></div></div><div><div class="no-select highlight-text notranslate"><div class="highlight"><pre><span></span>Moving around:
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pixi<span class="w"> </span>run<span class="w"> </span>ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>--once<span class="w"> </span>/killswitch<span class="w"> </span>std_msgs/msg/Bool<span class="w"> </span><span class="s2">"{data: true}"</span>
 </pre></div>
 </div>
-<div class="clear-left"></div></div><div><div class="no-select highlight-text notranslate"><div class="highlight"><pre><span></span>  u    i    o
-  j    k    l
-  m    ,    .
-</pre></div>
-</div>
-<div class="clear-left"></div></div></div></section>
+<div class="clear-left"></div></div></div></div></div></section>
 <section id="next-steps">
-<h2><a class="toc-backref" href="#id12" role="doc-backlink">Next Steps</a><a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
+<h2><a class="toc-backref" href="#id13" role="doc-backlink">Next Steps</a><a class="headerlink" href="#next-steps" title="Link to this heading"></a></h2>
 <p>Now that your robot is operational, explore these capabilities:</p>
 <div class="grid grid-repeat" style="grid-template-columns: repeat(auto-fit, minmax(29.0em, 1fr));"><div class="card link"><p><strong>Mapping</strong> – Create maps of your environment</p>
 <figure class="align-center">

@@ -276,7 +276,7 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
 ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </span>/imu<span class="w"> </span>-o<span class="w"> </span>imu_<span class="k">$(</span>date<span class="w"> </span>+%Y%m%d_%H%M%S<span class="k">)</span>
 
 <span class="c1"># Record multiple topics</span>
-ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </span>/imu<span class="w"> </span>/odom<span class="w"> </span>/cam1/scan<span class="w"> </span>-o<span class="w"> </span>sensor_data
+ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </span>/imu<span class="w"> </span>/odom<span class="w"> </span>/scan<span class="w"> </span>-o<span class="w"> </span>sensor_data
 </pre></div>
 </div>
 </section>
@@ -349,10 +349,10 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
 <section id="recording-laserscan-data">
 <h3><a class="toc-backref" href="#id7" role="doc-backlink">Recording LaserScan Data</a><a class="headerlink" href="#recording-laserscan-data" title="Link to this heading"></a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Record converted laser scan</span>
-ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </span>/cam1/scan<span class="w"> </span>-o<span class="w"> </span>laserscan_recording
+ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </span>/scan<span class="w"> </span>-o<span class="w"> </span>laserscan_recording
 
 <span class="c1"># Record all camera-related topics</span>
-ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </span>/cam1/depth_image<span class="w"> </span>/cam1/scan<span class="w"> </span>/cam1/camera_info<span class="w"> </span>-o<span class="w"> </span>camera_full
+ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </span>/cam1/depth_image<span class="w"> </span>/scan<span class="w"> </span>/cam1/camera_info<span class="w"> </span>-o<span class="w"> </span>camera_full
 </pre></div>
 </div>
 </section>
@@ -362,7 +362,7 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
 ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>/imu<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>/cam1/depth_image<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>/cam1/scan<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>/scan<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>/cam1/camera_info<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>/odom<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>/tf<span class="w"> </span><span class="se">\</span>
@@ -456,7 +456,7 @@ ros2<span class="w"> </span>bag<span class="w"> </span>record<span class="w"> </
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">'follow_closest'</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">subscription</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span>
-            <span class="n">LaserScan</span><span class="p">,</span> <span class="s1">'/cam1/scan'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan_callback</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+            <span class="n">LaserScan</span><span class="p">,</span> <span class="s1">'/scan'</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan_callback</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">publisher</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_publisher</span><span class="p">(</span><span class="n">Twist</span><span class="p">,</span> <span class="s1">'/cmd_vel_nav'</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">target_distance</span> <span class="o">=</span> <span class="mf">1.0</span>  <span class="c1"># meters</span>

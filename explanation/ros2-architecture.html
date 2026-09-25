@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta content="This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed." name="description" />
+<meta content="Overview" name="description" />
 
     <title>AD-R1M ROS2 Architecture &#8212; AD-R1M Robot Platform 1.0.0 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8e8a900e" />
@@ -563,10 +563,6 @@ Content on this topic
             
   <section id="ad-r1m-ros2-architecture">
 <span id="ros2-architecture"></span><h1>AD-R1M ROS2 Architecture<a class="headerlink" href="#ad-r1m-ros2-architecture" title="Link to this heading"></a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This documentation page is not up to date to the latest robot software. The robot architecture is largely the same, but specific names of ROS nodes, packages, user-facing scripts may have changed.</p>
-</div>
 <nav class="contents local" id="table-of-contents">
 <p class="topic-title">Table of Contents</p>
 <ul class="simple">
@@ -600,7 +596,7 @@ Content on this topic
 <section id="system-architecture">
 <h2><a class="toc-backref" href="#id6" role="doc-backlink">System Architecture</a><a class="headerlink" href="#system-architecture" title="Link to this heading"></a></h2>
 <pre  class="mermaid">
-        %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#4a90d9', 'primaryTextColor': '#ffffff', 'primaryBorderColor': '#2d5a8a', 'secondaryColor': '#82c341', 'tertiaryColor': '#f5a623', 'background': '#ffffff', 'mainBkg': '#4a90d9', 'nodeBorder': '#2d5a8a', 'clusterBkg': '#f0f4f8', 'titleColor': '#333333', 'lineColor': '#333333', 'edgeLabelBackground': '#ffffcc', 'textColor': '#000000', 'secondaryTextColor': '#000000'}}}%%
+        %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#4a90d9', 'primaryTextColor': '#000000', 'primaryBorderColor': '#2d5a8a', 'secondaryColor': '#82c341', 'tertiaryColor': '#f5a623', 'background': '#ffffff', 'mainBkg': '#4a90d9', 'nodeBorder': '#2d5a8a', 'clusterBkg': '#f0f4f8', 'titleColor': '#333333', 'lineColor': '#555555', 'edgeLabelBackground': '#e8e8e8', 'textColor': '#000000', 'secondaryTextColor': '#000000', 'tertiaryTextColor': '#000000', 'nodeTextColor': '#000000'}}}%%
 graph TD
     subgraph Sensors[&quot;🔵 Sensors&quot;]
         B[IMU&lt;br/&gt;ADIS16470]
@@ -630,7 +626,7 @@ graph TD
 
     B --&gt;|/imu| F
     C --&gt;|/cam1/depth_image| D
-    D --&gt;|/cam1/scan| I
+    D --&gt;|/scan| I
     F --&gt;|/odom_filtered| G
     E --&gt;|/cmd_vel_joy| H
     G --&gt;|/cmd_vel_nav| H
@@ -668,27 +664,44 @@ graph TD
 </dd>
 </dl>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start the drive system (specify CAN interface)</span>
-ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_real<span class="w"> </span>just_motors.launch.py<span class="w"> </span>can_iface:<span class="o">=</span>can0
+ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_control<span class="w"> </span>drive_control.launch.py<span class="w"> </span>can_iface:<span class="o">=</span>can0
 </pre></div>
 </div>
 <dl class="simple">
 <dt>Launch arguments:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">namespace</span></code>: Robot namespace for multi-robot systems (default: ‘’, examples: robot1, robot2)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">can_iface</span></code>: CAN interface name (default: can0)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ekf_config_file</span></code>: Path to EKF configuration file (default: ad_r1m_common/config/ekf.yaml)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sensor_fusion</span></code>: Enable EKF sensor fusion (default: true). When true, uses <code class="docutils literal notranslate"><span class="pre">controllers.yaml</span></code>; when false, uses <code class="docutils literal notranslate"><span class="pre">controllers_no_ekf.yaml</span></code> which enables odom→base_link TF from diff_drive_controller directly.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">robot_xacro</span></code>: Path to robot URDF xacro (default: ad_r1m_bringup/urdf/ad_r1m_canopen.urdf.xacro)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">extra_control_params_file</span></code>: Additional controller parameters file (default: ‘’)</p></li>
 </ul>
 </dd>
 </dl>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Multi-robot example with namespace</span>
-ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_real<span class="w"> </span>just_motors.launch.py<span class="w"> </span>namespace:<span class="o">=</span>robot1<span class="w"> </span>can_iface:<span class="o">=</span>can0
+ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_control<span class="w"> </span>drive_control.launch.py<span class="w"> </span>namespace:<span class="o">=</span>robot1<span class="w"> </span>can_iface:<span class="o">=</span>can0
+
+<span class="c1"># Without EKF sensor fusion (diff_drive_controller publishes odom TF directly)</span>
+ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_control<span class="w"> </span>drive_control.launch.py<span class="w"> </span>sensor_fusion:<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
+<p><strong>Sensor Fusion (EKF)</strong></p>
+<p>When using sensor fusion, launch the EKF node separately:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_control<span class="w"> </span>sensor_fusion.launch.py
+</pre></div>
+</div>
+<dl class="simple">
+<dt>Launch arguments:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">namespace</span></code>: Robot namespace for multi-robot systems (default: ‘’)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ekf_config_file</span></code>: Path to EKF configuration file (default: ad_r1m_control/config/ekf.yaml)</p></li>
+</ul>
+</dd>
+</dl>
 <p>This motor launch starts the following nodes:</p>
 <dl>
 <dt><strong>robot_state_publisher</strong></dt><dd><ul>
 <li><p>Publishes the robot’s state (joint positions) to tf2</p></li>
 <li><p>Computes forward kinematics and broadcasts the robot’s state</p></li>
-<li><p>Loads robot description from <code class="docutils literal notranslate"><span class="pre">ad_r1m_real.urdf.xacro</span></code></p></li>
+<li><p>Loads robot description from <code class="docutils literal notranslate"><span class="pre">ad_r1m.urdf.xacro</span></code></p></li>
 <li><p>Config:</p>
 <blockquote>
 <div><ul class="simple">
@@ -702,7 +715,7 @@ ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_real<span class
 <dt><strong>controller_manager (ros2_control_node)</strong></dt><dd><ul>
 <li><p>Core ROS2 control component that manages and coordinates robot controllers. <a class="icon link reference external" href="https://control.ros.org/rolling/doc/ros2_control/controller_manager/doc/userdoc.html" target="_blank">controller_manager documentation</a></p></li>
 <li><p>Loads and manages controller plugins</p></li>
-<li><p>Config: reads from <code class="docutils literal notranslate"><span class="pre">ad_r1m_common/config/ros2_controllers.yaml</span></code> containing:</p>
+<li><p>Config: reads from <code class="docutils literal notranslate"><span class="pre">ad_r1m_control/config/controllers.yaml</span></code> containing:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Controller configurations (diff_drive_controller)</p></li>
@@ -744,7 +757,7 @@ ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_real<span class
 <dt><strong>robot_localization_node (ekf_filter_node)</strong></dt><dd><ul>
 <li><p>Provides state estimation for robot pose using Extended Kalman Filter (EKF)</p></li>
 <li><p>Fuses data from various sensors (IMU, odometry, etc.)</p></li>
-<li><p>Config: Uses <code class="docutils literal notranslate"><span class="pre">ad_r1m_common/config/ekf.yaml</span></code> containing:</p>
+<li><p>Config: Uses <code class="docutils literal notranslate"><span class="pre">ad_r1m_control/config/ekf.yaml</span></code> containing:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>Sensor inputs and frame IDs</p></li>
@@ -777,36 +790,16 @@ The EKF (Extended Kalman Filter) uses (X, Y) position, (X, Y) linear velocities,
 </div>
 <section id="using-diff-drive-controller-odometry-directly-without-ekf">
 <h4>Using diff_drive_controller Odometry Directly (Without EKF)<a class="headerlink" href="#using-diff-drive-controller-odometry-directly-without-ekf" title="Link to this heading"></a></h4>
-<p>If you want to use the odometry published directly by the <cite>diff_drive_controller</cite> (without fusing with IMU data via the EKF), you can disable the robot_localization node and enable the TF transform in the controller:</p>
-<ol class="arabic">
-<li><dl>
-<dt><strong>Disable the robot_localization_node</strong></dt><dd><p>Create a custom launch file or modify <cite>just_motors.launch.py</cite> to comment out the <cite>robot_localization_node</cite>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Comment out or remove this node from the GroupAction</span>
-<span class="c1"># robot_localization_node,</span>
+<p>If you want to use the odometry published directly by the <cite>diff_drive_controller</cite> (without fusing with IMU data via the EKF), use the <code class="docutils literal notranslate"><span class="pre">sensor_fusion</span></code> launch argument:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_control<span class="w"> </span>drive_control.launch.py<span class="w"> </span>sensor_fusion:<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
-</dd>
-</dl>
-</li>
-<li><dl>
-<dt><strong>Enable odom → base_link transform in diff_drive_controller</strong></dt><dd><p>In your <code class="docutils literal notranslate"><span class="pre">ad_r1m_common/config/ros2_controllers.yaml</span></code>, set <code class="docutils literal notranslate"><span class="pre">enable_odom_tf:</span> <span class="pre">true</span></code> for the <code class="docutils literal notranslate"><span class="pre">diff_drive_controller</span></code>:</p>
+<p>This uses <code class="docutils literal notranslate"><span class="pre">controllers_no_ekf.yaml</span></code> which sets <code class="docutils literal notranslate"><span class="pre">enable_odom_tf:</span> <span class="pre">true</span></code> for the <code class="docutils literal notranslate"><span class="pre">diff_drive_controller</span></code>, publishing the odom→base_link transform directly:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">diff_drive_controller</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
 <span class="w">     </span><span class="nt">enable_odom_tf</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># true: publish odom-&gt;base_link tf (false when using EKF)</span>
 </pre></div>
 </div>
-</dd>
-</dl>
-</li>
-<li><dl>
-<dt><strong>Launch the drive system</strong></dt><dd><p>Start the drive system as usual:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_real<span class="w"> </span>just_motors.launch.py<span class="w"> </span>can_iface:<span class="o">=</span>can0
-</pre></div>
-</div>
-</dd>
-</dl>
-</li>
-</ol>
 <p>With this setup, the robot will use the odometry and TF published by the <cite>diff_drive_controller</cite> directly, without sensor fusion from the EKF.</p>
 </section>
 <section id="canopen-motor-control-integration">
@@ -849,7 +842,7 @@ The EKF (Extended Kalman Filter) uses (X, Y) position, (X, Y) linear velocities,
 <h3><a class="toc-backref" href="#id9" role="doc-backlink">IMU (Inertial Measurement Unit)</a><a class="headerlink" href="#imu-inertial-measurement-unit" title="Link to this heading"></a></h3>
 <p>The ADI IMU node publishes sensor data to the <cite>/imu</cite> topic using the following configuration:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Launch the IMU node</span>
-ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_real<span class="w"> </span>just_imu.launch.py
+ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_bringup<span class="w"> </span>imu.launch.py
 </pre></div>
 </div>
 <dl class="simple">
@@ -860,7 +853,7 @@ ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_real<span class
 </dd>
 </dl>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Multi-robot example with namespace</span>
-ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_real<span class="w"> </span>just_imu.launch.py<span class="w"> </span>namespace:<span class="o">=</span>robot1
+ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_bringup<span class="w"> </span>imu.launch.py<span class="w"> </span>namespace:<span class="o">=</span>robot1
 </pre></div>
 </div>
 <dl class="simple">
@@ -941,70 +934,79 @@ See this launch file for reference: <a class="icon link reference external" href
 </section>
 <section id="time-of-flight-camera">
 <h3><a class="toc-backref" href="#id10" role="doc-backlink">Time-of-Flight Camera</a><a class="headerlink" href="#time-of-flight-camera" title="Link to this heading"></a></h3>
-<p>ADI’s EVAL-ADTF3175D-NXZ ToF sensor is used in this AMR setup to provide depth perception. For this configuration, only depth images are published and used; amplitude (AB), confidence, and point cloud outputs are disabled.
-The node captures depth frames from the sensor using the <a class="icon link reference external" href="https://github.com/analogdevicesinc/ToF/" target="_blank">ADI ToF SDK</a> APIs and publishes them as ROS topics.</p>
-<dl>
-<dt>Example Python launch code:</dt><dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">adi_3dtof_node</span> <span class="o">=</span> <span class="n">IncludeLaunchDescription</span><span class="p">(</span>
-    <span class="n">PythonLaunchDescriptionSource</span><span class="p">(</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pkg_3dtof_adtf31xx_dir</span><span class="p">,</span> <span class="s1">'launch'</span><span class="p">,</span>
-                     <span class="s1">'adi_3dtof_adtf31xx_launch.py'</span><span class="p">)</span>
-    <span class="p">),</span>
-    <span class="n">launch_arguments</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">"arg_enable_depth_publish"</span><span class="p">:</span> <span class="s2">"True"</span><span class="p">,</span>  <span class="c1"># Enable depth image publishing for LaserScan conversion</span>
-        <span class="s2">"arg_enable_ab_publish"</span><span class="p">:</span> <span class="s2">"False"</span><span class="p">,</span>
-        <span class="s2">"arg_enable_conf_publish"</span><span class="p">:</span> <span class="s2">"False"</span><span class="p">,</span>
-        <span class="s2">"arg_enable_point_cloud_publish"</span><span class="p">:</span> <span class="s2">"False"</span><span class="p">,</span>
-        <span class="s2">"arg_input_sensor_mode"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>        <span class="c1"># Input mode, `0:Real Time Sensor`</span>
-        <span class="s2">"arg_input_sensor_ip"</span><span class="p">:</span> <span class="s2">"127.0.0.1"</span><span class="p">,</span>
-        <span class="s2">"arg_encoding_type"</span><span class="p">:</span> <span class="s2">"16UC1"</span><span class="p">,</span>        <span class="c1"># Encoding types `mono16` or `16UC1`</span>
-    <span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span>
-<span class="p">)</span>
+<p>ADI’s EVAL-ADTF3175D-NXZ ToF sensor is used in this AMR setup to provide depth perception. The ToF system runs as a distributed architecture:</p>
+<ul class="simple">
+<li><p><strong>Camera Node</strong>: Runs on a dedicated ToF compute module (NXP i.MX8), captures depth frames using the <a class="icon link reference external" href="https://github.com/analogdevicesinc/ToF/" target="_blank">ADI ToF SDK</a> and publishes them as ROS topics</p></li>
+<li><p><strong>Depth to LaserScan</strong>: Runs on the robot (RPi5), converts depth images to 2D laser scans for navigation</p></li>
+<li><p><strong>Communication</strong>: Zenoh middleware connects both systems</p></li>
+</ul>
+<p><strong>ToF Camera Module (docker-compose.yml)</strong></p>
+<p>The camera node runs on the ToF compute module via Docker:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros_app</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">astanea/adi_ros2-nxp:humble-base</span>
+<span class="w">    </span><span class="nt">network_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host</span>
+<span class="w">    </span><span class="nt">ipc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">host</span>
+<span class="w">    </span><span class="nt">privileged</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/home/analog/config/config_adsd3500_adsd3100.json:/tof.json:ro</span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-lc</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">        </span><span class="no">export RMW_IMPLEMENTATION=rmw_zenoh_cpp</span>
+<span class="w">        </span><span class="no">export ZENOH_CONFIG_OVERRIDE=’connect/endpoints=["tcp/&lt;robot_ip&gt;:7447"];mode="client"’</span>
+<span class="w">        </span><span class="no">ros2 run adi_3dtof_adtf31xx adi_3dtof_adtf31xx_node --ros-args \</span>
+<span class="w">        </span><span class="no">-r __ns:=/cam1 \</span>
+<span class="w">        </span><span class="no">-p param_camera_link:=cam1_adtf31xx_optical \</span>
+<span class="w">        </span><span class="no">-p param_input_sensor_mode:=0 \</span>
+<span class="w">        </span><span class="no">-p param_config_file_name_of_tof_sdk:=/tof.json \</span>
+<span class="w">        </span><span class="no">-p param_camera_mode:=3 \</span>
+<span class="w">        </span><span class="no">-p param_enable_depth_publish:=True \</span>
+<span class="w">        </span><span class="no">-p param_enable_ab_publish:=True \</span>
+<span class="w">        </span><span class="no">-p param_enable_point_cloud_publish:=True \</span>
+<span class="w">        </span><span class="no">-p param_encoding_type:=16UC1</span>
 </pre></div>
 </div>
-</dd>
-</dl>
-<p>To start the ToF camera and convert depth images to LaserScan format, use the following launch command:</p>
+<p><strong>Robot (RPi5) - Depth to LaserScan</strong></p>
+<p>On the robot, the depth images are converted to laser scans:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_perception_aditof<span class="w"> </span>depthimage_to_laserscan.launch.py
+</pre></div>
+</div>
+<p><strong>Camera Node Parameters</strong></p>
 <blockquote>
-<div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ros2<span class="w"> </span>launch<span class="w"> </span>adrd_demo_ros2<span class="w"> </span>just_tof.launch.py
-</pre></div>
-</div>
-</div></blockquote>
-<p><strong>Important:</strong> Run <code class="docutils literal notranslate"><span class="pre">~/Workspace/media_config_16D_16AB_8C.sh</span></code> outside the container before starting the camera.</p>
-<p>The camera system consists of two main components:</p>
-<p><strong>Camera Node (adi_3dtof_adtf31xx_node)</strong></p>
-<dl class="simple">
-<dt>Node parameters:</dt><dd><ul class="simple">
-<li><p><strong>param_camera_link</strong>: <em>‘cam1_adtf31xx_optical’</em> - Camera optical frame ID</p></li>
+<div><ul class="simple">
+<li><p><strong>param_camera_link</strong>: <em>’cam1_adtf31xx_optical’</em> - Camera optical frame ID</p></li>
 <li><p><strong>param_input_sensor_mode</strong>: <em>0</em> - Input mode (0: Real Time Sensor)</p></li>
 <li><p><strong>param_camera_mode</strong>: <em>3</em> - Camera operational mode</p></li>
 <li><p><strong>param_enable_depth_publish</strong>: <em>true</em> - Enable depth image publishing for LaserScan conversion</p></li>
 <li><p><strong>param_enable_ab_publish</strong>: <em>true</em> - Enable amplitude (AB) image publishing</p></li>
 <li><p><strong>param_enable_conf_publish</strong>: <em>false</em> - Disable confidence map publishing</p></li>
 <li><p><strong>param_enable_point_cloud_publish</strong>: <em>true</em> - Enable point cloud publishing</p></li>
-<li><p><strong>param_encoding_type</strong>: <em>‘16UC1’</em> - Encoding format (mono16 or 16UC1)</p></li>
+<li><p><strong>param_encoding_type</strong>: <em>’16UC1’</em> - Encoding format (mono16 or 16UC1)</p></li>
 </ul>
-</dd>
-<dt>Published topics:</dt><dd><ul class="simple">
+</div></blockquote>
+<p><strong>Published Topics (from ToF module)</strong></p>
+<blockquote>
+<div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">/cam1/depth_image</span></code> - Depth images (values in millimeters, format: 16UC1)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">/cam1/camera_info</span></code> - Camera calibration (distortion model and intrinsic parameters)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">/cam1/ir_image</span></code> - Amplitude (AB) image</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">/cam1/point_cloud</span></code> - 3D point cloud data</p></li>
 </ul>
-</dd>
-</dl>
-<p><strong>Depth to LaserScan Node</strong></p>
-<ul class="simple">
-<li><p>Publishes 2D laser scan data (<code class="docutils literal notranslate"><span class="pre">/cam1/scan</span></code>)</p></li>
-<li><p>Converts depth images to LaserScan format</p></li>
-<li><p>Uses camera calibration for accurate transformations</p></li>
+</div></blockquote>
+<p><strong>Published Topics (from Robot)</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">/scan</span></code> - 2D laser scan converted from depth image</p></li>
 </ul>
+</div></blockquote>
 <p>For detailed implementation and configuration, refer to the following resources:</p>
 <ul class="simple">
 <li><p><a class="icon link reference external" href="https://github.com/analogdevicesinc/adi_3dtof_adtf31xx/tree/v2.1.0" target="_blank">ADI ToF Camera ROS2 package and documentation</a></p></li>
 <li><p><a class="icon link reference external" href="https://github.com/ros-perception/depthimage_to_laserscan/tree/ros2" target="_blank">Depth to LaserScan ROS2 package and documentation</a></p></li>
 </ul>
 <p><strong>Depth to LaserScan Parameters</strong></p>
-<p>Current parameters used <code class="docutils literal notranslate"><span class="pre">ad_r1m_real/config/depth_to_laser_params.yaml</span></code>:</p>
+<p>Current parameters used <code class="docutils literal notranslate"><span class="pre">ad_r1m_perception_aditof/config/depth_to_laser_params.yaml</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">/**</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">depthimage_to_laserscan</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">ros__parameters</span><span class="p">:</span>
@@ -1016,7 +1018,7 @@ The node captures depth frames from the sensor using the <a class="icon link ref
 <span class="w">    </span><span class="nt">output_frame</span><span class="p">:</span><span class="w"> </span><span class="s">"cam1_scan"</span>
 </pre></div>
 </div>
-<p>The camera’s position relative to the robot base is defined in <code class="docutils literal notranslate"><span class="pre">urdf/camera.xacro</span></code>. Ensure the transform between <code class="docutils literal notranslate"><span class="pre">cam1_adtf31xx</span></code> and <code class="docutils literal notranslate"><span class="pre">base_link</span></code> frames is correctly specified for accurate sensor fusion and navigation.</p>
+<p>The camera’s position relative to the robot base is defined in <code class="docutils literal notranslate"><span class="pre">ad_r1m_description/urdf/camera.xacro</span></code>. Ensure the transform between <code class="docutils literal notranslate"><span class="pre">cam1_adtf31xx</span></code> and <code class="docutils literal notranslate"><span class="pre">base_link</span></code> frames is correctly specified for accurate sensor fusion and navigation.</p>
 <figure class="align-center" id="id2">
 <a class="reference internal image-reference" href="../_images/fig_tof_tf.png"><img alt="ToF Camera coordinate frame visualization" src="../_images/fig_tof_tf.png" style="width: 400px;" />
 </a>
@@ -1043,22 +1045,22 @@ The camera is rotated by π radians around the X-axis to align the Laser Scan wi
 <h3><a class="toc-backref" href="#id11" role="doc-backlink">Remote Control Interface</a><a class="headerlink" href="#remote-control-interface" title="Link to this heading"></a></h3>
 <p>The CRSF Node is a ROS 2 node designed to interface with an CRSF transceiver, enabling remote control capabilities for robotic platforms. It integrates joystick input handling, battery telemetry, and safety killswitch logic.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Start remote control interface</span>
-ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_real<span class="w"> </span>just_crsf.launch.py
+ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_bringup<span class="w"> </span>teleop_crsf.launch.py
 </pre></div>
 </div>
 <dl class="simple">
 <dt>Launch arguments:</dt><dd><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">namespace</span></code>: Robot namespace for multi-robot systems (default: ‘’, examples: robot1, robot2)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">params_file</span></code>: Path to CRSF parameters file (default: ad_r1m_real/config/crsf.yaml)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">params_file</span></code>: Path to CRSF parameters file (default: ad_r1m_bringup/config/crsf.yaml)</p></li>
 </ul>
 </dd>
 </dl>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Multi-robot example with namespace</span>
-ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_real<span class="w"> </span>just_crsf.launch.py<span class="w"> </span>namespace:<span class="o">=</span>robot1
+ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_bringup<span class="w"> </span>teleop_crsf.launch.py<span class="w"> </span>namespace:<span class="o">=</span>robot1
 </pre></div>
 </div>
 <dl class="simple">
-<dt>Node parameters (configured in <code class="docutils literal notranslate"><span class="pre">ad_r1m_real/config/crsf.yaml</span></code>):</dt><dd><ul class="simple">
+<dt>Node parameters (configured in <code class="docutils literal notranslate"><span class="pre">ad_r1m_bringup/config/crsf.yaml</span></code>):</dt><dd><ul class="simple">
 <li><p><strong>poll_rate</strong>: <em>20</em> - Rate (Hz) for checking RC control values</p></li>
 <li><p><strong>min_joy_pos</strong>: <em>0.1</em> - Minimum joystick deviation from (0,0) to publish cmd_vel</p></li>
 <li><p><strong>max_vel</strong>: <em>0.5</em> - Maximum linear velocity (m/s)</p></li>
@@ -1184,7 +1186,7 @@ ros2<span class="w"> </span>launch<span class="w"> </span>ad_r1m_navigation<span
 <p>Monte Carlo localization estimates the robot’s pose by subscribing to:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">/odom</span></code>: Robot odometry frame. Transform from <cite>/odom</cite> to <cite>/base_link</cite> is provided by the <cite>robot_localization</cite> or <cite>diff_drive_controller</cite> node.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">/cam1/scan</span></code>: Processed LaserScan depth data from ToF camera</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/scan</span></code>: Processed LaserScan depth data from ToF camera</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">/tf</span></code>: Transform tree for coordinate frame relationships</p></li>
 </ul>
 <p>Publishes estimated pose to <code class="docutils literal notranslate"><span class="pre">/amcl_pose</span></code> (geometry_msgs/PoseWithCovarianceStamped), that can be tracked in RViz or by other nodes.</p>
@@ -1509,15 +1511,15 @@ ros2<span class="w"> </span>run<span class="w"> </span>ad_r1m_examples<span clas
 <h2><a class="toc-backref" href="#id16" role="doc-backlink">Visualization and Manual Control</a><a class="headerlink" href="#visualization-and-manual-control" title="Link to this heading"></a></h2>
 <section id="rviz-visualization">
 <h3><a class="toc-backref" href="#id17" role="doc-backlink">RViz Visualization</a><a class="headerlink" href="#rviz-visualization" title="Link to this heading"></a></h3>
-<p>Launch RViz with the preconfigured layout. The <code class="docutils literal notranslate"><span class="pre">ad_r1m_common</span></code> package provides three RViz configurations:</p>
+<p>Launch RViz with the preconfigured layout. The <code class="docutils literal notranslate"><span class="pre">ad_r1m_description</span></code> package provides three RViz configurations:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># For real robot (single robot, no namespace)</span>
-ros2<span class="w"> </span>run<span class="w"> </span>rviz2<span class="w"> </span>rviz2<span class="w"> </span>-d<span class="w"> </span>src/ad_r1m_common/rviz/main.rviz
+ros2<span class="w"> </span>run<span class="w"> </span>rviz2<span class="w"> </span>rviz2<span class="w"> </span>-d<span class="w"> </span>src/ad_r1m_description/rviz/main.rviz
 
 <span class="c1"># For simulation (Gazebo)</span>
-ros2<span class="w"> </span>run<span class="w"> </span>rviz2<span class="w"> </span>rviz2<span class="w"> </span>-d<span class="w"> </span>src/ad_r1m_common/rviz/main_sim.rviz
+ros2<span class="w"> </span>run<span class="w"> </span>rviz2<span class="w"> </span>rviz2<span class="w"> </span>-d<span class="w"> </span>src/ad_r1m_description/rviz/main_sim.rviz
 
 <span class="c1"># For multi-robot systems with namespaces</span>
-ros2<span class="w"> </span>run<span class="w"> </span>rviz2<span class="w"> </span>rviz2<span class="w"> </span>-d<span class="w"> </span>src/ad_r1m_common/rviz/ns_main.rviz
+ros2<span class="w"> </span>run<span class="w"> </span>rviz2<span class="w"> </span>rviz2<span class="w"> </span>-d<span class="w"> </span>src/ad_r1m_description/rviz/ns_main.rviz
 </pre></div>
 </div>
 <dl class="simple">
@@ -1555,10 +1557,10 @@ ros2<span class="w"> </span>run<span class="w"> </span>rviz2<span class="w"> </s
 <p><strong>Real Robot - Advanced Keyboard Teleop</strong></p>
 <p>For real robot control with motor service integration and killswitch support:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run the integrated keyboard teleop</span>
-ros2<span class="w"> </span>run<span class="w"> </span>ad_r1m_real<span class="w"> </span>teleop_keyboard.py
+ros2<span class="w"> </span>run<span class="w"> </span>ad_r1m_bringup<span class="w"> </span>teleop_keyboard.py
 </pre></div>
 </div>
-<p>This custom teleop node (<code class="docutils literal notranslate"><span class="pre">ad_r1m_real/scripts/crsf/teleop_keyboard.py</span></code>) provides:</p>
+<p>This custom teleop node (<code class="docutils literal notranslate"><span class="pre">ad_r1m_bringup/scripts/crsf/teleop_keyboard.py</span></code>) provides:</p>
 <dl class="simple">
 <dt><strong>Features:</strong></dt><dd><ul class="simple">
 <li><p>Publishes velocity commands to <code class="docutils literal notranslate"><span class="pre">cmd_vel_keyboard</span></code> (Twist or TwistStamped)</p></li>
@@ -1570,7 +1572,7 @@ ros2<span class="w"> </span>run<span class="w"> </span>ad_r1m_real<span class="w
 </dd>
 </dl>
 <p><strong>Configuration:</strong></p>
-<p>Loads parameters from <code class="docutils literal notranslate"><span class="pre">ad_r1m_real/config/crsf.yaml</span></code> (or custom file via <code class="docutils literal notranslate"><span class="pre">--params_file</span></code> argument):</p>
+<p>Loads parameters from <code class="docutils literal notranslate"><span class="pre">ad_r1m_bringup/config/crsf.yaml</span></code> (or custom file via <code class="docutils literal notranslate"><span class="pre">--params_file</span></code> argument):</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">max_vel</span></code>, <code class="docutils literal notranslate"><span class="pre">max_rot</span></code>: Maximum linear/angular velocities</p></li>
