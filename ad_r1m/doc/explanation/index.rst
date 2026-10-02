@@ -10,3 +10,4 @@ The following articles explain various aspects of the AD-R1M design and should h
 
    ros2-architecture
    software-system-architecture
+   release

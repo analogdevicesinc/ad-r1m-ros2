@@ -4,7 +4,7 @@
 channels = ["robostack-humble", "conda-forge"]
 name = "ad_r1m_examples"
 platforms = ["linux-64"]
-version = "0.1.0"
+version = "1.0.0"
 preview = ["pixi-build"]
 
 [tasks]

@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>ad_r1m_pointcloud_to_occupancygrid</name>
-  <version>0.1.0</version>
+  <version>1.0.0</version>
   <description>Convert PointCloud2 to OccupancyGrid for integrating cuVSLAM output with nav2</description>
   <maintainer email="SDP_Enablement@analog.com">Analog Devices, Inc.</maintainer>
   <license>BSD-3-Clause</license>
