@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/var/cache/apt \
 # Clone ros2_ws repos, apply patches
 RUN mkdir -p /ros2_ws/src
 WORKDIR /ros2_ws
-COPY ./entrypoint.sh .
+COPY ./lift_waypoint_demo/entrypoint.sh .
 COPY . src/ad_r1m_examples
 
 # Install rosdep dependencies

@@ -1,0 +1,25 @@
+imu_hil_controller:
+  ros__parameters:
+    # Filtered IMU topic — Madgwick output (has orientation quaternion)
+    imu_topic: "/madgwick/imu"
+
+    # Gazebo diff-drive odometry — used as yaw feedback
+    odom_topic: "diff_drive_controller/odom"
+
+    # Velocity output — consumed by twist_mux
+    cmd_vel_topic: "cmd_vel_hil"
+
+    # P-controller gain for yaw tracking
+    kp: 2.0
+
+    # Saturation limit for angular velocity command (rad/s)
+    max_angular_vel: 1.5
+
+    # Forward/backward speed from keyboard (m/s)
+    linear_speed: 0.25
+
+    # Control loop rate (Hz)
+    control_rate: 50.0
+
+    # How often to print status (Hz)
+    log_rate: 1.0
