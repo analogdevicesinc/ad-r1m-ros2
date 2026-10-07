@@ -1,0 +1,37 @@
+### EKF config for HIL demo
+#
+# Fuses wheel odometry (x, y, vx, vy) with the *simulation* IMU
+# (yaw rate, linear accel).  The real IMU is NOT fused here — it goes
+# straight to the HIL controller as a yaw setpoint.
+#
+# This is intentionally the same as the stock ad_r1m EKF config so
+# that the odom→base_link transform stays consistent.
+
+/**/ekf_filter_node:
+    ros__parameters:
+        frequency: 30.0
+        two_d_mode: true
+        publish_acceleration: false
+        publish_tf: true
+
+        map_frame: map
+        odom_frame: odom
+        base_link_frame: base_link
+        world_frame: odom
+
+        odom0: diff_drive_controller/odom
+        odom0_config: [true,  true,  false,
+                       false, false, false,
+                       true,  true,  false,
+                       false, false, true,
+                       false, false, false]
+
+        # Simulation IMU (Gazebo plugin), NOT the real IMU
+        imu0: imu
+        imu0_config: [false, false, false,
+                      false, false, false,
+                      false, false, false,
+                      false, false, true,
+                      true,  true,  false]
+
+        imu0_remove_gravitational_acceleration: true
