@@ -12,7 +12,7 @@ find_package(rclpy REQUIRED)
 find_package(xacro REQUIRED)
 
 # Option to skip downloading third-party models (for CI or offline builds)
-option(DOWNLOAD_GAZEBO_MODELS "Download third-party Gazebo models" ON)
+option(DOWNLOAD_GAZEBO_MODELS "Download third-party Gazebo models" OFF)
 
 if(DOWNLOAD_GAZEBO_MODELS)
 

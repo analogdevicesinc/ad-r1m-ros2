@@ -34,7 +34,6 @@ def launch_setup(context, *args, **kwargs):
     world = LaunchConfiguration('world')
     use_rviz = LaunchConfiguration('use_rviz')
 
-    # ── Robot description ──
     # ParameterValue(…, value_type=str) prevents the launch system from
     # yaml-parsing the URDF XML, which corrupts it on Humble.
     robot_description = ParameterValue(
@@ -56,23 +55,34 @@ def launch_setup(context, *args, **kwargs):
         }],
     )
 
-    # ── Gazebo ──
+    # -- Gazebo Harmonic --
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(PathJoinSubstitution([
-            FindPackageShare('gazebo_ros'), 'launch', 'gazebo.launch.py',
+            FindPackageShare('ros_gz_sim'), 'launch', 'gz_sim.launch.py',
         ])),
         launch_arguments={
-            'params_file': PathJoinSubstitution([
-                ad_r1m_gazebo, 'config', 'gazebo_params.yaml',
-            ]),
-            'world': world,
+            'gz_args': [world, ' -r'],
         }.items(),
     )
 
     spawn_entity = Node(
-        package='gazebo_ros',
-        executable='spawn_entity.py',
-        arguments=['-topic', 'robot_description', '-entity', 'ad_r1m'],
+        package='ros_gz_sim',
+        executable='create',
+        arguments=['-topic', 'robot_description', '-name', 'ad_r1m'],
+        output='screen',
+    )
+
+    bridge = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=[
+            '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
+            '/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
+            '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+            '/cam1/depth_image@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/cam1/image@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/cam1/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+        ],
         output='screen',
     )
 
@@ -143,11 +153,11 @@ def launch_setup(context, *args, **kwargs):
         ],
     )
 
-    # ── RViz ──
     nodes = [
         rsp,
         gazebo,
         spawn_entity,
+        bridge,
         diff_drive_spawner,
         joint_broad_spawner,
         twist_mux,
@@ -178,7 +188,7 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'world',
             default_value=PathJoinSubstitution([
-                FindPackageShare('ad_r1m_gazebo'), 'worlds', 'empty.world',
+                FindPackageShare('ad_r1m_gazebo'), 'worlds', 'empty.sdf',
             ]),
             description='Path to Gazebo world file',
         ),

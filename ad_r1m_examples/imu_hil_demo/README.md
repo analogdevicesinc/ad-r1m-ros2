@@ -16,15 +16,16 @@ Real IMU --/imu/data_raw--> Madgwick --/imu/data--> HIL Controller --cmd_vel_hil
 
 ## Dependencies
 
-Install these before running:
+Install these before running (requires the OSRF Gazebo apt repository for
+Harmonic packages):
 
 ```bash
 sudo apt install \
+    ros-humble-ros-gz \
+    ros-humble-gz-ros2-control \
     ros-humble-imu-filter-madgwick \
     ros-humble-robot-localization \
     ros-humble-twist-mux \
-    ros-humble-gazebo-ros \
-    ros-humble-gazebo-ros2-control \
     ros-humble-controller-manager \
     ros-humble-diff-drive-controller \
     ros-humble-joint-state-broadcaster \
@@ -76,3 +77,41 @@ All parameters are in `config/`:
 | Q     | Quit              |
 
 Yaw is controlled automatically by the real IMU (no keyboard input needed for turning).
+
+## Docker
+
+Build from the `imu_hil_demo/` directory:
+
+```bash
+cd <path-to>/ad-r1m-ros2/ad_r1m_examples/imu_hil_demo
+docker build -t ad_r1m_hil_demo .
+```
+
+Allow X11 access from the container:
+
+```bash
+xhost +local:docker
+```
+
+Run with GUI support, host networking (for ROS topic access), and the
+repository mounted as a volume:
+
+```bash
+docker run -it --rm \
+    --net=host \
+    --ipc=host \
+    -e DISPLAY=$DISPLAY \
+    -e XAUTHORITY=$XAUTHORITY \
+    -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v $XAUTHORITY:$XAUTHORITY:ro \
+    -v <path-to>/ad-r1m-ros2:/ros2_ws/src/ad-r1m-ros2 \
+    ad_r1m_hil_demo
+```
+
+Inside the container, build and launch:
+
+```bash
+colcon build --packages-select ad_r1m_description ad_r1m_control ad_r1m_gazebo ad_r1m_examples
+source install/setup.bash
+ros2 launch ad_r1m_examples hil_demo.launch.py
+```

@@ -93,7 +93,7 @@
             <remapping>camera_info:=infra2/camera_info</remapping>
           </ros>
           <!-- Tell plugin which TF frame this camera belongs to -->
-          <frame_name>${infrared1_optical_frame}</frame_name>
+          <frame_name>${infrared2_optical_frame}</frame_name>
         </plugin>
       </sensor>
     </gazebo>

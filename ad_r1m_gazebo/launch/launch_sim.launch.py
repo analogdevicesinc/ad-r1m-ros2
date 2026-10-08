@@ -36,9 +36,9 @@ def launch_setup(context, *args, **kwargs):
 
     ad_r1m_gazebo_models = os.path.join(
         ad_r1m_gazebo.perform(context), 'models')
-    existing_model_path = os.environ.get('GAZEBO_MODEL_PATH', '')
-    gazebo_model_path = SetEnvironmentVariable(
-        'GAZEBO_MODEL_PATH',
+    existing_model_path = os.environ.get('GZ_SIM_RESOURCE_PATH', '')
+    gz_resource_path = SetEnvironmentVariable(
+        'GZ_SIM_RESOURCE_PATH',
         ad_r1m_gazebo_models + os.pathsep + existing_model_path
         if existing_model_path else ad_r1m_gazebo_models
     )
@@ -81,11 +81,9 @@ def launch_setup(context, *args, **kwargs):
 
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(PathJoinSubstitution(
-            [FindPackageShare('gazebo_ros'), 'launch', 'gazebo.launch.py'])),
+            [FindPackageShare('ros_gz_sim'), 'launch', 'gz_sim.launch.py'])),
         launch_arguments={
-            'params_file': PathJoinSubstitution([
-                ad_r1m_gazebo, 'config', 'gazebo_params.yaml']),
-            'world': world
+            'gz_args': [world, ' -r'],
         }.items()
     )
 
@@ -101,18 +99,30 @@ def launch_setup(context, *args, **kwargs):
     robot_P = str(spawn_pos.get('P', 0.0))
     robot_Y = str(spawn_pos.get('Y', 0.0))
 
-    spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py',
+    spawn_entity = Node(package='ros_gz_sim', executable='create',
                         arguments=['-topic', robot_description_topic,
-                                   '-entity', 'ad_r1m',
+                                   '-name', 'ad_r1m',
                                    '-x', robot_x,
                                    '-y', robot_y,
                                    '-z', robot_z,
                                    '-R', robot_R,
                                    '-P', robot_P,
-                                   '-Y', robot_Y,
-                                   '-timeout', '120'],
+                                   '-Y', robot_Y],
                         output='screen')
-    print('Gazebo has started')
+
+    bridge = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=[
+            '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
+            '/imu@sensor_msgs/msg/Imu[gz.msgs.IMU',
+            '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+            '/cam1/depth_image@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/cam1/image@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/cam1/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+        ],
+        output='screen',
+    )
 
     # Controller manager configuration
     controller_manager_name = f'{namespace_str}/controller_manager' if namespace_str else 'controller_manager'
@@ -156,12 +166,13 @@ def launch_setup(context, *args, **kwargs):
     )
 
     return [
-        gazebo_model_path,
+        gz_resource_path,
         rsp,
         twist_mux,
         teleop_twist_keyboard,
         gazebo,
         spawn_entity,
+        bridge,
         diff_drive_spawner,
         joint_broad_spawner,
         robot_localization_node,
@@ -179,7 +190,7 @@ def generate_launch_description():
     world_arg = DeclareLaunchArgument(
         'world',
         default_value=PathJoinSubstitution([
-            FindPackageShare('ad_r1m_gazebo'), 'worlds', 'empty.world']),
+            FindPackageShare('ad_r1m_gazebo'), 'worlds', 'empty.sdf']),
         description='Path to world file'
     )
 
