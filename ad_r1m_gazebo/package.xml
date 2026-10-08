@@ -3,7 +3,7 @@
 <package format="3">
   <name>ad_r1m_gazebo</name>
   <version>0.1.0</version>
-  <description>AD-R1M simulated robot in Gazebo Classic</description>
+  <description>AD-R1M simulated robot in Gazebo Harmonic</description>
   <maintainer email="SDP_Enablement@analog.com">Analog Devices, Inc.</maintainer>
   <license>Apache-2.0</license>
 
@@ -17,9 +17,9 @@
   <exec_depend>ad_r1m_description</exec_depend>
   <exec_depend>ad_r1m_control</exec_depend>
 
-  <!-- Gazebo -->
-  <exec_depend>gazebo_ros_pkgs</exec_depend>
-  <exec_depend>gazebo_ros2_control</exec_depend>
+  <!-- Gazebo Harmonic -->
+  <exec_depend>ros_gz</exec_depend>
+  <exec_depend>gz_ros2_control</exec_depend>
 
   <!-- Simulator UI -->
   <exec_depend>rviz2</exec_depend>

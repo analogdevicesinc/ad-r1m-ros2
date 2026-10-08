@@ -13,10 +13,9 @@
     <xacro:include filename="$(find ad_r1m_description)/urdf/ad_r1m_base.urdf.xacro" />
     <xacro:ad_r1m_base prefix="${prefix}" use_sim="true" />
 
-    <!-- Bind gazebo_ros2_control to previously defined joints (e.g. left_wheel_joint) -->
-    <ros2_control name="GazeboSystem" type="system">
+    <ros2_control name="GZSimSystem" type="system">
         <hardware>
-            <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+            <plugin>gz_ros2_control/GazeboSimSystem</plugin>
         </hardware>
         <joint name="left_wheel_joint">
             <command_interface name="velocity">
@@ -37,7 +36,7 @@
     </ros2_control>
 
     <gazebo>
-        <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+        <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
             <parameters>$(find ad_r1m_control)/config/controllers.yaml</parameters>
             <parameters>$(find ad_r1m_gazebo)/config/gaz_ros2_ctl_use_sim.yaml</parameters>
             <robot_param>robot_description</robot_param>

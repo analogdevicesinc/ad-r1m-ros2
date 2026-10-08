@@ -94,7 +94,11 @@
     </link>
 
     <gazebo reference="${prefix}chassis">
-        <material>Gazebo/White</material>
+        <material>
+            <ambient>1.0 1.0 1.0 1</ambient>
+            <diffuse>1.0 1.0 1.0 1</diffuse>
+            <specular>1.0 1.0 1.0 1</specular>
+        </material>
     </gazebo>
 
     <!-- CORNER BUMPERS (L-shaped: lateral + front/rear sections) -->
@@ -116,7 +120,11 @@
         </link>
 
         <gazebo reference="${prefix}${name}_bumper_lat">
-            <material>Gazebo/Blue</material>
+            <material>
+                <ambient>0.0 0.0 0.8 1</ambient>
+                <diffuse>0.0 0.0 0.8 1</diffuse>
+                <specular>0.0 0.0 0.8 1</specular>
+            </material>
         </gazebo>
 
         <!-- Front/rear section (along X, on the front/back) -->
@@ -136,7 +144,11 @@
         </link>
 
         <gazebo reference="${prefix}${name}_bumper_front">
-            <material>Gazebo/Blue</material>
+            <material>
+                <ambient>0.0 0.0 0.8 1</ambient>
+                <diffuse>0.0 0.0 0.8 1</diffuse>
+                <specular>0.0 0.0 0.8 1</specular>
+            </material>
         </gazebo>
     </xacro:macro>
 
@@ -172,13 +184,17 @@
     </link>
 
     <gazebo reference="${prefix}left_wheel">
-        <material>Gazebo/Grey</material>
-        <mu1>1.5</mu1> <!-- SLIP_FIX was 2.5 -->
-        <mu2>1.5</mu2> <!-- SLIP_FIX was 2.5 -->
-        <kp>1000000</kp> <!-- SLIP_FIX -->
-        <kd>100</kd> <!-- SLIP_FIX -->
-        <minDepth>0.001</minDepth> <!-- SLIP_FIX -->
-        <maxVel>0.1</maxVel> <!-- SLIP_FIX -->
+        <material>
+            <ambient>0.5 0.5 0.5 1</ambient>
+            <diffuse>0.5 0.5 0.5 1</diffuse>
+            <specular>0.5 0.5 0.5 1</specular>
+        </material>
+        <collision>
+            <surface>
+                <friction><ode><mu>1.5</mu><mu2>1.5</mu2></ode></friction>
+                <contact><ode><kp>1e6</kp><kd>100</kd><min_depth>0.001</min_depth><max_vel>0.1</max_vel></ode></contact>
+            </surface>
+        </collision>
     </gazebo>
 
     <!-- RIGHT WHEEL LINK -->
@@ -208,13 +224,17 @@
     </link>
 
     <gazebo reference="${prefix}right_wheel">
-        <material>Gazebo/Grey</material>
-        <mu1>1.5</mu1> <!-- SLIP_FIX was 2.5 -->
-        <mu2>1.5</mu2> <!-- SLIP_FIX was 2.5 -->
-        <kp>1000000</kp> <!-- SLIP_FIX -->
-        <kd>100</kd> <!-- SLIP_FIX -->
-        <minDepth>0.001</minDepth> <!-- SLIP_FIX -->
-        <maxVel>0.1</maxVel> <!-- SLIP_FIX -->
+        <material>
+            <ambient>0.5 0.5 0.5 1</ambient>
+            <diffuse>0.5 0.5 0.5 1</diffuse>
+            <specular>0.5 0.5 0.5 1</specular>
+        </material>
+        <collision>
+            <surface>
+                <friction><ode><mu>1.5</mu><mu2>1.5</mu2></ode></friction>
+                <contact><ode><kp>1e6</kp><kd>100</kd><min_depth>0.001</min_depth><max_vel>0.1</max_vel></ode></contact>
+            </surface>
+        </collision>
     </gazebo>
 
     <!-- CASTER WHEEL LINKS -->
@@ -244,13 +264,17 @@
         </joint>
 
         <gazebo reference="${prefix}_link">
-            <material>Gazebo/Grey</material>
-            <mu1 value="0.001"/>
-            <mu2 value="0.001"/>
-            <kp>1000000</kp> <!-- SLIP_FIX -->
-            <kd>100</kd> <!-- SLIP_FIX -->
-            <minDepth>0.001</minDepth> <!-- SLIP_FIX -->
-            <maxVel>0.1</maxVel> <!-- SLIP_FIX -->
+            <material>
+                <ambient>0.5 0.5 0.5 1</ambient>
+                <diffuse>0.5 0.5 0.5 1</diffuse>
+                <specular>0.5 0.5 0.5 1</specular>
+            </material>
+            <collision>
+                <surface>
+                    <friction><ode><mu>0.001</mu><mu2>0.001</mu2></ode></friction>
+                    <contact><ode><kp>1e6</kp><kd>100</kd><min_depth>0.001</min_depth><max_vel>0.1</max_vel></ode></contact>
+                </surface>
+            </collision>
         </gazebo>
     </xacro:macro>
 
