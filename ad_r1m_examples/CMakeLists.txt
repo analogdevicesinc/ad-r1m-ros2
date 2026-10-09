@@ -16,19 +16,29 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-# Install directories
+# -- lift_waypoint_demo --
 install(
-  DIRECTORY launch
-  DESTINATION share/${PROJECT_NAME}
+  DIRECTORY lift_waypoint_demo/launch
+  DESTINATION share/${PROJECT_NAME}/lift_waypoint_demo
 )
- 
-# Install Python scripts
-install(PROGRAMS 
-  scripts/commander/demo_run.py
-  scripts/commander/elevator_server.py
-  # scripts/commander/waypoint_follower.py
-  scripts/waypoint_follower.py
-  scripts/velocity_control.py
+
+install(PROGRAMS
+  lift_waypoint_demo/scripts/commander/demo_run.py
+  lift_waypoint_demo/scripts/commander/elevator_server.py
+  lift_waypoint_demo/scripts/waypoint_follower.py
+  lift_waypoint_demo/scripts/velocity_control.py
   DESTINATION lib/${PROJECT_NAME}
 )
+
+# -- imu_hil_demo --
+install(
+  DIRECTORY imu_hil_demo/launch imu_hil_demo/config
+  DESTINATION share/${PROJECT_NAME}/imu_hil_demo
+)
+
+install(PROGRAMS
+  imu_hil_demo/scripts/imu_hil_controller.py
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 ament_package()

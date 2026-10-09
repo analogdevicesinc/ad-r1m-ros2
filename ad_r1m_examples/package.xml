@@ -21,6 +21,22 @@
 
   <exec_depend>example_interfaces</exec_depend>
 
+  <!-- IMU HIL Demo Dependencies -->
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>nav_msgs</depend>
+  <exec_depend>tf_transformations</exec_depend>
+  <exec_depend>imu_filter_madgwick</exec_depend>
+  <exec_depend>robot_localization</exec_depend>
+  <exec_depend>twist_mux</exec_depend>
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>controller_manager</exec_depend>
+  <exec_depend>rviz2</exec_depend>
+  <exec_depend>ad_r1m_gazebo</exec_depend>
+  <exec_depend>ad_r1m_control</exec_depend>
+  <exec_depend>ad_r1m_description</exec_depend>
+
   <!-- Testing Dependencies -->
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
