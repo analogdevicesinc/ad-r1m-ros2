@@ -1,7 +1,0 @@
-
-Links
-=====
-
-.. toctree::
-
-   Rosindex <https://index.ros.org/p/ad_r1m>
