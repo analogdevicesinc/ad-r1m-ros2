@@ -13,6 +13,7 @@
             <visualize>false</visualize>
             <update_rate>30</update_rate>
             <topic>scan</topic>
+            <gz_frame_id>${prefix}cam1_scan</gz_frame_id>
             <lidar>
                 <scan>
                     <horizontal>

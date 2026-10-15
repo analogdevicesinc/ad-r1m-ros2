@@ -78,6 +78,10 @@ All parameters are in `config/`:
 
 Yaw is controlled automatically by the real IMU (no keyboard input needed for turning).
 
+## Demo
+
+<img src="docs/raw_hil_sim_vid.gif" alt="HIL Demo" width="800">
+
 ## Docker
 
 Build from the `imu_hil_demo/` directory:

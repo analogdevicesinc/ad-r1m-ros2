@@ -33,6 +33,7 @@ def launch_setup(context, *args, **kwargs):
 
     world = LaunchConfiguration('world')
     use_rviz = LaunchConfiguration('use_rviz')
+    imu_raw_topic = LaunchConfiguration('imu_raw_topic')
 
     # ParameterValue(…, value_type=str) prevents the launch system from
     # yaml-parsing the URDF XML, which corrupts it on Humble.
@@ -135,7 +136,7 @@ def launch_setup(context, *args, **kwargs):
             PathJoinSubstitution([ad_r1m_examples, 'imu_hil_demo', 'config', 'madgwick.yaml']),
         ],
         remappings=[
-            ('imu/data_raw', '/camera1/imu'),
+            ('imu/data_raw', imu_raw_topic),
             ('imu/data', '/madgwick/imu'),
         ],
     )
@@ -196,6 +197,11 @@ def generate_launch_description():
             'use_rviz',
             default_value='true',
             description='Launch RViz alongside the simulation',
+        ),
+        DeclareLaunchArgument(
+            'imu_raw_topic',
+            default_value='/camera1/imu',
+            description='Raw IMU topic from the external sensor',
         ),
         OpaqueFunction(function=launch_setup),
     ])
