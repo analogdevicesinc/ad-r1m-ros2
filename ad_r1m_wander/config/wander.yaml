@@ -1,0 +1,19 @@
+/**/wander:
+  ros__parameters:
+    scan_topic: scan
+    # Published to cmd_vel, which twist_mux ("nav" input, priority 30) forwards to the drive.
+    # Joystick (50) and keyboard (40) override this node.
+    cmd_vel_topic: cmd_vel
+    use_stamped: false         # true on jazzy and later (twist_mux use_stamped)
+    # Forward sector, +/- degrees around the scan's 0 rad direction
+    front_angle_deg: 20.0
+    # Statistic over the sector: mean | min | percentile
+    method: mean
+    percentile: 10.0           # used when method == percentile
+    clear_distance: 1.0        # m, drive forward above this
+    clear_hysteresis: 0.3      # m, extra room required to stop turning
+    min_valid_fraction: 0.3    # below this fraction of finite readings, treat as blocked
+    linear_speed: 0.2          # m/s
+    angular_speed: 0.5         # rad/s
+    scan_timeout: 0.5          # s, stop if no scan arrives
+    rate: 10.0                 # Hz

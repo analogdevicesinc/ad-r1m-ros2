@@ -208,6 +208,27 @@ services:
         condition: "service_started"
         required: false
 
+  # Reactive wander behaviour: drive forward when /scan is clear, otherwise turn. Publishes on /cmd_vel
+  # (twist_mux "nav" input, overridden by joystick/keyboard). Select with `docker compose --profile wander ...`
+  # Do not run together with the nav profile, which also publishes on /cmd_vel.
+  wander:
+    profiles: [wander]
+    image: $DOCKER_IMAGE
+    command: |
+      ros2 launch ad_r1m_wander wander.launch.py ${ROBOT_NAMESPACE:+namespace:=}${ROBOT_NAMESPACE}
+    network_mode: host
+    ipc: host
+    pid: host
+    volumes:
+      - ./ros_data:/ros_data
+      - ./ros_data/log:/root/.ros/log
+    environment:
+      - RMW_IMPLEMENTATION
+    depends_on:
+      zenoh_router:
+        condition: "service_started"
+        required: false
+
   # Mapping profile. Select with `docker compose --profile slam ...`
   slam:
     profiles: [slam]
